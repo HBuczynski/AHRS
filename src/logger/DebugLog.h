@@ -8,7 +8,7 @@ namespace utility
 	class DebugLog final : public LogInterface
 	{
 	public:
-		DebugLog(bool writeToFile = false);
+		DebugLog(bool writeToFile, std::string folderName);
 		~DebugLog();
 
 		void writeMessage(const std::string &time, const std::string &message) override;

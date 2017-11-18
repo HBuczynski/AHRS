@@ -7,13 +7,17 @@
 #include "InformationLog.h"
 #include "WarningLog.h"
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 using namespace std;
 using namespace utility;
 
 Logger *Logger::instance_ = nullptr;
 mutex Logger::loggerMutex_;
-fstream Logger::file_;
+ofstream Logger::file_;
 int32_t Logger::instanceCounter_ = 0;
+string Logger::folderName = "";
 
 Logger::Logger()
 	: writeOnConsole_(false),
@@ -27,10 +31,10 @@ Logger::~Logger()
 
 Logger &Logger::getInstance()
 {
-	if (instance_ != nullptr)
+	if (!instance_)
 	{
 		lock_guard<mutex> lock(loggerMutex_);
-		if (instance_ != nullptr)
+		if (!instance_)
 		{
 			instance_ = new Logger();
 			++instanceCounter_;
@@ -44,16 +48,19 @@ Logger &Logger::getInstance()
 
 void Logger::initFile()
 {
-	string fileName = "log_" + TimeManager::getTimeAndDate() + ".txt";
+    folderName = "log_files_" + TimeManager::getTimeAndDate();
+    mkdir(folderName.c_str(), 0777);
+
+	string fileName = folderName + "/" + "log_" + TimeManager::getTimeAndDate() + ".txt";
 
     file_.open(fileName.c_str());
     if (file_.fail())
     {
-        logic_error("Logger: Main logger file was not created.");
+        throw logic_error("Logger: Main logger file was not created.");
     }
 }
 
-void Logger::initLogger(const InitLogStructure &logParameters)
+void Logger::initLogger(InitLogStructure logParameters)
 {
     writeInSeparateFiles_ = logParameters.writeLogsInSeparetFiles;
     writeOnConsole_ = logParameters.writeOnConsole;
@@ -77,22 +84,22 @@ void Logger::registerLogType(LogType type)
 
     if(type == DEBUG_LOG)
     {
-        logInstance = make_shared<DebugLog>();
+        logInstance = make_shared<DebugLog>(writeInSeparateFiles_, folderName);
         typeRegister_[type] = logInstance;
     }
     else if(type == ERROR_LOG)
     {
-        logInstance = make_shared<ErrorLog>();
+        logInstance = make_shared<ErrorLog>(writeInSeparateFiles_, folderName);
         typeRegister_[type] = logInstance;
     }
     else if(type == WARNING_LOG)
     {
-        logInstance = make_shared<WarningLog>();
+        logInstance = make_shared<WarningLog>(writeInSeparateFiles_, folderName);
         typeRegister_[type] = logInstance;
     }
     else if(type == INFORMATION_LOG)
     {
-        logInstance = make_shared<InformationLog>();
+        logInstance = make_shared<InformationLog>(writeInSeparateFiles_, folderName);
         typeRegister_[type] = logInstance;
     }
     else
@@ -111,7 +118,7 @@ void Logger::writeLog(LogType type, string rawMessage)
 	if (logHandler != typeRegister_.end())
 	{
         string preciselyTime = TimeManager::getPreciselyTime();
-		string message = (logHandler->second)->getName();
+		string message = preciselyTime + "\t#" + (logHandler->second)->getName() + ":\t" + rawMessage + "\n";
 
 		file_ << message;
 

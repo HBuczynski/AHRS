@@ -15,16 +15,8 @@ namespace utility
 		static std::string getPreciselyTime();
 		static std::string getTimeAndDate();
 
-		static int32_t getYear();
-		static int8_t getMonth();
-		static int8_t getDay();
-
-		static int8_t getHour();
-		static int8_t getMintutes();
-		static int8_t getSecond();
-
-		static int64_t getTimeSinceStartInMilisec();
-		static int64_t getTimeSinceStartInSec();
+    private:
+        static const unsigned int stringLength_ = 100;
 	};
 }
 #endif

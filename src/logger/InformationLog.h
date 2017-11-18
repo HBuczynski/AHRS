@@ -8,7 +8,7 @@ namespace utility
 	class InformationLog final : public LogInterface
 	{
 	public:
-		InformationLog(bool writeToFile = false);
+		InformationLog(bool writeToFile, std::string folderName);
 		~InformationLog();
 
 		void writeMessage(const std::string &time, const std::string &message) override;

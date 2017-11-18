@@ -26,7 +26,7 @@ namespace utility
 	public:
 		static Logger &getInstance();
 
-        void initLogger(const InitLogStructure &logParameters);
+        void initLogger(InitLogStructure logParameters);
 
 		void writeLog(LogType type, std::string rawMessage);
 
@@ -36,9 +36,6 @@ namespace utility
 		Logger();
 		~Logger();
 
-		Logger(const Logger&) = delete;
-		Logger& operator=(const Logger &) = delete;
-
 		static void initFile();
 
         void registerLogType(LogType type);
@@ -46,7 +43,8 @@ namespace utility
 		static std::mutex loggerMutex_;
 		static int32_t instanceCounter_;
 		static Logger *instance_;
-		static std::fstream file_;
+		static std::ofstream file_;
+		static std::string folderName;
 
 		bool writeOnConsole_;
 		bool writeInSeparateFiles_;

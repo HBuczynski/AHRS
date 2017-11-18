@@ -3,17 +3,17 @@
 using namespace std;
 using namespace utility;
 
-WarningLog::WarningLog(bool writeToFile)
+WarningLog::WarningLog(bool writeToFile, string folderName)
 	: LogInterface(WARNING_LOG, writeToFile)
 {
     if(writeToFile_)
     {
-        string fileName = getName() + "_" + TimeManager::getTimeAndDate() + ".txt";
+        string fileName = folderName + "/" + getName() + "_" + TimeManager::getTimeAndDate() + ".txt";
 
         file_.open(fileName.c_str());
         if (file_.fail())
         {
-            logic_error("WarningLogger: Log file was not created.");
+            throw logic_error("WarningLogger: Log file was not created.");
         }
     }
 }

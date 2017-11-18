@@ -8,7 +8,7 @@ namespace utility
 	class ErrorLog final : public LogInterface
 	{
 	public:
-		ErrorLog(bool writeToFile = false);
+		ErrorLog(bool writeToFile, std::string folderName);
 		~ErrorLog();
 
 		void writeMessage(const std::string &time, const std::string &message) override;

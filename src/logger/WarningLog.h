@@ -8,7 +8,7 @@ namespace utility
 	class WarningLog final : public LogInterface
 	{
 	public:
-		WarningLog(bool writeToFile = false);
+		WarningLog(bool writeToFile, std::string folderName);
 		~WarningLog();
 
 		void writeMessage(const std::string &time, const std::string &message) override;

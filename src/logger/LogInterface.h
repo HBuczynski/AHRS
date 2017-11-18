@@ -29,7 +29,7 @@ namespace utility
 
 	protected:
 		LogType type_;
-		std::fstream file_;
+		std::ofstream file_;
 		bool writeToFile_;
 	};
 }

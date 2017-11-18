@@ -3,17 +3,17 @@
 using namespace std;
 using namespace utility;
 
-DebugLog::DebugLog(bool writeToFile)
+DebugLog::DebugLog(bool writeToFile, string folderName)
 	: LogInterface(DEBUG_LOG, writeToFile)
 {
     if(writeToFile_)
     {
-        string fileName = getName() + "_" + TimeManager::getTimeAndDate() + ".txt";
+        string fileName = folderName + "/" + getName() + "_" + TimeManager::getTimeAndDate() + ".txt";
 
         file_.open(fileName.c_str());
         if (file_.fail())
         {
-            logic_error("DebugLogger: Log file was not created.");
+            throw logic_error("DebugLogger: Log file was not created.");
         }
     }
 }
