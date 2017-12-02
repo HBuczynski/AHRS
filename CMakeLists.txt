@@ -35,7 +35,31 @@ add_subdirectory("src/main_project"     main_project)
 ###############################################################
 #                  ADDING DOXYGEN GENERATION                  #
 ###############################################################
+# check if Doxygen is installed
+find_package(Doxygen)
 
+if (DOXYGEN_FOUND)
+    add_custom_command(OUTPUT ${CMAKE_SOURCE_DIR}/target/docs/documantation/doxygen.stamp
+     
+        message("Old documantation was removed.")
+        COMMAND cmake -E remove_directory ${CMAKE_SOURCE_DIR}/target/docs/documantation/xml
+        COMMAND cmake -E remove_directory ${CMAKE_SOURCE_DIR}/target/docs/documantation/html
+        COMMAND cmake -E remove_directory ${CMAKE_SOURCE_DIR}/target/docs/documantation/latex
+
+        COMMAND cmake -E make_directory ${CMAKE_SOURCE_DIR}/target/docs/documantation
+        COMMAND cmake -E touch ${CMAKE_SOURCE_DIR}/target/docs/documantation/doxygen.stamp
+
+        COMMAND doxygen ${CMAKE_SOURCE_DIR}/build_files/doxygen.config
+       
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/.."
+        VERBATIM
+        )
+
+    add_custom_target(docs DEPENDS ${CMAKE_SOURCE_DIR}/target/docs/documantation/doxygen.stamp)
+
+else (DOXYGEN_FOUND)
+  message("Doxygen need to be installed to generate the doxygen documentation")
+endif (DOXYGEN_FOUND)
 
 ###############################################################
 #                  ADDING UNIT TESTS                          #

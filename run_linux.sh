@@ -18,15 +18,11 @@ fi
 if [ "$input" == "test" ]; then
     echo "TO DO: test"
 
-elif [ "$input" == "doxygen" ]; then
-	if [ ! -d "$target_folder_name"/doxygen ]; then
-        mkdir "$target_folder_name"/doxygen
-    fi
-    
+elif [ "$input" == "doxygen" ]; then   
     # Create build and binary files
     cmake -H. -B"${target_folder_name}"/build
     cmake --build "${target_folder_name}"/build -- -j9 docs
-    make install doc
+    make install docs
 
 elif [ "$input" == "coverage" ]; then
 	if [ ! -d "$target_folder_name"/coverage ]; then
@@ -69,8 +65,8 @@ else
     fi
     
     # Create build and binary files
-    cmake -H. -B"${target_folder_name}"/build
-    cmake --build "${target_folder_name}"/build -- -j9
+    cmake . -B"${target_folder_name}"/build
+    cmake --build "${target_folder_name}"/build
 fi
 
 
