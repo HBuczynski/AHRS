@@ -21,7 +21,7 @@ include_directories(src)
 ###############################################################
 #                  ADDING SUBMODULES                          #
 ###############################################################
-
+add_subdirectory("src/utility"          utility )
 add_subdirectory("src/time_manager"     time_manager)
 add_subdirectory("src/logger"           logger)
 add_subdirectory("src/config_reader"    config_reader)
@@ -64,3 +64,6 @@ endif (DOXYGEN_FOUND)
 ###############################################################
 #                  ADDING UNIT TESTS                          #
 ###############################################################
+
+
+

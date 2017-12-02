@@ -1,16 +1,15 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(waic_server)
+project(utility)
 
-set(PROJECT_NAME waic_server)
+set(PROJECT_NAME utility)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list} WAICCommandHandler.h WAICCommandHandler.h)
-
+add_library(${PROJECT_NAME} ${source_list} BytesConverter.cpp BytesConverter.h)
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
     # Headers used from source/build location:
@@ -18,8 +17,6 @@ target_include_directories(
     # Headers used from the installed location:
     "$<INSTALL_INTERFACE:include>"
 )
-
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
