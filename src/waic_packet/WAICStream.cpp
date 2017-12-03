@@ -5,8 +5,13 @@
 using namespace std;
 using namespace communication;
 
+WAICStream::WAICStream()
+{
+
+}
+
 WAICStream::WAICStream(SocketUser userIn, uint16_t portIn, string address)
-        : WAICSocket(userIn, portIn, address)
+        : WAICSocket(userIn, SOCK_STREAM, portIn, address)
 {
 
 }

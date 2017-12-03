@@ -1,12 +1,12 @@
 #include "WAICDatagram.h"
 
 #include <stdexcept>
-
+#include <iostream>
 using namespace std;
 using namespace communication;
 
 WAICDatagram::WAICDatagram(SocketUser userIn, uint16_t portIn, string address)
-        : WAICSocket(userIn, portIn, address)
+        : WAICSocket(userIn, SOCK_DGRAM, portIn, address)
 {
 
 }
@@ -33,6 +33,8 @@ void WAICDatagram::sendPacket(std::string message)
 {
     if ( sendto(sock, message.c_str(), sizeof(message) ,0, (struct sockaddr *) &sockAddress, sizeof(sockAddress)) == -1 )
     {
+        cout << "zle" << endl;
         throw logic_error("Cannot send packet.");
+
     }
 }

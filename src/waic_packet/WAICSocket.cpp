@@ -3,6 +3,7 @@
 #include <arpa/inet.h>
 
 #include <stdexcept>
+#include <iostream>
 
 #include "WAICSocket.h"
 
@@ -13,8 +14,9 @@ WAICSocket::WAICSocket()
 {
 }
 
-WAICSocket::WAICSocket(SocketUser userIn, uint16_t portIn, string addressIn)
-    : user(userIn),
+WAICSocket::WAICSocket(SocketUser userIn, int sockTypeIn, uint16_t portIn, string addressIn)
+    : sockType(sockTypeIn),
+      user(userIn),
       port(portIn),
       address(addressIn)
 {
@@ -30,11 +32,14 @@ WAICSocket::WAICSocket(SocketUser userIn, uint16_t portIn, string addressIn)
 
 WAICSocket::~WAICSocket()
 {
+    cout << "Bylem tu";
+    close(sock);
+    exit(0);
 }
 
 void WAICSocket::createSocketWithBinding()
 {
-    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    sock = socket(AF_INET, sockType, 0);
 
     if (sock == -1)
     {
@@ -54,7 +59,7 @@ void WAICSocket::createSocketWithBinding()
 
 void WAICSocket::createSocketWithoutBinding()
 {
-    sock = socket(AF_INET , SOCK_STREAM , 0);
+    sock = socket(AF_INET , sockType , 0);
     if (sock == -1)
     {
         throw invalid_argument("Could not create socket");
@@ -80,7 +85,7 @@ string WAICSocket::getAddress()
 
 uint16_t WAICSocket::getPort()
 {
-    return port;
+    return ntohs(sockAddress.sin_port);
 }
 
 

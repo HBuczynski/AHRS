@@ -8,8 +8,8 @@ namespace communication
     class WAICStream final : public WAICSocket
     {
     public:
-
-        WAICStream(SocketUser userIn, uint16_t portIn, std::string address = "NOPE");
+        WAICStream();
+        WAICStream(SocketUser userIn, uint16_t portIn = 0, std::string address = "NOPE");
         ~WAICStream();
 
         virtual void receivePacket(std::string &message) override;

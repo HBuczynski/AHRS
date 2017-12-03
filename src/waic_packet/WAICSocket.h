@@ -22,7 +22,7 @@ namespace communication
     {
     public:
         WAICSocket();
-        WAICSocket(SocketUser userIn, uint16_t portIn, std::string address = "NOPE");
+        WAICSocket(SocketUser userIn, int sockTypeIn, uint16_t portIn = 0, std::string address = "NOPE");
         virtual ~WAICSocket();
 
         virtual void receivePacket(std::string &message) = 0;
@@ -33,6 +33,8 @@ namespace communication
 
     protected:
         int sock;
+        int sockType;
+
         uint16_t port;
         std::string address;
         struct sockaddr_in sockAddress;
