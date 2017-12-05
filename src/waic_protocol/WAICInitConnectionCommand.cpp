@@ -33,4 +33,14 @@ string WAICInitConnectionCommand::getName()
     return string("InitConnectionCommand");
 }
 
+uint16_t WAICInitConnectionCommand::getPort()
+{
+    return  serverListenUDPPort_;
+}
+
+string WAICInitConnectionCommand::getAddress()
+{
+    return serverAddress_;
+}
+
 
