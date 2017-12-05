@@ -11,10 +11,11 @@ namespace communication
 {
     class WAICCommandHandler
     {
+    public:
         WAICCommandHandler();
         virtual ~WAICCommandHandler();
 
-        virtual std::shared_ptr<WAICResponse> handler(const std::vector<uint8_t>& vec) = 0;
+        virtual std::shared_ptr<WAICResponse> handler(const std::vector<uint8_t>& vec, uint8_t clientID) = 0;
 
     };
 }
