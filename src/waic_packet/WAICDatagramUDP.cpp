@@ -1,22 +1,22 @@
-#include "WAICDatagram.h"
+#include "WAICDatagramUDP.h"
 
 #include <stdexcept>
 #include <iostream>
 using namespace std;
 using namespace communication;
 
-WAICDatagram::WAICDatagram(SocketUser userIn, uint16_t portIn, string address)
+WAICDatagramUDP::WAICDatagramUDP(SocketUser userIn, uint16_t portIn, string address)
         : WAICSocket(userIn, SOCK_DGRAM, portIn, address)
 {
 
 }
 
-WAICDatagram::~WAICDatagram()
+WAICDatagramUDP::~WAICDatagramUDP()
 {
 
 }
 
-void WAICDatagram::receivePacket(std::string &message)
+void WAICDatagramUDP::receivePacket(std::string &message)
 {
     char buffer[1024];
     socklen_t slen = sizeof(sockAddress);
@@ -29,7 +29,7 @@ void WAICDatagram::receivePacket(std::string &message)
     message = string(buffer);
 }
 
-void WAICDatagram::sendPacket(std::string message)
+void WAICDatagramUDP::sendPacket(std::string message)
 {
     if ( sendto(sock, message.c_str(), sizeof(message) ,0, (struct sockaddr *) &sockAddress, sizeof(sockAddress)) == -1 )
     {

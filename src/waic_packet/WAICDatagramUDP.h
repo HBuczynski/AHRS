@@ -5,11 +5,11 @@
 
 namespace communication
 {
-    class WAICDatagram final : public WAICSocket
+    class WAICDatagramUDP final : public WAICSocket
     {
     public:
-        WAICDatagram(SocketUser userIn, uint16_t portIn = 0, std::string address = "NOPE");
-        virtual ~WAICDatagram();
+        WAICDatagramUDP(SocketUser userIn, uint16_t portIn = 0, std::string address = "NOPE");
+        virtual ~WAICDatagramUDP();
 
         virtual void receivePacket(std::string &message) override;
         virtual void sendPacket(std::string message) override;

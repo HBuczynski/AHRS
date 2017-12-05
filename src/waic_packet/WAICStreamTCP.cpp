@@ -1,27 +1,27 @@
-#include "WAICStream.h"
+#include "WAICStreamTCP.h"
 
 #include <stdexcept>
 
 using namespace std;
 using namespace communication;
 
-WAICStream::WAICStream()
+WAICStreamTCP::WAICStreamTCP()
 {
 
 }
 
-WAICStream::WAICStream(SocketUser userIn, uint16_t portIn, string address)
+WAICStreamTCP::WAICStreamTCP(SocketUser userIn, uint16_t portIn, string address)
         : WAICSocket(userIn, SOCK_STREAM, portIn, address)
 {
 
 }
 
-WAICStream::~WAICStream()
+WAICStreamTCP::~WAICStreamTCP()
 {
 
 }
 
-void WAICStream::listenUsers(uint32_t userNumber)
+void WAICStreamTCP::listenUsers(uint32_t userNumber)
 {
     if(user == SERVER)
     {
@@ -33,24 +33,22 @@ void WAICStream::listenUsers(uint32_t userNumber)
     }
 }
 
-int WAICStream::acceptUsers(WAICStream &socket)
+void WAICStreamTCP::acceptUsers(std::shared_ptr<WAICStreamTCP> socket)
 {
     int clientSock;
 
     if(user == SERVER)
     {
         int structSize = sizeof(struct sockaddr_in);
-        clientSock = accept(sock, (struct sockaddr *) &socket.sockAddress, (socklen_t *) &structSize);
+        clientSock = accept(sock, (struct sockaddr *) &socket->sockAddress, (socklen_t *) &structSize);
     }
     else
     {
         throw logic_error("User cannot accept users.");
     }
-
-    return clientSock;
 }
 
-void WAICStream::connectToServer()
+void WAICStreamTCP::connectToServer()
 {
     if(user == CLIENT)
     {
@@ -65,7 +63,7 @@ void WAICStream::connectToServer()
     }
 }
 
-void WAICStream::receivePacket(std::string &message)
+void WAICStreamTCP::receivePacket(std::string &message)
 {
     char buffer[1024]; // to do
 
@@ -77,7 +75,7 @@ void WAICStream::receivePacket(std::string &message)
     message = string(buffer);
 }
 
-void WAICStream::sendPacket(std::string message)
+void WAICStreamTCP::sendPacket(std::string message)
 {
     if(write( sock, message.c_str(), sizeof(message) ) == -1)
     {
