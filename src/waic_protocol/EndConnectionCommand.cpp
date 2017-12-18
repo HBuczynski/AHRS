@@ -9,14 +9,8 @@ EndConnectionCommand::EndConnectionCommand()
 {
 }
 
-EndConnectionCommand::EndConnectionCommand(const std::vector<uint8_t> &frameBytes)
-        : Command(10, CommandType::END_CONNECTION)
-{
-}
-
 EndConnectionCommand::~EndConnectionCommand()
 {
-
 }
 
 std::vector<uint8_t> EndConnectionCommand::getFrameBytes()

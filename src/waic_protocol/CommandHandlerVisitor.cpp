@@ -1,4 +1,4 @@
-#include "CommandHandler.h"
+#include "CommandHandlerVisitor.h"
 #include "InitConnectionExecutor.h"
 #include "EndConnectionExecutor.h"
 
@@ -7,41 +7,39 @@
 using namespace std;
 using namespace communication;
 
-CommandHandler::CommandHandler()
+CommandHandlerVisitor::CommandHandlerVisitor()
 {
-
 }
 
-CommandHandler::~CommandHandler()
+CommandHandlerVisitor::~CommandHandlerVisitor()
 {
-
 }
 
-void CommandHandler::initializeCurrentClient(ClientThreadTCP *client)
+void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
 {
     currentClient_ = client;
 }
 
-void CommandHandler::initializeCallbackFunction(CallbackFunctions callbackFunctions)
+void CommandHandlerVisitor::initializeCallbackFunction(CallbackFunctions callbackFunctions)
 {
     callbackFunctions_ = callbackFunctions;
 }
 
-void CommandHandler::visit(InitConnectionCommand &command)
+void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {
     InitConnectionExecutor initConnectionExecutor(callbackFunctions_.insertNewClient);
 
     response_ = initConnectionExecutor.execute(command.getFrameBytes(), currentClient_->getID());
 }
 
-void CommandHandler::visit(EndConnectionCommand &command)
+void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 {
-    EndConnectionExecutor endConnectionExecutor(callbackFunctions_.removeClient);
+    EndConnectionExecutor endConnectionExecutor(callbackFunctions_.removeClient, currentClient_);
 
     response_ = endConnectionExecutor.execute(command.getFrameBytes(), currentClient_->getID());
 }
 
-std::shared_ptr<Response> CommandHandler::getResponse()
+std::shared_ptr<Response> CommandHandlerVisitor::getResponse()
 {
     return shared_ptr<Response>();
 }

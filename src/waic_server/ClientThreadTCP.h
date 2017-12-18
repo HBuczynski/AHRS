@@ -1,18 +1,14 @@
 #ifndef AHRS_BLACK_BOX_CLIENTTHREADTCP_H
 #define AHRS_BLACK_BOX_CLIENTTHREADTCP_H
 
-#include <waic_client/Client.h>
 #include <waic_packet/SendStreamTCP.h>
 #include <waic_protocol/CommandFactory.h>
-#include <waic_protocol/CommandHandler.h>
+#include <waic_protocol/CommandHandlerVisitor.h>
 #include <waic_communication_manager/CallbackFunctions.h>
 
 #include <thread>
 #include <atomic>
-#include <atomic>
 #include <memory>
-#include <list>
-#include <utility>
 
 namespace communication
 {
@@ -42,7 +38,7 @@ namespace communication
 
         CallbackFunctions callbackFunctions_;
         CommandFactory commandFactory_;
-        CommandHandler commandHandler_;
+        CommandHandlerVisitor commandHandler_;
 
     };
 }

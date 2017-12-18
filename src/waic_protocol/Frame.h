@@ -10,9 +10,9 @@ namespace communication
 {
     enum FrameType : uint8_t
     {
-        COMMAND, // = 10
-        RESPONSE,
-        MEASUREMENT_DATA
+        COMMAND = 10,
+        RESPONSE = 20,
+        MEASUREMENT_DATA = 30
     };
 
     class Frame

@@ -10,7 +10,7 @@ ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, CallbackFunct
       callbackFunctions_(callbackFunctions),
       runListenThread_(false)
 {
-
+    initializeCommandHandler();
 }
 
 ClientThreadTCP::~ClientThreadTCP()
@@ -23,7 +23,8 @@ ClientThreadTCP::~ClientThreadTCP()
 
 void ClientThreadTCP::initializeCommandHandler()
 {
-
+    commandHandler_.initializeCallbackFunction(callbackFunctions_);
+    commandHandler_.initializeCurrentClient(this);
 }
 
 void ClientThreadTCP::setID(uint32_t id)
@@ -45,18 +46,30 @@ void ClientThreadTCP::startListen()
 void ClientThreadTCP::stopListen()
 {
     runListenThread_ = false;
+    socket_.reset();
 }
 
 void ClientThreadTCP::runListen()
 {
     while(runListenThread_)
     {
-        auto frame = socket_->receivePacket();
+        try
+        {
+            auto frame = socket_->receivePacket();
 
-        (commandFactory_.createCommand(frame))->accept(commandHandler_);
-        auto response = commandHandler_.getResponse();
+            auto command = commandFactory_.createCommand(frame);
+            command->accept(commandHandler_);
 
-        socket_->sendData(response->getFrameBytes());
+            auto response = commandHandler_.getResponse();
+            socket_->sendData(response->getFrameBytes());
+        }
+        catch (exception &e)
+        {
+            // 1. socket is disabled
+            // 2. factory can't create a command
+        }
+
+
     }
 }
 

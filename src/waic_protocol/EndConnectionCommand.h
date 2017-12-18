@@ -9,7 +9,6 @@ namespace communication
     {
     public:
         EndConnectionCommand();
-        EndConnectionCommand(const std::vector<uint8_t>& frameBytes);
         ~EndConnectionCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;

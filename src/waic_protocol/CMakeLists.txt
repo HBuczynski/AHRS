@@ -9,7 +9,7 @@ include_directories("../")
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list} CommandFactory.cpp CommandFactory.h CommandBuilder.h InitConnectionBuilder.cpp InitConnectionBuilder.h CommandVisitor.h CommandHandler.cpp CommandHandler.h)
+add_library(${PROJECT_NAME} ${source_list} CommandFactory.cpp CommandFactory.h CommandBuilder.h InitConnectionBuilder.cpp InitConnectionBuilder.h CommandVisitor.h CommandHandlerVisitor.cpp CommandHandlerVisitor.h)
 
 target_include_directories(
     ${PROJECT_NAME} PUBLIC

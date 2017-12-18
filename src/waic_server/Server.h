@@ -3,7 +3,7 @@
 
 #include <waic_protocol/Command.h>
 
-#include "CommandHandler.h"
+#include "CommandHandlerVisitor.h"
 #include "ClientThreadTCP.h"
 
 #include <map>

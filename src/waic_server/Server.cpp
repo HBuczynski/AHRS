@@ -46,6 +46,7 @@ void Server::activateUsers()
     ListenStreamTCP serverSocket(port_);
 
     serverSocket.listenUsers(maxClientNumber_);
+    uint32_t clientID = 1;
 
     while(runUserActivation_)
     {
@@ -55,10 +56,12 @@ void Server::activateUsers()
         {
             //Wait on new users.
             unique_ptr<ClientThreadTCP> client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),callbackFunctions_);
+            client->setID(clientID);
             client->startListen();
 
             //Assign new client to the vector.
             clientList_.push_back(move(client));
+            ++clientID;
         }
     }
 }

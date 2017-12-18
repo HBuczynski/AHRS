@@ -13,7 +13,7 @@ namespace communication
     class InitConnectionExecutor final : public CommandExecutor
     {
     public:
-        InitConnectionExecutor(std::function<void (std::pair<std::shared_ptr<Client>, uint8_t>) >);
+        InitConnectionExecutor(std::function<void (std::pair<std::shared_ptr<Client>, uint8_t>) > callback);
         ~InitConnectionExecutor();
 
         virtual std::shared_ptr<Response> execute(const std::vector<uint8_t>& vec, uint8_t clientID) override;

@@ -11,11 +11,11 @@ namespace communication
 {
     class ClientThreadTCP;
 
-    class CommandHandler final : public CommandVisitor
+    class CommandHandlerVisitor final : public CommandVisitor
     {
     public:
-        CommandHandler();
-        ~CommandHandler();
+        CommandHandlerVisitor();
+        ~CommandHandlerVisitor();
 
         void initializeCurrentClient(ClientThreadTCP *client);
         void initializeCallbackFunction(CallbackFunctions callbackFunctions);

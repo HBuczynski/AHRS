@@ -11,10 +11,10 @@ namespace communication
 
     enum CommandType : uint8_t
     {
-        INIT_CONNECTION,
-        CALIBRATE_MAGNETOMETER,
-        COLLECT_DATA,
-        END_CONNECTION
+        INIT_CONNECTION = 10,
+        CALIBRATE_MAGNETOMETER = 20,
+        COLLECT_DATA = 30,
+        END_CONNECTION = 40
     };
 
     class Command : public Frame
