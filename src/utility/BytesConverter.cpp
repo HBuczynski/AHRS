@@ -3,7 +3,7 @@
 using namespace utility;
 using namespace std;
 
-std::vector<uint8_t> BytesConverter::fromUINT16toVectorOfUINT8(const uint16_t &number)
+std::vector<uint8_t> BytesConverter::fromUINT16toVectorOfUINT8(uint16_t number)
 {
     vector<uint8_t > vec;
 
@@ -13,7 +13,7 @@ std::vector<uint8_t> BytesConverter::fromUINT16toVectorOfUINT8(const uint16_t &n
     return vec;
 }
 
-uint16_t BytesConverter::fromVectorOfUINT8toUINT16(const std::vector<uint8_t> &vec)
+uint16_t BytesConverter::fromVectorOfUINT8toUINT16(vector<uint8_t> vec)
 {
     uint16_t number;
 
@@ -23,7 +23,7 @@ uint16_t BytesConverter::fromVectorOfUINT8toUINT16(const std::vector<uint8_t> &v
     return number;
 }
 
-std::vector<uint8_t> BytesConverter::fromUINT32toVectorOfUINT8(const uint32_t &number)
+std::vector<uint8_t> BytesConverter::fromUINT32toVectorOfUINT8(uint32_t number)
 {
     vector<uint8_t > vec;
 
@@ -31,21 +31,21 @@ std::vector<uint8_t> BytesConverter::fromUINT32toVectorOfUINT8(const uint32_t &n
     return vec;;
 }
 
-uint32_t BytesConverter::fromVectorOfUINT8toUINT32(const std::vector<uint8_t> &vec)
+uint32_t BytesConverter::fromVectorOfUINT8toUINT32(vector<uint8_t> vec)
 {
     uint32_t number;
 
     return number;
 }
 
-std::vector<uint8_t> BytesConverter::fromUINT64toVectorOfUINT8(const uint64_t &number)
+std::vector<uint8_t> BytesConverter::fromUINT64toVectorOfUINT8(uint64_t number)
 {
     vector<uint8_t> vec;
 
     return vec;
 }
 
-uint64_t BytesConverter::fromVectorOfUINT8toUINT64(const std::vector<uint8_t> &vec)
+uint64_t BytesConverter::fromVectorOfUINT8toUINT64(vector<uint8_t> vec)
 {
     uint64_t number;
 

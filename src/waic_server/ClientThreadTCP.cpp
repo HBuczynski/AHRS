@@ -45,8 +45,8 @@ void ClientThreadTCP::startListen()
 
 void ClientThreadTCP::stopListen()
 {
-    runListenThread_ = false;
     socket_.reset();
+    runListenThread_ = false;
 }
 
 void ClientThreadTCP::runListen()
@@ -67,6 +67,13 @@ void ClientThreadTCP::runListen()
         {
             // 1. socket is disabled
             // 2. factory can't create a command
+
+            // TO DO: Check what type of exception was registered.
+            if(runListenThread_)
+            {
+                // If socket has been closed or the connection has been lost, the thread has to be closed.
+                runListenThread_ = false;
+            }
         }
 
 
