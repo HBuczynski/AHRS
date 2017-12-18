@@ -9,7 +9,7 @@ include_directories("../")
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list} )
+add_library(${PROJECT_NAME} ${source_list} ClientThreadTCP.cpp ClientThreadTCP.h)
 
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
@@ -20,8 +20,8 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_protocol)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_packet)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_protocol)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_client)
 
 

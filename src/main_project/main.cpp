@@ -1,8 +1,11 @@
 #include <iostream>
 #include <logger/Logger.h>
 
-#include <waic_packet/WAICStreamTCP.h>
-#include <waic_packet/WAICDatagramUDP.h>
+
+#include <waic_packet/ListenDatagramUDP.h>
+#include <waic_packet/SendDatagramUDP.h>
+#include <waic_packet/ListenStreamTCP.h>
+#include <waic_packet/SendStreamTCP.h>
 
 using namespace std;
 using namespace utility;
@@ -10,81 +13,75 @@ using namespace communication;
 
 int main(int argc , char *argv[])
 {
-    /*Logger &log = Logger::getInstance();
-
-    InitLogStructure struc;
-
-    struc.debugLog = true;
-    struc.errroLog = true;
-    struc.informationLog = true;
-    struc.warningLog = true;
-
-    struc.writeLogsInSeparetFiles = true;
-    struc.writeOnConsole = true;
-
-    log.initLogger(struc);
-
-    log.writeLog(INFORMATION_LOG, "Logger testing");*/
-
     int a = atoi(argv[1]);
     int b = atoi(argv[2]);
 
     if(a == 1) {
         if (b == 1) {
 
-            WAICDatagramUDP datagram(SERVER, 8000);
+            ListenDatagramUDP datagram(8000);
             string msg;
 
             cout << "Server starts running." << endl;
             while (1) {
-                datagram.receivePacket(msg);
 
-                cout << "Dostalem" << msg << endl;
+                auto frame = datagram.receivePacket();
+                string msg(frame.begin(), frame.end()) ;
+
+                cout << "Dostalem:  " << msg << endl;
             }
 
         } else {
 
-            WAICDatagramUDP client(CLIENT, 8000, "127.0.0.1");
+            SendDatagramUDP client(8000, "127.0.0.1");
 
             cout << "Client starts running." << endl;
 
             while (1) {
                 getchar();
-
-                client.sendPacket("siemaneczko");
+                string msg("siemaneczko");
+                vector<uint8_t> vec(msg.begin(), msg.end());
+                client.sendData(vec);
             }
 
         }
     } else{
         if (b == 1) {
             cout << "Jetsem w serw." << endl;
-            WAICStreamTCP server(SERVER, 8000);
-            string msg;
+            ListenStreamTCP server(9000);
+
+            string msg("dziena");
+            vector<uint8_t> vec(msg.begin(), msg.end());
 
             server.listenUsers(2);
-            shared_ptr<WAICStreamTCP> newClient = make_shared<WAICStreamTCP>();
-            server.acceptUsers(newClient);
+
+            unique_ptr<SendStreamTCP> client = server.acceptUsers();
 
             cout << "Server starts running." << endl;
 
             while (1) {
-                newClient->receivePacket(msg);
+                auto frame = client->receivePacket();
+                string lol(frame.begin(), frame.end()) ;
+                cout << "Dostalem" << lol << endl;
 
-                cout << "Dostalem" << msg << endl;
+                client->sendData(vec);
             }
 
         } else {
 
-            WAICStreamTCP client(CLIENT, 8000, "127.0.0.1");
+            SendStreamTCP client(9000, "127.0.0.1");
 
             client.connectToServer();
+
+            string msg("siemaneczko");
+            vector<uint8_t> vec(msg.begin(), msg.end());
 
             cout << "Client starts running." << endl;
 
             while (1) {
                 getchar();
 
-                client.sendPacket("siemaneczko");
+                client.sendData(vec);
             }
 
         }
