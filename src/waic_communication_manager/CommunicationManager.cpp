@@ -22,9 +22,9 @@ CommunicationManager::~CommunicationManager()
 
 void CommunicationManager::initialize()
 {
-    callbackFunctions_.getClientList = bind(&CommunicationManager::getClientList, this); // zamienić na lambdy
-    callbackFunctions_.insertNewClient = bind(&CommunicationManager::insertNewClient, this, std::placeholders::_1);
-    callbackFunctions_.removeClient = bind(&CommunicationManager::removeClient, this, std::placeholders::_1);
+    callbackFunctions_.getClientList = [this]()->const std::list<std::pair<std::shared_ptr<communication::Client>, uint8_t>> {getClientList();};
+    callbackFunctions_.insertNewClient = [this](pair<shared_ptr<Client>, uint8_t> newClient){insertNewClient(newClient);};
+    callbackFunctions_.removeClient = [this](uint8_t id){removeClient(id);};
 
     server_->initializeHandlers(callbackFunctions_);
 }
