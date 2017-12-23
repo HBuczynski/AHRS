@@ -1,10 +1,10 @@
 #ifndef AHRS_BLACK_BOX_CLIENTTHREADTCP_H
 #define AHRS_BLACK_BOX_CLIENTTHREADTCP_H
 
-#include <waic_packet/SendStreamTCP.h>
-#include <waic_protocol/CommandFactory.h>
-#include <waic_protocol/CommandHandlerVisitor.h>
-#include <waic_communication_manager/CallbackFunctions.h>
+#include <packet/SendStreamTCP.h>
+#include <protocol/CommandFactory.h>
+#include <ahrs_black_box/server/CommandHandlerVisitor.h>
+#include <ahrs_black_box/communication_manager/ClientUDPManager.h>
 
 #include <thread>
 #include <atomic>
@@ -15,17 +15,17 @@ namespace communication
     class ClientThreadTCP
     {
     public:
-        ClientThreadTCP(std::unique_ptr<SendStreamTCP> socket, CallbackFunctions callbackFunctions);
+        ClientThreadTCP(std::unique_ptr<SendStreamTCP> socket, ClientUDPManager* clientUDPManager);
         ~ClientThreadTCP();
 
-        void initializeCommandHandler();
+       void initializeCommandHandler();
 
         void startListen();
         void stopListen();
         bool checkListenEnable();
 
         void setID(uint32_t id);
-        uint32_t getID();
+        uint32_t getID() const;
 
     private:
         void runListen();
@@ -36,7 +36,7 @@ namespace communication
         std::unique_ptr<SendStreamTCP> socket_;
         uint32_t id_;
 
-        CallbackFunctions callbackFunctions_;
+        ClientUDPManager* clientUDPManager_;
         CommandFactory commandFactory_;
         CommandHandlerVisitor commandHandler_;
 

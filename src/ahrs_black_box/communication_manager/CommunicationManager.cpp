@@ -1,9 +1,5 @@
 #include "CommunicationManager.h"
 
-#include "InitConnectionExecutor.h"
-#include "EndConnectionExecutor.h"
-
-
 #include <iostream>
 
 using namespace std;
@@ -11,22 +7,13 @@ using namespace communication;
 
 CommunicationManager::CommunicationManager(uint16_t serverPort, uint8_t maxUserNumber)
 {
-    server_ = make_shared<Server>(serverPort, maxUserNumber);
+    server_ = make_shared<Server>(serverPort, maxUserNumber, this);
 
     initialize();
 }
 
 CommunicationManager::~CommunicationManager()
 {
-}
-
-void CommunicationManager::initialize()
-{
-    callbackFunctions_.getClientList = [this]()->const std::list<std::pair<std::shared_ptr<communication::Client>, uint8_t>> {getClientList();};
-    callbackFunctions_.insertNewClient = [this](pair<shared_ptr<Client>, uint8_t> newClient){insertNewClient(newClient);};
-    callbackFunctions_.removeClient = [this](uint8_t id){removeClient(id);};
-
-    server_->initializeHandlers(callbackFunctions_);
 }
 
 void CommunicationManager::activateServer()

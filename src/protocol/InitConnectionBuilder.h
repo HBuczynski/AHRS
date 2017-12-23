@@ -10,7 +10,7 @@ namespace communication
     public:
         InitConnectionBuilder();
 
-        std::shared_ptr<Command> create(std::vector<uint8_t> commandInBytes) override;
+        std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes) override;
     };
 }
 #endif

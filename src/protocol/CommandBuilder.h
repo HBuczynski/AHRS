@@ -14,7 +14,7 @@ namespace communication
         CommandBuilder();
         virtual ~CommandBuilder();
 
-        virtual std::shared_ptr<Command> create(std::vector<uint8_t> commandInBytes);
+        virtual std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes);
     };
 }
 

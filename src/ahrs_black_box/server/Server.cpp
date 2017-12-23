@@ -1,23 +1,25 @@
 #include "Server.h"
 
-#include <waic_protocol/Command.h>
-#include <waic_protocol/Response.h>
-#include <waic_packet/ListenStreamTCP.h>
+#include <protocol/Command.h>
+#include <protocol/Response.h>
+#include <packet/ListenStreamTCP.h>
 
 #include <algorithm>
 
 using namespace std;
 using namespace communication;
 
-Server::Server(uint16_t port,  uint8_t maxClientNumber)
+Server::Server(uint16_t port,  uint8_t maxClientNumber, ClientUDPManager *clientUDPManager)
         : port_(port),
           maxClientNumber_(maxClientNumber),
+          clientUDPManager_(clientUDPManager),
           runUserActivation_(false)
-{
-}
+{ }
 
 Server::~Server()
 {
+    stopUserActivation();
+
     if(activationThread_.joinable())
     {
         activationThread_.join();
@@ -36,11 +38,6 @@ void Server::stopUserActivation()
     runUserActivation_ = false;
 }
 
-void Server::initializeHandlers(CallbackFunctions callbackFunctions)
-{
-    callbackFunctions_ = callbackFunctions;
-}
-
 void Server::activateUsers()
 {
     ListenStreamTCP serverSocket(port_);
@@ -52,10 +49,10 @@ void Server::activateUsers()
     {
         updateClientList();
 
-        if(clientList_.size() < 2)
+        if(clientList_.size() < maxClientNumber_)
         {
             //Wait on new users.
-            unique_ptr<ClientThreadTCP> client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),callbackFunctions_);
+            auto client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),clientUDPManager_);
             client->setID(clientID);
             client->startListen();
 

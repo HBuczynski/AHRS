@@ -16,7 +16,7 @@ CommandFactory::~CommandFactory()
 
 shared_ptr<Command> CommandFactory::createCommand(vector<uint8_t> commandInBytes)
 {
-    CommandType type = static_cast<CommandType>(commandInBytes[5]);
+    CommandType type = static_cast<CommandType>(commandInBytes[5]); // coonst, zmienic 5
     shared_ptr<Command> command;
 
     switch(type)
@@ -24,7 +24,7 @@ shared_ptr<Command> CommandFactory::createCommand(vector<uint8_t> commandInBytes
         case CommandType::INIT_CONNECTION :
             builder_ = make_unique<InitConnectionBuilder>();
             command = builder_->create(commandInBytes);
-            break;
+            break; // zamiast break to return
         case CommandType::CALIBRATE_MAGNETOMETER :
             break;
         case CommandType::COLLECT_DATA :

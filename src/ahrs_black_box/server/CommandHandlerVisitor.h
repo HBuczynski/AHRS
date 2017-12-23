@@ -1,11 +1,11 @@
 #ifndef AHRS_BLACK_BOX_COMMANDHANDLER_H
 #define AHRS_BLACK_BOX_COMMANDHANDLER_H
 
-#include "CommandVisitor.h"
-#include "Response.h"
+#include <ahrs_black_box/communication_manager/ClientUDPManager.h>
+#include <protocol/CommandVisitor.h>
+#include <protocol/Response.h>
 
 #include <memory>
-#include <waic_communication_manager/CallbackFunctions.h>
 
 namespace communication
 {
@@ -17,19 +17,19 @@ namespace communication
         CommandHandlerVisitor();
         ~CommandHandlerVisitor();
 
-        void initializeCurrentClient(ClientThreadTCP *client);
-        void initializeCallbackFunction(CallbackFunctions callbackFunctions);
-
         virtual void visit(InitConnectionCommand& command) override;
         virtual void visit(EndConnectionCommand& command) override;
 
-        std::shared_ptr<Response> getResponse();
+        void initializeClientUDPManager(ClientUDPManager* clientUDPManager);
+        void initializeCurrentClient(ClientThreadTCP *client);
+
+        std::unique_ptr<Response> getResponse();
 
     private:
         ClientThreadTCP *currentClient_;
-        CallbackFunctions callbackFunctions_;
+        ClientUDPManager *clientUDPManager_;
 
-        std::shared_ptr<Response> response_;
+        std::unique_ptr<Response> response_;
     };
 }
 #endif

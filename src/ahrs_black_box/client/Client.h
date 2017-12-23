@@ -1,7 +1,7 @@
 #ifndef AHRS_BLACK_BOX_WAIC_CLIENT_H
 #define AHRS_BLACK_BOX_WAIC_CLIENT_H
 
-#include <waic_packet/SendDatagramUDP.h>
+#include <packet/SendDatagramUDP.h>
 
 #include <cstdint>
 #include <string>

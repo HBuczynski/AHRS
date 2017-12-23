@@ -2,10 +2,10 @@
 #include <logger/Logger.h>
 
 
-#include <waic_packet/ListenDatagramUDP.h>
-#include <waic_packet/SendDatagramUDP.h>
-#include <waic_packet/ListenStreamTCP.h>
-#include <waic_packet/SendStreamTCP.h>
+#include <packet/ListenDatagramUDP.h>
+#include <packet/SendDatagramUDP.h>
+#include <packet/ListenStreamTCP.h>
+#include <packet/SendStreamTCP.h>
 
 using namespace std;
 using namespace utility;

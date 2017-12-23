@@ -1,9 +1,9 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(waic_packet)
+project(packet)
 
-set(PROJECT_NAME waic_packet)
+set(PROJECT_NAME packet)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")

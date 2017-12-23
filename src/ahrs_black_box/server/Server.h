@@ -1,7 +1,7 @@
 #ifndef WAIC_SERVER_H
 #define WAIC_SERVER_H
 
-#include <waic_protocol/Command.h>
+#include <protocol/Command.h>
 
 #include "CommandHandlerVisitor.h"
 #include "ClientThreadTCP.h"
@@ -13,16 +13,13 @@
 #include <utility>
 #include <thread>
 
-// Server located at the black box.
 namespace communication
 {
     class Server
     {
     public:
-        Server(uint16_t port, uint8_t maxClientNumber);
+        Server(uint16_t port, uint8_t maxClientNumber, ClientUDPManager *clientUDPManager);
         ~Server();
-
-        void initializeHandlers(CallbackFunctions callbackFunctions);
 
         void startUserActivation();
         void stopUserActivation();
@@ -38,7 +35,7 @@ namespace communication
         std::atomic<bool> runUserActivation_;
         std::thread activationThread_;
 
-        CallbackFunctions callbackFunctions_;
+        ClientUDPManager* clientUDPManager_;
         std::list<std::unique_ptr<ClientThreadTCP> > clientList_;
     };
 }

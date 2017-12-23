@@ -1,15 +1,15 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(waic_server)
+project(communication_manager)
 
-set(PROJECT_NAME waic_server)
+set(PROJECT_NAME communication_manager)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list} ClientThreadTCP.cpp ClientThreadTCP.h)
+add_library(${PROJECT_NAME} ${source_list} ClientUDPManager.h)
 
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
@@ -19,11 +19,10 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_packet)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_protocol)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC waic_client)
-
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC server)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)

@@ -9,14 +9,14 @@ InitConnectionBuilder::InitConnectionBuilder()
 
 }
 
-shared_ptr<Command> InitConnectionBuilder::create(vector<uint8_t> commandInBytes)
+std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes)
 {
     uint16_t port;
     std::string address;
 
     //TO DO
 
-    shared_ptr<Command> command(new InitConnectionCommand(port, address));
+    unique_ptr<Command> command = make_unique<InitConnectionCommand>(port, address);
 
-    return command;
+    return move(command);
 }

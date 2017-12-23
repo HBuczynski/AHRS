@@ -14,7 +14,7 @@ namespace communication
         CommandFactory();
         ~CommandFactory();
 
-        std::shared_ptr<Command> createCommand(std::vector<uint8_t> commandInBytes);
+        std::shared_ptr<Command> createCommand(std::vector<uint8_t> commandInBytes); // const ref, zmienic na unique
 
     private:
         std::unique_ptr<CommandBuilder> builder_;

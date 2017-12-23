@@ -1,17 +1,15 @@
 #include "ClientThreadTCP.h"
 
-#include <waic_protocol/Command.h>
+#include <protocol/Command.h>
 
 using namespace std;
 using namespace communication;
 
-ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, CallbackFunctions callbackFunctions)
+ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, ClientUDPManager* clientUDPManager)
     : socket_(std::move(socket)),
-      callbackFunctions_(callbackFunctions),
+      clientUDPManager_(clientUDPManager_),
       runListenThread_(false)
-{
-    initializeCommandHandler();
-}
+{ }
 
 ClientThreadTCP::~ClientThreadTCP()
 {
@@ -23,7 +21,7 @@ ClientThreadTCP::~ClientThreadTCP()
 
 void ClientThreadTCP::initializeCommandHandler()
 {
-    commandHandler_.initializeCallbackFunction(callbackFunctions_);
+    commandHandler_.initializeClientUDPManager(clientUDPManager_);
     commandHandler_.initializeCurrentClient(this);
 }
 
@@ -32,7 +30,7 @@ void ClientThreadTCP::setID(uint32_t id)
     id_ = id;
 }
 
-uint32_t ClientThreadTCP::getID()
+uint32_t ClientThreadTCP::getID() const
 {
     return id_;
 }
@@ -55,12 +53,12 @@ void ClientThreadTCP::runListen()
     {
         try
         {
-            auto frame = socket_->receivePacket();
+            const auto frame = socket_->receivePacket();
 
-            auto command = commandFactory_.createCommand(frame);
+            const auto command = commandFactory_.createCommand(frame);
             command->accept(commandHandler_);
 
-            auto response = commandHandler_.getResponse();
+            const auto response = commandHandler_.getResponse();
             socket_->sendData(response->getFrameBytes());
         }
         catch (exception &e)
