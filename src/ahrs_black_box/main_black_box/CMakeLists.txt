@@ -1,9 +1,9 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(main_project)
+project(main_black_box)
 
-set(PROJECT_NAME main_project)
+set(PROJECT_NAME main_black_box)
 
 include_directories(../)
 

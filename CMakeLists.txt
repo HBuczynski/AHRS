@@ -18,20 +18,22 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/target/lib)
 # The following folder will be included
 include_directories(src)
 
+include(CTest)
+enable_testing ()
 ###############################################################
 #                  ADDING SUBMODULES                          #
 ###############################################################
-add_subdirectory("src/utility"                      utility )
-add_subdirectory("src/time_manager"                 time_manager)
-add_subdirectory("src/logger"                       logger)
-add_subdirectory("src/config_reader"                config_reader)
-add_subdirectory("src/waic_packet"                  waic_packet)
-add_subdirectory("src/waic_protocol"                waic_protocol)
-add_subdirectory("src/waic_server"                  waic_server)
-add_subdirectory("src/waic_client"                  waic_client)
-add_subdirectory("src/waic_communication_manager"   waic_communication_manager)
-add_subdirectory("src/main_project"                 main_project)
-
+add_subdirectory("src/utility"                              utility )
+add_subdirectory("src/time_manager"                         time_manager)
+add_subdirectory("src/logger"                               logger)
+add_subdirectory("src/config_reader"                        config_reader)
+add_subdirectory("src/packet"                               packet)
+add_subdirectory("src/protocol"                             protocol)
+add_subdirectory("src/ahrs_black_box/main_black_box"          main_black_box)
+add_subdirectory("src/ahrs_black_box/server"                server)
+add_subdirectory("src/ahrs_black_box/client"                client)
+add_subdirectory("src/ahrs_black_box/communication_manager" communication_manager)
+add_subdirectory("src/ahrs_ui/main_ui"                 main_ui)
 
 ###############################################################
 #                  ADDING DOXYGEN GENERATION                  #

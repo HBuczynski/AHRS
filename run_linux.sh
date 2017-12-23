@@ -18,6 +18,11 @@ fi
 if [ "$input" == "test" ]; then
     echo "TO DO: test"
 
+    # Create build and binary files
+    cmake . -B"${target_folder_name}"/build
+    cmake --build "${target_folder_name}"/build 
+    ctest
+
 elif [ "$input" == "doxygen" ]; then   
     # Create build and binary files
     cmake -H. -B"${target_folder_name}"/build
