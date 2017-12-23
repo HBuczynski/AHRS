@@ -15,7 +15,7 @@ Frame::~Frame()
 {
 }
 
-vector<uint8_t> Frame::getHeader()
+vector<uint8_t> Frame::getHeader() const
 {
     vector<uint8_t > header;
     header.push_back(systemVersion);
@@ -26,7 +26,7 @@ vector<uint8_t> Frame::getHeader()
     return header;
 }
 
-const uint8_t& Frame::getPacketNumber()
+const uint8_t& Frame::getPacketNumber() const
 {
     return packetNumber;
 }
@@ -36,17 +36,17 @@ void Frame::setPacketNumber(uint8_t number)
     packetNumber = number;
 }
 
-const uint8_t& Frame::getSystemVersion()
+const uint8_t& Frame::getSystemVersion() const
 {
     return systemVersion;
 }
 
-const uint8_t& Frame::getDataSize()
+const uint8_t& Frame::getDataSize() const
 {
     return dataSize;
 }
 
-const FrameType &Frame::getFrameType()
+const FrameType &Frame::getFrameType() const
 {
     return frameType;
 }

@@ -14,17 +14,16 @@ CommandFactory::~CommandFactory()
 {
 }
 
-shared_ptr<Command> CommandFactory::createCommand(vector<uint8_t> commandInBytes)
+unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
-    CommandType type = static_cast<CommandType>(commandInBytes[5]); // coonst, zmienic 5
-    shared_ptr<Command> command;
+    const auto type = static_cast<CommandType>(commandInBytes[COMMAND_TYPE_POSITION]);
 
-    switch(type)
+    switch (type)
     {
         case CommandType::INIT_CONNECTION :
             builder_ = make_unique<InitConnectionBuilder>();
-            command = builder_->create(commandInBytes);
-            break; // zamiast break to return
+            return move(builder_->create(commandInBytes));
+
         case CommandType::CALIBRATE_MAGNETOMETER :
             break;
         case CommandType::COLLECT_DATA :
@@ -33,7 +32,6 @@ shared_ptr<Command> CommandFactory::createCommand(vector<uint8_t> commandInBytes
             break;
         default:
             throw invalid_argument("Received command does not register in factory.");
-    }
 
-    return command;
+    }
 }

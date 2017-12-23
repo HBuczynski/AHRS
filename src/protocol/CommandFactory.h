@@ -14,10 +14,12 @@ namespace communication
         CommandFactory();
         ~CommandFactory();
 
-        std::shared_ptr<Command> createCommand(std::vector<uint8_t> commandInBytes); // const ref, zmienic na unique
+        std::unique_ptr<Command> createCommand(const std::vector<uint8_t> &commandInBytes);
 
     private:
         std::unique_ptr<CommandBuilder> builder_;
+
+        const uint8_t COMMAND_TYPE_POSITION = 5;
     };
 }
 #endif

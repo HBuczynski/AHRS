@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0)
 project(AHRS_black_box)
 
-###############################################################
-#                  INITIALIZATION PART                        #
-###############################################################
+########################################################################################################
+#                                       INITIALIZATION PART                                            #
+########################################################################################################
 
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
@@ -18,26 +18,24 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/target/lib)
 # The following folder will be included
 include_directories(src)
 
-include(CTest)
-enable_testing ()
-###############################################################
-#                  ADDING SUBMODULES                          #
-###############################################################
-add_subdirectory("src/utility"                              utility )
-add_subdirectory("src/time_manager"                         time_manager)
-add_subdirectory("src/logger"                               logger)
-add_subdirectory("src/config_reader"                        config_reader)
-add_subdirectory("src/packet"                               packet)
-add_subdirectory("src/protocol"                             protocol)
-add_subdirectory("src/ahrs_black_box/main_black_box"          main_black_box)
-add_subdirectory("src/ahrs_black_box/server"                server)
-add_subdirectory("src/ahrs_black_box/client"                client)
-add_subdirectory("src/ahrs_black_box/communication_manager" communication_manager)
-add_subdirectory("src/ahrs_ui/main_ui"                 main_ui)
+#########################################################################################################
+#                                           ADDING SUBMODULES                                           #
+#########################################################################################################
+add_subdirectory("src/utility"                              utility                 )
+add_subdirectory("src/time_manager"                         time_manager            )
+add_subdirectory("src/logger"                               logger                  )
+add_subdirectory("src/config_reader"                        config_reader           )
+add_subdirectory("src/packet"                               packet                  )
+add_subdirectory("src/protocol"                             protocol                )
+add_subdirectory("src/ahrs_black_box/main_black_box"        main_black_box          )
+add_subdirectory("src/ahrs_black_box/server"                server                  )
+add_subdirectory("src/ahrs_black_box/client"                client                  )
+add_subdirectory("src/ahrs_black_box/communication_manager" communication_manager   )
+add_subdirectory("src/ahrs_ui/main_ui"                      main_ui                 )
 
-###############################################################
-#                  ADDING DOXYGEN GENERATION                  #
-###############################################################
+########################################################################################################
+#                                           ADDING DOXYGEN GENERATION                                  #
+########################################################################################################
 # check if Doxygen is installed
 find_package(Doxygen)
 
@@ -64,9 +62,10 @@ else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
 
-###############################################################
-#                  ADDING UNIT TESTS                          #
-###############################################################
-
+########################################################################################################
+#                                            ADDING UNIT TESTS                                         #
+########################################################################################################
+include(CTest)
+enable_testing ()
 
 

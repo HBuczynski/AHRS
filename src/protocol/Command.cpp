@@ -14,7 +14,7 @@ Command::~Command()
 {
 }
 
-const CommandType& Command::getCommandType()
+const CommandType& Command::getCommandType() const
 {
     return commandType;
 }

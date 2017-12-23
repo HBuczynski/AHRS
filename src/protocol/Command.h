@@ -3,8 +3,6 @@
 
 #include "Frame.h"
 
-//#include "CommandVisitor.h"
-
 namespace communication
 {
     class CommandVisitor;
@@ -27,7 +25,7 @@ namespace communication
         virtual std::string getName() = 0;
         virtual void accept(CommandVisitor& visitor) = 0;
 
-        const CommandType& getCommandType();
+        const CommandType& getCommandType() const;
 
     protected:
         CommandType commandType;

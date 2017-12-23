@@ -24,14 +24,14 @@ namespace communication
         virtual std::vector<uint8_t > getFrameBytes() = 0;
         virtual std::string getName() = 0;
 
-        std::vector<uint8_t > getHeader();
+        std::vector<uint8_t > getHeader() const;
 
-        const uint8_t& getPacketNumber();
+        const uint8_t& getPacketNumber() const;
         void setPacketNumber(uint8_t number);
 
-        const uint8_t& getSystemVersion();
-        const uint8_t& getDataSize();
-        const FrameType& getFrameType();
+        const uint8_t& getSystemVersion() const;
+        const uint8_t& getDataSize() const;
+        const FrameType& getFrameType() const;
 
     protected:
         uint8_t systemVersion;
