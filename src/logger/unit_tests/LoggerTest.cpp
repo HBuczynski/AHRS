@@ -1,9 +1,10 @@
-#define BOOST_TEST_MODULE BytesConverterTest
+#define BOOST_TEST_MODULE LoggerTest
 
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
-#include "../BytesConverter.h"
+#include "../Logger.h"
+#include <time_manager/TimeManager.h>
 
 BOOST_AUTO_TEST_SUITE( test_multiply )
 
