@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(server)
 
-set(PROJECT_NAME waic_server)
+set(PROJECT_NAME server)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")

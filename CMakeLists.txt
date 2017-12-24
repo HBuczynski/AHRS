@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
-project(AHRS_black_box)
+project(AHRS)
 
 ########################################################################################################
-#                                       INITIALIZATION PART                                            #
+#                                           INITIALIZATION PART                                        #
 ########################################################################################################
 
 set(CMAKE_BUILD_TYPE Debug)
@@ -14,9 +14,22 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread")
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/target/bin)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/target/lib)
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/build_files")
 
 # The following folder will be included
 include_directories(src)
+
+########################################################################################################
+#                                            ADDING UNIT TESTS                                         #
+########################################################################################################
+option(BUILD_TESTS "Build the tests" ON)
+
+if(BUILD_TESTS)
+    find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+    enable_testing()
+    include(BoostTestHelper)
+endif()
+
 
 #########################################################################################################
 #                                           ADDING SUBMODULES                                           #
@@ -61,11 +74,3 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
   message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
-
-########################################################################################################
-#                                            ADDING UNIT TESTS                                         #
-########################################################################################################
-include(CTest)
-enable_testing ()
-
-

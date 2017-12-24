@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(protocol)
 
-set(PROJECT_NAME waic_protocol)
+set(PROJECT_NAME protocol)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")

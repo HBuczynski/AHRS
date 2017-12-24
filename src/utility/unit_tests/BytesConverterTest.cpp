@@ -1,14 +1,29 @@
-#define BOOST_TEST_MODULE SqrTests
+#define BOOST_TEST_MODULE testComputing
+
+#define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
 #include "../BytesConverter.h"
 
-BOOST_AUTO_TEST_CASE(FailTest)
-{
-    BOOST_CHECK_EQUAL(5, 5);
-}
+BOOST_AUTO_TEST_SUITE( test_multiply )
 
-BOOST_AUTO_TEST_CASE(PassTest)
-{
-    BOOST_CHECK_EQUAL(4, 4);
-}
+    BOOST_AUTO_TEST_CASE( test_int )
+    {
+        BOOST_CHECK( 21 == 21);
+    }
+
+    BOOST_AUTO_TEST_CASE( test_float )
+    {
+        BOOST_CHECK( 24.75 == 24.75);
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE( test_computeInterest )
+
+    BOOST_AUTO_TEST_CASE( test_simple )
+    {
+
+    }
+
+BOOST_AUTO_TEST_SUITE_END()
