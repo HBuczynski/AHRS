@@ -29,6 +29,8 @@ namespace communication
         const CommandType& getCommandType() const;
 
     protected:
+        virtual void initializeDataSize() = 0;
+
         CommandType commandType_;
 
     };

@@ -15,6 +15,9 @@ namespace communication
         virtual ~CommandBuilder();
 
         virtual std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes) = 0;
+
+    protected:
+        const uint8_t initialDataPosition = 7;
     };
 }
 

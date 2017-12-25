@@ -1,4 +1,5 @@
 #include "GpsData.h"
+#include "MeasuringDataVisitor.h"
 
 using namespace std;
 using namespace communication;
@@ -21,4 +22,15 @@ vector<uint8_t> GpsData::getFrameBytes()
 string GpsData::getName()
 {
     return string("GpsData");
+}
+
+void GpsData::initializeDataSize()
+{
+    uint16_t dataSize = sizeof(measuringType_);
+    setDataSize(dataSize);
+}
+
+void GpsData::accept(MeasuringDataVisitor &visitor)
+{
+    visitor.visit(*this);
 }

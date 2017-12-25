@@ -5,15 +5,13 @@ using namespace communication;
 
 Response::Response(uint8_t dataSizeIn, ResponseType responseTypeIn)
         : Frame(FrameType::RESPONSE, dataSizeIn),
-          responseType(responseTypeIn)
-{
-}
+          responseType_(responseTypeIn)
+{}
 
 Response::~Response()
-{
-}
+{}
 
 const ResponseType& Response::getResponseType() const
 {
-    return responseType;
+    return responseType_;
 }

@@ -1,4 +1,5 @@
 #include "ImuData.h"
+#include "MeasuringDataVisitor.h"
 
 using namespace std;
 using namespace communication;
@@ -22,4 +23,16 @@ vector<uint8_t> ImuData::getFrameBytes()
 string ImuData::getName()
 {
     return string("ImuData");
+}
+
+void ImuData::initializeDataSize()
+{
+    uint16_t dataSize = sizeof(measuringType_);
+
+    setDataSize(dataSize);
+}
+
+void ImuData::accept(MeasuringDataVisitor &visitor)
+{
+    visitor.visit(*this);
 }

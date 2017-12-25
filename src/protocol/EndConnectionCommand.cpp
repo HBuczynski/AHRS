@@ -13,6 +13,8 @@ EndConnectionCommand::~EndConnectionCommand()
 
 vector<uint8_t> EndConnectionCommand::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
 
@@ -27,4 +29,9 @@ string EndConnectionCommand::getName()
 void EndConnectionCommand::accept(CommandVisitor &visitor)
 {
     visitor.visit(*this);
+}
+
+void EndConnectionCommand::initializeDataSize()
+{
+    setDataSize(sizeof(commandType_));
 }

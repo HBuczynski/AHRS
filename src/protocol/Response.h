@@ -7,8 +7,8 @@ namespace communication
 {
     enum ResponseType : uint8_t
     {
-        DATA,
-        ACK
+        DATA = 10,
+        ACK = 20
     };
 
     class Response : public Frame
@@ -23,7 +23,9 @@ namespace communication
         const ResponseType& getResponseType() const;
 
     protected:
-        ResponseType responseType;
+        virtual void initializeDataSize() = 0;
+
+        ResponseType responseType_;
 
     };
 }

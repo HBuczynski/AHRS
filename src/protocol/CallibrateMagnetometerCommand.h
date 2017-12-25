@@ -10,7 +10,7 @@ namespace communication
     class CallibrateMagnetometerCommand : public Command
     {
     public:
-        CallibrateMagnetometerCommand();
+        CallibrateMagnetometerCommand(const std::string &name);
         ~CallibrateMagnetometerCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -21,6 +21,7 @@ namespace communication
         const std::string &getNewPlaneName() const;
 
     private:
+        virtual void initializeDataSize() override;
         std::string newPlaneName_;
     };
 }

@@ -18,7 +18,7 @@ namespace communication
     class Frame
     {
     public:
-        Frame(FrameType frameTypeIn, uint8_t dataSizeIn);
+        Frame(FrameType frameTypeIn, uint16_t dataSizeIn);
         virtual ~Frame();
 
         virtual std::vector<uint8_t > getFrameBytes() = 0;
@@ -29,17 +29,19 @@ namespace communication
         const uint8_t& getPacketNumber() const;
         void setPacketNumber(uint8_t number);
 
-        const uint8_t& getDataSize() const;
-        void setDataSize(uint8_t dataSize);
+        const uint16_t& getDataSize() const;
+        void setDataSize(uint16_t dataSize);
 
         const uint8_t& getSystemVersion() const;
         const FrameType& getFrameType() const;
 
     protected:
+        virtual void initializeDataSize() = 0;
+
         uint8_t systemVersion_;
         FrameType frameType_;
         uint8_t packetNumber_;
-        uint8_t dataSize_;
+        uint16_t dataSize_;
     };
 }
 

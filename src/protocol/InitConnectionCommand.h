@@ -20,10 +20,10 @@ namespace communication
         std::string getAddress();
 
     private:
+        virtual void initializeDataSize() override;
+
         uint16_t serverListenUDPPort_;
         std::string serverAddress_;
-
-
     };
 }
 

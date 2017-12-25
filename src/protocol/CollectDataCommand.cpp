@@ -14,6 +14,8 @@ CollectDataCommand::~CollectDataCommand()
 
 vector<uint8_t> CollectDataCommand::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
 
@@ -28,4 +30,9 @@ string CollectDataCommand::getName()
 void CollectDataCommand::accept(CommandVisitor &visitor)
 {
     visitor.visit(*this);
+}
+
+void CollectDataCommand::initializeDataSize()
+{
+    setDataSize(sizeof(commandType_));
 }

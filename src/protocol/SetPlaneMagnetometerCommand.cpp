@@ -4,9 +4,9 @@
 using namespace std;
 using namespace communication;
 
-SetPlaneMagnetometerCommand::SetPlaneMagnetometerCommand()
+SetPlaneMagnetometerCommand::SetPlaneMagnetometerCommand(const std::string &name)
     : Command(10, CommandType::SET_PLANE_MAGNETOMETER_DATA),
-      planeName_("")
+      planeName_(name)
 {}
 
 SetPlaneMagnetometerCommand::~SetPlaneMagnetometerCommand()
@@ -14,6 +14,8 @@ SetPlaneMagnetometerCommand::~SetPlaneMagnetometerCommand()
 
 vector<uint8_t> SetPlaneMagnetometerCommand::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
 
@@ -41,4 +43,12 @@ void SetPlaneMagnetometerCommand::setPlaneName(const string &name)
 const string &SetPlaneMagnetometerCommand::getPlaneName() const
 {
     return planeName_;
+}
+
+void SetPlaneMagnetometerCommand::initializeDataSize()
+{
+    uint16_t dataSize = sizeof(commandType_);
+    dataSize += planeName_.size();
+
+    setDataSize(dataSize);
 }

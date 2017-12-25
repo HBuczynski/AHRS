@@ -13,7 +13,10 @@ AckResponse::~AckResponse()
 
 vector<uint8_t> AckResponse::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
+    frame.push_back(static_cast<uint8_t>(responseType_));
     frame.push_back(static_cast<uint8_t>(type_));
 
     return frame;
@@ -32,4 +35,12 @@ AckType AckResponse::getAckType() const
 void AckResponse::setAckType(AckType type)
 {
     type_ = type;
+}
+
+void AckResponse::initializeDataSize()
+{
+    uint16_t dataSize = sizeof(responseType_);
+    dataSize += sizeof(type_);
+
+    setDataSize(dataSize);
 }

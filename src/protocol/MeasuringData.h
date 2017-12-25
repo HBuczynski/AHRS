@@ -5,10 +5,12 @@
 
 namespace communication
 {
+    class MeasuringDataVisitor;
+
     enum MeasuringType : uint8_t
     {
-        IMU,
-        GPS
+        IMU = 10,
+        GPS = 20
     };
 
     class MeasuringData : public Frame
@@ -19,10 +21,13 @@ namespace communication
 
         virtual std::vector<uint8_t > getFrameBytes() = 0;
         virtual std::string getName() = 0;
+        virtual void accept(MeasuringDataVisitor& visitor) = 0;
 
         const MeasuringType& getMeasuringType() const;
 
     protected:
+        virtual void initializeDataSize() = 0;
+
         MeasuringType measuringType_;
     };
 }

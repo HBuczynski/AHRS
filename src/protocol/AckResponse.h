@@ -7,8 +7,8 @@ namespace communication
 {
     enum AckType : uint8_t
     {
-        OK,
-        FAIL
+        OK = 10,
+        FAIL = 20
     };
 
     class AckResponse final : public Response
@@ -24,8 +24,9 @@ namespace communication
         void setAckType(AckType type);
 
     private:
-        AckType type_;
+        virtual void initializeDataSize() override;
 
+        AckType type_;
     };
 }
 

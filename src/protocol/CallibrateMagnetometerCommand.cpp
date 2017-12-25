@@ -6,9 +6,9 @@
 using namespace std;
 using namespace communication;
 
-CallibrateMagnetometerCommand::CallibrateMagnetometerCommand()
+CallibrateMagnetometerCommand::CallibrateMagnetometerCommand(const std::string &name)
     : Command(10,CommandType::CALIBRATE_MAGNETOMETER),
-      newPlaneName_("")
+      newPlaneName_(name)
 {}
 
 CallibrateMagnetometerCommand::~CallibrateMagnetometerCommand()
@@ -16,6 +16,8 @@ CallibrateMagnetometerCommand::~CallibrateMagnetometerCommand()
 
 vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
 
@@ -23,6 +25,14 @@ vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
     frame.insert(frame.end(), name.begin(), name.end());
 
     return frame;
+}
+
+void CallibrateMagnetometerCommand::initializeDataSize()
+{
+    uint16_t dataSize = sizeof(commandType_);
+    dataSize += newPlaneName_.size();
+
+    setDataSize(dataSize);
 }
 
 string CallibrateMagnetometerCommand::getName()
