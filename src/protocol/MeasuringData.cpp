@@ -5,7 +5,7 @@ using namespace communication;
 
 MeasuringData::MeasuringData(uint8_t dataSizeIn, MeasuringType measuringTypeIn)
     : Frame(FrameType::RESPONSE, dataSizeIn),
-      measuringType(measuringTypeIn)
+      measuringType_(measuringTypeIn)
 {
 }
 
@@ -13,7 +13,7 @@ MeasuringData::~MeasuringData()
 {
 }
 
-const MeasuringType &MeasuringData::getMeasuringType()
+const MeasuringType &MeasuringData::getMeasuringType() const
 {
-    return measuringType;
+    return measuringType_;
 }

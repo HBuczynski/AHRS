@@ -29,15 +29,17 @@ namespace communication
         const uint8_t& getPacketNumber() const;
         void setPacketNumber(uint8_t number);
 
-        const uint8_t& getSystemVersion() const;
         const uint8_t& getDataSize() const;
+        void setDataSize(uint8_t dataSize);
+
+        const uint8_t& getSystemVersion() const;
         const FrameType& getFrameType() const;
 
     protected:
-        uint8_t systemVersion;
-        FrameType frameType;
-        uint8_t packetNumber;
-        uint8_t dataSize;
+        uint8_t systemVersion_;
+        FrameType frameType_;
+        uint8_t packetNumber_;
+        uint8_t dataSize_;
     };
 }
 

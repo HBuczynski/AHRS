@@ -11,8 +11,9 @@ namespace communication
     {
         INIT_CONNECTION = 10,
         CALIBRATE_MAGNETOMETER = 20,
-        COLLECT_DATA = 30,
-        END_CONNECTION = 40
+        SET_PLANE_MAGNETOMETER_DATA = 30,
+        COLLECT_DATA = 40,
+        END_CONNECTION = 50
     };
 
     class Command : public Frame
@@ -28,7 +29,7 @@ namespace communication
         const CommandType& getCommandType() const;
 
     protected:
-        CommandType commandType;
+        CommandType commandType_;
 
     };
 }

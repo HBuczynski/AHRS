@@ -4,7 +4,7 @@
 using namespace std;
 using namespace communication;
 
-//TO DO: add data size
+
 InitConnectionCommand::InitConnectionCommand(uint16_t port, std::string addres)
         : Command(10, CommandType::INIT_CONNECTION),
           serverListenUDPPort_(port),
@@ -19,8 +19,9 @@ InitConnectionCommand::~InitConnectionCommand()
 vector<uint8_t> InitConnectionCommand::getFrameBytes()
 {
     vector<uint8_t > frame = getHeader();
+    frame.push_back(static_cast<uint8_t>(commandType_));
 
-
+    // TO DO
 
     return frame;
 }

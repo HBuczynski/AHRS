@@ -13,7 +13,7 @@ Response::~Response()
 {
 }
 
-const ResponseType& Response::getResponseType()
+const ResponseType& Response::getResponseType() const
 {
     return responseType;
 }

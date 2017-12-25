@@ -1,22 +1,20 @@
-#ifndef AHRS_BLACK_BOX_WAICIMUDATA_H
-#define AHRS_BLACK_BOX_WAICIMUDATA_H
+#ifndef AHRS_GPSDATA_H
+#define AHRS_GPSDATA_H
 
 #include "MeasuringData.h"
 
 namespace communication
 {
-    class ImuData final : public MeasuringData
+    class GpsData final : public MeasuringData
     {
     public:
-        ImuData();
-        ~ImuData();
+        GpsData();
+        ~GpsData();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
 
-    private:
-
     };
 }
 
-#endif
+#endif //AHRS_GPSDATA_H

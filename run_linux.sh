@@ -13,7 +13,6 @@ if [ ! -d $target_folder_name ]; then
     mkdir $target_folder_name
 fi
 
-
 # Execute commands:
 if [ "$input" == "test" ]; then
 

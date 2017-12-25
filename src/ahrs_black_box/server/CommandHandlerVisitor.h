@@ -19,6 +19,9 @@ namespace communication
 
         virtual void visit(InitConnectionCommand& command) override;
         virtual void visit(EndConnectionCommand& command) override;
+        virtual void visit(CallibrateMagnetometerCommand& command) override;
+        virtual void visit(CollectDataCommand& command) override;
+        virtual void visit(SetPlaneMagnetometerCommand& command) override;
 
         void initializeClientUDPManager(ClientUDPManager* clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);

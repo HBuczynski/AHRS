@@ -1,5 +1,5 @@
-#ifndef AHRS_BLACK_BOX_WAICMEASURINGDATA_H
-#define AHRS_BLACK_BOX_WAICMEASURINGDATA_H
+#ifndef AHRS_BLACK_BOX_MEASURINGDATA_H
+#define AHRS_BLACK_BOX_MEASURINGDATA_H
 
 #include "Frame.h"
 
@@ -20,10 +20,10 @@ namespace communication
         virtual std::vector<uint8_t > getFrameBytes() = 0;
         virtual std::string getName() = 0;
 
-        const MeasuringType& getMeasuringType();
+        const MeasuringType& getMeasuringType() const;
 
     protected:
-        MeasuringType measuringType;
+        MeasuringType measuringType_;
     };
 }
 

@@ -5,16 +5,14 @@ using namespace communication;
 
 Command::Command(uint8_t dataSizeIn, CommandType commandTypeIn)
     : Frame(FrameType::COMMAND, dataSizeIn),
-      commandType(commandTypeIn)
+      commandType_(commandTypeIn)
 
-{
-}
+{}
 
 Command::~Command()
-{
-}
+{}
 
 const CommandType& Command::getCommandType() const
 {
-    return commandType;
+    return commandType_;
 }

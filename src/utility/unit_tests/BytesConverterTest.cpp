@@ -5,25 +5,47 @@
 
 #include "../BytesConverter.h"
 
-BOOST_AUTO_TEST_SUITE( test_multiply )
+BOOST_AUTO_TEST_SUITE(Conversions)
 
-    BOOST_AUTO_TEST_CASE( test_int )
+    BOOST_AUTO_TEST_CASE(ConvertUIN16toVectorAndReverse)
     {
-        BOOST_CHECK( 21 == 21);
+        uint16_t number = 64654;
+        std::vector<uint8_t> vec;
+
+        utility::BytesConverter::appendUINT16toVectorOfUINT8(number, vec);
+
+        uint16_t numberAferReverse;
+        numberAferReverse = utility::BytesConverter::fromVectorOfUINT8toUINT16(vec, 0);
+
+        BOOST_CHECK_EQUAL(number, numberAferReverse);
     }
 
-    BOOST_AUTO_TEST_CASE( test_float )
+    BOOST_AUTO_TEST_CASE(ConvertUIN32toVectorAndReverse)
     {
-        BOOST_CHECK( 24.75 == 24.75);
+        uint32_t number = 3999888777;
+        std::vector<uint8_t> vec;
+
+        utility::BytesConverter::appendUINT32toVectorOfUINT8(number, vec);
+
+        uint32_t numberAferReverse;
+        numberAferReverse = utility::BytesConverter::fromVectorOfUINT8toUINT32(vec, 0);
+
+        BOOST_CHECK_EQUAL(number, numberAferReverse);
     }
+
+    BOOST_AUTO_TEST_CASE(ConvertUIN64toVectorAndReverse)
+    {
+        uint64_t number = 3999888777000666555;
+        std::vector<uint8_t> vec;
+
+        utility::BytesConverter::appendUINT64toVectorOfUINT8(number, vec);
+
+        uint64_t numberAferReverse;
+        numberAferReverse = utility::BytesConverter::fromVectorOfUINT8toUINT64(vec, 0);
+
+        BOOST_CHECK_EQUAL(number, numberAferReverse);
+    }
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE( test_computeInterest )
-
-    BOOST_AUTO_TEST_CASE( test_simple )
-    {
-
-    }
-
-BOOST_AUTO_TEST_SUITE_END()

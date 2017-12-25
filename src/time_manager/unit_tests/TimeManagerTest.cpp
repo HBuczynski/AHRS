@@ -17,6 +17,7 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
         BOOST_CHECK( 24.75 == 24.75);
     }
 
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE( test_computeInterest )

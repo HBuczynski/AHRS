@@ -20,7 +20,7 @@ namespace communication
         virtual std::vector<uint8_t > getFrameBytes() = 0;
         virtual std::string getName() = 0;
 
-        const ResponseType& getResponseType();
+        const ResponseType& getResponseType() const;
 
     protected:
         ResponseType responseType;

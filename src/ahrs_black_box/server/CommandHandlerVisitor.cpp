@@ -40,3 +40,18 @@ void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
 {
     currentClient_ = client;
 }
+
+void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
+{
+
+}
+
+void CommandHandlerVisitor::visit(CollectDataCommand &command)
+{
+
+}
+
+void CommandHandlerVisitor::visit(SetPlaneMagnetometerCommand &command)
+{
+
+}

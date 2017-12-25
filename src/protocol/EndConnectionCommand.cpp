@@ -6,22 +6,20 @@ using namespace communication;
 
 EndConnectionCommand::EndConnectionCommand()
         : Command(10, CommandType::END_CONNECTION)
-{
-}
+{}
 
 EndConnectionCommand::~EndConnectionCommand()
-{
-}
+{}
 
-std::vector<uint8_t> EndConnectionCommand::getFrameBytes()
+vector<uint8_t> EndConnectionCommand::getFrameBytes()
 {
     vector<uint8_t > frame = getHeader();
+    frame.push_back(static_cast<uint8_t>(commandType_));
 
-
-    return frame;;
+    return frame;
 }
 
-std::string EndConnectionCommand::getName()
+string EndConnectionCommand::getName()
 {
     return string("EndConnectionCommand");
 }

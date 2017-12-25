@@ -10,14 +10,15 @@ namespace communication
     {
     public:
         DataResponse(std::string dataIn);
-        DataResponse(const std::vector<uint8_t>& frameBytes);
         ~DataResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
 
+        const std::string& getData() const;
+
     private:
-        std::string data;
+        std::string data_;
     };
 }
 

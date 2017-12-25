@@ -3,6 +3,9 @@
 
 #include "InitConnectionCommand.h"
 #include "EndConnectionCommand.h"
+#include "CallibrateMagnetometerCommand.h"
+#include "CollectDataCommand.h"
+#include "SetPlaneMagnetometerCommand.h"
 
 namespace communication
 {
@@ -14,6 +17,9 @@ namespace communication
 
         virtual void visit(InitConnectionCommand& command) = 0;
         virtual void visit(EndConnectionCommand& command) = 0;
+        virtual void visit(CallibrateMagnetometerCommand& command) = 0;
+        virtual void visit(CollectDataCommand& command) = 0;
+        virtual void visit(SetPlaneMagnetometerCommand& command) = 0;
     };
 }
 #endif
