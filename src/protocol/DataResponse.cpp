@@ -1,7 +1,10 @@
 #include "DataResponse.h"
 #include "ResponseVisitor.h"
 
+#include <utility/BytesConverter.h>
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 DataResponse::DataResponse(const string& data)
@@ -19,8 +22,7 @@ vector<uint8_t> DataResponse::getFrameBytes()
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t >(responseType_));
 
-    vector<uint8_t > name(data_.begin(), data_.end());
-    frame.insert(frame.end(), name.begin(), name.end());
+    BytesConverter::appendStringToVectorOfUINT8(data_, frame);
 
     return frame;
 }
@@ -38,7 +40,7 @@ const string& DataResponse::getData() const
 void DataResponse::initializeDataSize()
 {
     uint16_t dataSize = sizeof(responseType_);
-    dataSize += data_.size();
+    dataSize += data_.size() + sizeof(END_STRING_IN_FRAME);
 
     setDataSize(dataSize);
 }
