@@ -1,7 +1,7 @@
 #include "CommandHandlerVisitor.h"
 #include <protocol/DataResponse.h>
 
-#include <ahrs_black_box/server/ClientThreadTCP.h>
+#include <ahrs_black_box/server_tcp/ClientThreadTCP.h>
 
 using namespace std;
 using namespace communication;

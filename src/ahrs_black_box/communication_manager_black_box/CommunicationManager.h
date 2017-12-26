@@ -1,8 +1,8 @@
 #ifndef AHRS_BLACK_BOX_COMMUNICATION_MANAGER_H
 #define AHRS_BLACK_BOX_COMMUNICATION_MANAGER_H
 
-#include <server/Server.h>
-#include <client/Client.h>
+#include <server_tcp/Server.h>
+#include <client_udp/Client.h>
 
 #include <memory>
 #include <list>

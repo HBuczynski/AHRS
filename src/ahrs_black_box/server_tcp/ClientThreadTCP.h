@@ -3,8 +3,8 @@
 
 #include <packet/SendStreamTCP.h>
 #include <protocol/CommandFactory.h>
-#include <ahrs_black_box/server/CommandHandlerVisitor.h>
-#include <ahrs_black_box/communication_manager/ClientUDPManager.h>
+#include <ahrs_black_box/server_tcp/CommandHandlerVisitor.h>
+#include <ahrs_black_box/communication_manager_black_box/ClientUDPManager.h>
 
 #include <thread>
 #include <atomic>

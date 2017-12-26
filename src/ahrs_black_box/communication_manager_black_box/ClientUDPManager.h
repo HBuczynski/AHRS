@@ -1,7 +1,7 @@
 #ifndef AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 #define AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 
-#include <ahrs_black_box/client/Client.h>
+#include <ahrs_black_box/client_udp/Client.h>
 
 #include <list>
 #include <cstdint>

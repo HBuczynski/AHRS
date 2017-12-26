@@ -56,7 +56,7 @@ void Server::activateUsers()
             client->setID(clientID);
             client->startListen();
 
-            //Assign new client to the vector.
+            //Assign new client_udp to the vector.
             clientList_.push_back(move(client));
             ++clientID;
         }

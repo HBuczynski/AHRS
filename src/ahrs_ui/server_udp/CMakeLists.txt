@@ -1,9 +1,9 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(server)
+project(server_udp)
 
-set(PROJECT_NAME server)
+set(PROJECT_NAME server_udp)
 include_directories("../")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
@@ -22,7 +22,7 @@ target_include_directories(
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_tcp)
 
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
