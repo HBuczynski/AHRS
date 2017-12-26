@@ -30,25 +30,23 @@ if(BUILD_TESTS)
     include(BoostTestHelper)
 endif()
 
-
 #########################################################################################################
 #                                           ADDING SUBMODULES                                           #
 #########################################################################################################
-add_subdirectory("src/time_manager"                         time_manager                                )
-add_subdirectory("src/logger"                               logger                                      )
-add_subdirectory("src/protocol"                             protocol                                    )
-add_subdirectory("src/utility"                              utility                                     )
-add_subdirectory("src/config_reader"                        config_reader                               )
-add_subdirectory("src/packet"                               packet                                      )
-add_subdirectory("src/ahrs_black_box/main_black_box"        main_black_box                              )
-add_subdirectory("src/ahrs_black_box/server_tcp"                server_tcp                                      )
-add_subdirectory("src/ahrs_black_box/client_udp"                client_udp                                      )
-add_subdirectory("src/ahrs_black_box/communication_manager_black_box" communication_manager_black_box                       )
-add_subdirectory("src/ahrs_ui/main_ui"                      main_ui                                     )
-add_subdirectory("src/ahrs_ui/client_tcp"                       client_tcp                                   )
-add_subdirectory("src/ahrs_ui/server_udp"                       server_udp                                   )
-add_subdirectory("src/ahrs_ui/communication_manager_ui"        communication_manager_ui                    )
-
+add_subdirectory("src/time_manager"                                     time_manager                    )
+add_subdirectory("src/logger"                                           logger                          )
+add_subdirectory("src/protocol"                                         protocol                        )
+add_subdirectory("src/utility"                                          utility                         )
+add_subdirectory("src/config_reader"                                    config_reader                   )
+add_subdirectory("src/packet"                                           packet                          )
+add_subdirectory("src/ahrs_black_box/main_black_box"                    main_black_box                  )
+add_subdirectory("src/ahrs_black_box/server_tcp"                        server_tcp                      )
+add_subdirectory("src/ahrs_black_box/client_udp"                        client_udp                      )
+add_subdirectory("src/ahrs_black_box/communication_manager_black_box"   communication_manager_black_box )
+add_subdirectory("src/ahrs_ui/main_ui"                                  main_ui                         )
+add_subdirectory("src/ahrs_ui/client_tcp"                               client_tcp                      )
+add_subdirectory("src/ahrs_ui/server_udp"                               server_udp                      )
+add_subdirectory("src/ahrs_ui/communication_manager_ui"                 communication_manager_ui        )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #
