@@ -22,9 +22,6 @@ BOOST_AUTO_TEST_SUITE( data )
 
         auto commandFromVec = static_pointer_cast<ImuData, MeasuringData>(factory.createCommand(data.getFrameBytes()));
 
-        auto t = data.getMeasuringType();
-        auto y = commandFromVec->getMeasuringType();
-
         BOOST_CHECK( commandFromVec->getFrameType() == data.getFrameType());
         BOOST_CHECK( commandFromVec->getMeasuringType() == data.getMeasuringType());
         BOOST_CHECK( commandFromVec->getFrameBytes() == data.getFrameBytes());
