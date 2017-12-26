@@ -27,8 +27,7 @@ vector<uint8_t> InitConnectionCommand::getFrameBytes()
     frame.push_back(static_cast<uint8_t>(commandType_));
 
     BytesConverter::appendUINT16toVectorOfUINT8(serverListenUDPPort_, frame);
-    vector<uint8_t > address(serverAddress_.begin(), serverAddress_.end());
-    frame.insert(frame.end(), address.begin(), address.end());
+    BytesConverter::appendStringToVectorOfUINT8(serverAddress_, frame);
 
     return frame;
 }
@@ -56,8 +55,8 @@ void InitConnectionCommand::accept(CommandVisitor &visitor)
 void InitConnectionCommand::initializeDataSize()
 {
     uint16_t dataSize = sizeof(commandType_);
-    dataSize += serverAddress_.size();
-    dataSize +=sizeof(serverListenUDPPort_);
+    dataSize += serverAddress_.size() + sizeof(END_STRING_IN_FRAME);
+    dataSize += sizeof(serverListenUDPPort_);
 
     setDataSize(dataSize);;
 }

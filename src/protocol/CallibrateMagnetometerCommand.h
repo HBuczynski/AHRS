@@ -22,6 +22,7 @@ namespace communication
 
     private:
         virtual void initializeDataSize() override;
+
         std::string newPlaneName_;
     };
 }

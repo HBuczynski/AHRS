@@ -4,10 +4,10 @@
 #include <string>
 #include <vector>
 
-#include <utility/BytesConverter.h>
-
 namespace communication
 {
+    const uint8_t END_STRING_IN_FRAME = '#';
+
     enum FrameType : uint8_t
     {
         COMMAND = 10,

@@ -1,5 +1,9 @@
 #include "BytesConverter.h"
 
+#include <protocol/Frame.h>
+#include <algorithm>
+#include <stdexcept>
+
 using namespace utility;
 using namespace std;
 
@@ -57,4 +61,24 @@ uint64_t BytesConverter::fromVectorOfUINT8toUINT64(const std::vector<uint8_t> &v
     }
 
     return number;
+}
+
+void BytesConverter::appendStringToVectorOfUINT8(string data, vector<uint8_t> &vec)
+{
+    vector<uint8_t > name(data.begin(), data.end());
+
+    vec.insert(vec.end(), name.begin(), name.end());
+    vec.push_back(communication::END_STRING_IN_FRAME);
+}
+
+string BytesConverter::fromVectorOfUINT8toString(const vector<uint8_t> &vec, uint16_t variablePosition)
+{
+    auto endStringPosition = find(vec.begin()+variablePosition, vec.end(), communication::END_STRING_IN_FRAME);
+
+    if(endStringPosition == vec.end())
+    {
+        throw invalid_argument("Vector contains wrong data.");
+    }
+
+    return string(vec.begin()+variablePosition, endStringPosition);
 }

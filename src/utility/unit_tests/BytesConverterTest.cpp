@@ -5,6 +5,8 @@
 
 #include "../BytesConverter.h"
 
+#include <string>
+
 BOOST_AUTO_TEST_SUITE(Conversions)
 
     BOOST_AUTO_TEST_CASE(ConvertUIN16toVectorAndReverse)
@@ -44,6 +46,18 @@ BOOST_AUTO_TEST_SUITE(Conversions)
         numberAferReverse = utility::BytesConverter::fromVectorOfUINT8toUINT64(vec, 0);
 
         BOOST_CHECK_EQUAL(number, numberAferReverse);
+    }
+
+    BOOST_AUTO_TEST_CASE(ConvertStringToVectorAndReverse)
+    {
+        std::string name("Temp Data Frame");
+        std::vector<uint8_t> vec;
+
+        utility::BytesConverter::appendStringToVectorOfUINT8(name, vec);
+
+        std::string nameAfterReverse = utility::BytesConverter::fromVectorOfUINT8toString(vec,0);
+
+        BOOST_CHECK_EQUAL(name, nameAfterReverse);
     }
 
 

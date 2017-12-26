@@ -1,9 +1,11 @@
 #include "CallibrateMagnetometerCommand.h"
 #include "CommandVisitor.h"
+#include <utility/BytesConverter.h>
 
 #include <stdexcept>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 CallibrateMagnetometerCommand::CallibrateMagnetometerCommand(const std::string &name)
@@ -21,8 +23,7 @@ vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
 
-    vector<uint8_t > name(newPlaneName_.begin(), newPlaneName_.end());
-    frame.insert(frame.end(), name.begin(), name.end());
+    BytesConverter::appendStringToVectorOfUINT8(newPlaneName_, frame);
 
     return frame;
 }
@@ -30,7 +31,7 @@ vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
 void CallibrateMagnetometerCommand::initializeDataSize()
 {
     uint16_t dataSize = sizeof(commandType_);
-    dataSize += newPlaneName_.size();
+    dataSize += newPlaneName_.size() + sizeof(END_STRING_IN_FRAME);
 
     setDataSize(dataSize);
 }

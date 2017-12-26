@@ -2,6 +2,7 @@
 #define AHRS_BLACK_BOX_BYTES_CONVERTER_H
 
 #include <vector>
+#include <string>
 #include <cstdint>
 
 namespace utility
@@ -17,6 +18,9 @@ namespace utility
 
         static void appendUINT64toVectorOfUINT8(uint64_t number, std::vector<uint8_t>& vec);
         static uint64_t fromVectorOfUINT8toUINT64(const std::vector<uint8_t> &vec, uint16_t variablePosition);
+
+        static void appendStringToVectorOfUINT8(std::string data, std::vector<uint8_t>& vec);
+        static std::string fromVectorOfUINT8toString(const std::vector<uint8_t> &vec, uint16_t variablePosition);
     };
 }
 #endif

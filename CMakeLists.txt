@@ -34,12 +34,12 @@ endif()
 #########################################################################################################
 #                                           ADDING SUBMODULES                                           #
 #########################################################################################################
-add_subdirectory("src/utility"                              utility                                     )
 add_subdirectory("src/time_manager"                         time_manager                                )
 add_subdirectory("src/logger"                               logger                                      )
+add_subdirectory("src/protocol"                             protocol                                    )
+add_subdirectory("src/utility"                              utility                                     )
 add_subdirectory("src/config_reader"                        config_reader                               )
 add_subdirectory("src/packet"                               packet                                      )
-add_subdirectory("src/protocol"                             protocol                                    )
 add_subdirectory("src/ahrs_black_box/main_black_box"        main_black_box                              )
 add_subdirectory("src/ahrs_black_box/server_tcp"                server_tcp                                      )
 add_subdirectory("src/ahrs_black_box/client_udp"                client_udp                                      )

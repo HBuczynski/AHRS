@@ -12,6 +12,8 @@ namespace communication
 
         std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes) override;
 
+    private:
+        const uint16_t INIT_DATA_POSITION_IN_FRAME = 7;
     };
 }
 
