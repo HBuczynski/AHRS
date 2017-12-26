@@ -1,4 +1,5 @@
 #include "DataResponse.h"
+#include "ResponseVisitor.h"
 
 using namespace std;
 using namespace communication;
@@ -40,4 +41,14 @@ void DataResponse::initializeDataSize()
     dataSize += data_.size();
 
     setDataSize(dataSize);
+}
+
+void DataResponse::accept(ResponseVisitor &visitor)
+{
+    visitor.visit(*this);
+}
+
+void DataResponse::setData(const string &data)
+{
+    data_ = data;
 }

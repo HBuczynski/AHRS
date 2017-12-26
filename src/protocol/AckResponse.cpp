@@ -1,4 +1,5 @@
 #include "AckResponse.h"
+#include "ResponseVisitor.h"
 
 using namespace std;
 using namespace communication;
@@ -43,4 +44,9 @@ void AckResponse::initializeDataSize()
     dataSize += sizeof(type_);
 
     setDataSize(dataSize);
+}
+
+void AckResponse::accept(ResponseVisitor &visitor)
+{
+    visitor.visit(*this);
 }

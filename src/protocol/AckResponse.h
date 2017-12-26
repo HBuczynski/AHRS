@@ -19,6 +19,7 @@ namespace communication
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
+        virtual void accept(ResponseVisitor& visitor) override;
 
         AckType getAckType() const;
         void setAckType(AckType type);

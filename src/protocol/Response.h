@@ -5,6 +5,8 @@
 
 namespace communication
 {
+    class ResponseVisitor;
+
     enum ResponseType : uint8_t
     {
         DATA = 10,
@@ -19,6 +21,7 @@ namespace communication
 
         virtual std::vector<uint8_t > getFrameBytes() = 0;
         virtual std::string getName() = 0;
+        virtual void accept(ResponseVisitor& visitor) = 0;
 
         const ResponseType& getResponseType() const;
 

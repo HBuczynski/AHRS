@@ -14,6 +14,7 @@ namespace communication
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
+        virtual void accept(ResponseVisitor& visitor) override;
 
         void setData(const std::string& data);
         const std::string& getData() const;
