@@ -14,6 +14,8 @@ ImuData::~ImuData()
 
 vector<uint8_t> ImuData::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t >(measuringType_));
 

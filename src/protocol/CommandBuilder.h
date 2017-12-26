@@ -17,5 +17,4 @@ namespace communication
         const uint8_t initialDataPosition = 7;
     };
 }
-
 #endif

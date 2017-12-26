@@ -13,6 +13,8 @@ GpsData::~GpsData()
 
 vector<uint8_t> GpsData::getFrameBytes()
 {
+    initializeDataSize();
+
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(measuringType_));
 

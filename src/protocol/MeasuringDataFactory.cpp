@@ -20,10 +20,10 @@ unique_ptr<MeasuringData> MeasuringDataFactory::createCommand(const vector<uint8
 
     switch (type)
     {
-        case MeasuringType::GPS :
+        case MeasuringType::IMU :
             builder_ = make_unique<ImuDataBuilder>();
             return move(builder_->create(commandInBytes));
-        case MeasuringType::IMU :
+        case MeasuringType::GPS :
             builder_ = make_unique<GpsDataBuilder>();
             return move(builder_->create(commandInBytes));
         default:

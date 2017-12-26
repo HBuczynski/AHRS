@@ -9,9 +9,6 @@ namespace communication
     class MeasuringDataBuilder
     {
     public:
-        MeasuringDataBuilder();
-        virtual ~MeasuringDataBuilder();
-
         virtual std::unique_ptr<MeasuringData> create(const std::vector<uint8_t> &dataInBytes) = 0;
 
     protected:
