@@ -8,9 +8,10 @@ using namespace utility;
 using namespace communication;
 
 CalibrateMagnetometerBuilder::CalibrateMagnetometerBuilder()
-{
+{}
 
-}
+CalibrateMagnetometerBuilder::~CalibrateMagnetometerBuilder()
+{}
 
 unique_ptr<Command> CalibrateMagnetometerBuilder::create(const vector<uint8_t> &commandInBytes)
 {
@@ -22,3 +23,5 @@ unique_ptr<Command> CalibrateMagnetometerBuilder::create(const vector<uint8_t> &
 
     return move(command);
 }
+
+

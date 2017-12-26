@@ -9,6 +9,7 @@ namespace communication
     {
     public:
         EndConnectionBuilder();
+        ~EndConnectionBuilder();
 
         std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes) override;
 

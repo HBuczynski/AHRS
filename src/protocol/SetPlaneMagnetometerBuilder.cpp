@@ -10,6 +10,9 @@ using namespace communication;
 SetPlaneMagnetometerBuilder::SetPlaneMagnetometerBuilder()
 {}
 
+SetPlaneMagnetometerBuilder::~SetPlaneMagnetometerBuilder()
+{}
+
 unique_ptr<Command> SetPlaneMagnetometerBuilder::create(const vector<uint8_t> &commandInBytes)
 {
     string planeName;
@@ -20,3 +23,5 @@ unique_ptr<Command> SetPlaneMagnetometerBuilder::create(const vector<uint8_t> &c
 
     return move(command);
 }
+
+

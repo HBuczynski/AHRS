@@ -10,6 +10,9 @@ using namespace communication;
 InitConnectionBuilder::InitConnectionBuilder()
 {}
 
+InitConnectionBuilder::~InitConnectionBuilder()
+{}
+
 std::unique_ptr<Command> InitConnectionBuilder::create(const std::vector<uint8_t> &commandInBytes)
 {
     uint16_t port;
@@ -22,3 +25,5 @@ std::unique_ptr<Command> InitConnectionBuilder::create(const std::vector<uint8_t
 
     return move(command);
 }
+
+

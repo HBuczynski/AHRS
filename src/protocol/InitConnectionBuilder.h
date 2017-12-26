@@ -9,12 +9,13 @@ namespace communication
     {
     public:
         InitConnectionBuilder();
+        ~InitConnectionBuilder();
 
         std::unique_ptr<Command> create(const std::vector<uint8_t> &commandInBytes) override;
 
     private:
-        const uint16_t INIT_PORT_POSITION_IN_FRAME = 7;
-        const uint16_t INIT_ADDRESS_POSITION_IN_FRAME = 9;
+        const uint16_t INIT_PORT_POSITION_IN_FRAME = 6;
+        const uint16_t INIT_ADDRESS_POSITION_IN_FRAME = 8;
     };
 }
 #endif

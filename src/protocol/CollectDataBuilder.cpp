@@ -7,9 +7,13 @@ using namespace communication;
 CollectDataBuilder::CollectDataBuilder()
 {}
 
+CollectDataBuilder::~CollectDataBuilder()
+{}
+
 unique_ptr<Command> CollectDataBuilder::create(const vector<uint8_t> &commandInBytes)
 {
     auto command = make_unique<CollectDataCommand>();
 
     return move(command);
 }
+
