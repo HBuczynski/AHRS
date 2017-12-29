@@ -25,6 +25,8 @@ namespace communication
         Client(uint16_t portIn, std::string addressIn);
         ~Client();
 
+        void connectToServer();
+
         void stopCommandSending();
         void startCommandSending();
         void sendCommand(std::unique_ptr<Command> command, ResponseNotification *notification);

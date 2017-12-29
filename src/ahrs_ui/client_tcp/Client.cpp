@@ -14,6 +14,12 @@ Client::~Client()
     stopCommandSending();
 }
 
+void Client::connectToServer()
+{
+    socket_->connectToServer();
+    // to do: try catch
+}
+
 void Client::startCommandSending()
 {
     socket_ = make_unique<SendStreamTCP>(port_, address_);
