@@ -11,7 +11,7 @@ namespace communication
     class CommunicationManager
     {
     public:
-        CommunicationManager(uint16_t serverPort, uint8_t maxUserNumber);
+        CommunicationManager();
         ~CommunicationManager();
 
 
