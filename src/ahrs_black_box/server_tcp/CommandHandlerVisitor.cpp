@@ -3,6 +3,8 @@
 
 #include <ahrs_black_box/server_tcp/ClientThreadTCP.h>
 
+#include <iostream>
+
 using namespace std;
 using namespace communication;
 
@@ -14,9 +16,15 @@ CommandHandlerVisitor::~CommandHandlerVisitor()
 
 void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {
-    auto newClient = make_unique<Client>(command.getPort(), command.getAddress());
+    auto newClient = make_shared<ClientUDP>(command.getPort(), command.getAddress());
 
-    clientUDPManager_->insertNewClient(make_pair(move(newClient), currentClient_->getID()));
+    cout << command.getAddress() << endl;
+    cout << command.getPort() << endl;
+    cout << currentClient_->getID() << endl;
+
+    clientUDPManager_->getClientList();
+
+    clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
     response_ = make_unique<DataResponse>("OK");
 }
 
@@ -31,7 +39,7 @@ unique_ptr<Response> CommandHandlerVisitor::getResponse()
     return move(response_);
 }
 
-void CommandHandlerVisitor::initializeClientUDPManager(ClientUDPManager *clientUDPManager)
+void CommandHandlerVisitor::initializeClientUDPManager(ClientUDPManager* clientUDPManager)
 {
     clientUDPManager_ = clientUDPManager;
 }

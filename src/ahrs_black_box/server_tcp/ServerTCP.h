@@ -15,11 +15,11 @@
 
 namespace communication
 {
-    class Server
+    class ServerTCP
     {
     public:
-        Server(uint16_t port, uint8_t maxClientNumber, ClientUDPManager *clientUDPManager);
-        ~Server();
+        ServerTCP(uint16_t port, uint8_t maxClientNumber, ClientUDPManager* clientUDPManager);
+        ~ServerTCP();
 
         void startUserActivation();
         void stopUserActivation();

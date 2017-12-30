@@ -3,7 +3,7 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
-#include "../Client.h"
+#include "ahrs_black_box/client_udp/ClientUDP.h"
 
 BOOST_AUTO_TEST_SUITE( test_multiply )
 

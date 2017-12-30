@@ -44,7 +44,7 @@ void SendStreamTCP::connectToServer()
 {
     if (connect(sock_, (struct sockaddr *) &sockAddress_, sizeof(sockAddress_)) < 0)
     {
-        throw invalid_argument("Cannot connect to the server_udp");
+        throw invalid_argument("Cannot connect to the server_tcp");
     }
 }
 

@@ -1,7 +1,7 @@
 #ifndef AHRS_BLACK_BOX_WAIC_CLIENT_H
 #define AHRS_BLACK_BOX_WAIC_CLIENT_H
 
-#include "ResponseNotification.h"
+#include <ahrs_ui/client_tcp/ResponseNotification.h>
 
 #include <packet/SendStreamTCP.h>
 #include <protocol/Command.h>
@@ -19,11 +19,11 @@
 namespace communication
 {
     typedef std::pair<std::unique_ptr<Command>, ResponseNotification*> CommandInQueue;
-    class Client
+    class ClientTCP
     {
     public:
-        Client(uint16_t portIn, std::string addressIn);
-        ~Client();
+        ClientTCP(uint16_t portIn, std::string addressIn);
+        ~ClientTCP();
 
         void connectToServer();
 

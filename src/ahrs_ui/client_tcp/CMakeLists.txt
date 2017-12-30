@@ -21,6 +21,7 @@ target_include_directories(
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
 
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

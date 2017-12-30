@@ -1,7 +1,7 @@
 #ifndef AHRS_RESPONSENOTIFICATION_H
 #define AHRS_RESPONSENOTIFICATION_H
 
-#include <protocol/Response.h>
+#include <cstdint>
 #include <vector>
 
 namespace communication
@@ -9,7 +9,8 @@ namespace communication
     class ResponseNotification
     {
     public:
-        ResponseNotification();
+        ResponseNotification() {};
+        virtual ~ResponseNotification() {};
 
         virtual void received(std::vector<uint8_t > responseFrame) = 0;
     };

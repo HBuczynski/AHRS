@@ -9,11 +9,11 @@
 
 namespace communication
 {
-    class Client
+    class ClientUDP
     {
     public:
-        Client(uint16_t portIn, std::string addressIn);
-        ~Client();
+        ClientUDP(uint16_t portIn, std::string addressIn);
+        ~ClientUDP();
 
         void sendData(std::vector<uint8_t> &message);
 

@@ -9,8 +9,8 @@ namespace communication
     class MeasuringDataVisitor
     {
     public:
-        MeasuringDataVisitor();
-        virtual ~MeasuringDataVisitor();
+        MeasuringDataVisitor() {};
+        virtual ~MeasuringDataVisitor() {};
 
         virtual void visit(ImuData& data) = 0;
         virtual void visit(GpsData& data) = 0;

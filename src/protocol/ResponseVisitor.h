@@ -9,8 +9,8 @@ namespace communication
     class ResponseVisitor
     {
     public:
-        ResponseVisitor();
-        virtual ~ResponseVisitor();
+        ResponseVisitor() {};
+        virtual ~ResponseVisitor() {};
 
         virtual void visit(AckResponse& data) = 0;
         virtual void visit(DataResponse& data) = 0;

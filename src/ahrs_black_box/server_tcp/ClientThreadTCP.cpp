@@ -2,6 +2,8 @@
 
 #include <protocol/Command.h>
 
+#include <iostream>
+
 using namespace std;
 using namespace communication;
 
@@ -9,7 +11,9 @@ ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, ClientUDPMana
     : socket_(std::move(socket)),
       clientUDPManager_(clientUDPManager_),
       runListenThread_(false)
-{ }
+{
+    initializeCommandHandler();
+}
 
 ClientThreadTCP::~ClientThreadTCP()
 {
@@ -55,6 +59,7 @@ void ClientThreadTCP::runListen()
         {
             const auto frame = socket_->receivePacket();
 
+            cout << "Odebrano wiadomosc" << endl;
             const auto command = commandFactory_.createCommand(frame);
             command->accept(commandHandler_);
 
@@ -65,7 +70,7 @@ void ClientThreadTCP::runListen()
         {
             // 1. socket is disabled
             // 2. factory can't create a command
-
+            cout << "client thread - wyjatek" << endl;
             // TO DO: Check what type of exception was registered.
             if(runListenThread_)
             {

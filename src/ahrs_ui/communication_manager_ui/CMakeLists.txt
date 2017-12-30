@@ -22,7 +22,7 @@ target_include_directories(
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_tcp)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC server_tcp)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC server_udp)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)

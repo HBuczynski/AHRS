@@ -1,7 +1,7 @@
 #ifndef WAIC_SERVER_H
 #define WAIC_SERVER_H
 
-#include "DataHandlerVisitor.h"
+#include <ahrs_ui/server_udp/DataHandlerVisitor.h>
 #include <protocol/Command.h>
 #include <packet/ListenDatagramUDP.h>
 #include <protocol/MeasuringDataFactory.h>
@@ -15,11 +15,11 @@
 
 namespace communication
 {
-    class Server
+    class ServerUDP
     {
     public:
-        Server(uint16_t port);
-        ~Server();
+        ServerUDP(uint16_t port);
+        ~ServerUDP();
 
         void startListening();
         void stopListening();

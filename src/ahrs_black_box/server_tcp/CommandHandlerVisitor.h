@@ -30,7 +30,7 @@ namespace communication
 
     private:
         ClientThreadTCP *currentClient_;
-        ClientUDPManager *clientUDPManager_;
+        ClientUDPManager* clientUDPManager_;
 
         std::unique_ptr<Response> response_;
     };

@@ -43,10 +43,10 @@ add_subdirectory("src/ahrs_black_box/main_black_box"                    main_bla
 add_subdirectory("src/ahrs_black_box/server_tcp"                        server_tcp                      )
 add_subdirectory("src/ahrs_black_box/client_udp"                        client_udp                      )
 add_subdirectory("src/ahrs_black_box/communication_manager_black_box"   communication_manager_black_box )
-add_subdirectory("src/ahrs_ui/main_ui"                                  main_ui                         )
 add_subdirectory("src/ahrs_ui/client_tcp"                               client_tcp                      )
 add_subdirectory("src/ahrs_ui/server_udp"                               server_udp                      )
 add_subdirectory("src/ahrs_ui/communication_manager_ui"                 communication_manager_ui        )
+add_subdirectory("src/ahrs_ui/main_ui"                                  main_ui                         )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #

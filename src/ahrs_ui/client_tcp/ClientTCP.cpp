@@ -1,34 +1,35 @@
-#include "Client.h"
+#include "ClientTCP.h"
+
+#include <iostream>
 
 using namespace std;
 using namespace communication;
 
-Client::Client(uint16_t portIn, string addressIn)
+ClientTCP::ClientTCP(uint16_t portIn, string addressIn)
     : port_(portIn),
       address_(addressIn),
       executeCommandsFlag_(false)
 {}
 
-Client::~Client()
+ClientTCP::~ClientTCP()
 {
     stopCommandSending();
 }
 
-void Client::connectToServer()
+void ClientTCP::connectToServer()
 {
+    socket_ = make_unique<SendStreamTCP>(port_, address_);
     socket_->connectToServer();
     // to do: try catch
 }
 
-void Client::startCommandSending()
+void ClientTCP::startCommandSending()
 {
-    socket_ = make_unique<SendStreamTCP>(port_, address_);
-
     executeCommandsFlag_ = true;
-    executeCommandThread_ = thread(&Client::executeCommands, this);
+    executeCommandThread_ = thread(&ClientTCP::executeCommands, this);
 }
 
-void Client::stopCommandSending()
+void ClientTCP::stopCommandSending()
 {
     if(executeCommandsFlag_)
     {
@@ -43,7 +44,7 @@ void Client::stopCommandSending()
     }
 }
 
-void Client::sendCommand(std::unique_ptr<Command> command, ResponseNotification *notification)
+void ClientTCP::sendCommand(std::unique_ptr<Command> command, ResponseNotification *notification)
 {
     unique_lock<mutex> lockGurad(conditionalVariableMutex_);
     insertToQueue(make_pair(move(command), notification));
@@ -51,13 +52,13 @@ void Client::sendCommand(std::unique_ptr<Command> command, ResponseNotification 
     conditionVariable_.wait(lockGurad);
 }
 
-bool Client::isQueueEmpty()
+bool ClientTCP::isQueueEmpty()
 {
     lock_guard<mutex> lock(commandQueueMutex_);
     return commandQueue_.empty();
 }
 
-CommandInQueue Client::getFromQueue()
+CommandInQueue ClientTCP::getFromQueue()
 {
     lock_guard<mutex> lock(commandQueueMutex_);
 
@@ -67,13 +68,13 @@ CommandInQueue Client::getFromQueue()
     return commandPair;
 }
 
-void Client::insertToQueue(CommandInQueue command)
+void ClientTCP::insertToQueue(CommandInQueue command)
 {
     lock_guard<mutex> lock(commandQueueMutex_);
     commandQueue_.push(move(command));
 }
 
-void Client::executeCommands()
+void ClientTCP::executeCommands()
 {
     while (executeCommandsFlag_)
     {
@@ -88,6 +89,7 @@ void Client::executeCommands()
                 for(uint8_t i=0; i < COMMAND_SENDING_REPETITION && !isSuccess; ++i)
                 {
                     socket_->sendData(commandPair.first->getFrameBytes());
+                    cout << "wyslano komende" << endl;
 
                     const auto responseFrame = socket_->receivePacket();
 

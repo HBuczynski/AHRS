@@ -1,4 +1,4 @@
-#include "Server.h"
+#include "ServerTCP.h"
 
 #include <protocol/Command.h>
 #include <protocol/Response.h>
@@ -6,19 +6,37 @@
 
 #include <algorithm>
 
+
+#include <iostream>
+
 using namespace std;
 using namespace communication;
 
-Server::Server(uint16_t port,  uint8_t maxClientNumber, ClientUDPManager *clientUDPManager)
+ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, ClientUDPManager* clientUDPManager)
         : port_(port),
           maxClientNumber_(maxClientNumber),
           clientUDPManager_(clientUDPManager),
           runUserActivation_(false)
 { }
 
-Server::~Server()
+ServerTCP::~ServerTCP()
 {
+    cout << "jestem w destr" << endl;
     stopUserActivation();
+
+}
+
+void ServerTCP::startUserActivation()
+{
+    runUserActivation_ = true;
+
+    //activationThread_ = thread(&ServerTCP::activateUsers, this);
+    activateUsers();
+}
+
+void ServerTCP::stopUserActivation()
+{
+    //runUserActivation_ = false;
 
     if(activationThread_.joinable())
     {
@@ -26,19 +44,7 @@ Server::~Server()
     }
 }
 
-void Server::startUserActivation()
-{
-    runUserActivation_ = true;
-
-    activationThread_ = thread(&Server::activateUsers, this);
-}
-
-void Server::stopUserActivation()
-{
-    runUserActivation_ = false;
-}
-
-void Server::activateUsers()
+void ServerTCP::activateUsers()
 {
     ListenStreamTCP serverSocket(port_);
 
@@ -49,10 +55,14 @@ void Server::activateUsers()
     {
         updateClientList();
 
+        cout << "w petli " << endl;
+
         if(clientList_.size() < maxClientNumber_)
         {
             //Wait on new users.
             auto client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),clientUDPManager_);
+
+            cout << "Aktywowano uzytkownika" << endl;
             client->setID(clientID);
             client->startListen();
 
@@ -63,7 +73,7 @@ void Server::activateUsers()
     }
 }
 
-void Server::updateClientList()
+void ServerTCP::updateClientList()
 {
     for(auto iter = clientList_.begin(); iter != clientList_.end(); ++iter)
     {
@@ -74,7 +84,7 @@ void Server::updateClientList()
     }
 }
 
-void Server::stopDataListening()
+void ServerTCP::stopDataListening()
 {
     for(auto iter = clientList_.begin(); iter != clientList_.end(); ++iter)
     {

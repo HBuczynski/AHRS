@@ -1,15 +1,15 @@
-#include <ahrs_ui/server_udp/Server.h>
+#include <ahrs_ui/server_udp/ServerUDP.h>
 
 
 using namespace std;
 using namespace communication;
 
-Server::Server(uint16_t port)
+ServerUDP::ServerUDP(uint16_t port)
     : port_(port),
       runListenThread_(false)
 {}
 
-Server::~Server()
+ServerUDP::~ServerUDP()
 {
     if (runListenThread_)
     {
@@ -17,13 +17,13 @@ Server::~Server()
     }
 }
 
-void Server::startListening()
+void ServerUDP::startListening()
 {
     runListenThread_ = true;
-    listenThread_ = thread(&Server::listen, this);
+    listenThread_ = thread(&ServerUDP::listen, this);
 }
 
-void Server::stopListening()
+void ServerUDP::stopListening()
 {
     if (runListenThread_)
     {
@@ -37,7 +37,7 @@ void Server::stopListening()
     }
 }
 
-void Server::listen()
+void ServerUDP::listen()
 {
     socket_.reset();
     socket_ = make_unique<ListenDatagramUDP>(port_);

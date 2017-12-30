@@ -12,8 +12,8 @@ namespace communication
     class CommandVisitor
     {
     public:
-        CommandVisitor();
-        virtual ~CommandVisitor();
+        CommandVisitor(){};
+        virtual ~CommandVisitor(){};
 
         virtual void visit(InitConnectionCommand& command) = 0;
         virtual void visit(EndConnectionCommand& command) = 0;
