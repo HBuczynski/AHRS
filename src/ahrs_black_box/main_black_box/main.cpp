@@ -15,15 +15,8 @@ using namespace communication;
 
 int main(int argc , char *argv[])
 {
-    CommunicationManagerBlackBox manager(6000,2);
-
+    CommunicationManagerBlackBox manager(9000,2);
     manager.initialize();
-
-    while(1)
-    {
-
-    }
-
 
     return 0;
 }

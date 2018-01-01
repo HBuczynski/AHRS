@@ -12,31 +12,38 @@
 using namespace std;
 using namespace communication;
 
-ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, ClientUDPManager* clientUDPManager)
+ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber)
         : port_(port),
           maxClientNumber_(maxClientNumber),
-          clientUDPManager_(clientUDPManager),
           runUserActivation_(false)
-{ }
+{
+    clientUDPManager_ = make_shared<ClientUDPManager>();
+}
 
 ServerTCP::~ServerTCP()
 {
-    cout << "jestem w destr" << endl;
-    stopUserActivation();
-
+    cout << "jestem w destruktorze" << endl;
+    if(activationThread_.joinable())
+    {
+        activationThread_.join();
+    }
 }
 
 void ServerTCP::startUserActivation()
 {
     runUserActivation_ = true;
 
-    //activationThread_ = thread(&ServerTCP::activateUsers, this);
-    activateUsers();
+    activationThread_ = thread(&ServerTCP::activateUsers, this);
+    if(activationThread_.joinable())
+    {
+        activationThread_.join();
+    }
+    //activateUsers();
 }
 
 void ServerTCP::stopUserActivation()
 {
-    //runUserActivation_ = false;
+    runUserActivation_ = false;
 
     if(activationThread_.joinable())
     {
@@ -75,11 +82,14 @@ void ServerTCP::activateUsers()
 
 void ServerTCP::updateClientList()
 {
-    for(auto iter = clientList_.begin(); iter != clientList_.end(); ++iter)
+    bool isSuccess = false;
+
+    for(auto iter = clientList_.begin(); (iter != clientList_.end()) & !isSuccess; ++iter)
     {
         if(!(*iter)->checkListenEnable())
         {
             clientList_.erase(iter);
+            isSuccess = true;
         }
     }
 }

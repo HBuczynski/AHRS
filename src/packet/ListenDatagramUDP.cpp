@@ -44,7 +44,7 @@ vector<uint8_t> ListenDatagramUDP::receivePacket()
 
     socklen_t slen = sizeof(sockAddress_);
 
-    if ( recvfrom(sock_, reinterpret_cast<char*>(frame.data()), frame.capacity(), 0, (struct sockaddr *) &sockAddress_, &slen) == -1 )
+    if ( recvfrom(sock_, reinterpret_cast<char*>(frame.data()), frame.capacity(), 0, (struct sockaddr *) &sockAddress_, &slen) <= 0 )
     {
         throw logic_error("Cannot receive packet.");
     }

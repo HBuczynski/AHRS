@@ -18,7 +18,7 @@ namespace communication
     class ServerTCP
     {
     public:
-        ServerTCP(uint16_t port, uint8_t maxClientNumber, ClientUDPManager* clientUDPManager);
+        ServerTCP(uint16_t port, uint8_t maxClientNumber);
         ~ServerTCP();
 
         void startUserActivation();
@@ -35,7 +35,7 @@ namespace communication
         std::atomic<bool> runUserActivation_;
         std::thread activationThread_;
 
-        ClientUDPManager* clientUDPManager_;
+        std::shared_ptr<ClientUDPManager> clientUDPManager_;
         std::list<std::unique_ptr<ClientThreadTCP> > clientList_;
     };
 }

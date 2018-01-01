@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include <memory>
 
+#include <fcntl.h>
+#include <iostream>
+
 using namespace std;
 using namespace communication;
 
@@ -53,7 +56,8 @@ vector<uint8_t> SendStreamTCP::receivePacket()
     vector<uint8_t > frame(1000);
     fill(frame.begin(), frame.end(), 0);
 
-    if( recv(sock_ , reinterpret_cast<char*>(frame.data()), frame.capacity(), 0) < 0) {
+    if( recv(sock_ , reinterpret_cast<char*>(frame.data()), frame.capacity(), 0) <= 0)
+    {
         throw logic_error("Cannot receive packet.");
     }
 
@@ -62,7 +66,7 @@ vector<uint8_t> SendStreamTCP::receivePacket()
 
 void SendStreamTCP::sendData(vector<uint8_t> message)
 {
-    if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(message) ) == -1)
+    if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(message) ) <= 0)
     {
         throw logic_error("Cannot send packet.");
     }

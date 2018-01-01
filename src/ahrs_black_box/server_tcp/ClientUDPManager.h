@@ -7,6 +7,7 @@
 #include <cstdint>
 #include <memory>
 #include <mutex>
+#include <thread>
 #include <utility>
 
 namespace communication
@@ -14,14 +15,16 @@ namespace communication
     class ClientUDPManager
     {
     public:
-        ClientUDPManager() {};
-        virtual ~ClientUDPManager() {};
+        ClientUDPManager();
+        ~ClientUDPManager();
 
-        virtual const std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t > >& getClientList() = 0;
-        virtual void insertNewClient(std::pair<std::shared_ptr<ClientUDP>, uint8_t > newClient) = 0;
-        virtual void removeClient(uint8_t id) = 0;
+        std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t > > getClientList();
+        void insertNewClient(std::pair<std::shared_ptr<ClientUDP>, uint8_t > newClient);
+        void removeClient(uint8_t id);
 
-    protected:
+        void broadcast(std::vector<uint8_t> frame);
+
+    private:
         std::mutex clientListMutex_;
         std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t> > clientList_;
     };

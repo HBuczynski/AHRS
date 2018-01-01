@@ -35,7 +35,7 @@ SendDatagramUDP::~SendDatagramUDP()
 
 void SendDatagramUDP::sendData(vector<uint8_t>& message)
 {
-    if ( sendto(sock_, reinterpret_cast<char*>(message.data()), sizeof(message),0, (struct sockaddr *) &sockAddress_, sizeof(sockAddress_)) == -1 )
+    if ( sendto(sock_, reinterpret_cast<char*>(message.data()), sizeof(message),0, (struct sockaddr *) &sockAddress_, sizeof(sockAddress_)) <=0 )
     {
         throw logic_error("Cannot send packet.");
 

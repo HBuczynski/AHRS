@@ -1,7 +1,7 @@
 #ifndef AHRS_BLACK_BOX_COMMANDHANDLER_H
 #define AHRS_BLACK_BOX_COMMANDHANDLER_H
 
-#include <ahrs_black_box/communication_manager_black_box/ClientUDPManager.h>
+#include <ahrs_black_box/server_tcp/ClientUDPManager.h>
 #include <protocol/CommandVisitor.h>
 #include <protocol/Response.h>
 
@@ -23,14 +23,14 @@ namespace communication
         virtual void visit(CollectDataCommand& command) override;
         virtual void visit(SetPlaneMagnetometerCommand& command) override;
 
-        void initializeClientUDPManager(ClientUDPManager* clientUDPManager);
+        void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);
 
         std::unique_ptr<Response> getResponse();
 
     private:
         ClientThreadTCP *currentClient_;
-        ClientUDPManager* clientUDPManager_;
+        std::shared_ptr<ClientUDPManager> clientUDPManager_;
 
         std::unique_ptr<Response> response_;
     };

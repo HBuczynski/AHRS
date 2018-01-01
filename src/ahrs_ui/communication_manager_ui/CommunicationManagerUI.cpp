@@ -1,6 +1,8 @@
 #include "CommunicationManagerUI.h"
 
 #include <protocol/InitConnectionCommand.h>
+#include <protocol/CollectDataCommand.h>
+#include <protocol/EndConnectionCommand.h>
 #include <iostream>
 
 using namespace std;
@@ -33,8 +35,12 @@ void CommunicationManagerUI::initializeClientConnection()
 void CommunicationManagerUI::sendCommands()
 {
     auto command = make_unique<InitConnectionCommand>(parameters_.sourcePortUDP, parameters_.sourceAddressUDP);
+    auto command2 = make_unique<CollectDataCommand>();
+    auto command3 = make_unique<EndConnectionCommand>();
 
     client_->sendCommand(move(command), this);
+    client_->sendCommand(move(command2), this);
+    client_->sendCommand(move(command3), this);
 }
 
 void CommunicationManagerUI::received(std::vector<uint8_t> responseFrame)

@@ -11,17 +11,13 @@
 
 namespace communication
 {
-    class CommunicationManagerBlackBox : public ClientUDPManager
+    class CommunicationManagerBlackBox
     {
     public:
         CommunicationManagerBlackBox(uint16_t serverPort, uint8_t maxUserNumber);
         ~CommunicationManagerBlackBox();
 
         void initialize();
-
-        const std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t > >& getClientList() override;
-        void insertNewClient(std::pair<std::shared_ptr<ClientUDP>, uint8_t > newClient) override;
-        void removeClient(uint8_t id) override;
 
     private:
         void activateServer();

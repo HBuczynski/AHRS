@@ -4,7 +4,6 @@
 #include <packet/SendStreamTCP.h>
 #include <protocol/CommandFactory.h>
 #include <ahrs_black_box/server_tcp/CommandHandlerVisitor.h>
-#include <ahrs_black_box/communication_manager_black_box/ClientUDPManager.h>
 
 #include <thread>
 #include <atomic>
@@ -15,7 +14,7 @@ namespace communication
     class ClientThreadTCP
     {
     public:
-        ClientThreadTCP(std::unique_ptr<SendStreamTCP> socket, ClientUDPManager* clientUDPManager);
+        ClientThreadTCP(std::unique_ptr<SendStreamTCP> socket, std::shared_ptr<ClientUDPManager> clientUDPManager);
         ~ClientThreadTCP();
 
        void initializeCommandHandler();
@@ -36,7 +35,7 @@ namespace communication
         std::unique_ptr<SendStreamTCP> socket_;
         uint32_t id_;
 
-        ClientUDPManager* clientUDPManager_;
+        std::shared_ptr<ClientUDPManager> clientUDPManager_;
         CommandFactory commandFactory_;
         CommandHandlerVisitor commandHandler_;
 

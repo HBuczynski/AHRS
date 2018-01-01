@@ -13,7 +13,10 @@ ClientTCP::ClientTCP(uint16_t portIn, string addressIn)
 
 ClientTCP::~ClientTCP()
 {
-    stopCommandSending();
+    if(executeCommandThread_.joinable())
+    {
+        executeCommandThread_.join();
+    }
 }
 
 void ClientTCP::connectToServer()
@@ -89,7 +92,7 @@ void ClientTCP::executeCommands()
                 for(uint8_t i=0; i < COMMAND_SENDING_REPETITION && !isSuccess; ++i)
                 {
                     socket_->sendData(commandPair.first->getFrameBytes());
-                    cout << "wyslano komende" << endl;
+                    cout << "wyslano komende " << commandPair.first->getName() << endl;
 
                     const auto responseFrame = socket_->receivePacket();
 
