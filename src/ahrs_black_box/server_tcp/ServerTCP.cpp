@@ -10,12 +10,14 @@
 #include <iostream>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber)
         : port_(port),
           maxClientNumber_(maxClientNumber),
-          runUserActivation_(false)
+          runUserActivation_(false),
+          logger_(Logger::getInstance())
 {
     clientUDPManager_ = make_shared<ClientUDPManager>();
 }
@@ -58,18 +60,20 @@ void ServerTCP::activateUsers()
     serverSocket.listenUsers(maxClientNumber_);
     uint32_t clientID = 1;
 
+    string message = string("ServerTCP :: Server starts user acceptance.");
+    logger_.writeLog(LogType::INFORMATION_LOG, message);
+
     while(runUserActivation_)
     {
         updateClientList();
-
-        cout << "w petli " << endl;
 
         if(clientList_.size() < maxClientNumber_)
         {
             //Wait on new users.
             auto client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),clientUDPManager_);
 
-            cout << "Aktywowano uzytkownika" << endl;
+            string message = string("ServerTCP :: Client with ID -") + to_string(clientID) + string("- was registered.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
             client->setID(clientID);
             client->startListen();
 

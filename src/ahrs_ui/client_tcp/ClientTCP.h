@@ -2,9 +2,11 @@
 #define AHRS_BLACK_BOX_WAIC_CLIENT_H
 
 #include <ahrs_ui/client_tcp/ResponseNotification.h>
-
+#include <ahrs_ui/client_tcp/ResponseHandlerVisitor.h>
+#include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
 #include <protocol/Command.h>
+#include <protocol/ResponseFactory.h>
 
 #include <cstdint>
 #include <atomic>
@@ -53,7 +55,12 @@ namespace communication
 
         std::queue<CommandInQueue> commandQueue_;
 
+        ResponseHandlerVisitor responseHandler_;
+        ResponseFactory responseFactory_;
+
         const uint8_t COMMAND_SENDING_REPETITION = 5;
+
+        utility::Logger& logger_;
     };
 
 }

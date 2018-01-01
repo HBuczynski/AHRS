@@ -3,12 +3,14 @@
 #include <iostream>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 ClientTCP::ClientTCP(uint16_t portIn, string addressIn)
     : port_(portIn),
       address_(addressIn),
-      executeCommandsFlag_(false)
+      executeCommandsFlag_(false),
+      logger_(Logger::getInstance())
 {}
 
 ClientTCP::~ClientTCP()
@@ -92,9 +94,14 @@ void ClientTCP::executeCommands()
                 for(uint8_t i=0; i < COMMAND_SENDING_REPETITION && !isSuccess; ++i)
                 {
                     socket_->sendData(commandPair.first->getFrameBytes());
-                    cout << "wyslano komende " << commandPair.first->getName() << endl;
+
+                    string message = string("ClientTCP :: Client data: ") + address_ + string(" and port: ")+ to_string(port_) + string(". Send command: ") + commandPair.first->getName();
+                    logger_.writeLog(LogType::INFORMATION_LOG, message);
 
                     const auto responseFrame = socket_->receivePacket();
+
+                    const auto response = responseFactory_.createCommand(responseFrame);
+                    response->accept(responseHandler_);
 
                     commandPair.second->received(responseFrame);
 
@@ -106,8 +113,11 @@ void ClientTCP::executeCommands()
             }
             catch (exception &e)
             {
+                string message = string("ClienTCP :: Client data: ") + address_ + string(" and port: ")+ to_string(port_) + string("-. Received exception: ") + e.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
                 // in case if command is not send
                 // in case if response is not received
+                // co zrobic gdy wyslamy end connection
             }
         }
     }

@@ -4,6 +4,7 @@
 #include <packet/SendStreamTCP.h>
 #include <protocol/CommandFactory.h>
 #include <ahrs_black_box/server_tcp/CommandHandlerVisitor.h>
+#include <logger/Logger.h>
 
 #include <thread>
 #include <atomic>
@@ -38,6 +39,8 @@ namespace communication
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
         CommandFactory commandFactory_;
         CommandHandlerVisitor commandHandler_;
+
+        utility::Logger& logger_;
 
     };
 }

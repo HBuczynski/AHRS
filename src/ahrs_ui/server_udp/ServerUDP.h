@@ -3,6 +3,7 @@
 
 #include <ahrs_ui/server_udp/DataHandlerVisitor.h>
 #include <protocol/Command.h>
+#include <logger/Logger.h>
 #include <packet/ListenDatagramUDP.h>
 #include <protocol/MeasuringDataFactory.h>
 
@@ -35,6 +36,8 @@ namespace communication
         std::unique_ptr<ListenDatagramUDP> socket_;
         MeasuringDataFactory dataFactory_;
         DataHandlerVisitor dataVisitor_;
+
+        utility::Logger& logger_;
     };
 }
 #endif

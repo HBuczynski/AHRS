@@ -45,7 +45,7 @@ void CommunicationManagerUI::sendCommands()
 
 void CommunicationManagerUI::received(std::vector<uint8_t> responseFrame)
 {
-    cout << "Otrzymano odpowiedź " << endl;
+
 }
 
 

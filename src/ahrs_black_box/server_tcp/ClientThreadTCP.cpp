@@ -5,12 +5,14 @@
 #include <iostream>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, shared_ptr<ClientUDPManager> clientUDPManager)
-    : socket_(std::move(socket)),
+    : runListenThread_(false),
+      socket_(std::move(socket)),
       clientUDPManager_(clientUDPManager),
-      runListenThread_(false)
+      logger_(Logger::getInstance())
 {
     initializeCommandHandler();
 }
@@ -58,6 +60,9 @@ void ClientThreadTCP::stopListen()
 
 void ClientThreadTCP::runListen()
 {
+    string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("- starts listening.");
+    logger_.writeLog(LogType::INFORMATION_LOG, message);
+
     while(runListenThread_)
     {
         try
@@ -74,7 +79,9 @@ void ClientThreadTCP::runListen()
         {
             // 1. socket is disabled
             // 2. factory can't create a command
-            cout << "client thread - wyjatek" << e.what() << endl;
+            string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("-. Received exception: ") + e.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+
             // TO DO: Check what type of exception was registered.
             if(runListenThread_)
             {

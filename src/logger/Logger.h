@@ -12,13 +12,13 @@ namespace utility
 {
     struct InitLogStructure
     {
-        bool writeOnConsole = false;
-        bool writeLogsInSeparetFiles = false;
+        bool writeOnConsole = true;
+        bool writeLogsInSeparetFiles = true;
 
-        bool debugLog = false;
-        bool errroLog = false;
-        bool informationLog = false;
-        bool warningLog = false;
+        bool debugLog = true;
+        bool errroLog = true;
+        bool informationLog = true;
+        bool warningLog = true;
     };
 
 	class Logger

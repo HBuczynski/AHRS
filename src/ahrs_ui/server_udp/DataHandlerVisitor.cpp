@@ -3,9 +3,11 @@
 #include <iostream>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 DataHandlerVisitor::DataHandlerVisitor()
+    : logger_(Logger::getInstance())
 {}
 
 DataHandlerVisitor::~DataHandlerVisitor()
@@ -13,7 +15,9 @@ DataHandlerVisitor::~DataHandlerVisitor()
 
 void DataHandlerVisitor::visit(ImuData &data)
 {
-    cout << "Otrzymano IMUData" << endl;
+    string message = string("DataHandlerVisitor :: Received ImuData.");
+    logger_.writeLog(LogType::INFORMATION_LOG, message);
+
 }
 
 void DataHandlerVisitor::visit(GpsData &data)

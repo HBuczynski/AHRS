@@ -19,7 +19,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_udp)

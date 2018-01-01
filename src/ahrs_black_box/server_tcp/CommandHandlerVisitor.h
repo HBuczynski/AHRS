@@ -2,6 +2,7 @@
 #define AHRS_BLACK_BOX_COMMANDHANDLER_H
 
 #include <ahrs_black_box/server_tcp/ClientUDPManager.h>
+#include <logger/Logger.h>
 #include <protocol/CommandVisitor.h>
 #include <protocol/Response.h>
 
@@ -33,6 +34,8 @@ namespace communication
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
 
         std::unique_ptr<Response> response_;
+
+        utility::Logger& logger_;
     };
 }
 #endif

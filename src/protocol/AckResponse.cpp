@@ -5,8 +5,8 @@ using namespace std;
 using namespace communication;
 
 AckResponse::AckResponse(AckType type)
-    : type_(type),
-      Response(10, ResponseType::ACK)
+    : Response(10, ResponseType::ACK),
+      type_(type)
 {}
 
 AckResponse::~AckResponse()

@@ -2,6 +2,7 @@
 #define WAIC_SERVER_H
 
 #include <protocol/Command.h>
+#include <logger/Logger.h>
 
 #include "CommandHandlerVisitor.h"
 #include "ClientThreadTCP.h"
@@ -37,6 +38,8 @@ namespace communication
 
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
         std::list<std::unique_ptr<ClientThreadTCP> > clientList_;
+
+        utility::Logger& logger_;
     };
 }
 #endif

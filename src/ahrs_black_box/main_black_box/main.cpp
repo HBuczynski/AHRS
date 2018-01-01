@@ -15,6 +15,19 @@ using namespace communication;
 
 int main(int argc , char *argv[])
 {
+    Logger &logger = Logger::getInstance();
+
+    InitLogStructure struc;
+    struc.debugLog = true;
+    struc.errroLog = true;
+    struc.informationLog = true;
+    struc.warningLog = true;
+
+    struc.writeLogsInSeparetFiles = true;
+    struc.writeOnConsole = true;
+
+    logger.initLogger(struc);
+
     CommunicationManagerBlackBox manager(9000,2);
     manager.initialize();
 

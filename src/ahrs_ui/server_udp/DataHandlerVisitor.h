@@ -2,6 +2,7 @@
 #define AHRS_DATAHANDLERVISITOR_H
 
 #include <protocol/MeasuringDataVisitor.h>
+#include <logger/Logger.h>
 
 namespace communication
 {
@@ -13,6 +14,9 @@ namespace communication
 
         virtual void visit(ImuData& data) override;
         virtual void visit(GpsData& data) override;
+
+    private:
+        utility::Logger& logger_;
 
     };
 }
