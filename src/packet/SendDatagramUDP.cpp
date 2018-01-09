@@ -1,6 +1,7 @@
 #include "SendDatagramUDP.h"
 
 #include <stdexcept>
+#include <arpa/inet.h>
 
 using namespace std;
 using namespace communication;
@@ -24,7 +25,7 @@ void SendDatagramUDP::createSocket()
     }
 
     sockAddress_.sin_family = AF_INET;
-    sockAddress_.sin_addr.s_addr = INADDR_ANY;
+    sockAddress_.sin_addr.s_addr = inet_addr(address_.c_str());
     sockAddress_.sin_port = htons(port_);
 }
 
