@@ -23,6 +23,8 @@ namespace communication
         void listenUsers(uint32_t userNumber);
         std::unique_ptr<SendStreamTCP> acceptUsers();
 
+        std::string getAddress();
+
     private:
         void createSocket();
 

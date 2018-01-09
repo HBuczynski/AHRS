@@ -1,6 +1,9 @@
 #include "ListenStreamTCP.h"
 
 #include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 
 using namespace std;
 using namespace communication;
@@ -53,4 +56,12 @@ unique_ptr<SendStreamTCP> ListenStreamTCP::acceptUsers()
     unique_ptr<SendStreamTCP> newUser(new SendStreamTCP(clientSock, sockAddress));
 
     return newUser;
+}
+
+string ListenStreamTCP::getAddress()
+{
+
+    string address(inet_ntoa(sockAddress_.sin_addr));
+
+    return address;
 }
