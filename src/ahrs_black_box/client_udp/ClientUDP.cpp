@@ -18,8 +18,27 @@ ClientUDP::~ClientUDP()
 
 void ClientUDP::sendData(std::vector<uint8_t> &frame)
 {
-    string message = string("ClientUDP :: Client send data to address: ") + address_ + string(" and port: ")+ to_string(port_) + string(".");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ClientUDP :: Client send data to address: ") + address_ + string(" and port: ") +
+                         to_string(port_) + string(".");
 
-    datagram_->sendData(frame);
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    try
+    {
+        datagram_->sendData(frame);
+    }
+    catch (exception &e)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("ClientUDP :: Client cannot send data to address: ") + address_ + string(" and port: ") +
+                                   to_string(port_) + string(".");
+
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
 }

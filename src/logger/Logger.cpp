@@ -17,7 +17,8 @@ Logger *Logger::instance_ = nullptr;
 mutex Logger::loggerMutex_;
 ofstream Logger::file_;
 int32_t Logger::instanceCounter_ = 0;
-string Logger::folderName = "";
+string Logger::folderName_ = "";
+string Logger::fileName_ = "";
 
 Logger::Logger()
 	: writeOnConsole_(false),
@@ -48,16 +49,10 @@ Logger &Logger::getInstance()
 
 void Logger::initFile()
 {
-    folderName = "log_files_" + TimeManager::getTimeAndDate();
-    mkdir(folderName.c_str(), 0777);
+    folderName_ = "log_files_" + TimeManager::getTimeAndDate();
+    mkdir(folderName_.c_str(), 0777);
 
-	string fileName = folderName + "/" + "log_" + TimeManager::getTimeAndDate() + ".txt";
-
-    file_.open(fileName.c_str());
-    if (file_.fail())
-    {
-        throw logic_error("Logger: Main logger file was not created.");
-    }
+	fileName_ = folderName_ + "/" + "log_" + TimeManager::getTimeAndDate() + ".txt";
 }
 
 void Logger::initLogger(InitLogStructure logParameters)
@@ -84,22 +79,22 @@ void Logger::registerLogType(LogType type)
 
     if(type == DEBUG_LOG)
     {
-        logInstance = make_shared<DebugLog>(writeInSeparateFiles_, folderName);
+        logInstance = make_shared<DebugLog>(writeInSeparateFiles_, folderName_);
         typeRegister_[type] = logInstance;
     }
     else if(type == ERROR_LOG)
     {
-        logInstance = make_shared<ErrorLog>(writeInSeparateFiles_, folderName);
+        logInstance = make_shared<ErrorLog>(writeInSeparateFiles_, folderName_);
         typeRegister_[type] = logInstance;
     }
     else if(type == WARNING_LOG)
     {
-        logInstance = make_shared<WarningLog>(writeInSeparateFiles_, folderName);
+        logInstance = make_shared<WarningLog>(writeInSeparateFiles_, folderName_);
         typeRegister_[type] = logInstance;
     }
     else if(type == INFORMATION_LOG)
     {
-        logInstance = make_shared<InformationLog>(writeInSeparateFiles_, folderName);
+        logInstance = make_shared<InformationLog>(writeInSeparateFiles_, folderName_);
         typeRegister_[type] = logInstance;
     }
     else
@@ -112,6 +107,12 @@ void Logger::writeLog(LogType type, string rawMessage)
 {
     // Critical section. The log handler can be shared by several threads.
     lock_guard<mutex> lock(loggerMutex_);
+
+    file_.open(fileName_.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
+    if (file_.fail())
+    {
+        throw logic_error("Logger: Main logger file was not created.");
+    }
 
 	auto logHandler = typeRegister_.find(type);
 
@@ -136,6 +137,8 @@ void Logger::writeLog(LogType type, string rawMessage)
 	{
         throw invalid_argument("Logger: Chosen logger type was not registered.");
 	}
+
+    file_.close();
 }
 
 void Logger::destroy()
@@ -145,4 +148,52 @@ void Logger::destroy()
 	{
 		delete instance_;
 	}
+}
+
+bool Logger::isInformationEnable()
+{
+    if(typeRegister_.end() != typeRegister_.find(INFORMATION_LOG))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Logger::isDebugEnable()
+{
+    if(typeRegister_.end() != typeRegister_.find(DEBUG_LOG))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Logger::isErrorEnable()
+{
+    if(typeRegister_.end() != typeRegister_.find(ERROR_LOG))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool Logger::isWarningEnable()
+{
+    if(typeRegister_.end() != typeRegister_.find(WARNING_LOG))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

@@ -22,9 +22,14 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {
     auto newClient = make_shared<ClientUDP>(command.getPort(), command.getAddress());
 
-    string message = string("CommandHandler :: Received InitConnectionCommand from ClientID -") + to_string(currentClient_->getID())
-                     + string("-. Command data: port-") + to_string(command.getPort()) + string("; address-") + command.getAddress();
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("CommandHandler :: Received InitConnectionCommand from ClientID -") +
+                         to_string(currentClient_->getID())
+                         + string("-. Command data: port-") + to_string(command.getPort()) + string("; address-") +
+                         command.getAddress();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
     response_ = make_unique<DataResponse>("OK");
@@ -32,9 +37,13 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 {
-    string message = string("CommandHandler :: Received EndConnectionCommand from ClientID -") + to_string(currentClient_->getID())
-                     + string("-.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("CommandHandler :: Received EndConnectionCommand from ClientID -") +
+                         to_string(currentClient_->getID())
+                         + string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     clientUDPManager_->removeClient(currentClient_->getID());
     currentClient_->stopListen();
@@ -44,9 +53,13 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 
 void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 {
-    string message = string("CommandHandler :: Received CallibrateMagnetometerCommand from ClientID -") + to_string(currentClient_->getID())
-                     + string("-.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("CommandHandler :: Received CallibrateMagnetometerCommand from ClientID -") +
+                         to_string(currentClient_->getID())
+                         + string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(CollectDataCommand &command)
@@ -54,9 +67,13 @@ void CommandHandlerVisitor::visit(CollectDataCommand &command)
     ImuData imuData;
     clientUDPManager_->broadcast(imuData.getFrameBytes());
 
-    string message = string("CommandHandler :: Received CollectDataCommand from ClientID -") + to_string(currentClient_->getID())
-                     + string("-.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("CommandHandler :: Received CollectDataCommand from ClientID -") +
+                         to_string(currentClient_->getID())
+                         + string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     response_ = make_unique<DataResponse>("OK");
 }

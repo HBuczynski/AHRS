@@ -13,21 +13,24 @@ ResponseHandlerVisitor::~ResponseHandlerVisitor()
 
 void ResponseHandlerVisitor::visit(AckResponse &data)
 {
-    string message;
-    if(data.getAckType() == AckType::OK)
+    if(logger_.isInformationEnable())
     {
-        message = string("ResponseHandlerVisitor :: Received AckResponse, ackTYPE: OK");
-    }
-    else
-    {
-        message = string("ResponseHandlerVisitor :: Received AckResponse, ackTYPE: FAIL");
-    }
+        string message;
+        if (data.getAckType() == AckType::OK) {
+            message = string("ResponseHandlerVisitor :: Received AckResponse, ackTYPE: OK");
+        } else {
+            message = string("ResponseHandlerVisitor :: Received AckResponse, ackTYPE: FAIL");
+        }
 
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void ResponseHandlerVisitor::visit(DataResponse &data)
 {
-    string message = string("ResponseHandlerVisitor :: Received DataResponse, data: ") + data.getData();
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ResponseHandlerVisitor :: Received DataResponse, data: ") + data.getData();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

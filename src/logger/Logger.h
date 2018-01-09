@@ -30,6 +30,12 @@ namespace utility
 
 		void writeLog(LogType type, std::string rawMessage);
 
+		bool isInformationEnable();
+		bool isDebugEnable();
+		bool isErrorEnable();
+		bool isWarningEnable();
+
+
 		void destroy();
 
 	private:
@@ -44,7 +50,8 @@ namespace utility
 		static int32_t instanceCounter_;
 		static Logger *instance_;
 		static std::ofstream file_;
-		static std::string folderName;
+		static std::string folderName_;
+		static std::string fileName_;
 
 		bool writeOnConsole_;
 		bool writeInSeparateFiles_;

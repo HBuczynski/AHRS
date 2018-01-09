@@ -19,10 +19,7 @@ ClientThreadTCP::ClientThreadTCP(unique_ptr<SendStreamTCP> socket, shared_ptr<Cl
 
 ClientThreadTCP::~ClientThreadTCP()
 {
-    if(listenThread_.joinable())
-    {
-        listenThread_.join();
-    }
+    stopListen();
 }
 
 void ClientThreadTCP::initializeCommandHandler()
@@ -60,8 +57,11 @@ void ClientThreadTCP::stopListen()
 
 void ClientThreadTCP::runListen()
 {
-    string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("- starts listening.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("- starts listening.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     while(runListenThread_)
     {
@@ -77,16 +77,23 @@ void ClientThreadTCP::runListen()
         }
         catch (exception &e)
         {
-            // 1. socket is disabled
-            // 2. factory can't create a command
-            string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("-. Received exception: ") + e.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-
-            // TO DO: Check what type of exception was registered.
-            if(runListenThread_)
+            // Factory can't create a command
+            if(logger_.isErrorEnable() && runListenThread_)
             {
-                // If socket has been closed or the connection has been lost, the thread has to be closed.
-                runListenThread_ = false;
+                const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
+                                 string("-. Received exception: ") + e.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+
+            // // If socket has been closed or the connection has been lost, the thread has to be closed.
+            if(!runListenThread_)
+            {
+                if(logger_.isWarningEnable())
+                {
+                    const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
+                                           string("-. Connection was ended.");
+                    logger_.writeLog(LogType::WARNING_LOG, message);
+                }
             }
         }
     }

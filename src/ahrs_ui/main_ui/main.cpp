@@ -21,11 +21,11 @@ int main(int argc , char *argv[])
     struc.errroLog = true;
     struc.informationLog = true;
     struc.warningLog = true;
-
     struc.writeLogsInSeparetFiles = true;
     struc.writeOnConsole = true;
 
     logger.initLogger(struc);
+
 
     CommunicationParameters paramters;
     paramters.sourceAddressUDP = "127.0.0.1";
@@ -39,6 +39,11 @@ int main(int argc , char *argv[])
     manager.initializeClientConnection();
     manager.sendCommands();
 
+    while(1)
+    {
+
+
+    }
 
     return 0;
 }

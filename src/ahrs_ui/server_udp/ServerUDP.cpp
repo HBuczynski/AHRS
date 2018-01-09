@@ -45,8 +45,11 @@ void ServerUDP::listen()
     socket_.reset();
     socket_ = make_unique<ListenDatagramUDP>(port_);
 
-    string message = string("ServerUDP :: Server starts listening.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ServerUDP :: Server starts listening.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     while(runListenThread_)
     {
@@ -60,8 +63,11 @@ void ServerUDP::listen()
         }
         catch (exception &e)
         {
-            string message = string("ServerUDP :: Received exception: ") + e.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("ServerUDP :: Received exception: ") + e.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
         }
     }
 }

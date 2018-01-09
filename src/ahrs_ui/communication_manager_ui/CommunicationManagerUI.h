@@ -22,13 +22,11 @@ namespace communication
         std::string destinationAddressTCP;
     };
 
-    class CommunicationManagerUI :  public  ResponseNotification
+    class CommunicationManagerUI
     {
     public:
         CommunicationManagerUI(CommunicationParameters parameters);
         ~CommunicationManagerUI();
-
-        virtual void received(std::vector<uint8_t > responseFrame) override;
 
         void initializeServer();
         void initializeClientConnection();

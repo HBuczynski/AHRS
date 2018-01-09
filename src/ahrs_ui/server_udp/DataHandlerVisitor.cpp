@@ -15,8 +15,11 @@ DataHandlerVisitor::~DataHandlerVisitor()
 
 void DataHandlerVisitor::visit(ImuData &data)
 {
-    string message = string("DataHandlerVisitor :: Received ImuData.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("DataHandlerVisitor :: Received ImuData.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
 }
 

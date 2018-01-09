@@ -8,8 +8,6 @@ using namespace communication;
 CommunicationManagerBlackBox::CommunicationManagerBlackBox(uint16_t serverPort, uint8_t maxUserNumber)
 {
     server_ = make_shared<ServerTCP>(serverPort, maxUserNumber);
-
-    initialize();
 }
 
 CommunicationManagerBlackBox::~CommunicationManagerBlackBox()

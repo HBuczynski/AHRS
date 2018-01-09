@@ -1,7 +1,6 @@
 #ifndef AHRS_BLACK_BOX_WAIC_CLIENT_H
 #define AHRS_BLACK_BOX_WAIC_CLIENT_H
 
-#include <ahrs_ui/client_tcp/ResponseNotification.h>
 #include <ahrs_ui/client_tcp/ResponseHandlerVisitor.h>
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
@@ -20,7 +19,6 @@
 
 namespace communication
 {
-    typedef std::pair<std::unique_ptr<Command>, ResponseNotification*> CommandInQueue;
     class ClientTCP
     {
     public:
@@ -31,15 +29,20 @@ namespace communication
 
         void stopCommandSending();
         void startCommandSending();
-        void sendCommand(std::unique_ptr<Command> command, ResponseNotification *notification);
+
+        void sendCommand(std::unique_ptr<Command> command);
+        bool isResponseQueueEmpty();
+        std::unique_ptr<Response> getResponse();
 
 
     private:
-        bool isQueueEmpty();
-        CommandInQueue getFromQueue();
-        void insertToQueue(CommandInQueue command);
+        bool isCommandQueueEmpty();
+        std::unique_ptr<Command> getFromCommandQueue();
+
+        void insertToResponseQueue(std::unique_ptr<Response> command);
 
         void executeCommands();
+        void catchExceptions(std::string exception, bool isEndConnectionSent, uint8_t commandSendingCounter);
 
         uint16_t port_;
         std::string address_;
@@ -47,17 +50,18 @@ namespace communication
         std::unique_ptr<SendStreamTCP> socket_;
 
         std::atomic<bool> executeCommandsFlag_;
-        std::mutex commandQueueMutex_;
         std::thread executeCommandThread_;
 
-        std::condition_variable conditionVariable_;
-        std::mutex conditionalVariableMutex_;
+        std::mutex commandQueueMutex_;
+        std::queue<std::unique_ptr<Command>> commandQueue_;
 
-        std::queue<CommandInQueue> commandQueue_;
+        std::mutex responseQueueMutex_;
+        std::queue<std::unique_ptr<Response> > responseQueue_;
 
         ResponseHandlerVisitor responseHandler_;
         ResponseFactory responseFactory_;
 
+        const uint8_t COMMAND_TYPE_POSITION = 5;
         const uint8_t COMMAND_SENDING_REPETITION = 5;
 
         utility::Logger& logger_;

@@ -31,5 +31,10 @@ int main(int argc , char *argv[])
     CommunicationManagerBlackBox manager(9000,2);
     manager.initialize();
 
+    while(1)
+    {
+
+    }
+
     return 0;
 }

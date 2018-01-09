@@ -8,7 +8,8 @@ namespace communication
     enum AckType : uint8_t
     {
         OK = 10,
-        FAIL = 20
+        FAIL = 20,
+        CONNECTION_ENDED = 30
     };
 
     class AckResponse final : public Response

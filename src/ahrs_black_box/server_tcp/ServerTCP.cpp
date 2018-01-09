@@ -24,11 +24,7 @@ ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber)
 
 ServerTCP::~ServerTCP()
 {
-    cout << "jestem w destruktorze" << endl;
-    if(activationThread_.joinable())
-    {
-        activationThread_.join();
-    }
+    stopUserActivation();
 }
 
 void ServerTCP::startUserActivation()
@@ -36,11 +32,6 @@ void ServerTCP::startUserActivation()
     runUserActivation_ = true;
 
     activationThread_ = thread(&ServerTCP::activateUsers, this);
-    if(activationThread_.joinable())
-    {
-        activationThread_.join();
-    }
-    //activateUsers();
 }
 
 void ServerTCP::stopUserActivation()
@@ -60,8 +51,11 @@ void ServerTCP::activateUsers()
     serverSocket.listenUsers(maxClientNumber_);
     uint32_t clientID = 1;
 
-    string message = string("ServerTCP :: Server starts user acceptance.");
-    logger_.writeLog(LogType::INFORMATION_LOG, message);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ServerTCP :: Server starts user acceptance.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     while(runUserActivation_)
     {
@@ -72,8 +66,11 @@ void ServerTCP::activateUsers()
             //Wait on new users.
             auto client = make_unique<ClientThreadTCP>(move(serverSocket.acceptUsers()),clientUDPManager_);
 
-            string message = string("ServerTCP :: Client with ID -") + to_string(clientID) + string("- was registered.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            if(logger_.isInformationEnable())
+            {
+                const string message = string("ServerTCP :: Client with ID -") + to_string(clientID) + string("- was registered.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
             client->setID(clientID);
             client->startListen();
 
