@@ -4,8 +4,9 @@
 using namespace std;
 using namespace communication;
 
-ImuData::ImuData()
-    : MeasuringData(10, MeasuringType::IMU)
+ImuData::ImuData(uint8_t measurement)
+    : MeasuringData(10, MeasuringType::IMU),
+      measurement_(measurement)
 {}
 
 
@@ -20,6 +21,11 @@ vector<uint8_t> ImuData::getFrameBytes()
     frame.push_back(static_cast<uint8_t >(measuringType_));
 
     return frame;
+}
+
+uint8_t ImuData::getMeasurement() const
+{
+    return measurement_;
 }
 
 string ImuData::getName()

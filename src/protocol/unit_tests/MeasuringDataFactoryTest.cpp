@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE( data )
 
     BOOST_AUTO_TEST_CASE( imuDataBuilder )
     {
-        ImuData data;
+        ImuData data(12);
         MeasuringDataFactory factory;
 
         auto commandFromVec = static_pointer_cast<ImuData, MeasuringData>(factory.createCommand(data.getFrameBytes()));

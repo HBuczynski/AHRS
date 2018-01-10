@@ -64,7 +64,7 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 
 void CommandHandlerVisitor::visit(CollectDataCommand &command)
 {
-    ImuData imuData;
+    ImuData imuData(12);
     clientUDPManager_->broadcast(imuData.getFrameBytes());
 
     if(logger_.isInformationEnable())

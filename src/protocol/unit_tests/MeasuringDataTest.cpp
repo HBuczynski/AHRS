@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE( data )
 
     BOOST_AUTO_TEST_CASE( imuData )
     {
-        ImuData data;
+        ImuData data(12);
         data.getFrameBytes();
 
         BOOST_CHECK( FrameType::MEASUREMENT_DATA == data.getFrameType());
