@@ -46,7 +46,10 @@ void ClientThreadTCP::startListen()
 
 void ClientThreadTCP::stopListen()
 {
-    socket_.reset();
+    if(socket_.get() != nullptr)
+    {
+        socket_.reset();
+    }
     runListenThread_ = false;
 
     if(listenThread_.joinable())
@@ -63,6 +66,7 @@ void ClientThreadTCP::runListen()
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
+    // to do: zamkniecie gdy nie otrzymamy pakietu
     while(runListenThread_)
     {
         try
@@ -83,6 +87,12 @@ void ClientThreadTCP::runListen()
                 const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
                                  string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+
+            if(string(e.what()) ==  string("Received exception: Cannot receive packet.") )
+            {
+                runListenThread_ = false;
+                socket_.reset();
             }
 
             // // If socket has been closed or the connection has been lost, the thread has to be closed.
