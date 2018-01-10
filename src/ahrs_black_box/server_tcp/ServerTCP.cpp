@@ -48,12 +48,6 @@ void ServerTCP::activateUsers()
 {
     ListenStreamTCP serverSocket(port_);
 
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("ServerTCP :: Server address IP - ") + serverSocket.getAddress();
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
     serverSocket.listenUsers(maxClientNumber_);
     uint32_t clientID = 1;
 

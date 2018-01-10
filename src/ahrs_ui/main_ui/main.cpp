@@ -28,16 +28,15 @@ int main(int argc , char *argv[])
 
 
     CommunicationParameters paramters;
-    paramters.sourceAddressUDP = "192.168.56.1";
+    /*paramters.sourceAddressUDP = "192.168.0.185";
     paramters.sourcePortUDP = 8000;
     paramters.destinationAddressTCP = "192.168.0.164";
-    paramters.destinationPortTCP = 9000;
-
-    /*paramters.sourceAddressUDP = "127.0.0.1";
-    paramters.sourcePortUDP = 8000;
-    paramters.destinationAddressTCP = "127.0.0.1";
     paramters.destinationPortTCP = 9000;*/
 
+    paramters.sourceAddressUDP = "127.0.0.1";
+    paramters.sourcePortUDP = 8000;
+    paramters.destinationAddressTCP = "127.0.0.1";
+    paramters.destinationPortTCP = 9000;
 
     CommunicationManagerUI manager(paramters);
     manager.initializeServer();
