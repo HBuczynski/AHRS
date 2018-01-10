@@ -5,6 +5,9 @@
 #include <protocol/EndConnectionCommand.h>
 #include <iostream>
 
+#include <thread>
+#include <chrono>
+
 using namespace std;
 using namespace communication;
 
@@ -37,7 +40,9 @@ void CommunicationManagerUI::sendCommands()
     auto command3 = make_unique<EndConnectionCommand>();
 
     client_->sendCommand(move(command));
+    std::this_thread::sleep_for(1s);
     client_->sendCommand(move(command2));
+    std::this_thread::sleep_for(1s);
     client_->sendCommand(move(command3));
 }
 

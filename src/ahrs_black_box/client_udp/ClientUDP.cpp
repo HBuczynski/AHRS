@@ -28,6 +28,7 @@ void ClientUDP::sendData(std::vector<uint8_t> &frame)
 
     try
     {
+        cout << "\n Send to:" << datagram_->getAddress() << "port:" << datagram_->getPort() << endl;
         datagram_->sendData(frame);
     }
     catch (exception &e)

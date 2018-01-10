@@ -8,6 +8,9 @@
 #include <memory.h>
 #include <unistd.h>
 
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
 #include <cstdint>
 #include <vector>
 #include <string>
@@ -21,6 +24,17 @@ namespace communication
         ~SendDatagramUDP();
 
         void sendData(std::vector<uint8_t> &message);
+
+        uint16_t getPort()
+        {
+            return port_;
+        };
+
+        std::string getAddress()
+        {
+            return std::string(inet_ntoa(sockAddress_.sin_addr));
+        }
+
 
     private:
         void createSocket();
