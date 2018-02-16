@@ -1,0 +1,15 @@
+{
+  "Config" :
+  {
+    "buffer-length" : 5000,
+    "trolo" : 5000000,
+    "long_trolo" : 98765000,
+    "server-ip" : "10.10.10.20",
+    "test-format" :
+    {
+      "test_number" : 23,
+      "test_string" : "test"
+    }
+  },
+  "Note" : "This is a cofiguration file"
+}

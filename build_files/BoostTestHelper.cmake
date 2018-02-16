@@ -52,12 +52,10 @@ function(add_boost_test)
     foreach(HIT ${FOUND_TESTS})
         string(REGEX REPLACE ".*\\( *([A-Za-z_0-9]+) *\\).*" "\\1" TEST_NAME ${HIT})
 
-        add_test(NAME "${TEST_EXECUTABLE_NAME}.${TEST_NAME}"
-                COMMAND ${TEST_EXECUTABLE_NAME}
-                --run_test=${TEST_NAME} --catch_system_error=yes)
-    endforeach()
+        add_test(NAME "${TEST_EXECUTABLE_NAME}.${TEST_NAME}" COMMAND ${TEST_EXECUTABLE_NAME} --run_test=${TEST_NAME} --catch_system_error=yes)
 
-#    add_test(NAME ${TEST_EXECUTABLE_NAME}
-#             COMMAND ${TEST_EXECUTABLE_NAME} --catch_system_error=yes)
+    endforeach()
+    #add_test(NAME "${TEST_EXECUTABLE_NAME}" COMMAND valgrind --error-exitcode=3 --leak-check=full $<TARGET_FILE:${TEST_EXECUTABLE_NAME}>)
+    
 
 endfunction()

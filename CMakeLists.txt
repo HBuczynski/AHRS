@@ -6,7 +6,7 @@ project(AHRS)
 ########################################################################################################
 
 set(CMAKE_BUILD_TYPE Debug)
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
 
 #TARGET_LINK_LIBRARIES(AHRS_black_box ${CMAKE_THREAD_LIBS_INIT})
 
@@ -26,6 +26,7 @@ option(BUILD_TESTS "Build the tests" ON)
 
 if(BUILD_TESTS)
     find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+    include(CTest)
     enable_testing()
     include(BoostTestHelper)
 endif()
@@ -39,18 +40,19 @@ add_subdirectory("src/protocol"                                         protocol
 add_subdirectory("src/utility"                                          utility                         )
 add_subdirectory("src/config_reader"                                    config_reader                   )
 add_subdirectory("src/packet"                                           packet                          )
-add_subdirectory("src/ahrs_black_box/main_black_box"                    main_black_box                  )
-add_subdirectory("src/ahrs_black_box/server_tcp"                        server_tcp                      )
-add_subdirectory("src/ahrs_black_box/client_udp"                        client_udp                      )
-add_subdirectory("src/ahrs_black_box/communication_manager_black_box"   communication_manager_black_box )
-add_subdirectory("src/ahrs_ui/client_tcp"                               client_tcp                      )
-add_subdirectory("src/ahrs_ui/server_udp"                               server_udp                      )
-add_subdirectory("src/ahrs_ui/communication_manager_ui"                 communication_manager_ui        )
-add_subdirectory("src/ahrs_ui/main_ui"                                  main_ui                         )
+add_subdirectory("src/feeder/main_feeder"                               main_feeder                     )
+add_subdirectory("src/feeder/server_tcp"                                server_tcp                      )
+add_subdirectory("src/feeder/client_udp"                                client_udp                      )
+add_subdirectory("src/feeder/communication_manager_feeder"              communication_manager_feeder    )
+add_subdirectory("src/ui/client_tcp"                                    client_tcp                      )
+add_subdirectory("src/ui/server_udp"                                    server_udp                      )
+add_subdirectory("src/ui/communication_manager_ui"                      communication_manager_ui        )
+add_subdirectory("src/ui/main_ui"                                       main_ui                         )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #
 ########################################################################################################
+
 # check if Doxygen is installed
 find_package(Doxygen)
 

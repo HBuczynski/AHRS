@@ -19,7 +19,8 @@ if [ "$input" == "test" ]; then
     # Create build and binary files
     cmake . -B"${target_folder_name}"/build
     cmake --build "${target_folder_name}"/build 
-    cmake --build "${target_folder_name}"/build -- -j2 test 
+    cmake --build "${target_folder_name}"/build -- -j2 test
+
 
 elif [ "$input" == "doxygen" ]; then   
     # Create build and binary files
