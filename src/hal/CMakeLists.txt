@@ -29,5 +29,5 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 
 if(BUILD_TESTS)
-    #add_subdirectory(unit_tests)
+    add_subdirectory(unit_tests)
 endif()
