@@ -3,36 +3,31 @@
 using namespace hardware;
 using namespace std;
 
-GPIOInterface::GPIOInterface(uint8_t pinNumber, GPIOMode mode)
-    : pinNumber_(pinNumber),
-      mode_(mode)
-{
-
-}
+GPIOInterface::GPIOInterface(GPIO gpio)
+    : gpio_(gpio)
+{}
 
 GPIOInterface::~GPIOInterface()
+{}
+
+void GPIOInterface::activateInterrupt(std::function< void() >  callback)
 {
-
-}
-
-void GPIOInterface::activateInterrupt(std::function< void() >  callback, InterruptEdge edge)
-{
-
+    callback_ = callback;
 }
 
 GPIOState GPIOInterface::getState()
 {
-    return state_;
+    return gpio_.state;
 }
 
 uint8_t GPIOInterface::getPinNumber()
 {
-    return pinNumber_;
+    return gpio_.pinNumber;
 }
 
 GPIOMode GPIOInterface::getMode()
 {
-    return mode_;
+    return gpio_.mode;
 }
 
 void GPIOInterface::interruptHandler()

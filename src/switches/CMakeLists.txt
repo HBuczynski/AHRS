@@ -18,6 +18,9 @@ target_include_directories(
         "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
+
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 

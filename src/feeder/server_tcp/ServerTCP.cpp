@@ -104,4 +104,3 @@ void ServerTCP::stopDataListening()
         clientList_.erase(iter);
     }
 }
-
