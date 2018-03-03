@@ -7,6 +7,7 @@ input=$1
 tool=$2
 
 target_folder_name="target"
+target_platform="rpi"
 
 # Create basic target folder.
 if [ ! -d $target_folder_name ]; then
@@ -17,14 +18,14 @@ fi
 if [ "$input" == "test" ]; then
 
     # Create build and binary files
-    cmake . -B"${target_folder_name}"/build
+    cmake -DTARGET_PLATFROM="$target_platform" . -B"${target_folder_name}"/build
     cmake --build "${target_folder_name}"/build 
     cmake --build "${target_folder_name}"/build -- -j2 test
 
 
 elif [ "$input" == "doxygen" ]; then   
     # Create build and binary files
-    cmake -H. -B"${target_folder_name}"/build
+    cmake -DTARGET_PLATFROM="$target_platform" -H. -B"${target_folder_name}"/build
     cmake --build "${target_folder_name}"/build -- -j9 docs
     make install docs
 
@@ -69,7 +70,7 @@ else
     fi
     
     # Create build and binary files
-    cmake . -B"${target_folder_name}"/build
+    cmake -DTARGET_PLATFROM="$target_platform" . -B"${target_folder_name}"/build
     cmake --build "${target_folder_name}"/build
 fi
 

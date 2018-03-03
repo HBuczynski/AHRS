@@ -6,7 +6,13 @@ project(AHRS)
 ########################################################################################################
 
 set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
+
+if(${TARGET_PLATFROM} STREQUAL rpi)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread -lwiringPi")
+elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
+endif()
+
 
 #TARGET_LINK_LIBRARIES(AHRS_black_box ${CMAKE_THREAD_LIBS_INIT})
 
@@ -48,6 +54,7 @@ add_subdirectory("src/ui/client_tcp"                                    client_t
 add_subdirectory("src/ui/server_udp"                                    server_udp                      )
 add_subdirectory("src/ui/communication_manager_ui"                      communication_manager_ui        )
 add_subdirectory("src/ui/main_ui"                                       main_ui                         )
+add_subdirectory("src/hal"                                              hal                             )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #

@@ -38,3 +38,4 @@ target/*
 
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
+README.md.save
