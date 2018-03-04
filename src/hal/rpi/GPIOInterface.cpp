@@ -20,7 +20,7 @@ void GPIOInterface::initialize()
         throw system_error(EDOM, generic_category(), "There is problem with wiringPi library.");
     }
 
-    if(gpio_.mode == GPIOMode::INPUT)
+    if(gpio_.mode == GPIOMode:INPUT)
     {
         pinMode(gpio_.mode, INPUT);
     }
