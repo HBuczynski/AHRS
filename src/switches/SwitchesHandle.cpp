@@ -10,8 +10,10 @@ using namespace peripherals;
 SwitchesHandle::SwitchesHandle(hardware::GPIO gpioProperties)
     : gpio_(gpioProperties)
 {
-    std::function< void() > callback = std::bind(&SwitchesHandle::handleInterrupt, this);
+    std::function< void() > callback = bind(&SwitchesHandle::handleInterrupt, this);
+
     gpio_.activateInterrupt(callback);
+    lastInterrupt = chrono::steady_clock::now();
 }
 
 SwitchesHandle::~SwitchesHandle()
@@ -19,24 +21,25 @@ SwitchesHandle::~SwitchesHandle()
 
 void SwitchesHandle::handleInterrupt()
 {
-    this_thread::sleep_for(std::chrono::milliseconds(10));
+    const auto currentTimeInterrupt = chrono::steady_clock::now();
 
-    if( gpio_.getState() == GPIOState::HIGH)
+    if(chrono::duration_cast<chrono::milliseconds>(currentTimeInterrupt - lastInterrupt).count() > DEBOUNCE_TIME)
     {
+        // Check whether button does not have any mechanical failure.
+        while (gpio_.getState() == GPIOState::HIGH)
+        {
+            const auto end = chrono::steady_clock::now();
+
+            if (chrono::duration_cast<chrono::milliseconds>(end - currentTimeInterrupt).count() > CRITICAL_TIME)
+            {
+                throw system_error(EDOM, generic_category(), "Buttons was pushed too long.");
+            }
+        }
+
         // do notification to ui
         // run signal
+
     }
 
-    const auto start = std::chrono::steady_clock::now();
-
-    while(gpio_.getState() == GPIOState::HIGH)
-    {
-        const auto end = std::chrono::steady_clock::now();
-
-        if(std::chrono::duration_cast<std::chrono::seconds>(end - start).count() > CRITICAL_TIME)
-        {
-            throw system_error(EDOM, generic_category(), "Buttons was pushed too long.");
-        }
-    }
+    lastInterrupt = currentTimeInterrupt;
 }
-

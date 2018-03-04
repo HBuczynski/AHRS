@@ -6,6 +6,8 @@
 
 namespace  peripherals
 {
+    typedef std::chrono::steady_clock::time_point TimePoint;
+
     // Class is responsible for handle one of the button.
     class SwitchesHandle
     {
@@ -17,10 +19,11 @@ namespace  peripherals
         void handleInterrupt();
 
     private:
-        const std::string switchName_;
         hardware::GPIOInterface gpio_;
+        TimePoint lastInterrupt;
 
-        const uint8_t CRITICAL_TIME = 4;
+        const uint16_t CRITICAL_TIME = 4000;
+        const uint16_t DEBOUNCE_TIME = 200;
     };
 }
 
