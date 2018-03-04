@@ -1,5 +1,6 @@
 #include "../include/GPIOInterface.h"
 #include <system_error>
+#include <wiringPi.h>
 
 using namespace hardware;
 using namespace std;
@@ -20,11 +21,11 @@ void GPIOInterface::initialize()
         throw system_error(EDOM, generic_category(), "There is problem with wiringPi library.");
     }
 
-    if(gpio_.mode == GPIOMode::INPUT)
+    if(gpio_.mode == INPUT)
     {
         pinMode(gpio_.mode, INPUT);
     }
-    else if(gpio_.mode == GPIOMode::OUTPUT)
+    else if(gpio_.mode == OUTPUT)
     {
         pinMode(gpio_.mode, OUTPUT);
     }
@@ -34,9 +35,10 @@ void GPIOInterface::activateInterrupt(std::function< void() >  callback)
 {
     callback_ = callback;
 
+    std::function< void() > callback = std::bind(&GPIOInterface::interruptHandler, this);
     if(gpio_.interrupt == InterruptEdge::RISING)
     {
-        if (wiringPiISR(gpio_.pinNumber, INT_EDGE_RISING, &interruptHandler) < 0)
+        if (wiringPiISR(gpio_.pinNumber, INT_EDGE_RISING, callback.target()) < 0)
         {
             throw system_error(EDOM, generic_category(), "There is problem with setting interrupt.");
         }
@@ -61,11 +63,11 @@ GPIOState GPIOInterface::getState()
 {
     if(digitalRead(gpio_.pinNumber))
     {
-        return GPIOState::HIGH;
+        return static_cast<GPIOState>(HIGH);
     }
     else
     {
-        return GPIOState::LOW;
+        return static_cast<GPIOState>(LOW);
     }
 }
 
