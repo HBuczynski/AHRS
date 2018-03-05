@@ -1,6 +1,6 @@
 #include <exception>
 #include "SwitchesManager.h"
-#include <config_reader/ConfigurationReader.h>
+#include <config_reader/JSONParser.h>
 
 using namespace std;
 using namespace peripherals;
@@ -13,17 +13,17 @@ SwitchesManager::~SwitchesManager()
 
 void SwitchesManager::initialize()
 {
-    getSwitchesParametersFromConfig();
+
+}
+
+void SwitchesManager::getDataFromFile()
+{
+
 }
 
 const std::map<SwitchesCode, std::shared_ptr<SwitchesHandle> > &SwitchesManager::getSwitches() const
 {
     return switches_;
-}
-
-void SwitchesManager::getSwitchesParametersFromConfig()
-{
-    //config::ConfigurationReader configurationReader;
 }
 
 void SwitchesManager::initializeSwitches(SwitchesCode code, hardware::GPIO gpio)

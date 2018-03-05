@@ -26,7 +26,7 @@ namespace peripherals
         const std::map<SwitchesCode, std::shared_ptr<SwitchesHandle> > &getSwitches() const;
 
     private:
-        void getSwitchesParametersFromConfig();
+        void getDataFromFile();
         void initializeSwitches(SwitchesCode code, hardware::GPIO gpio);
 
     private:

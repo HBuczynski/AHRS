@@ -56,6 +56,7 @@ add_subdirectory("src/ui/communication_manager_ui"                      communic
 add_subdirectory("src/ui/main_ui"                                       main_ui                         )
 add_subdirectory("src/switches"                                         switches                        )
 add_subdirectory("src/hal"                                              hal                             )
+add_subdirectory("src/ui/cockpit_gui"                                   cockpit_gui                     )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #
