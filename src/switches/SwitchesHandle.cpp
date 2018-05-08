@@ -25,6 +25,8 @@ void SwitchesHandle::handleInterrupt()
 
     if(chrono::duration_cast<chrono::milliseconds>(currentTimeInterrupt - lastInterrupt).count() > DEBOUNCE_TIME)
     {
+        // ogarnąc inaczej !!! zbocze narastajace i opadajace - timer to kontroluje
+        // dwa przyciski tez sprawdzic !!!
         // Check whether button does not have any mechanical failure.
         while (gpio_.getState() == GPIOState::HIGH)
         {
