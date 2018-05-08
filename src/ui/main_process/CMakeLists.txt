@@ -1,9 +1,9 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(main_ui)
+project(main_process)
 
-set(PROJECT_NAME main_ui)
+set(PROJECT_NAME main_process)
 
 include_directories(../)
 

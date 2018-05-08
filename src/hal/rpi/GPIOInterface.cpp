@@ -1,6 +1,7 @@
 #include "../include/GPIOInterface.h"
 #include <system_error>
-#include <wiringPi.h>
+#include <../../3rd_party/PIGPIO/pigpio.h>
+
 
 using namespace hardware;
 using namespace std;
@@ -14,21 +15,35 @@ GPIOInterface::GPIOInterface(GPIO gpio)
 GPIOInterface::~GPIOInterface()
 {}
 
-void GPIOInterface::initialize()
+
+bool GPIOInterface::initialize() const
 {
-    if( wiringPiSetup() == -1)
+    if(!gpioSetMode(pinNumber, pinMode) && !gpioSetPullUpDown(pinNumber, pushPullMode))
     {
-        throw system_error(EDOM, generic_category(), "There is problem with wiringPi library.");
+        return true;
     }
 
-    if(gpio_.mode == INPUT)
-    {
-        pinMode(gpio_.mode, INPUT);
-    }
-    else if(gpio_.mode == OUTPUT)
-    {
-        pinMode(gpio_.mode, OUTPUT);
-    }
+    return false;
+}
+
+void GPIOInterface::pinWrite(int state)
+{
+
+}
+
+int GPIOInterface::pinRead() const
+{
+
+}
+
+void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
+{
+    raisingInterruptCallback_ = callback;
+}
+
+void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
+{
+    fallingInterruptCallback_ = callback;
 }
 
 void GPIOInterface::activateInterrupt(std::function< void() >  callback)
@@ -59,29 +74,3 @@ void GPIOInterface::activateInterrupt(std::function< void() >  callback)
     }
 }
 
-GPIOState GPIOInterface::getState()
-{
-    if(digitalRead(gpio_.pinNumber))
-    {
-        return static_cast<GPIOState>(HIGH);
-    }
-    else
-    {
-        return static_cast<GPIOState>(LOW);
-    }
-}
-
-uint8_t GPIOInterface::getPinNumber()
-{
-    return gpio_.pinNumber;
-}
-
-GPIOMode GPIOInterface::getMode()
-{
-    return gpio_.mode;
-}
-
-void GPIOInterface::interruptHandler()
-{
-    callback_();
-}

@@ -53,10 +53,11 @@ add_subdirectory("src/feeder/communication_manager_feeder"              communic
 add_subdirectory("src/ui/client_tcp"                                    client_tcp                      )
 add_subdirectory("src/ui/server_udp"                                    server_udp                      )
 add_subdirectory("src/ui/communication_manager_ui"                      communication_manager_ui        )
-add_subdirectory("src/ui/main_ui"                                       main_ui                         )
+add_subdirectory("src/ui/main_process"                                  main_process                    )
 add_subdirectory("src/switches"                                         switches                        )
 add_subdirectory("src/hal"                                              hal                             )
 add_subdirectory("src/ui/cockpit_gui"                                   cockpit_gui                     )
+add_subdirectory("src/ui/communication_process"                         communication_process_ui        )
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #

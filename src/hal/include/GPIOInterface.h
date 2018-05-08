@@ -5,33 +5,12 @@
 
 namespace hardware
 {
-    // to do: pull up & pull down
-
-    enum GPIOState : uint8_t
-    {
-        HIGH = 0x10,
-        LOW = 0x20
-    };
-
-    enum GPIOMode : uint8_t
-    {
-        INPUT = 0x10,
-        OUTPUT = 0x20
-    };
-
-    enum InterruptEdge : uint8_t
-    {
-        RISING = 0x10,
-        FALLING = 0x20,
-        BOTH = 0x30
-    };
 
     struct GPIO
     {
         uint8_t pinNumber;
-        GPIOState state;
-        GPIOMode mode;
-        InterruptEdge interrupt;
+        uint8_t pinMode;
+        uint8_t pushPullMode;
     };
 
     class GPIOInterface
@@ -40,19 +19,19 @@ namespace hardware
         GPIOInterface(GPIO gpio);
         ~GPIOInterface();
 
-        void initialize();
+        bool initialize() const;
 
-        void activateInterrupt(std::function< void() >  callback);
-        GPIOState getState();
-        uint8_t getPinNumber();
-        GPIOMode getMode();
+        void pinWrite(int state);
+        int pinRead() const;
 
-    private:
-        void interruptHandler();
+        void activateRaisingInterrupt(std::function<void()> callback);
+        void activateFallingInterrupt(std::function<void()> callback);
 
     private:
+
         GPIO gpio_;
-        std::function< void() > callback_;
+        std::function< void() > raisingInterruptCallback_;
+        std::function< void() > fallingInterruptCallback_;
     };
 }
 

@@ -10,28 +10,27 @@ GPIOInterface::GPIOInterface(GPIO gpio)
 GPIOInterface::~GPIOInterface()
 {}
 
-void GPIOInterface::activateInterrupt(std::function< void() >  callback)
+void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
 {
-    callback_ = callback;
+    raisingInterruptCallback_ = callback;
 }
 
-GPIOState GPIOInterface::getState()
+void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
 {
-    return gpio_.state;
+    fallingInterruptCallback_ = callback;
 }
 
-uint8_t GPIOInterface::getPinNumber()
+bool GPIOInterface::initialize() const
 {
-    return gpio_.pinNumber;
+    return true;
 }
 
-GPIOMode GPIOInterface::getMode()
+void GPIOInterface::pinWrite(int state)
 {
-    return gpio_.mode;
+
 }
 
-void GPIOInterface::interruptHandler()
+int GPIOInterface::pinRead() const
 {
-
-
+    return 0;
 }
