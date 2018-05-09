@@ -26,9 +26,7 @@ SwitcheHandle::~SwitcheHandle()
 
 void SwitcheHandle::resetSwitch()
 {
-    //TODO
-    // Change GPIO state.
-
+    gpio_.pinWrite(0);
     state_ = SwitchState::LOW_STATE;
 }
 
