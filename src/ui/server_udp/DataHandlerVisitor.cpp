@@ -5,6 +5,7 @@
 using namespace std;
 using namespace utility;
 using namespace communication;
+using namespace boost::interprocess;
 
 DataHandlerVisitor::DataHandlerVisitor()
     : logger_(Logger::getInstance())

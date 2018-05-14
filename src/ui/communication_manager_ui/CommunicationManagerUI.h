@@ -20,6 +20,8 @@ namespace communication
 
         uint16_t destinationPortTCP;
         std::string destinationAddressTCP;
+
+        std::string sharedMemoryName;
     };
 
     class CommunicationManagerUI

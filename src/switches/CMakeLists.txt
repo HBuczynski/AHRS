@@ -4,7 +4,9 @@ cmake_minimum_required(VERSION 3.0)
 project(switches)
 
 set(PROJECT_NAME switches)
+
 include_directories("../")
+
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
@@ -18,7 +20,9 @@ target_include_directories(
         "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

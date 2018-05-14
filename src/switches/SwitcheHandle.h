@@ -1,12 +1,22 @@
 #ifndef AHRS_SWITCHESHANDLE_H
 #define AHRS_SWITCHESHANDLE_H
 
+#include <logger/Logger.h>
 #include <hal/include/GPIOInterface.h>
 #include <chrono>
+#include <cstdio>
+#include <cstdlib>
+#include <sys/time.h>
+#include <string>
+#include <cstring>
+#include <csignal>
+
+#include <bits/siginfo.h>
 
 namespace  peripherals
 {
-    enum SwitchesCode : uint8_t
+    // change to enum class
+    enum class SwitchesCode
     {
         UP_SWITCH = 0x10,
         BOTTOM_SWITCH = 0x20,
@@ -14,7 +24,7 @@ namespace  peripherals
         CANCEL_SWITCH = 0x40
     };
 
-    enum SwitchState : uint8_t
+    enum class SwitchState
     {
         HIGH_BEFORE_DEBOUNCE,
         HIGH_AFTER_DEBONCE,
@@ -37,10 +47,12 @@ namespace  peripherals
         void handleRaisingInterrupt();
 
         void initializeDebounceTimer();
-        void changeStateAfterDebounce(int);
+        static void handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc);
+        void changeStateAfterDebounce();
 
         void initializeCriticalDelay();
-        void changeOnDelayState(int);
+        static void handleCriticalDelayTimer(int sigNumb, siginfo_t *si, void *uc);
+        void changeOnDelayState();
 
         void checkErrorInterruptCounter();
 
@@ -53,8 +65,10 @@ namespace  peripherals
         std::function< void(SwitchesCode) > pressedSwitchCallback_;
         std::function< void(SwitchesCode) > errorCallback_;
 
-        const uint16_t CRITICAL_TIME_SEC = 4;
-        const uint32_t DEBOUNCE_TIME_MICRO_SEC = 100000;
+        const uint32_t CRITICAL_TIME_SEC = 4;
+        const uint64_t DEBOUNCE_TIME_NANO_SEC = 1000000;
+
+        utility::Logger& logger_;
     };
 }
 

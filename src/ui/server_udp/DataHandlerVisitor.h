@@ -1,6 +1,7 @@
 #ifndef AHRS_DATAHANDLERVISITOR_H
 #define AHRS_DATAHANDLERVISITOR_H
 
+#include <boost/interprocess/shared_memory_object.hpp>
 #include <protocol/MeasuringDataVisitor.h>
 #include <logger/Logger.h>
 
