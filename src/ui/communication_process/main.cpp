@@ -1,21 +1,43 @@
 #include <iostream>
+#include <memory>
+#include <chrono>
+
 #include <logger/Logger.h>
-
-
-#include <packet/ListenDatagramUDP.h>
-#include <packet/SendDatagramUDP.h>
-#include <packet/ListenStreamTCP.h>
-#include <packet/SendStreamTCP.h>
-#include <ui/communication_manager_ui/CommunicationManagerUI.h>
+#include "ProcessManager.h"
 
 using namespace std;
+using namespace chrono;
 using namespace utility;
 using namespace communication;
 
+void initializeLogger(Logger &logger);
+void initializeProcessManager(shared_ptr<ProcessManager> processManager, char *argv[]);
+
 int main(int argc , char *argv[])
 {
-    Logger &logger = Logger::getInstance();
+    if(argc < 4)
+    {
+        cout << "Invalid arguments number." << endl;
+    }
 
+    Logger &logger = Logger::getInstance();
+    initializeLogger(logger);
+
+    shared_ptr<ProcessManager> processManager;
+    initializeProcessManager(processManager, argv);
+
+    //processManager->run();
+
+    while(1)
+    {
+        this_thread::sleep_for(milliseconds(1));
+    }
+
+    return 0;
+}
+
+void initializeLogger(Logger &logger)
+{
     InitLogStructure struc;
     struc.debugLog = true;
     struc.errroLog = true;
@@ -25,13 +47,26 @@ int main(int argc , char *argv[])
     struc.writeOnConsole = true;
 
     logger.initLogger(struc);
+}
 
+void initializeProcessManager(shared_ptr<ProcessManager> processManager, char *argv[])
+{
+    std::string managementQueueName = argv[1];
+    std::string sharedMemoryName = argv[2];
 
-    while(1)
+    cout << managementQueueName << endl;
+
+    CommunicationProcessMode status;
+    if(string(argv[3]) == "MAIN")
     {
+        status = CommunicationProcessMode ::MAIN;
 
-
+        cout << "MAIN" << endl;
+    }
+    else if(string(argv[3]) == "REDUNDANT")
+    {
+        status = CommunicationProcessMode ::REDUNDANT;
     }
 
-    return 0;
+    processManager = make_shared<ProcessManager>(managementQueueName, sharedMemoryName, status);
 }

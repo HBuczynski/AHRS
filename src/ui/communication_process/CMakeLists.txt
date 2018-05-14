@@ -9,7 +9,7 @@ include_directories("../")
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
-add_library(${PROJECT_NAME} ${source_list})
+add_executable(${PROJECT_NAME} ${source_list})
 
 target_include_directories(
         ${PROJECT_NAME} PUBLIC
@@ -25,9 +25,6 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_tcp)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC server_udp)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_manager_ui)
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
+install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 
-if(BUILD_TESTS)
-    add_subdirectory(unit_tests)
-endif()
