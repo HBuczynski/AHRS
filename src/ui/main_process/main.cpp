@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 
 #include <logger/Logger.h>
-#include "ProcessScheduler.h"
+#include "Scheduler.h"
 
 using namespace utility;
 using namespace main_process;
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     logger.initLogger(struc);
 
-    ProcessScheduler processScheduler;
+    Scheduler processScheduler;
     processScheduler.initializeCommunicationProcesses();
 
     return 0;
