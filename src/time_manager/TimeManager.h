@@ -11,6 +11,7 @@ namespace utility
 		TimeManager();
 		~TimeManager();
 
+		static std::string getDate();
 		static std::string getTime();
 		static std::string getPreciselyTime();
 		static std::string getTimeAndDate();

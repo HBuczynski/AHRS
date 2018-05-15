@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <chrono>
+#include <fstream>
 
 #include <logger/Logger.h>
 #include "ProcessManager.h"
@@ -20,18 +21,23 @@ int main(int argc , char *argv[])
         cout << "Invalid arguments number." << endl;
     }
 
+    cout << "In child" << endl;
     Logger &logger = Logger::getInstance();
     initializeLogger(logger);
 
     shared_ptr<ProcessManager> processManager;
     initializeProcessManager(processManager, argv);
 
+    logger.writeLog(LogType::INFORMATION_LOG, "Child process.");
+
+    string name = string(argv[3]) + ".txt";
+    std::ofstream outfile (name.c_str());
+
+    outfile << "my text here lolololo!" << std::endl;
+
+    outfile.close();
     //processManager->run();
 
-    while(1)
-    {
-        this_thread::sleep_for(milliseconds(1));
-    }
 
     return 0;
 }

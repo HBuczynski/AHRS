@@ -17,6 +17,16 @@ TimeManager::~TimeManager()
 {
 }
 
+string TimeManager::getDate()
+{
+    std::unique_ptr<char> stringDateTime(new char[stringLength_]);
+    std::time_t timeCurrent = std::time(nullptr);
+    std::tm *timeLocal = std::localtime(&timeCurrent);
+    std::strftime(stringDateTime.get(), stringLength_, "%y.%m.%d", timeLocal);
+    std::string stringResult(stringDateTime.get());
+    return stringResult;
+}
+
 string TimeManager::getTime()
 {
 	std::unique_ptr<char> stringTime(new char[stringLength_]);

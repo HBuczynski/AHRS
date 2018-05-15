@@ -1,12 +1,20 @@
-#include <iostream>
+#include <spawn.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/wait.h>
+
 #include <logger/Logger.h>
 #include "ProcessScheduler.h"
 
-using namespace std;
 using namespace utility;
 using namespace main_process;
+using namespace std;
+using namespace chrono;
 
-int main(int argc , char *argv[])
+extern char **environ;
+
+int main(int argc, char *argv[])
 {
     Logger &logger = Logger::getInstance();
 
@@ -20,8 +28,8 @@ int main(int argc , char *argv[])
 
     logger.initLogger(struc);
 
-    ProcessScheduler scheduler;
-    scheduler.run();
+    ProcessScheduler processScheduler;
+    processScheduler.initializeCommunicationProcesses();
 
     return 0;
 }

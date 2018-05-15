@@ -49,10 +49,10 @@ Logger &Logger::getInstance()
 
 void Logger::initFile()
 {
-    folderName_ = "log_files_" + TimeManager::getTimeAndDate();
+    folderName_ = "log_files_" + TimeManager::getDate() + "_" + TimeManager::getPreciselyTime();
     mkdir(folderName_.c_str(), 0777);
 
-	fileName_ = folderName_ + "/" + "log_" + TimeManager::getTimeAndDate() + ".txt";
+	fileName_ = folderName_ + "/" + "log_" + TimeManager::getDate() + "_" + TimeManager::getPreciselyTime() + ".txt";
 }
 
 void Logger::initLogger(InitLogStructure logParameters)
