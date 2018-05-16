@@ -1,6 +1,7 @@
 #include "CommunicationProcessesHandler.h"
-
 #include <sys/wait.h>
+
+#include <main_process/InterprocessData.h>
 
 using namespace std;
 using namespace utility;
@@ -23,7 +24,7 @@ void CommunicationProcessesHandler::initializeProcesses()
 {
     // First communication process initialization.
     char *firstArg1 = const_cast<char*>(COMMUNICATION_BINARY_FILE_NAME.c_str());
-    char *firstArg2 = const_cast<char*>(SENDING_QUEUE_NAME_FIRST_PROC.c_str());
+    char *firstArg2 = const_cast<char*>(RECEIVING_QUEUE_NAME_FIRST_PROC.c_str());
     char *firstArg3 = const_cast<char*>(SHARED_MEMORY_NAME.c_str());
     char *firstArg4 = const_cast<char*>("MAIN");
 
@@ -32,7 +33,7 @@ void CommunicationProcessesHandler::initializeProcesses()
 
     // Second communication process initizalization.
     char *secondArg1 = const_cast<char*>(COMMUNICATION_BINARY_FILE_NAME.c_str());
-    char *secondArg2 = const_cast<char*>(SENDING_QUEUE_NAME_SECOND_PROC.c_str());
+    char *secondArg2 = const_cast<char*>(RECEIVING_QUEUE_NAME_SECOND_PROC.c_str());
     char *secondArg3 = const_cast<char*>(SHARED_MEMORY_NAME.c_str());
     char *secondArg4 = const_cast<char*>("REDUNDANT");
 

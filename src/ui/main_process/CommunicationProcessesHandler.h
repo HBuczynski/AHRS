@@ -33,12 +33,6 @@ namespace main_process
         std::pair<pid_t, communication::CommunicationProcessMode> firstCommunicationProcess_;
         posix_spawn_file_actions_t secondAction_;
         std::pair<pid_t, communication::CommunicationProcessMode> secondCommunicationProcess_;
-
-        const std::string COMMUNICATION_BINARY_FILE_NAME = "communication_process_ui";
-        const std::string MANAGEMENT_QUEUE_NAME = "managementQueue";
-        const std::string SENDING_QUEUE_NAME_FIRST_PROC = "sendingQueueFirst";
-        const std::string SENDING_QUEUE_NAME_SECOND_PROC = "sendingQueueSecond";
-        const std::string SHARED_MEMORY_NAME = "sharedMmeory";
     };
 }
 

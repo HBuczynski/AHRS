@@ -16,6 +16,8 @@ DataHandlerVisitor::~DataHandlerVisitor()
 
 void DataHandlerVisitor::visit(ImuData &data)
 {
+    // save data to the file
+
     if(logger_.isInformationEnable())
     {
         const string message = string("DataHandlerVisitor :: Received ImuData.") + to_string((data.getMeasurement()));
@@ -26,5 +28,5 @@ void DataHandlerVisitor::visit(ImuData &data)
 
 void DataHandlerVisitor::visit(GpsData &data)
 {
-
+    // save data to the file
 }

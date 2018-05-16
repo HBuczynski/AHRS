@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <atomic>
 #include <spawn.h>
+#include <map>
 
 #include <logger/Logger.h>
 #include <switches/SwitcheHandle.h>
@@ -54,6 +55,8 @@ namespace main_process
         void dataAcquisition();
         void termination();
 
+        void sendMessageQueue(const std::vector<uint8_t> &payload, communication::CommunicationProcessMode process);
+
         void interruptSwitchPressed(peripherals::SwitchesCode switchCode);
         void interruptSwitchError(peripherals::SwitchesCode switchCode);
 
@@ -65,9 +68,11 @@ namespace main_process
         CommunicationProcessesHandler processesHandler;
         std::vector<std::unique_ptr<peripherals::SwitcheHandle>> switches_;
 
+        std::unique_ptr<boost::interprocess::message_queue> managementMessageQueue_;
+        std::map<communication::CommunicationProcessMode, std::shared_ptr<boost::interprocess::message_queue>> communicationQueues_;
+
         utility::Logger& logger_;
         const uint8_t FAILURE_NUMBER = 4;
-        const uint16_t MESSAGE_QUEUE_DATA_SIZE = 0;
     };
 }
 

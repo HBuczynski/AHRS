@@ -1,10 +1,12 @@
 #include <unistd.h>
 #include "Scheduler.h"
-#include <sys/wait.h>
+#include "InterprocessData.h"
 
 using namespace std;
 using namespace utility;
 using namespace main_process;
+using namespace communication;
+using namespace boost::interprocess;
 
 Scheduler::Scheduler()
     : runMainProcess_(false),
@@ -22,7 +24,7 @@ void Scheduler::run()
 {
     runMainProcess_ = true;
 
-    while(runMainProcess_)
+    /*while(runMainProcess_)
     {
         switch(state_)
         {
@@ -57,7 +59,7 @@ void Scheduler::run()
                 break;
             }
         }
-    }
+    }*/
 }
 
 void Scheduler::stopRun()
@@ -71,11 +73,11 @@ void Scheduler::initialization()
     {
         try
         {
-            initializeGUI();
             initializeSwitches();
             initializeMessageQueues();
             initializeSharedMemory();
             initializeCommunicationProcesses();
+            initializeGUI();
 
             previousState_ = ProcessStates::START;
             state_ = ProcessStates::INITIALIZATION;
@@ -95,38 +97,6 @@ void Scheduler::initialization()
     state_= ProcessStates::ERROR;
 }
 
-void Scheduler::initializeCommunicationProcesses()
-{
-    processesHandler.initializeProcesses();
-}
-
-void Scheduler::plainConfirmation()
-{
-
-    state_ = ProcessStates::ERROR;
-}
-
-void Scheduler::magnetometerCalibration()
-{
-    state_ = ProcessStates::ERROR;
-}
-
-void Scheduler::dataAcquisition()
-{
-    while(state_ == ProcessStates::DATA_ACQUSITION)
-    {
-        //TODO
-    }
-}
-
-
-void Scheduler::initializeGUI()
-{
-    //TODO
-
-    // send information to gui about progress
-}
-
 void Scheduler::initializeSwitches()
 {
     SwitchesFactory switchesFactory;
@@ -138,13 +108,39 @@ void Scheduler::initializeSwitches()
         singleSwitch->initializeCallbacks( bind(&Scheduler::interruptSwitchPressed, this, placeholders::_1),
                                            bind(&Scheduler::interruptSwitchError, this, placeholders::_1));
     }
-
-    // send information to gui about progress
 }
 
 void Scheduler::initializeMessageQueues()
 {
+    // During initialization process, the first process is always MAIN process.
+    try {
+        //Initialize Message Queue for first communication process.
+        message_queue::remove(RECEIVING_QUEUE_NAME_FIRST_PROC.c_str());
+        communicationQueues_[CommunicationProcessMode::MAIN] = make_shared<message_queue>(create_only,
+                                                                                          RECEIVING_QUEUE_NAME_FIRST_PROC.c_str(),
+                                                                                          MESSAGE_QUEUE_NUMBER,
+                                                                                          MESSAGE_QUEUE_DATA_SIZE);
 
+        //Initialize Message Queue for second communication process.
+        message_queue::remove(RECEIVING_QUEUE_NAME_SECOND_PROC.c_str());
+        communicationQueues_[CommunicationProcessMode::REDUNDANT] = make_shared<message_queue>(create_only,
+                                                                                               RECEIVING_QUEUE_NAME_SECOND_PROC.c_str(),
+                                                                                               MESSAGE_QUEUE_NUMBER,
+                                                                                               MESSAGE_QUEUE_DATA_SIZE);
+
+        //Initialize Message Queue for management main process.
+        message_queue::remove(MAIN_PROCESS_QUEUE_NAME.c_str());
+        managementMessageQueue_ = make_unique<message_queue>(create_only, MAIN_PROCESS_QUEUE_NAME.c_str(),
+                                                             MESSAGE_QUEUE_NUMBER, MESSAGE_QUEUE_DATA_SIZE);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("MainProcessScheduler :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
 }
 
 void Scheduler::initializeSharedMemory()
@@ -152,6 +148,36 @@ void Scheduler::initializeSharedMemory()
 
 }
 
+void Scheduler::initializeCommunicationProcesses()
+{
+    processesHandler.initializeProcesses();
+}
+
+void Scheduler::initializeGUI()
+{
+    //TODO
+    // send information to gui about progress
+}
+
+void Scheduler::plainConfirmation()
+{
+    //TODO
+    state_ = ProcessStates::ERROR;
+}
+
+void Scheduler::magnetometerCalibration()
+{
+    //TODO
+    state_ = ProcessStates::ERROR;
+}
+
+void Scheduler::dataAcquisition()
+{
+    while(state_ == ProcessStates::DATA_ACQUSITION)
+    {
+        //TODO
+    }
+}
 
 void Scheduler::interruptSwitchPressed(peripherals::SwitchesCode switchCode)
 {
@@ -199,6 +225,35 @@ void Scheduler::interruptSwitchError(peripherals::SwitchesCode switchCode)
         {
 
             break;
+        }
+    }
+}
+
+void Scheduler::sendMessageQueue(const vector<uint8_t> &payload, CommunicationProcessMode process)
+{
+    auto messageQueue = communicationQueues_.find(process);
+
+    if(messageQueue != communicationQueues_.end())
+    {
+        try
+        {
+            messageQueue->second->send(payload.data(), payload.size(), 0);
+        }
+        catch(interprocess_exception &ex)
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("MainProcessScheduler :: ") + ex.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("MainProcessScheduler :: ") + string("Inavlid communication process code.");
+            logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 }

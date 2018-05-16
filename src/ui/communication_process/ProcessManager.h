@@ -7,6 +7,7 @@
 
 #include <boost/interprocess/ipc/message_queue.hpp>
 
+#include <logger/Logger.h>
 #include "CommunicationManagerUI.h"
 
 namespace communication
@@ -25,25 +26,28 @@ namespace communication
         ~ProcessManager();
 
         void run();
-        void stopRun();
-
-        CommunicationProcessMode getMode() const;
 
     private:
+        void initialization();
         void processReceivingManagementCommand();
-        void processSendCommands();
+
+        void changeMode(CommunicationProcessMode mode);
 
         void performBIT();
+        void stopRun();
 
         std::unique_ptr<CommunicationManagerUI> communicationManagerUI_;
         CommunicationProcessMode status_;
 
         std::atomic<bool> runReceivingManagementCommandThread_;
         std::atomic<bool> runSendingCommandThread_;
-
         std::thread managementThread_;
+
+        std::unique_ptr<boost::interprocess::message_queue> messageQueue_;
         std::string managementQueueName_;
         std::string sharedMemoryName_;
+
+        utility::Logger& logger_;
     };
 }
 
