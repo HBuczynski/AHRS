@@ -21,6 +21,8 @@ namespace main_process
 
         void initializeProcesses();
         void terminate(communication::CommunicationProcessMode processMode);
+        void renewProcess(communication::CommunicationProcessMode processMode);
+
         void switchProcesses();
 
     private:

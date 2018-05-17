@@ -33,7 +33,7 @@ void CommunicationManagerUI::initializeClientConnection()
     client_->startCommandSending();
 }
 
-void CommunicationManagerUI::sendCommands()
+void CommunicationManagerUI::sendCommands(unique_ptr<Command> commandIn)
 {
     auto command = make_unique<InitConnectionCommand>(parameters_.sourcePortUDP, parameters_.sourceAddressUDP);
     auto command2 = make_unique<CollectDataCommand>();

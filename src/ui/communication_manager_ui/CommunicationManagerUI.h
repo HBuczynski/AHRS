@@ -33,7 +33,7 @@ namespace communication
         void initializeServer();
         void initializeClientConnection();
 
-        void sendCommands();
+        void sendCommands(std::unique_ptr<communication::Command> commandIn);
 
     private:
         CommunicationParameters parameters_;

@@ -22,6 +22,7 @@ target_include_directories(
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_manager_ui)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC interprocess_ui_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)

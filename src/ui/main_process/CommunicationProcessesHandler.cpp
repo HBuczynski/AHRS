@@ -110,6 +110,14 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
     posix_spawn_file_actions_destroy(&action);
 }
 
+void CommunicationProcessesHandler::renewProcess(CommunicationProcessMode processMode)
+{
+    terminate(processMode);
+
+    //TODO: parameters of the process. Renew process.
+}
+
+
 void CommunicationProcessesHandler::terminate(CommunicationProcessMode processMode)
 {
     pid_t pid;
