@@ -1,5 +1,5 @@
 #include "ProcessManager.h"
-#include <main_process/InterprocessData.h>
+#include <common/InterprocessData.h>
 #include <interfaces/wireless_commands/Command.h>
 
 using namespace std;

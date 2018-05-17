@@ -1,7 +1,7 @@
 #include "CommunicationProcessesHandler.h"
 #include <sys/wait.h>
 
-#include <main_process/InterprocessData.h>
+#include <common/InterprocessData.h>
 
 using namespace std;
 using namespace utility;
