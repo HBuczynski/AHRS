@@ -20,7 +20,9 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_udp)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC server_tcp)
 

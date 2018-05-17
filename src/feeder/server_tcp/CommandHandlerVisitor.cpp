@@ -1,7 +1,7 @@
 #include "CommandHandlerVisitor.h"
 
-#include <protocol/DataResponse.h>
-#include <protocol/ImuData.h>
+#include <interfaces/wireless_responses/DataResponse.h>
+#include <interfaces/wireless_measurement_commands/ImuData.h>
 
 #include <feeder/server_tcp/ClientThreadTCP.h>
 

@@ -20,8 +20,9 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
 
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

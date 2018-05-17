@@ -1,6 +1,6 @@
 #include "ProcessManager.h"
 #include <main_process/InterprocessData.h>
-#include <protocol/Command.h>
+#include <interfaces/wireless_commands/Command.h>
 
 using namespace std;
 using namespace utility;

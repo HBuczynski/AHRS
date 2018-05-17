@@ -4,8 +4,8 @@
 #include <ui/client_tcp/ResponseHandlerVisitor.h>
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
-#include <protocol/Command.h>
-#include <protocol/ResponseFactory.h>
+#include <interfaces/wireless_commands/Command.h>
+#include <interfaces/wireless_responses/ResponseFactory.h>
 
 #include <cstdint>
 #include <atomic>

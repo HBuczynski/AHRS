@@ -8,7 +8,7 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 
 #include <logger/Logger.h>
-#include "CommunicationManagerUI.h"
+#include <communication_manager_ui/CommunicationManagerUI.h>
 
 namespace communication
 {

@@ -1,8 +1,8 @@
 #include "CommunicationManagerUI.h"
 
-#include <protocol/InitConnectionCommand.h>
-#include <protocol/CollectDataCommand.h>
-#include <protocol/EndConnectionCommand.h>
+#include <interfaces/wireless_commands/InitConnectionCommand.h>
+#include <interfaces/wireless_commands/CollectDataCommand.h>
+#include <interfaces/wireless_commands/EndConnectionCommand.h>
 #include <iostream>
 
 #include <thread>

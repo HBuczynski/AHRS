@@ -18,7 +18,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC protocol)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC frame)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)

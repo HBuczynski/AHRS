@@ -2,7 +2,7 @@
 #define AHRS_BLACK_BOX_CLIENTTHREADTCP_H
 
 #include <packet/SendStreamTCP.h>
-#include <protocol/CommandFactory.h>
+#include <interfaces/wireless_commands/CommandFactory.h>
 #include <feeder/server_tcp/CommandHandlerVisitor.h>
 #include <logger/Logger.h>
 

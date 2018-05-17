@@ -1,6 +1,6 @@
 #include "ClientThreadTCP.h"
 
-#include <protocol/Command.h>
+#include <interfaces/wireless_commands/Command.h>
 
 #include <iostream>
 

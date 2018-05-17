@@ -3,8 +3,8 @@
 
 #include <feeder/server_tcp/ClientUDPManager.h>
 #include <logger/Logger.h>
-#include <protocol/CommandVisitor.h>
-#include <protocol/Response.h>
+#include <interfaces/wireless_commands/CommandVisitor.h>
+#include <interfaces/wireless_responses/Response.h>
 
 #include <memory>
 

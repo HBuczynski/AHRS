@@ -1,7 +1,7 @@
 #include "ServerTCP.h"
 
-#include <protocol/Command.h>
-#include <protocol/Response.h>
+#include <interfaces/wireless_commands/Command.h>
+#include <interfaces/wireless_responses/Response.h>
 #include <packet/ListenStreamTCP.h>
 
 #include <algorithm>

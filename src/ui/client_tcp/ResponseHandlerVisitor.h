@@ -1,7 +1,7 @@
 #ifndef AHRS_RESPONSEHANDLERVISITOR_H
 #define AHRS_RESPONSEHANDLERVISITOR_H
 
-#include <protocol/ResponseVisitor.h>
+#include <interfaces/wireless_responses/ResponseVisitor.h>
 #include <logger/Logger.h>
 
 namespace communication

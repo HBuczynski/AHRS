@@ -1,6 +1,6 @@
 #include "BytesConverter.h"
 
-#include <protocol/Frame.h>
+#include <interfaces/frame/Frame.h>
 #include <algorithm>
 #include <stdexcept>
 

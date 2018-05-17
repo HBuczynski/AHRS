@@ -2,7 +2,7 @@
 #define AHRS_DATAHANDLERVISITOR_H
 
 #include <boost/interprocess/shared_memory_object.hpp>
-#include <protocol/MeasuringDataVisitor.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataVisitor.h>
 #include <logger/Logger.h>
 
 namespace communication

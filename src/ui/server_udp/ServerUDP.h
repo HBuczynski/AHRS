@@ -2,10 +2,10 @@
 #define WAIC_SERVER_H
 
 #include <ui/server_udp/DataHandlerVisitor.h>
-#include <protocol/Command.h>
+#include <interfaces/wireless_commands/Command.h>
 #include <logger/Logger.h>
 #include <packet/ListenDatagramUDP.h>
-#include <protocol/MeasuringDataFactory.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 
 #include <map>
 #include <list>

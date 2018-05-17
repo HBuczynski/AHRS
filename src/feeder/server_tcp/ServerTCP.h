@@ -1,7 +1,7 @@
 #ifndef WAIC_SERVER_H
 #define WAIC_SERVER_H
 
-#include <protocol/Command.h>
+#include <interfaces/wireless_commands/Command.h>
 #include <logger/Logger.h>
 
 #include "CommandHandlerVisitor.h"
