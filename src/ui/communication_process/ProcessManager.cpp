@@ -85,9 +85,10 @@ void ProcessManager::processReceivingManagementCommand()
         rawData.resize(receivedSize);
         rawData.shrink_to_fit();
 
+        //TODO
         // check packet correctness
         // header, CRC, checksum
-
+        // find a command
     }
 }
 

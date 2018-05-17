@@ -68,8 +68,11 @@ namespace main_process
         CommunicationProcessesHandler processesHandler;
         std::vector<std::unique_ptr<peripherals::SwitcheHandle>> switches_;
 
-        std::unique_ptr<boost::interprocess::message_queue> managementMessageQueue_;
         std::map<communication::CommunicationProcessMode, std::shared_ptr<boost::interprocess::message_queue>> communicationQueues_;
+
+        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
+        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
+        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
         utility::Logger& logger_;
         const uint8_t FAILURE_NUMBER = 4;

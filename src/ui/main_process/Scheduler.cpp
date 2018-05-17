@@ -2,6 +2,11 @@
 #include "Scheduler.h"
 #include "InterprocessData.h"
 
+#include <boost/interprocess/shared_memory_object.hpp>
+#include <boost/interprocess/mapped_region.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/interprocess/sync/named_mutex.hpp>
+
 using namespace std;
 using namespace utility;
 using namespace main_process;
@@ -17,7 +22,13 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 {
+    // Removing message queues.
+    message_queue::remove(RECEIVING_QUEUE_NAME_FIRST_PROC.c_str());
+    message_queue::remove(RECEIVING_QUEUE_NAME_SECOND_PROC.c_str());
 
+    // Removing shared memory.
+    named_mutex::remove(SHARED_MEMORY_MUTEX_NAME.c_str());
+    shared_memory_object::remove(SHARED_MEMORY_NAME.c_str());
 }
 // wzorzecz STATE
 void Scheduler::run()
@@ -127,11 +138,6 @@ void Scheduler::initializeMessageQueues()
                                                                                                RECEIVING_QUEUE_NAME_SECOND_PROC.c_str(),
                                                                                                MESSAGE_QUEUE_NUMBER,
                                                                                                MESSAGE_QUEUE_DATA_SIZE);
-
-        //Initialize Message Queue for management main process.
-        message_queue::remove(MAIN_PROCESS_QUEUE_NAME.c_str());
-        managementMessageQueue_ = make_unique<message_queue>(create_only, MAIN_PROCESS_QUEUE_NAME.c_str(),
-                                                             MESSAGE_QUEUE_NUMBER, MESSAGE_QUEUE_DATA_SIZE);
     }
     catch(interprocess_exception &ex)
     {
@@ -145,7 +151,28 @@ void Scheduler::initializeMessageQueues()
 
 void Scheduler::initializeSharedMemory()
 {
+    try
+    {
+        // Creating shared memory's mutex.
+        named_mutex::remove(SHARED_MEMORY_MUTEX_NAME.c_str());
+        sharedMemoryMutex_ = make_unique<named_mutex>(create_only, SHARED_MEMORY_MUTEX_NAME.c_str());
 
+        // Creating shared memory.
+        shared_memory_object::remove(SHARED_MEMORY_NAME.c_str());
+        sharedMemory_ = make_unique<shared_memory_object>(create_only, SHARED_MEMORY_NAME.c_str(), read_write);
+
+        // Resize shared memory.
+        sharedMemory_->truncate(SHARED_MEMORY_SIZE);
+        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("MainProcessScheduler :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
 }
 
 void Scheduler::initializeCommunicationProcesses()
