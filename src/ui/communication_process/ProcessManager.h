@@ -14,10 +14,8 @@
 
 #include <logger/Logger.h>
 
-
 namespace communication
 {
-    // Shared memory will be alocated in Data Handler Visitor
     class ProcessManager : public UICommandVisitor
     {
     public:
@@ -40,7 +38,6 @@ namespace communication
         void changeMode(CommunicationProcessMode mode);
 
         void performBIT();
-
 
         communication::CommandFactory wirelessCommandFactory_;
         communication::UICommandFactory uiCommandFactory_;
