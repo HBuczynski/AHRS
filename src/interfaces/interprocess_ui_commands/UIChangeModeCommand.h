@@ -10,7 +10,6 @@ namespace communication
     {
         MAIN,
         REDUNDANT,
-
     };
 
     class UIChangeModeCommand : public UICommand

@@ -3,27 +3,25 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
+#include "../UIChangeModeCommand.h"
 
-BOOST_AUTO_TEST_SUITE( test_multiply )
+using namespace std;
+using namespace communication;
 
-BOOST_AUTO_TEST_CASE( test_int )
-        {
-                BOOST_CHECK( 21 == 21);
-        }
+BOOST_AUTO_TEST_SUITE( command )
 
-BOOST_AUTO_TEST_CASE( test_float )
-        {
-                BOOST_CHECK( 24.75 == 24.75);
-        }
+    BOOST_AUTO_TEST_CASE( uiChangeModeCommand )
+    {
+            CommunicationProcessMode mode = MAIN;
 
+            UIChangeModeCommand command(mode);
+            command.getFrameBytes();
+
+            BOOST_CHECK( mode == command.getMode());
+            BOOST_CHECK( FrameType::UI_COMMAND == command.getFrameType());
+            BOOST_CHECK( UICommandType::CHANGE_STATE == command.getCommandType());
+            BOOST_CHECK( 1 == command.getSystemVersion());
+            BOOST_CHECK( ((sizeof(mode) + sizeof(UICommandType::CHANGE_STATE)) == command.getDataSize()));
+            BOOST_CHECK( "UIChangeModeCommand" == command.getName());
+    }
 BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE( test_computeInterest )
-
-BOOST_AUTO_TEST_CASE( test_simple )
-        {
-
-        }
-
-BOOST_AUTO_TEST_SUITE_END()
-

@@ -3,27 +3,30 @@
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
 
+#include "../UICommandFactory.h"
+#include "../UIChangeModeCommand.h"
 
-BOOST_AUTO_TEST_SUITE( test_multiply )
+using namespace std;
+using namespace communication;
 
-BOOST_AUTO_TEST_CASE( test_int )
-        {
-                BOOST_CHECK( 21 == 21);
-        }
 
-BOOST_AUTO_TEST_CASE( test_float )
-        {
-                BOOST_CHECK( 24.75 == 24.75);
-        }
+BOOST_AUTO_TEST_SUITE( factory )
+
+    BOOST_AUTO_TEST_CASE( uiChangeModeCommand )
+    {
+            UICommandFactory factory;
+            CommunicationProcessMode mode = MAIN;
+
+            UIChangeModeCommand command(mode);
+
+            auto commandFromVec = static_pointer_cast<UIChangeModeCommand, UICommand>(factory.createCommand(command.getFrameBytes()));
+
+            BOOST_CHECK( commandFromVec->getMode() == command.getMode());
+            BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+            BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
+            BOOST_CHECK( commandFromVec->getSystemVersion() == 1);
+            BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+            BOOST_CHECK( commandFromVec->getName() == command.getName());
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE( test_computeInterest )
-
-BOOST_AUTO_TEST_CASE( test_simple )
-        {
-
-        }
-
-BOOST_AUTO_TEST_SUITE_END()
-
