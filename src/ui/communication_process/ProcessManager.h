@@ -29,13 +29,11 @@ namespace communication
 
     private:
         void initialize();
-        void openQueue();
+        void initializeMessageQueue();
         void initializeWirelessCommunication();
 
         void processReceivingManagementCommand();
         void handleMessage(const std::vector<uint8_t > &data);
-
-        void changeMode(CommunicationProcessMode mode);
 
         void performBIT();
 
@@ -43,7 +41,7 @@ namespace communication
         communication::UICommandFactory uiCommandFactory_;
 
         std::unique_ptr<CommunicationManagerUI> communicationManagerUI_;
-        CommunicationProcessMode status_;
+        CommunicationProcessMode mode_;
 
         std::atomic<bool> runReceivingManagementCommandThread_;
         std::atomic<bool> runSendingCommandThread_;

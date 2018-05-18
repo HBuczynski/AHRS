@@ -3,6 +3,7 @@
 
 #include <ui/server_udp/ServerUDP.h>
 #include <ui/client_tcp/ClientTCP.h>
+#include <common/Common.h>
 
 #include <memory>
 #include <list>
@@ -13,30 +14,19 @@
 
 namespace communication
 {
-    struct CommunicationParameters
-    {
-        uint16_t sourcePortUDP;
-        std::string sourceAddressUDP;
-
-        uint16_t destinationPortTCP;
-        std::string destinationAddressTCP;
-
-        std::string sharedMemoryName;
-    };
-
     class CommunicationManagerUI
     {
     public:
-        CommunicationManagerUI(CommunicationParameters parameters);
+        CommunicationManagerUI();
         ~CommunicationManagerUI();
-
-        void initializeServer();
-        void initializeClientConnection();
 
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
 
     private:
-        CommunicationParameters parameters_;
+        void initializeServer();
+        void initializeClientConnection();
+
+        common::CommunicationParameters parameters_;
 
         std::unique_ptr<ServerUDP> server_;
         std::unique_ptr<ClientTCP> client_;

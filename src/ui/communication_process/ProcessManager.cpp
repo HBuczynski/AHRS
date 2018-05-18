@@ -8,7 +8,7 @@ using namespace communication;
 using namespace boost::interprocess;
 
 ProcessManager::ProcessManager(std::string managementQueueName, std::string sharedMemoryName, CommunicationProcessMode status)
-    : status_(status),
+    : mode_(status),
       runReceivingManagementCommandThread_(false),
       runSendingCommandThread_(false),
       managementQueueName_(managementQueueName),
@@ -29,11 +29,11 @@ ProcessManager::~ProcessManager()
 
 void ProcessManager::initialize()
 {
-    openQueue();
+    initializeMessageQueue();
     initializeWirelessCommunication();
 }
 
-void ProcessManager::openQueue()
+void ProcessManager::initializeMessageQueue()
 {
     try
     {
@@ -43,7 +43,7 @@ void ProcessManager::openQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager -- STATUS: ") + to_string(status_) +". During openning queue ::" + ex.what();
+            const string message = string("ProcessManager -- STATUS: ") + to_string(mode_) +". During openning queue ::" + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
@@ -51,11 +51,7 @@ void ProcessManager::openQueue()
 
 void ProcessManager::initializeWirelessCommunication()
 {
-    //TODO: get data from config FIle
-
-    CommunicationParameters parameters = {0};
-
-    communicationManagerUI_ = make_unique<CommunicationManagerUI>(parameters);
+    communicationManagerUI_ = make_unique<CommunicationManagerUI>();
 }
 
 void ProcessManager::run()
@@ -92,7 +88,7 @@ void ProcessManager::processReceivingManagementCommand()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager -- STATUS: ") + to_string(status_) +". Receiving data ::" + ex.what();
+                const string message = string("ProcessManager -- STATUS: ") + to_string(mode_) +". Receiving data ::" + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -129,7 +125,7 @@ void ProcessManager::handleMessage(const vector<uint8_t > &data)
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager -- STATUS: ") + to_string(status_)
+                const string message = string("ProcessManager -- STATUS: ") + to_string(mode_)
                                        +string(". Received wrong frame type from message queue.");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
@@ -142,14 +138,9 @@ void ProcessManager::performBIT()
     //TODO: check connection with feeder
 }
 
-void ProcessManager::changeMode(CommunicationProcessMode mode)
-{
-    status_ = mode;
-}
-
 void ProcessManager::visit(UIChangeModeCommand &command)
 {
     const auto newMode = command.getMode();
-
+    mode_ = newMode;
     //TODO
 }

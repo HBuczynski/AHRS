@@ -2,9 +2,6 @@
 #include "Scheduler.h"
 #include <common/InterprocessData.h>
 
-#include <boost/interprocess/shared_memory_object.hpp>
-#include <boost/interprocess/mapped_region.hpp>
-#include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/sync/named_mutex.hpp>
 
 using namespace std;
