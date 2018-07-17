@@ -35,7 +35,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
 
     m_realTime = m_realTime + timeStep / 1000.0f;
 
-    /*float alpha     =  0.0f;
+    float alpha     =  0.0f;
     float beta      =  0.0f;
     float roll      =  0.0f;
     float pitch     =  0.0f;
@@ -52,7 +52,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
     float adf       =  0.0f;
     float dme       =  0.0f;
 
-    if ( m_ui->pushButtonAuto->isChecked() )
+    //if ( m_ui->pushButtonAuto->isChecked() )
     {
         alpha     =   20.0f * sin( m_realTime /  10.0f );
         beta      =   15.0f * sin( m_realTime /  10.0f );
@@ -71,41 +71,41 @@ void MainWindow::timerEvent( QTimerEvent *event )
         adf       = -360.0f * sin( m_realTime /  50.0f );
         dme       =   99.0f * sin( m_realTime / 100.0f );
 
-        m_ui->spinBoxAlpha ->setValue( alpha     );
-        m_ui->spinBoxBeta  ->setValue( beta      );
-        m_ui->spinBoxRoll  ->setValue( roll      );
-        m_ui->spinBoxPitch ->setValue( pitch     );
-        m_ui->spinBoxSlip  ->setValue( slipSkid  );
-        m_ui->spinBoxTurn  ->setValue( turnRate  );
-        m_ui->spinBoxDevH  ->setValue( devH      );
-        m_ui->spinBoxDevV  ->setValue( devV      );
-        m_ui->spinBoxHead  ->setValue( heading   );
-        m_ui->spinBoxSpeed ->setValue( airspeed  );
-        m_ui->spinBoxMach  ->setValue( machNo    );
-        m_ui->spinBoxAlt   ->setValue( altitude  );
-        m_ui->spinBoxPress ->setValue( pressure  );
-        m_ui->spinBoxClimb ->setValue( climbRate );
-        m_ui->spinBoxADF   ->setValue( adf       );
-        m_ui->spinBoxDME   ->setValue( dme       );
+//        m_ui->spinBoxAlpha ->setValue( alpha     );
+//        m_ui->spinBoxBeta  ->setValue( beta      );
+//        m_ui->spinBoxRoll  ->setValue( roll      );
+//        m_ui->spinBoxPitch ->setValue( pitch     );
+//        m_ui->spinBoxSlip  ->setValue( slipSkid  );
+//        m_ui->spinBoxTurn  ->setValue( turnRate  );
+//        m_ui->spinBoxDevH  ->setValue( devH      );
+//        m_ui->spinBoxDevV  ->setValue( devV      );
+//        m_ui->spinBoxHead  ->setValue( heading   );
+//        m_ui->spinBoxSpeed ->setValue( airspeed  );
+//        m_ui->spinBoxMach  ->setValue( machNo    );
+//        m_ui->spinBoxAlt   ->setValue( altitude  );
+//        m_ui->spinBoxPress ->setValue( pressure  );
+//        m_ui->spinBoxClimb ->setValue( climbRate );
+//        m_ui->spinBoxADF   ->setValue( adf       );
+//        m_ui->spinBoxDME   ->setValue( dme       );
     }
-    else
+    //else
     {
-        alpha     = (float)m_ui->spinBoxAlpha ->value();
-        beta      = (float)m_ui->spinBoxBeta  ->value();
-        roll      = (float)m_ui->spinBoxRoll  ->value();
-        pitch     = (float)m_ui->spinBoxPitch ->value();
-        heading   = (float)m_ui->spinBoxHead  ->value();
-        slipSkid  = (float)m_ui->spinBoxSlip  ->value();
-        turnRate  = (float)m_ui->spinBoxTurn  ->value();
-        devH      = (float)m_ui->spinBoxDevH  ->value();
-        devV      = (float)m_ui->spinBoxDevV  ->value();
-        airspeed  = (float)m_ui->spinBoxSpeed ->value();
-        pressure  = (float)m_ui->spinBoxPress ->value();
-        altitude  = (float)m_ui->spinBoxAlt   ->value();
-        climbRate = (float)m_ui->spinBoxClimb ->value();
-        machNo    = (float)m_ui->spinBoxMach  ->value();
-        adf       = (float)m_ui->spinBoxADF   ->value();
-        dme       = (float)m_ui->spinBoxDME   ->value();
+//        alpha     = (float)m_ui->spinBoxAlpha ->value();
+//        beta      = (float)m_ui->spinBoxBeta  ->value();
+//        roll      = (float)m_ui->spinBoxRoll  ->value();
+//        pitch     = (float)m_ui->spinBoxPitch ->value();
+//        heading   = (float)m_ui->spinBoxHead  ->value();
+//        slipSkid  = (float)m_ui->spinBoxSlip  ->value();
+//        turnRate  = (float)m_ui->spinBoxTurn  ->value();
+//        devH      = (float)m_ui->spinBoxDevH  ->value();
+//        devV      = (float)m_ui->spinBoxDevV  ->value();
+//        airspeed  = (float)m_ui->spinBoxSpeed ->value();
+//        pressure  = (float)m_ui->spinBoxPress ->value();
+//        altitude  = (float)m_ui->spinBoxAlt   ->value();
+//        climbRate = (float)m_ui->spinBoxClimb ->value();
+//        machNo    = (float)m_ui->spinBoxMach  ->value();
+//        adf       = (float)m_ui->spinBoxADF   ->value();
+//        dme       = (float)m_ui->spinBoxDME   ->value();
     }
 
     m_ui->widgetPFD->setFlightPathMarker ( alpha, beta );
@@ -120,7 +120,7 @@ void MainWindow::timerEvent( QTimerEvent *event )
     m_ui->widgetPFD->setMachNo        ( machNo    );
     m_ui->widgetPFD->setAltitude      ( altitude  );
     m_ui->widgetPFD->setPressure      ( pressure  );
-    m_ui->widgetPFD->setClimbRate     ( climbRate / 100.0f );*/
+    m_ui->widgetPFD->setClimbRate     ( climbRate / 100.0f );
 
     m_ui->widgetPFD->update();
     m_steps++;
