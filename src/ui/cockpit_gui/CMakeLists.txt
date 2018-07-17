@@ -25,8 +25,8 @@ file(GLOB user_interfaces_list "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")
 qt5_add_resources(IMG_RSC_ADDED qfi.qrc)
 qt5_wrap_ui(UI_GENERATED_HEADERS ${user_interfaces_list})
 
-#add_executable(${PROJECT_NAME} ${source_list} ${UI_GENERATED_HEADERS} ${IMG_RSC_ADDED})
-add_library(${PROJECT_NAME} ${source_list} ${UI_GENERATED_HEADERS} ${IMG_RSC_ADDED})
+add_executable(${PROJECT_NAME} ${source_list} ${UI_GENERATED_HEADERS} ${IMG_RSC_ADDED})
+#add_library(${PROJECT_NAME} ${source_list} ${UI_GENERATED_HEADERS} ${IMG_RSC_ADDED})
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
     # Headers used from source/build location:
@@ -42,7 +42,7 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 
 if(BUILD_TESTS)
-    add_subdirectory(unit_tests)
+#    add_subdirectory(unit_tests)
 endif()
 
 
