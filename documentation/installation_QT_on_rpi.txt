@@ -1,0 +1,21 @@
+1. Download 2016-09-23-raspbian-jessie.img
+2. Install jessie.
+3. wget http://download.qt.io/official_releases/qt/5.8/5.8.0/single/qt-everywhere-opensource-src-5.8.0.tar.xz
+3. tar xf qt-everywhere-opensource-src-5.8.0.tar.xz
+4. mkdir build
+5. cd build
+6. sudo apt-get install build-essential libfontconfig1-dev libdbus-1-dev libfreetype6-dev libicu-dev libsqlite3-dev libssl-dev libpng12-dev libjpeg9-dev libglib2.0-dev
+7. Dla rpi2 v rpi3 - linux-rasp-pi2-g++
+sudo ../qt-everywhere-opensource-src-5.8.0/configure -v -opengl es2 -eglfs -no-gtk -device linux-rasp-pi-g++ \
+-device-option CROSS_COMPILE=/usr/bin/ -opensource -confirm-license -reduce-exports \
+-force-pkg-config -nomake examples -no-compile-examples -skip qtwayland -skip qtwebengine -release \
+-qt-pcre -ssl -evdev -system-freetype -fontconfig -glib -prefix /opt/Qt5.8 
+8. sudo ../qt-everywhere-opensource-src-5.8.0/configure -v -opengl es2 -eglfs -no-gtk -device linux-rasp-pi-g++ \
+-device-option CROSS_COMPILE=/usr/bin/ -opensource -confirm-license -reduce-exports \
+-force-pkg-config -nomake examples -no-compile-examples -skip qtwayland -skip qtwebengine -release \
+-qt-pcre -ssl -evdev -system-freetype -fontconfig -glib -sysroot / -prefix /opt/Qt5.8 -recheck
+9. sudo make -j4
+10. sudo make -j4 install
+11. sudo apt-get install qtbase5-dev
+12. sudo apt-get install qtdeclarative5-dev
+13. sudo apt-get install git build-essential cmake qt5-default qtscript5-dev libssl-dev qttools5-dev qttools5-dev-tools qtmultimedia5-dev libqt5svg5-dev libqt5webkit5-dev libsdl2-dev libasound2 libxmu-dev libxi-dev freeglut3-dev libasound2-dev libjack-jackd2-dev libxrandr-dev libqt5xmlpatterns5-dev libqt5xmlpatterns5 libqt5xmlpatterns5-private-dev
