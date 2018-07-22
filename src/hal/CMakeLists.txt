@@ -8,7 +8,7 @@ include_directories("../")
 
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 
-if(${TARGET_PLATFROM} STREQUAL rpi)
+if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_ui))
     file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/rpi/*.cpp")
 elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
     file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/virtualBoard/*.cpp")

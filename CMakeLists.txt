@@ -7,7 +7,7 @@ project(AHRS)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-if(${TARGET_PLATFROM} STREQUAL rpi)
+if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_ui))
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread -lwiringPi")
 elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
@@ -40,6 +40,7 @@ endif()
 #########################################################################################################
 #                                           ADDING SUBMODULES                                           #
 #########################################################################################################
+
 add_subdirectory("src/time_manager"                                     time_manager                    )
 add_subdirectory("src/logger"                                           logger                          )
 add_subdirectory("src/interfaces/frame"                                 frame                           )
@@ -54,17 +55,21 @@ add_subdirectory("src/packet"                                           packet  
 add_subdirectory("src/switches"                                         switches                        )
 add_subdirectory("src/hal"                                              hal                             )
 add_subdirectory("src/common"                                           common                          )
-add_subdirectory("src/feeder/main_feeder"                               main_feeder                     )
-add_subdirectory("src/feeder/server_tcp"                                server_tcp                      )
-add_subdirectory("src/feeder/client_udp"                                client_udp                      )
-add_subdirectory("src/feeder/communication_manager_feeder"              communication_manager_feeder    )
-add_subdirectory("src/ui/common"                                        common_ui                       )
-add_subdirectory("src/ui/client_tcp"                                    client_tcp                      )
-add_subdirectory("src/ui/server_udp"                                    server_udp                      )
-add_subdirectory("src/ui/communication_manager_ui"                      communication_manager_ui        )
-add_subdirectory("src/ui/main_process"                                  main_process                    )
-add_subdirectory("src/ui/cockpit_gui"                                   cockpit_gui                     )
-add_subdirectory("src/ui/communication_process"                         communication_process_ui        )
+if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL virtualBoard))
+    add_subdirectory("src/feeder/main_feeder"                               main_feeder                     )
+    add_subdirectory("src/feeder/server_tcp"                                server_tcp                      )
+    add_subdirectory("src/feeder/client_udp"                                client_udp                      )
+    add_subdirectory("src/feeder/communication_manager_feeder"              communication_manager_feeder    )
+endif() 
+if((${TARGET_PLATFROM} STREQUAL cockpit_ui) OR (${TARGET_PLATFROM} STREQUAL virtualBoard))
+    add_subdirectory("src/ui/common"                                        common_ui                       )
+    add_subdirectory("src/ui/client_tcp"                                    client_tcp                      )
+    add_subdirectory("src/ui/server_udp"                                    server_udp                      )
+    add_subdirectory("src/ui/communication_manager_ui"                      communication_manager_ui        )
+    add_subdirectory("src/ui/main_process"                                  main_process                    )
+    add_subdirectory("src/ui/cockpit_gui"                                   cockpit_gui                     )
+    add_subdirectory("src/ui/communication_process"                         communication_process_ui        )
+endif()
 
 ########################################################################################################
 #                                           ADDING DOXYGEN GENERATION                                  #

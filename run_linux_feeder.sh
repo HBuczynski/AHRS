@@ -7,7 +7,7 @@ input=$1
 tool=$2
 
 target_folder_name="target"
-target_platform="rpi"
+target_platform="feeder"
 
 # Create basic target folder.
 if [ ! -d $target_folder_name ]; then
