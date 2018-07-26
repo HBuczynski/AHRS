@@ -20,8 +20,8 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC common)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)

@@ -44,6 +44,7 @@ void ClientThreadTCP::startListen()
     listenThread_ = thread(&ClientThreadTCP::runListen, this);
 }
 
+// TO DO: check reset on socket !!
 void ClientThreadTCP::stopListen()
 {
     if(socket_.get() != nullptr)

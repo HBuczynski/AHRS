@@ -19,7 +19,7 @@ namespace communication
     class ServerTCP
     {
     public:
-        ServerTCP(uint16_t port, uint8_t maxClientNumber);
+        ServerTCP(uint16_t port, uint8_t maxClientNumber, std::shared_ptr<ClientUDPManager> clientUDPManager);
         ~ServerTCP();
 
         void startUserActivation();

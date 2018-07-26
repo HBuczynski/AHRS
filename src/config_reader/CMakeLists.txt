@@ -21,6 +21,9 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
+add_custom_command(TARGET config_reader PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/unit_tests/test_files $<TARGET_FILE_DIR:config_reader>)
 
 add_library(jsonlib STATIC "../../3rd_party/json/jsoncpp.cpp"
                         "../../3rd_party/json/json/json.h"

@@ -9,12 +9,14 @@
 #include <chrono>
 
 using namespace std;
-using namespace common;
+using namespace config;
 using namespace communication;
 
 CommunicationManagerUI::CommunicationManagerUI()
-    :   parameters_(Common::getCommunicationParameters())
 {
+
+    parameters_ = ConfigurationReader::getCommunicationParameters(config::filePath);
+
     server_ = make_unique<ServerUDP>(parameters_.sourcePortUDP);
     client_ = make_unique<ClientTCP>(parameters_.destinationPortTCP, parameters_.destinationAddressTCP);
 

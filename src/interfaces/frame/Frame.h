@@ -8,13 +8,22 @@ namespace communication
 {
     const uint8_t END_STRING_IN_FRAME = '#';
 
-    enum FrameType : uint8_t
+    // tutaj komenda: measurement, response
+    enum class FrameType : uint8_t
     {
         WIRELESS_COMMAND = 10,
         RESPONSE = 20,
         MEASUREMENT_DATA = 30,
         UI_COMMAND = 40,
         FEEDER_COMMAND = 50
+    };
+
+    //kolejne to typ komunikacji wireless, interprocess, shared memory
+
+    //od kogo przyszło 
+    enum class InterfaceType :uint8_t
+    {
+
     };
 
     class Frame

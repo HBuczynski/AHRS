@@ -34,6 +34,12 @@ void ListenStreamTCP::createSocket()
     sockAddress_.sin_addr.s_addr = INADDR_ANY;
     sockAddress_.sin_port = htons(port_);
 
+    int yes =1;
+    if (setsockopt(sock_,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(int)) == -1)
+    {
+        throw logic_error("Cannot set socket options.");
+    }
+
     if (bind(sock_,(struct sockaddr *)&sockAddress_, sizeof sockAddress_) == -1)
     {
         throw logic_error("Cannot bind stream socket.");

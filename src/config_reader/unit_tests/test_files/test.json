@@ -1,0 +1,9 @@
+{
+  "CommunicationParameters" :
+  {
+    "sourcePortUDP": 9000,
+    "sourceAddressUDP": "127.0.0.1",
+    "destinationPortTCP": 8000,
+    "destinationAddressTCP": "10.10.10.20"
+  }
+}

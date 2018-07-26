@@ -1,35 +1,21 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(server_tcp)
+project(internal_feeder_communication)
+set(PROJECT_NAME internal_feeder_communication)
 
-set(PROJECT_NAME server_tcp)
-include_directories("../")
+include_directories(../)
+link_directories(${CMAKE_BINARY_DIR}/../../lib)
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list})
+add_executable(${PROJECT_NAME} ${source_list})
 
-target_include_directories(
-    ${PROJECT_NAME} PUBLIC
-    # Headers used from source/build location:
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
-    # Headers used from the installed location:
-    "$<INSTALL_INTERFACE:include>"
-)
-
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC client_udp)
-
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
-
-if(BUILD_TESTS)
-    add_subdirectory(unit_tests)
-endif()

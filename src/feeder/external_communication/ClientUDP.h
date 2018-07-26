@@ -1,12 +1,12 @@
 #ifndef AHRS_BLACK_BOX_WAIC_CLIENT_H
 #define AHRS_BLACK_BOX_WAIC_CLIENT_H
 
-#include <packet/SendDatagramUDP.h>
-#include <logger/Logger.h>
+#include "../../packet/SendDatagramUDP.h"
+#include "../../logger/Logger.h"
 
-#include <cstdint>
-#include <string>
-#include <memory>
+#include "../../../../../../../../usr/include/c++/5/cstdint"
+#include "../../../../../../../../usr/include/c++/5/string"
+#include "../../../../../../../../usr/include/c++/5/memory"
 
 namespace communication
 {

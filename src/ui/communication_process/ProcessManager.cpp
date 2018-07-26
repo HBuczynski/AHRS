@@ -110,12 +110,12 @@ void ProcessManager::handleMessage(const vector<uint8_t > &data)
 
     switch(commandType)
     {
-        case WIRELESS_COMMAND :
+        case FrameType::WIRELESS_COMMAND :
         {
             communicationManagerUI_->sendCommands(move(wirelessCommandFactory_.createCommand(data)));
             break;
         }
-        case UI_COMMAND :
+        case FrameType::UI_COMMAND :
         {
             unique_ptr<UICommand> uiCommand(move(uiCommandFactory_.createCommand(data)));
             uiCommand->accept(reinterpret_cast<UICommandVisitor& >(*this)); // check correctness of it

@@ -3,7 +3,7 @@
 
 #include <packet/SendStreamTCP.h>
 #include <interfaces/wireless_commands/CommandFactory.h>
-#include <feeder/server_tcp/CommandHandlerVisitor.h>
+#include <feeder/external_communication/CommandHandlerVisitor.h>
 #include <logger/Logger.h>
 
 #include <thread>

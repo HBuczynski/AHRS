@@ -13,14 +13,13 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber)
+ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, shared_ptr<ClientUDPManager> clientUDPManager)
         : port_(port),
           maxClientNumber_(maxClientNumber),
           runUserActivation_(false),
+          clientUDPManager_(clientUDPManager),
           logger_(Logger::getInstance())
-{
-    clientUDPManager_ = make_shared<ClientUDPManager>();
-}
+{ }
 
 ServerTCP::~ServerTCP()
 {

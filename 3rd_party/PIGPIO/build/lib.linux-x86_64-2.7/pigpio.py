@@ -5516,7 +5516,7 @@ def xref():
    being currently defined.
 
    pad: 0-2
-   A set of GPIO which share common drivers.
+   A set of GPIO which share db_service drivers.
 
    Pad @  GPIO
    0   @  0-27

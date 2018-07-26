@@ -1441,7 +1441,7 @@ const char* TiXmlAttribute::Parse( const char* p, TiXmlParsingData* data, TiXmlE
 	else
 	{
 		// All attribute values should be in single or double quotes.
-		// But this is such a common error that the parser will try
+		// But this is such a db_service error that the parser will try
 		// its best, even without them.
 		value = "";
 		while (    p && *p											// existence

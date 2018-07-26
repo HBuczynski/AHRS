@@ -1,7 +1,7 @@
 #ifndef AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 #define AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 
-#include <feeder/client_udp/ClientUDP.h>
+#include "ClientUDP.h"
 
 #include <list>
 #include <cstdint>

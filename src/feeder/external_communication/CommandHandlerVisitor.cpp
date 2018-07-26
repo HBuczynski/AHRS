@@ -3,7 +3,7 @@
 #include <interfaces/wireless_responses/DataResponse.h>
 #include <interfaces/wireless_measurement_commands/ImuData.h>
 
-#include <feeder/server_tcp/ClientThreadTCP.h>
+#include <feeder/external_communication/ClientThreadTCP.h>
 
 #include <iostream>
 

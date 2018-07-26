@@ -3,46 +3,41 @@
 using namespace std;
 using namespace config;
 
-std::unique_ptr<JSONParser> ConfigurationReader::jsonParser_;
-CommunicationParameters ConfigurationReader::communicationParameters_;
-CalibratedMagnetometers ConfigurationReader::calibratedMagnetometers_;
-bool ConfigurationReader::dataWasRead_ = false;
-
-ConfigurationReader::ConfigurationReader(const string &fileName)
-{
-    jsonParser_ = make_unique<JSONParser>(fileName);
-}
+ConfigurationReader::ConfigurationReader()
+{}
 
 ConfigurationReader::~ConfigurationReader()
 {}
 
-void ConfigurationReader::initialize()
+CommunicationParameters ConfigurationReader::getCommunicationParameters(const std::string& path)
 {
-    if(!dataWasRead_)
-    {
-        readCommunicationParameters();
-        readCalibratedMagnetometersParameters();
+    JSONParser jsonParser(path);
+    CommunicationParameters communicationParameters;
 
-        dataWasRead_ = true;
-    }
+    vector<string> configNames;
+    configNames.push_back("CommunicationParameters");
+
+    configNames.push_back("sourcePortUDP");
+    jsonParser.getUINT16t(configNames, communicationParameters.sourcePortUDP);
+
+    configNames.pop_back();
+    configNames.push_back("sourceAddressUDP");
+    jsonParser.getString(configNames, communicationParameters.sourceAddressUDP);
+
+    configNames.pop_back();
+    configNames.push_back("destinationPortTCP");
+    jsonParser.getUINT16t(configNames, communicationParameters.destinationPortTCP);
+
+    configNames.pop_back();
+    configNames.push_back("destinationAddressTCP");
+    jsonParser.getString(configNames, communicationParameters.destinationAddressTCP);
+
+    return communicationParameters;
 }
 
-void ConfigurationReader::readCommunicationParameters()
+CalibratedMagnetometers ConfigurationReader::getCalibratedMagnetometersParameters(const std::string& path)
 {
+    CalibratedMagnetometers calibratedMagnetometers;
 
-}
-
-void ConfigurationReader::readCalibratedMagnetometersParameters()
-{
-
-}
-
-const CommunicationParameters& ConfigurationReader::getCommunicationParameters()
-{
-    return communicationParameters_;
-}
-
-const CalibratedMagnetometers& ConfigurationReader::getCalibratedMagnetometersParameters()
-{
-    return calibratedMagnetometers_;
+    return calibratedMagnetometers;
 }
