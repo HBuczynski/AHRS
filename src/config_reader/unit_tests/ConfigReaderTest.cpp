@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE( parser )
         const string filePath("../../src/config_reader/unit_tests/test_files/test.json");
 
         system("pwd");
-        const auto configurationParameters = ConfigurationReader::getCommunicationParameters(filePath);
+        const auto configurationParameters = ConfigurationReader::getWirelessParameters(filePath);
 
         BOOST_CHECK( configurationParameters.destinationAddressTCP == "10.10.10.20");
         BOOST_CHECK( configurationParameters.destinationPortTCP == 8000);

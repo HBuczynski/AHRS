@@ -1,5 +1,5 @@
 {
-  "CommunicationParameters" :
+  "WirelessParameters" :
   {
     "sourcePortUDP": 9000,
     "sourceAddressUDP": "127.0.0.1",

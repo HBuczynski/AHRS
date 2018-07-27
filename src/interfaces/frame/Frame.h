@@ -19,15 +19,12 @@ namespace communication
 
     enum class InterfaceType :uint8_t
     {
-        MAIN_FEEDER = 1,
-        EXTERNAL_FEEDER = 2,
-        INTERNAL_FEEDER = 3,
-        MAIN_UI = 4,
-        MAIN_COMMUNICATION_UI = 5,
-        REDUNDANT_COMMUNICATION_UI = 6,
-        GUI = 7,
-        WIRELESS = 8,
-        ETHERNET = 9
+        SCHEDULER_FEEDER = 1,
+        ETHERNET_FEEDER = 2,
+        COMMUNICATION_PROCESS_FEEDER = 3,
+        SCHEDULER_UI = 4,
+        COMMUNICATION_PROCESS_UI = 5,
+        WIRELESS = 6,
     };
 
     class Frame

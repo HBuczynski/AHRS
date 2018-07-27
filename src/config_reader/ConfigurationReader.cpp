@@ -9,13 +9,13 @@ ConfigurationReader::ConfigurationReader()
 ConfigurationReader::~ConfigurationReader()
 {}
 
-CommunicationParameters ConfigurationReader::getCommunicationParameters(const std::string& path)
+CommunicationParameters ConfigurationReader::getWirelessParameters(const std::string &path)
 {
     JSONParser jsonParser(path);
     CommunicationParameters communicationParameters;
 
     vector<string> configNames;
-    configNames.push_back("CommunicationParameters");
+    configNames.push_back("WirelessParameters");
 
     configNames.push_back("sourcePortUDP");
     jsonParser.getUINT16t(configNames, communicationParameters.sourcePortUDP);
