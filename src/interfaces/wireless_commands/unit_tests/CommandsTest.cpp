@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_SUITE( commands )
         command.getFrameBytes();
 
         BOOST_CHECK( planeName == command.getNewPlaneName());
-        BOOST_CHECK( FrameType::WIRELESS_COMMAND == command.getFrameType());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::CALIBRATE_MAGNETOMETER == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
         BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER)) == command.getDataSize());
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE( commands )
         CollectDataCommand command;
         command.getFrameBytes();
 
-        BOOST_CHECK( FrameType::WIRELESS_COMMAND == command.getFrameType());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::COLLECT_DATA == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
         BOOST_CHECK( (sizeof(CommandType::COLLECT_DATA)) == command.getDataSize());
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_SUITE( commands )
         EndConnectionCommand command;
         command.getFrameBytes();
 
-        BOOST_CHECK( FrameType::WIRELESS_COMMAND == command.getFrameType());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::END_CONNECTION == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
         BOOST_CHECK( (sizeof(CommandType::END_CONNECTION)) == command.getDataSize());
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_SUITE( commands )
 
         BOOST_CHECK( address == command.getAddress());
         BOOST_CHECK( port == command.getPort());
-        BOOST_CHECK( FrameType::WIRELESS_COMMAND == command.getFrameType());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::INIT_CONNECTION == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
         BOOST_CHECK( (address.size()+ sizeof(port)+sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER)) == command.getDataSize());
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_SUITE( commands )
         command.getFrameBytes();
 
         BOOST_CHECK( planeName == command.getPlaneName());
-        BOOST_CHECK( FrameType::WIRELESS_COMMAND == command.getFrameType());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::SET_PLANE_MAGNETOMETER_DATA == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
         BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_MAGNETOMETER_DATA)) == command.getDataSize());

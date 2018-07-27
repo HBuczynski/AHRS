@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE( command )
             command.getFrameBytes();
 
             BOOST_CHECK( mode == command.getMode());
-            BOOST_CHECK( FrameType::UI_COMMAND == command.getFrameType());
+            BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
             BOOST_CHECK( UICommandType::CHANGE_STATE == command.getCommandType());
             BOOST_CHECK( 1 == command.getSystemVersion());
             BOOST_CHECK( ((sizeof(mode) + sizeof(UICommandType::CHANGE_STATE)) == command.getDataSize()));

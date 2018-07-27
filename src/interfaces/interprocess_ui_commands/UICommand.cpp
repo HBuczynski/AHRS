@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 UICommand::UICommand(uint8_t dataSizeIn, UICommandType commandTypeIn)
-    : Frame(FrameType::UI_COMMAND, dataSizeIn),
+    : Frame(FrameType::COMMAND, InterfaceType::GUI, dataSizeIn),
       commandType_(commandTypeIn)
 {}
 

@@ -6,30 +6,34 @@
 
 namespace communication
 {
+    const uint8_t FRAME_INDEX = 1;
+    const uint8_t INTERFACE_INDEX = 2;
     const uint8_t END_STRING_IN_FRAME = '#';
 
-    // tutaj komenda: measurement, response
     enum class FrameType : uint8_t
     {
-        WIRELESS_COMMAND = 10,
-        RESPONSE = 20,
-        MEASUREMENT_DATA = 30,
-        UI_COMMAND = 40,
-        FEEDER_COMMAND = 50
+        RESPONSE = 10,
+        MEASUREMENT_DATA = 20,
+        COMMAND = 30,
     };
 
-    //kolejne to typ komunikacji wireless, interprocess, shared memory
-
-    //od kogo przyszło 
     enum class InterfaceType :uint8_t
     {
-
+        MAIN_FEEDER = 1,
+        EXTERNAL_FEEDER = 2,
+        INTERNAL_FEEDER = 3,
+        MAIN_UI = 4,
+        MAIN_COMMUNICATION_UI = 5,
+        REDUNDANT_COMMUNICATION_UI = 6,
+        GUI = 7,
+        WIRELESS = 8,
+        ETHERNET = 9
     };
 
     class Frame
     {
     public:
-        Frame(FrameType frameTypeIn, uint16_t dataSizeIn);
+        Frame(FrameType frameTypeIn, InterfaceType interfaceTypeIn, uint16_t dataSizeIn);
         virtual ~Frame();
 
         virtual std::vector<uint8_t > getFrameBytes() = 0;
@@ -45,12 +49,14 @@ namespace communication
 
         const uint8_t& getSystemVersion() const;
         const FrameType& getFrameType() const;
+        const InterfaceType& getInterfaceType() const;
 
     protected:
         virtual void initializeDataSize() = 0;
 
         uint8_t systemVersion_;
         FrameType frameType_;
+        InterfaceType interfaceType_;
         uint8_t packetNumber_;
         uint16_t dataSize_;
     };

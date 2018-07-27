@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 Command::Command(uint8_t dataSizeIn, CommandType commandTypeIn)
-    : Frame(FrameType::WIRELESS_COMMAND, dataSizeIn),
+    : Frame(FrameType::COMMAND, InterfaceType::WIRELESS, dataSizeIn),
       commandType_(commandTypeIn)
 
 {}

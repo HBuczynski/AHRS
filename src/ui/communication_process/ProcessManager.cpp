@@ -106,9 +106,9 @@ void ProcessManager::handleMessage(const vector<uint8_t > &data)
 {
     //TODO: check packet correctness: header, CRC, checksum
 
-    const auto commandType = static_cast<FrameType>(data[1]);
+    const auto commandType = static_cast<FrameType>(data[FRAME_INDEX]);
 
-    switch(commandType)
+    /*switch(commandType)
     {
         case FrameType::WIRELESS_COMMAND :
         {
@@ -130,7 +130,7 @@ void ProcessManager::handleMessage(const vector<uint8_t > &data)
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
-    }
+    }*/
 }
 
 void ProcessManager::performBIT()

@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 FeederCommand::FeederCommand(uint8_t dataSizeIn, FeederCommandType commandTypeIn)
-        : Frame(FrameType::FEEDER_COMMAND, dataSizeIn),
+        : Frame(FrameType::COMMAND, InterfaceType::INTERNAL_FEEDER, dataSizeIn),
           commandType_(commandTypeIn)
 {}
 

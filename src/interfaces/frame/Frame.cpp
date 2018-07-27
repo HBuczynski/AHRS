@@ -5,17 +5,16 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-Frame::Frame(FrameType frameTypeIn, uint16_t dataSizeIn)
+Frame::Frame(FrameType frameTypeIn, InterfaceType interfaceTypeIn, uint16_t dataSizeIn)
     : systemVersion_(1),
       frameType_(frameTypeIn),
+      interfaceType_(interfaceTypeIn),
       packetNumber_(0),
       dataSize_(dataSizeIn)
-{
-}
+{ }
 
 Frame::~Frame()
-{
-}
+{ }
 
 vector<uint8_t> Frame::getHeader() const
 {
@@ -23,6 +22,7 @@ vector<uint8_t> Frame::getHeader() const
 
     header.push_back(systemVersion_);
     header.push_back(static_cast<uint8_t >(frameType_));
+    header.push_back(static_cast<uint8_t >(interfaceType_));
     header.push_back(packetNumber_);
     BytesConverter::appendUINT16toVectorOfUINT8(dataSize_, header);
 
@@ -57,4 +57,9 @@ void Frame::setDataSize(uint16_t dataSize)
 const FrameType &Frame::getFrameType() const
 {
     return frameType_;
+}
+
+const InterfaceType &Frame::getInterfaceType() const
+{
+    return interfaceType_;
 }
