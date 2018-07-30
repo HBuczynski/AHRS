@@ -15,6 +15,7 @@ namespace communication
         RESPONSE = 10,
         MEASUREMENT_DATA = 20,
         COMMAND = 30,
+        NOTIFICATION = 40
     };
 
     enum class InterfaceType :uint8_t

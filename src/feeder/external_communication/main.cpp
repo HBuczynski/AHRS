@@ -7,7 +7,7 @@
 #include <packet/ListenStreamTCP.h>
 #include <packet/SendStreamTCP.h>
 
-#include "CommunicationManager.h"
+#include "ProcessManager.h"
 
 using namespace std;
 using namespace utility;
@@ -27,7 +27,9 @@ int main(int argc , char *argv[])
 
     logger.initLogger(struc);
 
-    CommunicationManager manager(9000,2);
+    ///TODO:
+    // - info o nazwie kolejki i rodzaju procesu jako argument
+    ProcessManager manager(9000,2);
     manager.initializeExternalCommmunication();
 
     while(1)

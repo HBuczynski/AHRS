@@ -13,8 +13,8 @@ namespace config
         ConfigurationReader();
         ~ConfigurationReader();
 
-        static CommunicationParameters getWirelessParameters(const std::string &filePath);
-        static CalibratedMagnetometers getCalibratedMagnetometersParameters(const std::string& filePath);
+        static FeederParameters getFeederParameters(const std::string &filePath);
+        static UIParameters getUIParameters(const std::string &filePath);
     };
 }
 

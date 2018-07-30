@@ -15,10 +15,10 @@ using namespace communication;
 CommunicationManagerUI::CommunicationManagerUI()
 {
 
-    parameters_ = ConfigurationReader::getWirelessParameters(config::filePath);
+    parameters_ = ConfigurationReader::getUIParameters(config::filePath);
 
-    server_ = make_unique<ServerUDP>(parameters_.sourcePortUDP);
-    client_ = make_unique<ClientTCP>(parameters_.destinationPortTCP, parameters_.destinationAddressTCP);
+    server_ = make_unique<ServerUDP>(parameters_.sourcePort);
+    client_ = make_unique<ClientTCP>(parameters_.destinationPort, parameters_.destinationAddress);
 
     initializeServer();
     initializeClientConnection();
@@ -37,7 +37,7 @@ void CommunicationManagerUI::initializeClientConnection()
     client_->connectToServer();
     client_->startCommandSending();
 
-    auto command = make_unique<InitConnectionCommand>(parameters_.sourcePortUDP, parameters_.sourceAddressUDP);
+    auto command = make_unique<InitConnectionCommand>(parameters_.sourcePort, parameters_.sourceAddress);
     sendCommands(move(command));
 }
 

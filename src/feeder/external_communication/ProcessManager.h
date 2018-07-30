@@ -10,11 +10,11 @@
 
 namespace communication
 {
-    class CommunicationManager
+    class ProcessManager
     {
     public:
-        CommunicationManager(uint16_t serverPort, uint8_t maxUserNumber);
-        ~CommunicationManager();
+        ProcessManager(uint16_t serverPort, uint8_t maxUserNumber);
+        ~ProcessManager();
 
         void initializeExternalCommmunication();
         void initializeMessageQueueCommunication();

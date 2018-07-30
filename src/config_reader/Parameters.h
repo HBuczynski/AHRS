@@ -5,20 +5,36 @@ namespace config
 {
     const std::string filePath = "/lol";
 
-    struct CommunicationParameters
+    struct FeederParameters
     {
-        uint16_t sourcePortUDP;
-        std::string sourceAddressUDP;
-
-        uint16_t destinationPortTCP;
-        std::string destinationAddressTCP;
-
+        uint16_t sourcePort;
         uint8_t maxUserNumber;
+
+        std::string mainProcessQueueName;
+        std::string externalCommunicationQueueName;
+        std::string internalCommunicationQueueName;
+        uint16_t messageSize;
+
+        std::string externalMemoryName;
+        std::string internalMemoryName;
+        uint16_t sharedMemorySize;
     };
 
-    struct CalibratedMagnetometers
+    struct UIParameters
     {
+        uint16_t sourcePort;
+        std::string sourceAddress;
+        uint16_t destinationPort;
+        std::string destinationAddress;
 
+        std::string mainProcessQueueName;
+        std::string mainCommunicationQueueName;
+        std::string redundantCommunicationQueueName;
+        std::string guiProcessQueueName;
+        uint16_t messageSize;
+
+        std::string dataSharedMemory;
+        uint16_t sharedMemorySize;
     };
 }
 #endif
