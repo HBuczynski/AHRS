@@ -7,6 +7,7 @@
 #include <queue>
 #include <logger/Logger.h>
 #include "../../3rd_party/json/json/json.h"
+#include "../../3rd_party/json/json/json-forwards.h"
 
 namespace config
 {
@@ -21,6 +22,8 @@ namespace config
         void getUINT32t(const std::vector<std::string> &hierarchyQueue, uint32_t &value);
         void getUINT64t(const std::vector<std::string> &hierarchyQueue, uint64_t &value);
         void getString(const std::vector<std::string> &hierarchyQueue, std::string &value);
+
+        void setString(const std::vector<std::string> &hierarchyQueue, std::string &value);
 
     private:
         Json::Value getFromLeaf(const std::vector<std::string> &hierarchyQueue);

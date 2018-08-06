@@ -14,8 +14,8 @@ file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 add_executable(${PROJECT_NAME} ${source_list} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)

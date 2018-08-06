@@ -26,7 +26,7 @@ namespace communication
         void initializeServer();
         void initializeClientConnection();
 
-        config::UIParameters parameters_;
+        //config::UIParameters parameters_;
 
         std::unique_ptr<ServerUDP> server_;
         std::unique_ptr<ClientTCP> client_;

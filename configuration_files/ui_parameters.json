@@ -1,0 +1,31 @@
+{
+  "UI" :
+  {
+    "Wireless" :
+    {
+      "firstSourcePort": 9000,
+      "firstSourceAddress": "127.0.0.1",
+      "secondSourcePort": 9000,
+      "secondSourceAddress": "127.0.0.1",
+
+      "destinationPort": 8000,
+      "destinationAddress": "127.0.0.1"
+    },
+
+    "MessageQueues" :
+    {
+      "mainProcessQueueName" : "MainProcessQueue",
+      "mainCommunicationQueueName" : "MainCommunicationQueue",
+      "redundantCommunicationQueueName": "RedundantCommunicationQueue",
+      "guiProcessQueueName" : "GuiProcessQueue",
+      "messageSize": 400
+
+    },
+
+    "SharedMemory" :
+    {
+      "dataSharedMemory" : "SharedMemoryUI",
+      "size" : 100
+    }
+  }
+}

@@ -1,11 +1,6 @@
 #include <iostream>
+#include <chrono>
 #include <logger/Logger.h>
-
-
-#include <packet/ListenDatagramUDP.h>
-#include <packet/SendDatagramUDP.h>
-#include <packet/ListenStreamTCP.h>
-#include <packet/SendStreamTCP.h>
 
 #include "ProcessManager.h"
 
@@ -24,16 +19,15 @@ int main(int argc , char *argv[])
     struc.warningLog = true;
     struc.writeLogsInSeparetFiles = true;
     struc.writeOnConsole = true;
-
     logger.initLogger(struc);
 
-    ///TODO:
-    // - info o nazwie kolejki i rodzaju procesu jako argument
-    ProcessManager manager(9000,2);
-    manager.initializeExternalCommmunication();
+    ProcessManager manager;
+    manager.runProcessConfiguration();
 
     while(1)
-    {}
+    {
+        this_thread::sleep_for(chrono::milliseconds(1));
+    }
 
     return 0;
 }

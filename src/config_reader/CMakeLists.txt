@@ -9,7 +9,8 @@ include_directories("../../3rd_party/json/")
 include_directories("../../3rd_party/json/json")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")  
+file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+
 
 add_library(${PROJECT_NAME} ${source_list})
 

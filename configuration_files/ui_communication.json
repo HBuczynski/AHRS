@@ -1,0 +1,14 @@
+{
+  "UIFirstCommunication" :
+  {
+    "mode": "master",
+    "processNumber": 1
+  },
+
+  "UISecondCommunication" :
+  {
+    "mode": "redundant",
+    "processNumber": 2
+  }
+
+}

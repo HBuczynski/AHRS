@@ -15,10 +15,10 @@ using namespace communication;
 CommunicationManagerUI::CommunicationManagerUI()
 {
 
-    parameters_ = ConfigurationReader::getUIParameters(config::filePath);
+    //parameters_ = ConfigurationReader::getUIParameters(config::filePath);
 
-    server_ = make_unique<ServerUDP>(parameters_.sourcePort);
-    client_ = make_unique<ClientTCP>(parameters_.destinationPort, parameters_.destinationAddress);
+    server_ = make_unique<ServerUDP>(1000);
+    client_ = make_unique<ClientTCP>(1000, "123.2.2.2");
 
     initializeServer();
     initializeClientConnection();
@@ -37,8 +37,8 @@ void CommunicationManagerUI::initializeClientConnection()
     client_->connectToServer();
     client_->startCommandSending();
 
-    auto command = make_unique<InitConnectionCommand>(parameters_.sourcePort, parameters_.sourceAddress);
-    sendCommands(move(command));
+    /*auto command = make_unique<InitConnectionCommand>(1000, 1000);
+    sendCommands(move(command));*/
 }
 
 void CommunicationManagerUI::sendCommands(unique_ptr<Command> command)

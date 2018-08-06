@@ -98,3 +98,8 @@ Json::Value JSONParser::getFromLeaf(const vector<string> &hierarchyQueue)
         throw invalid_argument("Hierarchy vector contains wrong number of arguments");
     }
 }
+
+void JSONParser::setString(const vector<std::string> &hierarchyQueue, string &value)
+{
+
+}

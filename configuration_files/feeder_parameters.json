@@ -1,0 +1,35 @@
+{
+  "Feeder" :
+  {
+    "ExternalWireless" :
+    {
+      "firstPort": 8000,
+      "secondPort": 7000,
+      "userNumber": 2
+    },
+
+    "InternalWireless" :
+    {
+      "firstPort": 4000,
+      "secondPort": 5000,
+      "firstAddress": "127.0.0.1",
+      "secondAddress": "127.0.0.1"
+    },
+
+    "MessageQueues" :
+    {
+      "mainProcessQueueName" : "MainProcessQueue",
+      "externalCommunicationQueueName" : "ExternalCommunicationQueue",
+      "internalCommunicationQueueName": "InternalCommunicationQueue",
+      "messageQueueNumber" : 30,
+      "messageSize": 400
+    },
+
+    "SharedMemory" :
+    {
+      "externalMemoryName" : "ExternalMemoryFeeder",
+      "internalMemoryName" : "InternalMemoryFeeder",
+      "size" : 100
+    }
+  }
+}

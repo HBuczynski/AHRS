@@ -99,7 +99,7 @@ void Logger::registerLogType(LogType type)
     }
     else
     {
-        throw invalid_argument("Logger: Wrong logger type was registered.");
+        throw invalid_argument("Logger: Wrong logger_ type was registered.");
     }
 }
 
@@ -111,7 +111,7 @@ void Logger::writeLog(LogType type, string rawMessage)
     file_.open(fileName_.c_str(), std::fstream::in | std::fstream::out | std::fstream::app);
     if (file_.fail())
     {
-        throw logic_error("Logger: Main logger file was not created.");
+        throw logic_error("Logger: Main logger_ file was not created.");
     }
 
 	auto logHandler = typeRegister_.find(type);
@@ -135,7 +135,7 @@ void Logger::writeLog(LogType type, string rawMessage)
 	}
 	else
 	{
-        throw invalid_argument("Logger: Chosen logger type was not registered.");
+        throw invalid_argument("Logger: Chosen logger_ type was not registered.");
 	}
 
     file_.close();

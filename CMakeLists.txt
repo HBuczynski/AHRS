@@ -13,8 +13,14 @@ elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -pthread")
 endif()
 
+if((${TARGET_PLATFROM} STREQUAL feeder))
+    add_definitions(-DFEEDER)
+elseif(${TARGET_PLATFROM} STREQUAL cockpit_ui)
+    add_definitions(-DCOCKPIT_UI)
+elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
+    add_definitions(-DVIRTUAL_BOARD)
+endif()
 
-#TARGET_LINK_LIBRARIES(AHRS_black_box ${CMAKE_THREAD_LIBS_INIT})
 
 # Set the output folder where the program will be created.
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
