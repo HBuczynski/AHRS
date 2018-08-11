@@ -1,15 +1,15 @@
-#ifndef AHRS_ERRORSTATE_H
-#define AHRS_ERRORSTATE_H
+#ifndef AHRS_SHUTDOWNSTATE_H
+#define AHRS_SHUTDOWNSTATE_H
 
 #include "AbstractState.h"
 
 namespace communication
 {
-    class ErrorState : public AbstractState
+    class ShutdownState : public AbstractState
     {
     public:
-        ErrorState();
-        ~ErrorState();
+        ShutdownState();
+        ~ShutdownState();
 
         void acceptedUsers(ClientUDPManager &clientUDPManager);
         void startCalibration(ClientUDPManager &clientUDPManager);

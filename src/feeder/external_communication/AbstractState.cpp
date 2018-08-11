@@ -3,11 +3,12 @@
 #include "ClientUDPManager.h"
 
 using namespace std;
-using namespace machine_state;
+using namespace utility;
 using namespace communication;
 
 AbstractState::AbstractState(string name)
-    :   name_(name)
+    :   name_(name),
+        logger_(Logger::getInstance())
 { }
 
 AbstractState::~AbstractState()

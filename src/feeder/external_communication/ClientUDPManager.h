@@ -19,11 +19,21 @@ namespace communication
         ClientUDPManager();
         ~ClientUDPManager();
 
+        // Communication methods
         std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t > > getClientList();
         void insertNewClient(std::pair<std::shared_ptr<ClientUDP>, uint8_t > newClient);
         void removeClient(uint8_t id);
 
         void broadcast(std::vector<uint8_t> frame);
+
+
+        // Managing finite machine state
+
+        void acceptedUsers();
+        void startCalibration();
+        void startDataSending();
+        void restartProcess();
+        void shutdownProcess();
 
         void setNewState(AbstractState *newState);
 

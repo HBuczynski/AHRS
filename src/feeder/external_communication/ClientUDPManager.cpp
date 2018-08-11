@@ -1,13 +1,14 @@
 #include "ClientUDPManager.h"
 
-#include "AbstractState.h"
+#include "IdleState.h"
 
 using namespace std;
 using namespace utility;
 using namespace communication;
 
 ClientUDPManager::ClientUDPManager()
-    :   logger_(Logger::getInstance())
+    :   currentState_(make_unique<IdleState>()),
+        logger_(Logger::getInstance())
 { }
 
 ClientUDPManager::~ClientUDPManager()
@@ -65,5 +66,30 @@ void ClientUDPManager::setNewState(AbstractState *newState)
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
+}
+
+void ClientUDPManager::acceptedUsers()
+{
+
+}
+
+void ClientUDPManager::startCalibration()
+{
+
+}
+
+void ClientUDPManager::startDataSending()
+{
+
+}
+
+void ClientUDPManager::restartProcess()
+{
+
+}
+
+void ClientUDPManager::shutdownProcess()
+{
+
 }
 

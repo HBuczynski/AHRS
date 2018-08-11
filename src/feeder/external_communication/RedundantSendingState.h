@@ -1,15 +1,15 @@
-#ifndef AHRS_ERRORSTATE_H
-#define AHRS_ERRORSTATE_H
+#ifndef AHRS_REDUNDANTSENDINGSTATE_H
+#define AHRS_REDUNDANTSENDINGSTATE_H
 
 #include "AbstractState.h"
 
 namespace communication
 {
-    class ErrorState : public AbstractState
+    class RedundantSendingState  : public AbstractState
     {
     public:
-        ErrorState();
-        ~ErrorState();
+        RedundantSendingState();
+        ~RedundantSendingState();
 
         void acceptedUsers(ClientUDPManager &clientUDPManager);
         void startCalibration(ClientUDPManager &clientUDPManager);
