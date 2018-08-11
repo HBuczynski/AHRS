@@ -1,5 +1,7 @@
 #include "RedundantSendingState.h"
 
+#include "ClientUDPManager.h"
+
 using namespace std;
 using namespace communication;
 

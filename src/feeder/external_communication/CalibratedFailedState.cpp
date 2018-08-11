@@ -2,6 +2,8 @@
 #include "ShutdownState.h"
 #include "ResetState.h"
 
+#include "ClientUDPManager.h"
+
 using namespace std;
 using namespace utility;
 using namespace communication;

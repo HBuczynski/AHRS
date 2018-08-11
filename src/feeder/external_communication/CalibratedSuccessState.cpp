@@ -1,6 +1,7 @@
 #include <config_reader/FeederParameters.h>
 #include <config_reader/ConfigurationReader.h>
 #include "CalibratedSuccessState.h"
+#include "ClientUDPManager.h"
 
 #include "ShutdownState.h"
 #include "ResetState.h"

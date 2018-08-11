@@ -1,4 +1,5 @@
 #include "CalibratingState.h"
+#include "ClientUDPManager.h"
 
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
