@@ -15,11 +15,14 @@ CalibrateMagnetometerBuilder::~CalibrateMagnetometerBuilder()
 
 unique_ptr<Command> CalibrateMagnetometerBuilder::create(const vector<uint8_t> &commandInBytes)
 {
-    string planeName;
+    uint8_t currentPosition = INIT_DATA_POSITION_IN_FRAME;
+    PlaneStatus status = static_cast<PlaneStatus>(commandInBytes[INIT_DATA_POSITION_IN_FRAME]);
 
-    planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, INIT_DATA_POSITION_IN_FRAME);
+    currentPosition += sizeof(status);
+    string planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, currentPosition);
 
-    auto command = make_unique<CallibrateMagnetometerCommand>(planeName);
+
+    auto command = make_unique<CallibrateMagnetometerCommand>(planeName, status);
 
     return move(command);
 }

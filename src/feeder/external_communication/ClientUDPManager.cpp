@@ -24,6 +24,11 @@ void ClientUDPManager::insertNewClient(pair<shared_ptr<ClientUDP>, uint8_t> newC
 {
     lock_guard<mutex> lock(clientListMutex_);
     clientList_.push_back(newClient);
+
+    if(clientList_.size() == 1)
+    {
+        acceptedUsers();
+    }
 }
 
 void ClientUDPManager::removeClient(uint8_t id)
@@ -70,26 +75,30 @@ void ClientUDPManager::setNewState(AbstractState *newState)
 
 void ClientUDPManager::acceptedUsers()
 {
-
+    currentState_->acceptedUsers(*this);
 }
 
-void ClientUDPManager::startCalibration()
+void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus status)
 {
-
+    currentState_->startCalibration(*this, planeName, status);
 }
 
 void ClientUDPManager::startDataSending()
 {
-
+    currentState_->startDataSending(*this);
 }
 
 void ClientUDPManager::restartProcess()
 {
-
+    currentState_->restartProcess(*this);
 }
 
 void ClientUDPManager::shutdownProcess()
 {
-
+    currentState_->shutdownProcess(*this);
 }
 
+const StateCode &ClientUDPManager::getCurrentState() const
+{
+    return currentState_->getStateCode();
+}

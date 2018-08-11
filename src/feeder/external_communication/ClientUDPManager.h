@@ -1,6 +1,8 @@
 #ifndef AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 #define AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 
+#include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
+
 #include "AbstractState.h"
 #include "ClientUDP.h"
 
@@ -30,10 +32,11 @@ namespace communication
         // Managing finite machine state
 
         void acceptedUsers();
-        void startCalibration();
+        void startCalibration(const std::string &planeName, PlaneStatus status);
         void startDataSending();
         void restartProcess();
         void shutdownProcess();
+        const StateCode& getCurrentState() const;
 
         void setNewState(AbstractState *newState);
 

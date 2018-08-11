@@ -63,6 +63,8 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
     }
 
     clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
+
+    ///TODO: resend plane database
     response_ = std::make_unique<DataResponse>("OK");
 }
 
@@ -84,6 +86,11 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 
 void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 {
+    const auto planeName = command.getPlaneName();
+    const auto planeStatus = command.getPlaneStatus();
+
+    clientUDPManager_->startCalibration(planeName, planeStatus);
+
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("CommandHandler :: Received CallibrateMagnetometerCommand from ClientID -") +
@@ -91,6 +98,8 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
                          + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    //TODO: response
 }
 
 void CommandHandlerVisitor::visit(CollectDataCommand &command)

@@ -1,15 +1,18 @@
-#ifndef AHRS_MASTERSENDINGSTATE_H
-#define AHRS_MASTERSENDINGSTATE_H
+#ifndef AHRS_MAGNETOMETERSTATE_H
+#define AHRS_MAGNETOMETERSTATE_H
+
+#include <boost/interprocess/ipc/message_queue.hpp>
+#include <config_reader/FeederParameters.h>
 
 #include "AbstractState.h"
 
 namespace communication
 {
-    class MasterSendingState : public AbstractState
+    class CalibratingState : public AbstractState
     {
     public:
-        MasterSendingState();
-        ~MasterSendingState();
+        CalibratingState();
+        ~CalibratingState();
 
         void acceptedUsers(ClientUDPManager &clientUDPManager);
         void startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status);
@@ -19,6 +22,11 @@ namespace communication
         void restartProcess(ClientUDPManager &clientUDPManager);
         void shutdownProcess(ClientUDPManager &clientUDPManager);
 
+    private:
+        void initializeMessageQueue();
+
+        config::FeederMessageQueues messageQueuesParameters_;
+        std::shared_ptr<boost::interprocess::message_queue> mainMessageQueue;
     };
 }
 

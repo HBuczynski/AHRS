@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 ShutdownState::ShutdownState()
-    : AbstractState("ShutdownState")
+    : AbstractState("ShutdownState", StateCode::SHUTDOWN)
 { }
 
 ShutdownState::~ShutdownState()
@@ -14,9 +14,18 @@ void ShutdownState::acceptedUsers(ClientUDPManager &clientUDPManager) {
 
 }
 
-void ShutdownState::startCalibration(ClientUDPManager &clientUDPManager) {
+void ShutdownState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status) {
 
 }
+
+void ShutdownState::calibrationPassed(ClientUDPManager &clientUDPManager) {
+
+}
+
+void ShutdownState::calibrationFailed(ClientUDPManager &clientUDPManager) {
+
+}
+
 
 void ShutdownState::startDataSending(ClientUDPManager &clientUDPManager) {
 

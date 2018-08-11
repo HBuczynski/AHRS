@@ -19,15 +19,18 @@ BOOST_AUTO_TEST_SUITE( commands )
     BOOST_AUTO_TEST_CASE( calibrateMagnetometerCommand )
     {
         string planeName = "temp";
+        PlaneStatus status = PlaneStatus::NEW;
 
-        CallibrateMagnetometerCommand command(planeName);
+        CallibrateMagnetometerCommand command(planeName, status);
         command.getFrameBytes();
 
-        BOOST_CHECK( planeName == command.getNewPlaneName());
+        BOOST_CHECK( planeName == command.getPlaneName());
+        BOOST_CHECK( status == command.getPlaneStatus());
         BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::CALIBRATE_MAGNETOMETER == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
-        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER)) == command.getDataSize());
+        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER) +
+                sizeof(status)) == command.getDataSize());
         BOOST_CHECK( "CallibrateMagnetometerCommand" == command.getName());
     }
 

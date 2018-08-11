@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 RedundantSendingState::RedundantSendingState()
-        : AbstractState("RedundantSendingState")
+        : AbstractState("RedundantSendingState", StateCode::REDUNDANT_SENDING)
 {
 
 }
@@ -18,7 +18,15 @@ void RedundantSendingState::acceptedUsers(ClientUDPManager &clientUDPManager) {
 
 }
 
-void RedundantSendingState::startCalibration(ClientUDPManager &clientUDPManager) {
+void RedundantSendingState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status) {
+
+}
+
+void RedundantSendingState::calibrationPassed(ClientUDPManager &clientUDPManager) {
+
+}
+
+void RedundantSendingState::calibrationFailed(ClientUDPManager &clientUDPManager) {
 
 }
 

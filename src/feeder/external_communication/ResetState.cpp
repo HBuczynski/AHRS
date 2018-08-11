@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 ResetState::ResetState()
-    : AbstractState("ResetState")
+    : AbstractState("ResetState", StateCode::RESET)
 {
 
 }
@@ -18,7 +18,15 @@ void ResetState::acceptedUsers(ClientUDPManager &clientUDPManager) {
 
 }
 
-void ResetState::startCalibration(ClientUDPManager &clientUDPManager) {
+void ResetState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status) {
+
+}
+
+void ResetState::calibrationPassed(ClientUDPManager &clientUDPManager) {
+
+}
+
+void ResetState::calibrationFailed(ClientUDPManager &clientUDPManager) {
 
 }
 

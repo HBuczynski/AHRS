@@ -7,10 +7,16 @@
 
 namespace communication
 {
+    enum class PlaneStatus : uint8_t
+    {
+        NEW = 0x01,
+        OLD = 0x02
+    };
+
     class CallibrateMagnetometerCommand : public Command
     {
     public:
-        CallibrateMagnetometerCommand(const std::string &name);
+        CallibrateMagnetometerCommand(const std::string &name, PlaneStatus status);
         ~CallibrateMagnetometerCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -18,12 +24,16 @@ namespace communication
         virtual void accept(CommandVisitor& visitor) override;
 
         void setNewPlaneName(const std::string &name);
-        const std::string &getNewPlaneName() const;
+        const std::string &getPlaneName() const;
+
+        void setPlaneStatus(PlaneStatus status);
+        const PlaneStatus& getPlaneStatus() const;
 
     private:
         virtual void initializeDataSize() override;
 
-        std::string newPlaneName_;
+        std::string planeName_;
+        PlaneStatus status_;
     };
 }
 #endif

@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 MasterSendingState::MasterSendingState()
-    : AbstractState("MasterSendingState")
+    : AbstractState("MasterSendingState", StateCode::MASTER_SENDING)
 {
 
 }
@@ -18,7 +18,15 @@ void MasterSendingState::acceptedUsers(ClientUDPManager &clientUDPManager) {
 
 }
 
-void MasterSendingState::startCalibration(ClientUDPManager &clientUDPManager) {
+void MasterSendingState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status) {
+
+}
+
+void MasterSendingState::calibrationPassed(ClientUDPManager &clientUDPManager) {
+
+}
+
+void MasterSendingState::calibrationFailed(ClientUDPManager &clientUDPManager) {
 
 }
 

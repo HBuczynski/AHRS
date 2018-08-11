@@ -6,8 +6,9 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-AbstractState::AbstractState(string name)
-    :   name_(name),
+AbstractState::AbstractState(string name, StateCode stateCode)
+    :   stateCode_(stateCode),
+        name_(name),
         logger_(Logger::getInstance())
 { }
 
@@ -23,4 +24,9 @@ const string& AbstractState::getName() const
 void AbstractState::setState(ClientUDPManager *machine, AbstractState *state)
 {
     machine->setNewState(state);
+}
+
+const StateCode &AbstractState::getStateCode() const
+{
+    return stateCode_;
 }

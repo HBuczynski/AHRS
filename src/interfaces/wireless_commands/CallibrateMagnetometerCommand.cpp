@@ -8,9 +8,10 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-CallibrateMagnetometerCommand::CallibrateMagnetometerCommand(const std::string &name)
+CallibrateMagnetometerCommand::CallibrateMagnetometerCommand(const std::string &name, PlaneStatus status)
     : Command(10,CommandType::CALIBRATE_MAGNETOMETER),
-      newPlaneName_(name)
+      planeName_(name),
+      status_(status)
 {}
 
 CallibrateMagnetometerCommand::~CallibrateMagnetometerCommand()
@@ -22,8 +23,9 @@ vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
 
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
+    frame.push_back(static_cast<uint8_t>(status_));
 
-    BytesConverter::appendStringToVectorOfUINT8(newPlaneName_, frame);
+    BytesConverter::appendStringToVectorOfUINT8(planeName_, frame);
 
     return frame;
 }
@@ -31,7 +33,8 @@ vector<uint8_t> CallibrateMagnetometerCommand::getFrameBytes()
 void CallibrateMagnetometerCommand::initializeDataSize()
 {
     uint16_t dataSize = sizeof(commandType_);
-    dataSize += newPlaneName_.size() + sizeof(END_STRING_IN_FRAME);
+    dataSize += planeName_.size() + sizeof(END_STRING_IN_FRAME);
+    dataSize += sizeof(status_);
 
     setDataSize(dataSize);
 }
@@ -48,10 +51,20 @@ void CallibrateMagnetometerCommand::accept(CommandVisitor &visitor)
 
 void CallibrateMagnetometerCommand::setNewPlaneName(const string &name)
 {
-    newPlaneName_ = name;
+    planeName_ = name;
 }
 
-const string &CallibrateMagnetometerCommand::getNewPlaneName() const
+const string &CallibrateMagnetometerCommand::getPlaneName() const
 {
-    return newPlaneName_;
+    return planeName_;
+}
+
+void CallibrateMagnetometerCommand::setPlaneStatus(PlaneStatus status)
+{
+    status_ = status;
+}
+
+const PlaneStatus &CallibrateMagnetometerCommand::getPlaneStatus() const
+{
+    return status_;
 }

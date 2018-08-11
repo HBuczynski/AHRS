@@ -1,15 +1,16 @@
-#ifndef AHRS_MASTERSENDINGSTATE_H
-#define AHRS_MASTERSENDINGSTATE_H
+#ifndef AHRS_FAILCALIBRATEDSTATE_H
+#define AHRS_FAILCALIBRATEDSTATE_H
+
 
 #include "AbstractState.h"
 
 namespace communication
 {
-    class MasterSendingState : public AbstractState
+    class CalibratedFailedState : public AbstractState
     {
     public:
-        MasterSendingState();
-        ~MasterSendingState();
+        CalibratedFailedState();
+        ~CalibratedFailedState();
 
         void acceptedUsers(ClientUDPManager &clientUDPManager);
         void startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status);
@@ -18,7 +19,6 @@ namespace communication
         void startDataSending(ClientUDPManager &clientUDPManager);
         void restartProcess(ClientUDPManager &clientUDPManager);
         void shutdownProcess(ClientUDPManager &clientUDPManager);
-
     };
 }
 

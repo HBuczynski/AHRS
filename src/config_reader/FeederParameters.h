@@ -1,6 +1,8 @@
 #ifndef AHRS_PARAMETERS_H
 #define AHRS_PARAMETERS_H
 
+#include <string>
+
 namespace config
 {
     const std::string FEEDER_PARAMETERS_FILE_PATH = "/lol";

@@ -1,35 +1,88 @@
 #include "RegisteredUsersState.h"
 
+#include "ResetState.h"
+#include "CalibratingState.h"
+#include "ShutdownState.h"
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 RegisteredUsersState::RegisteredUsersState()
-    : AbstractState("ErrorState")
-{
-
-}
+    : AbstractState("RegisteredUsersState", StateCode::REGISTERED_USERS)
+{ }
 
 RegisteredUsersState::~RegisteredUsersState()
+{ }
+
+void RegisteredUsersState::acceptedUsers(ClientUDPManager &clientUDPManager)
 {
-
+    if(logger_.isWarningEnable())
+    {
+        const string message = string("RegisteredUsersState :: Cannot stay on user acceptance.");
+        logger_.writeLog(LogType::WARNING_LOG, message);
+    }
 }
 
-void RegisteredUsersState::acceptedUsers(ClientUDPManager &clientUDPManager) {
+void RegisteredUsersState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status)
+{
+    setState(&clientUDPManager, new CalibratingState);
 
+    //TODO
+    //clientUDPManager.startCalibration(planeName, status);
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("RegisteredUsersState :: Change state on CalibratingState");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
-void RegisteredUsersState::startCalibration(ClientUDPManager &clientUDPManager) {
-
+void RegisteredUsersState::calibrationPassed(ClientUDPManager &clientUDPManager)
+{
+    if(logger_.isWarningEnable())
+    {
+        const string message = string("RegisteredUsersState :: Cannot change on CalibratedSuccessState.");
+        logger_.writeLog(LogType::WARNING_LOG, message);
+    }
 }
 
-void RegisteredUsersState::startDataSending(ClientUDPManager &clientUDPManager) {
-
+void RegisteredUsersState::calibrationFailed(ClientUDPManager &clientUDPManager)
+{
+    if(logger_.isWarningEnable())
+    {
+        const string message = string("RegisteredUsersState :: Cannot change on FailedCalibratedState.");
+        logger_.writeLog(LogType::WARNING_LOG, message);
+    }
 }
 
-void RegisteredUsersState::restartProcess(ClientUDPManager &clientUDPManager) {
-
+void RegisteredUsersState::startDataSending(ClientUDPManager &clientUDPManager)
+{
+    if(logger_.isWarningEnable())
+    {
+        const string message = string("RegisteredUsersState :: Cannot change on SendingState.");
+        logger_.writeLog(LogType::WARNING_LOG, message);
+    }
 }
 
-void RegisteredUsersState::shutdownProcess(ClientUDPManager &clientUDPManager) {
+void RegisteredUsersState::restartProcess(ClientUDPManager &clientUDPManager)
+{
+    setState(&clientUDPManager, new ResetState);
 
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("IdleState :: Change state on ResetState");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void RegisteredUsersState::shutdownProcess(ClientUDPManager &clientUDPManager)
+{
+    setState(&clientUDPManager, new ShutdownState);
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("IdleState :: Change state on ShutdownState");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
