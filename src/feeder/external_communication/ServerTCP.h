@@ -24,7 +24,10 @@ namespace communication
 
         void startUserActivation();
         void stopUserActivation();
-        void stopDataListening();
+        void removeUsers();
+
+        void startDataSending();
+        void stopDataSending();
 
     private:
         void activateUsers();

@@ -1,6 +1,7 @@
 #ifndef AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 #define AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 
+#include "AbstractState.h"
 #include "ClientUDP.h"
 
 #include <list>
@@ -24,9 +25,15 @@ namespace communication
 
         void broadcast(std::vector<uint8_t> frame);
 
+        void setNewState(AbstractState *newState);
+
     private:
+        std::unique_ptr<AbstractState> currentState_;
+
         std::mutex clientListMutex_;
         std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t> > clientList_;
+
+        utility::Logger& logger_;
     };
 }
 #endif

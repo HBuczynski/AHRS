@@ -27,10 +27,8 @@ namespace communication
     private:
         void initializeExternalCommmunication();
         void initializeMessageQueueCommunication();
-        void initializeSharedMemoryCommunication();
 
         config::FeederExternalWireless feederExternalWirelessParameters_;
-        config::FeederSharedMemory sharedMemoryParameters_;
         config::FeederMessageQueues messageQueuesParameters_;
 
         config::FeederType feederType_;
@@ -40,10 +38,6 @@ namespace communication
         
 
         std::shared_ptr<boost::interprocess::message_queue> messageQueue;
-
-        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
-        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
-        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
         utility::Logger &logger_;
     };

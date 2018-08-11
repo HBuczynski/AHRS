@@ -18,4 +18,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_UICOMMANDBUILDER_H
+#endif

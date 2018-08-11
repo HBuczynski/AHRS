@@ -1,17 +1,17 @@
 #include "ClientUDPManager.h"
 
+#include "AbstractState.h"
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 ClientUDPManager::ClientUDPManager()
-{
-
-}
+    :   logger_(Logger::getInstance())
+{ }
 
 ClientUDPManager::~ClientUDPManager()
-{
-
-}
+{ }
 
 list<pair<shared_ptr<ClientUDP>, uint8_t>> ClientUDPManager::getClientList()
 {
@@ -48,6 +48,22 @@ void ClientUDPManager::broadcast(vector<uint8_t> frame)
     for(const auto& client : clientList_)
     {
         client.first->sendData(frame);
+    }
+}
+
+void ClientUDPManager::setNewState(AbstractState *newState)
+{
+    if(newState != nullptr)
+    {
+        currentState_.reset(newState);
+    }
+    else
+    {
+        if(logger_.isWarningEnable())
+        {
+            const string message = string("ClientUDPManager :: Empty state has been forwarded to the state machine.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
     }
 }
 

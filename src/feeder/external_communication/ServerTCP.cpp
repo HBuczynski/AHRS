@@ -24,7 +24,7 @@ ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, shared_ptr<ClientU
 ServerTCP::~ServerTCP()
 {
     stopUserActivation();
-    stopDataListening();
+    removeUsers();
 }
 
 void ServerTCP::startUserActivation()
@@ -81,6 +81,16 @@ void ServerTCP::activateUsers()
     }
 }
 
+void ServerTCP::startDataSending()
+{
+
+}
+
+void ServerTCP::stopDataSending()
+{
+
+}
+
 void ServerTCP::updateClientList()
 {
     bool isSuccess = false;
@@ -95,7 +105,7 @@ void ServerTCP::updateClientList()
     }
 }
 
-void ServerTCP::stopDataListening()
+void ServerTCP::removeUsers()
 {
     for(auto iter = clientList_.begin(); iter != clientList_.end(); ++iter)
     {

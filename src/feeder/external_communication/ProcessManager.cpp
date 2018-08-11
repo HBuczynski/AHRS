@@ -13,20 +13,16 @@ using namespace boost::interprocess;
 
 ProcessManager::ProcessManager()
     :   feederExternalWirelessParameters_(ConfigurationReader::getFeederExternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
-        sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
         logger_(Logger::getInstance())
 {
     initializeMessageQueueCommunication();
-    initializeSharedMemoryCommunication();
     initializeExternalCommmunication();
 }
 
 ProcessManager::~ProcessManager()
-{
-
-}
+{ }
 
 void ProcessManager::initializeExternalCommmunication()
 {
@@ -77,32 +73,6 @@ void ProcessManager::initializeMessageQueueCommunication()
         if(logger_.isErrorEnable())
         {
             const string message = string("External Communication :: ") + ex.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-}
-
-void ProcessManager::initializeSharedMemoryCommunication()
-{
-    try
-    {
-        // Creating shared memory's mutex.
-        named_mutex::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        sharedMemoryMutex_ = make_unique<named_mutex>(create_only, sharedMemoryParameters_.externalMemoryName.c_str());
-
-        // Creating shared memory.
-        shared_memory_object::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        sharedMemory_ = make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
-
-        // Resize shared memory.
-        sharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
-        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
-    }
-    catch(interprocess_exception &ex)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("External Communication ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

@@ -6,6 +6,9 @@
 #include <interfaces/wireless_commands/CommandVisitor.h>
 #include <interfaces/wireless_responses/Response.h>
 
+#include <boost/interprocess/ipc/message_queue.hpp>
+
+#include <config_reader/FeederParameters.h>
 #include <memory>
 
 namespace communication
@@ -30,6 +33,15 @@ namespace communication
         std::unique_ptr<Response> getResponse();
 
     private:
+
+        void initializedSharedMemory();
+
+        config::FeederSharedMemory sharedMemoryParameters_;
+
+        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
+        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
+        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
+
         ClientThreadTCP *currentClient_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
 
