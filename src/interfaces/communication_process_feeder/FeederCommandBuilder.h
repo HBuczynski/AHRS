@@ -8,7 +8,7 @@
 
 namespace communication
 {
-    class UICommandBuilder
+    class FeederCommandBuilder
     {
     public:
         virtual std::unique_ptr<FeederCommand> create(const std::vector<uint8_t> &commandInBytes) = 0;

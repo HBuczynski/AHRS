@@ -118,6 +118,11 @@ void CommandHandlerVisitor::visit(CollectDataCommand &command)
     response_ = std::make_unique<DataResponse>("OK");
 }
 
+void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
+{
+
+}
+
 void CommandHandlerVisitor::visit(SetPlaneMagnetometerCommand &command)
 {
 
@@ -137,3 +142,4 @@ void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
 {
     currentClient_ = client;
 }
+

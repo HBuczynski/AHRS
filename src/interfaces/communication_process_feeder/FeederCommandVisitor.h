@@ -1,14 +1,18 @@
 #ifndef AHRS_FEEDERCOMMANDVISITOR_H
 #define AHRS_FEEDERCOMMANDVISITOR_H
 
+#include "CalibrateMagnetometerCommand.h"
+
 namespace communication
 {
-    class FeedeCommandVisitor
+    class FeederCommandVisitor
     {
     public:
-        FeedeCommandVisitor(){};
-        virtual ~FeedeCommandVisitor(){};
+        FeederCommandVisitor(){};
+        virtual ~FeederCommandVisitor(){};
+
+        virtual void visit(const CalibrateMagnetometerCommand& command);
     };
 }
 
-#endif //AHRS_FEEDERCOMMANDVISITOR_H
+#endif

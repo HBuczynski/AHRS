@@ -9,7 +9,7 @@ namespace communication
 
     enum FeederCommandType : uint8_t
     {
-        CHECK = 0x05
+        CALIBRATE_MAGNETOMETER = 0x05
     };
 
     class FeederCommand : public Frame
@@ -32,4 +32,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_FEEDERCOMMAND_H
+#endif

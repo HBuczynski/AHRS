@@ -17,9 +17,9 @@ namespace communication
         std::unique_ptr<FeederCommand> createCommand(const std::vector<uint8_t> &commandInBytes);
 
     private:
-        std::unique_ptr<UICommandBuilder> builder_;
+        std::unique_ptr<FeederCommandBuilder> builder_;
 
-        const uint8_t COMMAND_TYPE_POSITION = 5;
+        const uint8_t COMMAND_TYPE_POSITION = 6;
     };
 }
 

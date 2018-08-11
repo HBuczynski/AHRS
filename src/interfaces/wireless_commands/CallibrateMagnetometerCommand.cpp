@@ -49,7 +49,7 @@ void CallibrateMagnetometerCommand::accept(CommandVisitor &visitor)
     visitor.visit(*this);
 }
 
-void CallibrateMagnetometerCommand::setNewPlaneName(const string &name)
+void CallibrateMagnetometerCommand::setPlaneName(const string &name)
 {
     planeName_ = name;
 }

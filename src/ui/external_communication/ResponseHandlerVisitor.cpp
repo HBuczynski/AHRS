@@ -34,3 +34,8 @@ void ResponseHandlerVisitor::visit(DataResponse &data)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
+
+void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
+{
+
+}

@@ -13,7 +13,7 @@ namespace communication
         OLD = 0x02
     };
 
-    class CallibrateMagnetometerCommand : public Command
+    class CallibrateMagnetometerCommand final : public Command
     {
     public:
         CallibrateMagnetometerCommand(const std::string &name, PlaneStatus status);
@@ -23,7 +23,7 @@ namespace communication
         virtual std::string getName() override;
         virtual void accept(CommandVisitor& visitor) override;
 
-        void setNewPlaneName(const std::string &name);
+        void setPlaneName(const std::string &name);
         const std::string &getPlaneName() const;
 
         void setPlaneStatus(PlaneStatus status);
