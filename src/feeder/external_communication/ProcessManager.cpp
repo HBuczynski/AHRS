@@ -96,7 +96,7 @@ void ProcessManager::runProcessConfiguration()
             packet.resize(receivedSize);
             packet.shrink_to_fit();
 
-            const auto frameType = static_cast<FrameType>(packet[Frame::COMMAND_TYPE_POSITION]);
+            const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
 
             if(frameType == FrameType::COMMAND)
             {

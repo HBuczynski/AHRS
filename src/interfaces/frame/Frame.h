@@ -49,6 +49,8 @@ namespace communication
         const FrameType& getFrameType() const;
         const InterfaceType& getInterfaceType() const;
 
+        static const uint8_t FRAME_TYPE = 1;
+        static const uint8_t INTERFACE_TYPE = 2;
         static const uint8_t MEASUREMENT_DATA_TYPE_POSITION = 6;
         static const uint8_t RESPONSE_TYPE_POSITION = 6;
         static const uint8_t NOTIFICATION_TYPE_POSITION = 6;

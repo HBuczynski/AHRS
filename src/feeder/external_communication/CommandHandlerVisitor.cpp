@@ -33,21 +33,15 @@ void CommandHandlerVisitor::initializedSharedMemory()
     try
     {
         // Creating shared memory's mutex.
-        named_mutex::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        sharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, sharedMemoryParameters_.externalMemoryName.c_str());
-
+        sharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.externalMemoryName.c_str());
         // Creating shared memory.
-        shared_memory_object::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        sharedMemory_ = std::make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
-
-        // Resize shared memory.
-        sharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
+        sharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
         mappedMemoryRegion_ = std::make_unique<mapped_region>(*sharedMemory_, read_write);
     }
     catch(interprocess_exception &ex)
     {
         if (logger_.isErrorEnable()) {
-            const std::string message = std::string("External Communication ::") + ex.what();
+            const std::string message = std::string("CommandHandlerVisitor ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
