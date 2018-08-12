@@ -12,9 +12,6 @@ namespace communication
     {
     public:
         virtual std::unique_ptr<FeederNotification> create(const std::vector<uint8_t> &NotificationInBytes) = 0;
-
-    protected:
-        const uint8_t initialDataPosition = 7;
     };
 }
 

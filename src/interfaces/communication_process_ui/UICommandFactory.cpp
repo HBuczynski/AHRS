@@ -16,7 +16,7 @@ UICommandFactory::~UICommandFactory()
 
 unique_ptr<UICommand> UICommandFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
-    const auto type = static_cast<UICommandType>(commandInBytes[COMMAND_TYPE_POSITION]);
+    const auto type = static_cast<UICommandType>(commandInBytes[Frame::COMMAND_TYPE_POSITION]);
 
     switch (type)
     {

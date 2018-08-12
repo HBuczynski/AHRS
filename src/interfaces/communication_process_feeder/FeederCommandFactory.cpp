@@ -13,7 +13,7 @@ FeederCommandFactory::~FeederCommandFactory()
 
 std::unique_ptr<FeederCommand> FeederCommandFactory::createCommand(const std::vector<uint8_t> &commandInBytes)
 {
-    const auto type = static_cast<FeederCommandType >(commandInBytes[COMMAND_TYPE_POSITION]);
+    const auto type = static_cast<FeederCommandType >(commandInBytes[Frame::COMMAND_TYPE_POSITION]);
 
     switch (type)
     {

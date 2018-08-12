@@ -16,4 +16,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_ENDCONNECTIONBUILDER_H
+#endif

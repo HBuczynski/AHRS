@@ -15,7 +15,7 @@ CalibrateMagnetometerBuilder::~CalibrateMagnetometerBuilder()
 
 unique_ptr<FeederCommand> CalibrateMagnetometerBuilder::create(const vector<uint8_t> &commandInBytes)
 {
-    uint8_t currentPosition = INIT_DATA_POSITION_IN_FRAME;
+    uint8_t currentPosition = Frame::INITIAL_DATA_POSITION;
     string planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, currentPosition);
 
     auto command = make_unique<CalibrateMagnetometerCommand>(planeName);

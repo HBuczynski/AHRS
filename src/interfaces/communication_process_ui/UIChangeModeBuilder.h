@@ -12,9 +12,6 @@ namespace communication
         ~UIChangeModeBuilder();
 
         std::unique_ptr<UICommand> create(const std::vector<uint8_t> &commandInBytes) override;
-
-    private:
-        const uint16_t INIT_DATA_POSITION_IN_FRAME = 6;
     };
 }
 

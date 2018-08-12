@@ -18,8 +18,6 @@ namespace communication
 
     private:
         std::unique_ptr<UICommandBuilder> builder_;
-
-        const uint8_t COMMAND_TYPE_POSITION = 5;
     };
 }
 #endif //AHRS_UICOMMANDFACTORY_H

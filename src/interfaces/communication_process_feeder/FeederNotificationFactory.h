@@ -19,7 +19,6 @@ namespace communication
     private:
         std::unique_ptr<FeederNotificationBuilder> builder_;
 
-        const uint8_t Notification_TYPE_POSITION = 6;
     };
 }
 

@@ -15,4 +15,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_IMUGPSBUILDER_H
+#endif

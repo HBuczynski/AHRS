@@ -12,7 +12,7 @@ FeederNotificationFactory::~FeederNotificationFactory()
 
 unique_ptr<FeederNotification> FeederNotificationFactory::createNotification(const std::vector<uint8_t> &notificationInBytes)
 {
-    const auto type = static_cast<FeederNotificationType >(notificationInBytes[Notification_TYPE_POSITION]);
+    const auto type = static_cast<FeederNotificationType >(notificationInBytes[Frame::NOTIFICATION_TYPE_POSITION]);
 
     switch (type)
     {
