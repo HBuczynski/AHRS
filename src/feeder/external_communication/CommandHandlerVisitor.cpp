@@ -5,6 +5,7 @@
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 #include <interfaces/wireless_measurement_commands/ImuData.h>
+#include <interfaces/wireless_responses/CurrentStateResponse.h>
 
 #include <config_reader/ConfigurationReader.h>
 #include <feeder/external_communication/ClientThreadTCP.h>
@@ -66,23 +67,29 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
     }
 
     clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
-
     response_ = std::make_unique<PlanesDatasetResponse>(ConfigurationReader::getPlanesDataset());
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 {
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("CommandHandler :: Received EndConnectionCommand from ClientID -") +
-                std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
     clientUDPManager_->removeClient(currentClient_->getID());
     currentClient_->stopListen();
 
-    response_ = std::make_unique<DataResponse>("OK");
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
@@ -91,15 +98,14 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
     const auto planeStatus = command.getPlaneStatus();
 
     clientUDPManager_->startCalibration(planeName, planeStatus);
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("CommandHandler :: Received CallibrateMagnetometerCommand from ClientID -") +
-                std::to_string(currentClient_->getID()) + std::string("-.");
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
-
-    response_ = std::make_unique<AckResponse>(AckType::OK);
 }
 
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
@@ -119,6 +125,13 @@ void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
             response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::IS_NOT_CALIBRATING);
             break;
     }
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
@@ -133,11 +146,25 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
     {
         response_ = std::make_unique<AckResponse>(AckType::FAIL);
     }
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(CurrentStateCommand &command)
 {
+    response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
 
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(CollectDataCommand &command)
