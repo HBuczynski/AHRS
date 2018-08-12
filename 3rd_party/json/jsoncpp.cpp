@@ -2329,7 +2329,7 @@ ValueIteratorBase::computeDistance(const SelfType& other) const {
   return other.current_ - current_;
 #else
   // Iterator for null value are initialized using the default
-  // constructor, which initializeExternalCommmunication current_ to the default
+  // constructor, which initializeExternalCommunication current_ to the default
   // std::map::iterator. As begin() and end() are two instance
   // of the default std::map::iterator, they can not be compared.
   // To allow this, we handle this comparison specifically.

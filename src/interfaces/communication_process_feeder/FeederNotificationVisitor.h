@@ -11,7 +11,7 @@ namespace communication
         FeederNotificationVisitor(){};
         virtual ~FeederNotificationVisitor(){};
 
-        virtual void visit(CalibrationStatusNotification& command) = 0;
+        virtual void visit(const CalibrationStatusNotification& command) = 0;
     };
 }
 #endif

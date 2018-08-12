@@ -10,7 +10,7 @@ using namespace utility;
 using namespace communication;
 
 CalibrationStatusNotification::CalibrationStatusNotification(CalibrationStatus status)
-    : FeederNotification(10, FeederNotificationType::CALIBRATION_STATUS),
+    : FeederNotification(10, FeederNotificationType::CALIBRATION_STATUS_NOTIFY),
       status_(status)
 {}
 

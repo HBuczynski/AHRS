@@ -16,7 +16,7 @@ unique_ptr<FeederNotification> FeederNotificationFactory::createNotification(con
 
     switch (type)
     {
-        case FeederNotificationType::CALIBRATION_STATUS:
+        case FeederNotificationType::CALIBRATION_STATUS_NOTIFY:
             builder_ = make_unique<CalibrationStatusNotificationBuilder>();
             return move(builder_->create(notificationInBytes));
         default:

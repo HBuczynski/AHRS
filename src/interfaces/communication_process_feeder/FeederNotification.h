@@ -9,7 +9,7 @@ namespace communication
 
     enum FeederNotificationType : uint8_t
     {
-        CALIBRATION_STATUS = 0x05
+        CALIBRATION_STATUS_NOTIFY = 0x05
     };
 
     class FeederNotification : public Frame

@@ -11,7 +11,7 @@ namespace communication
         FeederCommandVisitor(){};
         virtual ~FeederCommandVisitor(){};
 
-        virtual void visit(const CalibrateMgnDemandCommand& command);
+        virtual void visit(const CalibrateMgnDemandCommand& command) = 0;
     };
 }
 

@@ -21,10 +21,10 @@ BOOST_AUTO_TEST_SUITE( feeder )
             notification.getFrameBytes();
 
             BOOST_CHECK( FrameType::NOTIFICATION == notification.getFrameType());
-            BOOST_CHECK( FeederNotificationType::CALIBRATION_STATUS == notification.getNotificationType());
+            BOOST_CHECK( FeederNotificationType::CALIBRATION_STATUS_NOTIFY == notification.getNotificationType());
             BOOST_CHECK( status == notification.getCalibrationStatus());
             BOOST_CHECK( 1 == notification.getSystemVersion());
-            BOOST_CHECK( (sizeof(FeederNotificationType::CALIBRATION_STATUS)+ sizeof(status)) == notification.getDataSize());
+            BOOST_CHECK( (sizeof(FeederNotificationType::CALIBRATION_STATUS_NOTIFY)+ sizeof(status)) == notification.getDataSize());
             BOOST_CHECK( "CalibrationStatusNotification" == notification.getName());
     }
 

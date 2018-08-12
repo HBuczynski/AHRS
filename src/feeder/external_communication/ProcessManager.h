@@ -3,6 +3,10 @@
 
 #include "ServerTCP.h"
 #include "ClientUDP.h"
+#include "InterprocessExtCommunicationVisitor.h"
+
+#include <interfaces/communication_process_feeder/FeederNotificationFactory.h>
+#include <interfaces/communication_process_feeder/FeederCommandFactory.h>
 
 #include <memory>
 #include <utility>
@@ -25,7 +29,7 @@ namespace communication
         void runProcessConfiguration();
 
     private:
-        void initializeExternalCommmunication();
+        void initializeExternalCommunication();
         void initializeMessageQueueCommunication();
 
         config::FeederExternalWireless feederExternalWirelessParameters_;
@@ -35,9 +39,13 @@ namespace communication
 
         std::shared_ptr<ServerTCP> server_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
+
+        InterprocessExtCommunicationVisitor messageVisitor_;
+        communication::FeederNotificationFactory notificationFactory_;
+        communication::FeederCommandFactory commandFactory_;
         
 
-        std::shared_ptr<boost::interprocess::message_queue> messageQueue;
+        std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue;
 
         utility::Logger &logger_;
     };
