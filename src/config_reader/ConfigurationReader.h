@@ -16,13 +16,16 @@ namespace config
         ConfigurationReader();
         ~ConfigurationReader();
 
-
+        /* UI Cockpit commands */
+        // Getters
         static UIWirelessCommunication getUIWirelessCommunication(const std::string &filePath);
         static UIMessageQueues getUIMessageQueues(const std::string &filePath);
         static UISharedMemory getUISharedMemory(const std::string &filePath);
-
+        // Setters
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 
+        /* Feeder Commands */
+        // Getters
         static std::vector<std::string> getPlanesDataset(const std::string &filePath);
         static FeederExecutableFiles getFeederExecutableFiles(const std::string &filePath);
         static FeederExternalWireless getFeederExternalWireless(const std::string &filePath);
@@ -30,7 +33,7 @@ namespace config
         static FeederMessageQueues getFeederMessageQueues(const std::string &filePath);
         static FeederSharedMemory getFeederSharedMemory(const std::string &filePath);
         static FeederType getFeederType(const std::string &filePath);
-
+        // Setters
         static void setFeederSystemValue(const std::string &filePath, FeederMode mode);
     };
 }

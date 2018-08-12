@@ -323,3 +323,13 @@ void ApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
         }
     }
 }
+
+void ApplicationManager::restartExternalProcess()
+{
+
+}
+
+void ApplicationManager::restartInternalProcess()
+{
+
+}

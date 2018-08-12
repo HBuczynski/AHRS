@@ -38,6 +38,9 @@ namespace main_process
         bool createExternalCommunicationProcess();
         bool createInternalCommunicationProcess();
 
+        void restartExternalProcess();
+        void restartInternalProcess();
+
         void runProcessing();
         void handleCommand(const std::vector<uint8_t>& packet);
 
