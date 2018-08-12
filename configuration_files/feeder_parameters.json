@@ -30,6 +30,12 @@
       "externalMemoryName" : "ExternalMemoryFeeder",
       "internalMemoryName" : "InternalMemoryFeeder",
       "size" : 100
+    },
+
+    "ExecutableFiles" :
+    {
+      "externalCommunication" : "lololo",
+      "internalCommunication" : "lololo"
     }
   }
 }

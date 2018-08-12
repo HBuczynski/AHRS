@@ -23,7 +23,8 @@ namespace config
 
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 
-        static std::vector<std::string> getPlanesDataset();
+        static std::vector<std::string> getPlanesDataset(const std::string &filePath);
+        static FeederExecutableFiles getFeederExecutableFiles(const std::string &filePath);
         static FeederExternalWireless getFeederExternalWireless(const std::string &filePath);
         static FeederInternalWireless getFeederInternalWireless(const std::string &filePath);
         static FeederMessageQueues getFeederMessageQueues(const std::string &filePath);

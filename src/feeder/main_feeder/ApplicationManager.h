@@ -3,6 +3,9 @@
 
 #include <logger/Logger.h>
 #include <thread>
+#include <cstdint>
+#include <spawn.h>
+#include <cstdint>
 
 #include <config_reader/FeederParameters.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
@@ -21,19 +24,19 @@ namespace main_process
         ApplicationManager();
         ~ApplicationManager();
 
-        void initialize();
+        bool initialize();
         void launchFeederSystem();
 
     private:
-        void initializeMainQueue();
-        void initializeExternalQueue();
-        void initializeInternalQueue();
+        bool initializeMainQueue();
+        bool initializeExternalQueue();
+        bool initializeInternalQueue();
 
-        void initializeExternalSharedMemory();
-        void initializeInternalSharedMemory();
+        bool initializeExternalSharedMemory();
+        bool initializeInternalSharedMemory();
 
-        void createExternalCommunicationProcess();
-        void createInternalCommunicationProcess();
+        bool createExternalCommunicationProcess();
+        bool createInternalCommunicationProcess();
 
         void runProcessing();
         void handleCommand(const std::vector<uint8_t>& packet);
@@ -54,12 +57,16 @@ namespace main_process
 
         config::FeederSharedMemory sharedMemoryParameters_;
         config::FeederMessageQueues messageQueuesParameters_;
+        config::FeederExecutableFiles executableFilesNames_;
 
         ExternalCommunicationVisitor externalVisitor_;
         InternalCommunicationVisitor internalVisitor_;
 
         communication::FeederNotificationFactory externalNotificationFactory_;
         communication::FeederCommandFactory externalCommandFactory_;
+
+        pid_t externalProcess_;
+        pid_t internalProcess_;
 
         utility::Logger &logger_;
     };

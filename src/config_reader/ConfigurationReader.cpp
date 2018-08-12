@@ -102,9 +102,14 @@ void ConfigurationReader::setFeederSystemValue(const string &filePath, FeederMod
     }
 }
 
-vector<string> ConfigurationReader::getPlanesDataset()
+vector<string> ConfigurationReader::getPlanesDataset(const std::string &filePath)
 {
     return vector<string>();
+}
+
+FeederExecutableFiles ConfigurationReader::getFeederExecutableFiles(const std::string &filePath)
+{
+    return FeederExecutableFiles();
 }
 
 /*

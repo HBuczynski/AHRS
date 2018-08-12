@@ -23,12 +23,22 @@ int main()
 
     ApplicationManager applicationManager;
 
-    applicationManager.initialize();
-    applicationManager.launchFeederSystem();
-
-    while (true)
+    if(applicationManager.initialize())
     {
-        this_thread::sleep_for(chrono::milliseconds(1));
+        applicationManager.launchFeederSystem();
+
+        while (true)
+        {
+            this_thread::sleep_for(chrono::milliseconds(1));
+        }
+    }
+    else
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("main :: Initialization failed !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
     }
 
     return 0;

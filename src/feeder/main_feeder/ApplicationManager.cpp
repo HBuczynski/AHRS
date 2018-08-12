@@ -10,29 +10,36 @@ using namespace main_process;
 using namespace communication;
 using namespace boost::interprocess;
 
+extern char **environ;
+
 ApplicationManager::ApplicationManager()
     :   sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
+        executableFilesNames_(ConfigurationReader::getFeederExecutableFiles(FEEDER_PARAMETERS_FILE_PATH)),
         logger_(Logger::getInstance())
 {}
 
 ApplicationManager::~ApplicationManager()
 {}
 
-void ApplicationManager::initialize()
+bool ApplicationManager::initialize()
 {
-    initializeMainQueue();
-    initializeExternalQueue();
-    initializeInternalQueue();
+    bool isSuccess = true;
 
-    initializeExternalSharedMemory();
-    initializeInternalSharedMemory();
+    isSuccess &= initializeMainQueue();
+    isSuccess &= initializeExternalQueue();
+    isSuccess &= initializeInternalQueue();
 
-    createExternalCommunicationProcess();
-    createInternalCommunicationProcess();
+    isSuccess &= initializeExternalSharedMemory();
+    isSuccess &= initializeInternalSharedMemory();
+
+    isSuccess &= createExternalCommunicationProcess();
+    isSuccess &= createInternalCommunicationProcess();
+
+    return isSuccess;
 }
 
-void ApplicationManager::initializeMainQueue()
+bool ApplicationManager::initializeMainQueue()
 {
     try
     {
@@ -43,14 +50,19 @@ void ApplicationManager::initializeMainQueue()
     }
     catch(interprocess_exception &ex)
     {
-        if (logger_.isErrorEnable()) {
+        if (logger_.isErrorEnable())
+        {
             const std::string message = std::string("ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
     }
+
+    return true;
 }
 
-void ApplicationManager::initializeExternalQueue()
+bool ApplicationManager::initializeExternalQueue()
 {
     try
     {
@@ -61,14 +73,19 @@ void ApplicationManager::initializeExternalQueue()
     }
     catch(interprocess_exception &ex)
     {
-        if (logger_.isErrorEnable()) {
+        if (logger_.isErrorEnable())
+        {
             const std::string message = std::string("ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
     }
+
+    return true;
 }
 
-void ApplicationManager::initializeInternalQueue()
+bool ApplicationManager::initializeInternalQueue()
 {
     try
     {
@@ -79,14 +96,19 @@ void ApplicationManager::initializeInternalQueue()
     }
     catch(interprocess_exception &ex)
     {
-        if (logger_.isErrorEnable()) {
+        if (logger_.isErrorEnable())
+        {
             const std::string message = std::string("ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
     }
+
+    return true;
 }
 
-void ApplicationManager::initializeExternalSharedMemory()
+bool ApplicationManager::initializeExternalSharedMemory()
 {
     try
     {
@@ -104,14 +126,18 @@ void ApplicationManager::initializeExternalSharedMemory()
     }
     catch(interprocess_exception &ex)
     {
-        if (logger_.isErrorEnable()) {
+        if (logger_.isErrorEnable())
+        {
             const std::string message = std::string("ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+        return false;
     }
+
+    return true;
 }
 
-void ApplicationManager::initializeInternalSharedMemory()
+bool ApplicationManager::initializeInternalSharedMemory()
 {
     try
     {
@@ -133,17 +159,89 @@ void ApplicationManager::initializeInternalSharedMemory()
             const std::string message = std::string("ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
+    }
+
+    return true;
+}
+
+bool ApplicationManager::createExternalCommunicationProcess()
+{
+    char *firstArg1 = const_cast<char*>(executableFilesNames_.externalCommunication.c_str());
+    char *arguments[] = {firstArg1, NULL};
+
+    int status;
+    int out[2];
+
+    // This attribute is responsible for file descriptors.
+    posix_spawn_file_actions_t action;
+    posix_spawn_file_actions_init(&action);
+    pipe(out);
+    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
+    posix_spawn_file_actions_addclose(&action, out[0]);
+
+    status = posix_spawn(&externalProcess_, arguments[0], &action, NULL, arguments, environ);
+
+    if(status == 0)
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("ApplicationManager :: External process was initialized, process ID: ") + to_string(externalProcess_);
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+
+        return true;
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("ApplicationManager :: External process was not initialized correctly, process ID: ") + to_string(externalProcess_);
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
     }
 }
 
-void ApplicationManager::createExternalCommunicationProcess()
+bool ApplicationManager::createInternalCommunicationProcess()
 {
+    char *firstArg1 = const_cast<char*>(executableFilesNames_.internalCommunication.c_str());
+    char *arguments[] = {firstArg1, NULL};
 
-}
+    int status;
+    int out[2];
 
-void ApplicationManager::createInternalCommunicationProcess()
-{
+    // This attribute is responsible for file descriptors.
+    posix_spawn_file_actions_t action;
+    posix_spawn_file_actions_init(&action);
+    pipe(out);
+    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
+    posix_spawn_file_actions_addclose(&action, out[0]);
 
+    status = posix_spawn(&internalProcess_, arguments[0], &action, NULL, arguments, environ);
+
+    if(status == 0)
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("ApplicationManager :: Internal process was initialized, process ID: ") + to_string(internalProcess_);
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+
+        return true;
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("ApplicationManager :: Internal process was not initialized correctly, process ID: ") + to_string(internalProcess_);
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
 }
 
 void ApplicationManager::launchFeederSystem()

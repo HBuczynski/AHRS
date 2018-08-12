@@ -7,6 +7,7 @@ namespace config
 {
     const std::string FEEDER_PARAMETERS_FILE_PATH = "/lol";
     const std::string FEEDER_TYPE_FILE_PATH = "/lol";
+    const std::string FEEDER_PLANES_DATASET_FILE_PATH = "lllll";
 
     enum class FeederMode : uint8_t
     {
@@ -49,6 +50,12 @@ namespace config
     {
         FeederMode mode;
         uint8_t processNumber;
+    };
+
+    struct FeederExecutableFiles
+    {
+        std::string externalCommunication;
+        std::string internalCommunication;
     };
 }
 #endif
