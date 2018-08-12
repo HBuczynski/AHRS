@@ -135,6 +135,11 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
     }
 }
 
+void CommandHandlerVisitor::visit(CurrentStateCommand &command)
+{
+
+}
+
 void CommandHandlerVisitor::visit(CollectDataCommand &command)
 {
 
@@ -164,6 +169,8 @@ void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
 {
     currentClient_ = client;
 }
+
+
 
 
 

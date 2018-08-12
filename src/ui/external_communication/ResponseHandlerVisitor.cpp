@@ -44,3 +44,8 @@ void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
 {
 
 }
+
+void ResponseHandlerVisitor::visit(CurrentStateResponse &data)
+{
+
+}

@@ -5,6 +5,7 @@
 #include "DataResponse.h"
 #include "PlanesDatasetResponse.h"
 #include "CalibratingStatusResponse.h"
+#include "CurrentStateResponse.h"
 
 namespace communication
 {
@@ -18,6 +19,7 @@ namespace communication
         virtual void visit(DataResponse& data) = 0;
         virtual void visit(CalibratingStatusResponse& data) = 0;
         virtual void visit(PlanesDatasetResponse& data) = 0;
+        virtual void visit(CurrentStateResponse& data) = 0;
     };
 }
 

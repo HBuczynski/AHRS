@@ -12,7 +12,8 @@ namespace communication
         DATA = 10,
         ACK = 20,
         CALIBRATING_STATUS = 30,
-        PLANES_DATASET = 40
+        PLANES_DATASET = 40,
+        CURRENT_STATE_RES = 50
     };
 
     class Response : public Frame

@@ -7,6 +7,7 @@
 #include "RemovePlaneDataBuilder.h"
 #include "StartAcquisitionBuilder.h"
 #include "CalibrationStatusBuilder.h"
+#include "CurrentStateBuilder.h"
 
 #include <stdexcept>
 
@@ -45,6 +46,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             return move(builder_->create(commandInBytes));
         case CommandType::START_ACQ :
             builder_ = make_unique<StartAcquisitionBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::CURRENT_STATE :
+            builder_ = make_unique<CurrentStateBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::END_CONNECTION :
             builder_ = make_unique<EndConnectionBuilder>();

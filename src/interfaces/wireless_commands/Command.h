@@ -16,7 +16,8 @@ namespace communication
         COLLECT_DATA = 40,
         END_CONNECTION = 50,
         CALIBRATION_STATUS = 60,
-        START_ACQ = 70
+        START_ACQ = 70,
+        CURRENT_STATE = 80
     };
 
     class Command : public Frame

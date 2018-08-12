@@ -4,6 +4,7 @@
 #include "AckResponseBuilder.h"
 #include "CalibratingStatusBuilder.h"
 #include "PlanesDatasetBuilder.h"
+#include "CurrentStateBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -31,6 +32,9 @@ unique_ptr<Response> ResponseFactory::createCommand(const vector<uint8_t> &comma
             return move(builder_->create(commandInBytes));
         case ResponseType::PLANES_DATASET:
             builder_ = make_unique<PlanesDatasetBuilder>();
+            return move(builder_->create(commandInBytes));
+        case ResponseType::CURRENT_STATE_RES:
+            builder_ = make_unique<CurrentStateBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");
