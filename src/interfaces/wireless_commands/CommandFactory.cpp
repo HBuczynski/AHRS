@@ -19,7 +19,7 @@ CommandFactory::~CommandFactory()
 
 unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
-    const auto type = static_cast<CommandType>(commandInBytes[COMMAND_TYPE_POSITION]);
+    const auto type = static_cast<CommandType>(commandInBytes[Frame::COMMAND_TYPE_POSITION]);
 
     switch (type)
     {

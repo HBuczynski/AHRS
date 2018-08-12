@@ -32,11 +32,11 @@ vector<uint8_t> PlanesDatasetResponse::getFrameBytes()
 
 void PlanesDatasetResponse::initializeDataSize()
 {
-    uint16_t dataSize = sizeof(responseType_);
+    dataSize_ = sizeof(responseType_);
 
     for(const auto& plane : dataset_)
     {
-        dataSize += plane.size() + sizeof(END_STRING_IN_FRAME);
+        dataSize_ += plane.size() + sizeof(END_STRING_IN_FRAME);
     }
 }
 

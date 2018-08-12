@@ -17,9 +17,12 @@ std::unique_ptr<Command> InitConnectionBuilder::create(const std::vector<uint8_t
 {
     uint16_t port;
     std::string address;
+    uint16_t currentPoisition = Frame::INITIAL_DATA_POSITION;
 
-    port = BytesConverter::fromVectorOfUINT8toUINT16(commandInBytes, INIT_PORT_POSITION_IN_FRAME);
-    address = BytesConverter::fromVectorOfUINT8toString(commandInBytes, INIT_ADDRESS_POSITION_IN_FRAME);
+    port = BytesConverter::fromVectorOfUINT8toUINT16(commandInBytes, currentPoisition);
+
+    currentPoisition += sizeof(port);
+    address = BytesConverter::fromVectorOfUINT8toString(commandInBytes, currentPoisition);
 
     auto command = make_unique<InitConnectionCommand>(port, address);
 

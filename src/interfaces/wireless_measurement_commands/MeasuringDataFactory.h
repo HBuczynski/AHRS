@@ -15,7 +15,6 @@ namespace communication
     private:
         std::unique_ptr<MeasuringDataBuilder> builder_;
 
-        const uint8_t MEASURING_DATA_TYPE_POSITION = 5;
     };
 }
 

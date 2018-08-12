@@ -15,4 +15,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_IMUDATABUILDER_H
+#endif

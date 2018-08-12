@@ -12,7 +12,7 @@ AckResponseBuilder::~AckResponseBuilder()
 
 unique_ptr<Response> AckResponseBuilder::create(const vector<uint8_t> &dataInBytes)
 {
-    const auto ackType = static_cast<AckType>(dataInBytes[INIT_DATA_POSITION]);
+    const auto ackType = static_cast<AckType>(dataInBytes[Frame::INITIAL_DATA_POSITION]);
 
     auto command = make_unique<AckResponse>(ackType);
 

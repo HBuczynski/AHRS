@@ -8,6 +8,7 @@
 #include "../EndConnectionCommand.h"
 #include "../InitConnectionCommand.h"
 #include "../SetPlaneMagnetometerCommand.h"
+#include "../RemovePlaneDataCommand.h"
 
 #include <string>
 
@@ -32,6 +33,21 @@ BOOST_AUTO_TEST_SUITE( commands )
         BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER) +
                 sizeof(status)) == command.getDataSize());
         BOOST_CHECK( "CallibrateMagnetometerCommand" == command.getName());
+    }
+
+    BOOST_AUTO_TEST_CASE( removePlaneCommand )
+    {
+        string planeName = "temp";
+
+        RemovePlaneDataCommand command(planeName);
+        command.getFrameBytes();
+
+        BOOST_CHECK( planeName == command.getPlaneName());
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
+        BOOST_CHECK( CommandType::REMOVE_PLANE_DATA == command.getCommandType());
+        BOOST_CHECK( 1 == command.getSystemVersion());
+        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::REMOVE_PLANE_DATA)) == command.getDataSize());
+        BOOST_CHECK( "RemovePlaneDataCommand" == command.getName());
     }
 
     BOOST_AUTO_TEST_CASE( collectDataCommand )

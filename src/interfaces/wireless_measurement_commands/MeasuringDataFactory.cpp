@@ -16,7 +16,7 @@ MeasuringDataFactory::~MeasuringDataFactory()
 
 unique_ptr<MeasuringData> MeasuringDataFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
-    const auto type = static_cast<MeasuringType>(commandInBytes[MEASURING_DATA_TYPE_POSITION]);
+    const auto type = static_cast<MeasuringType>(commandInBytes[Frame::MEASUREMENT_DATA_TYPE_POSITION]);
 
     switch (type)
     {

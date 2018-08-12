@@ -17,7 +17,7 @@ unique_ptr<Command> SetPlaneMagnetometerBuilder::create(const vector<uint8_t> &c
 {
     string planeName;
 
-    planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, INIT_DATA_POSITION_IN_FRAME);
+    planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, Frame::INITIAL_DATA_POSITION);
 
     auto command = make_unique<SetPlaneMagnetometerCommand>(planeName);
 

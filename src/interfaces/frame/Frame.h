@@ -49,6 +49,12 @@ namespace communication
         const FrameType& getFrameType() const;
         const InterfaceType& getInterfaceType() const;
 
+        static const uint8_t MEASUREMENT_DATA_TYPE_POSITION = 6;
+        static const uint8_t RESPONSE_TYPE_POSITION = 6;
+        static const uint8_t NOTIFICATION_TYPE_POSITION = 6;
+        static const uint8_t COMMAND_TYPE_POSITION = 6;
+        static const uint8_t INITIAL_DATA_POSITION = 7;
+
     protected:
         virtual void initializeDataSize() = 0;
 

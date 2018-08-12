@@ -16,7 +16,7 @@ ResponseFactory::~ResponseFactory()
 
 unique_ptr<Response> ResponseFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
-    const auto type = static_cast<ResponseType >(commandInBytes[RESPONSE_DATA_TYPE_POSITION]);
+    const auto type = static_cast<ResponseType >(commandInBytes[Frame::RESPONSE_TYPE_POSITION]);
 
     switch (type)
     {

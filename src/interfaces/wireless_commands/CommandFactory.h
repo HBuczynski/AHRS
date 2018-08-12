@@ -18,8 +18,6 @@ namespace communication
 
     private:
         std::unique_ptr<CommandBuilder> builder_;
-
-        const uint8_t COMMAND_TYPE_POSITION = 6;
     };
 }
 #endif

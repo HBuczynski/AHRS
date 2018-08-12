@@ -9,6 +9,7 @@
 #include "../EndConnectionCommand.h"
 #include "../InitConnectionCommand.h"
 #include "../SetPlaneMagnetometerCommand.h"
+#include "../RemovePlaneDataCommand.h"
 
 using namespace std;
 using namespace communication;
@@ -31,6 +32,22 @@ BOOST_AUTO_TEST_SUITE( factory )
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
         BOOST_CHECK( commandFromVec->getPlaneStatus() == command.getPlaneStatus());
+    }
+
+    BOOST_AUTO_TEST_CASE( removePlaneBuilder )
+    {
+        CommandFactory factory;
+        string planeName = "temp";
+
+        RemovePlaneDataCommand command(planeName);
+
+        auto commandFromVec = static_pointer_cast<RemovePlaneDataCommand, Command>(factory.createCommand(command.getFrameBytes()));
+        BOOST_CHECK(commandFromVec->getPlaneName() == command.getPlaneName());
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
+        BOOST_CHECK( 1 == commandFromVec->getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
     }
 
     BOOST_AUTO_TEST_CASE( collectDataBuilder )

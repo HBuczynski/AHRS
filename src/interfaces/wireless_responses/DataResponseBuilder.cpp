@@ -16,7 +16,7 @@ DataResponseBuilder::~DataResponseBuilder()
 unique_ptr<Response> DataResponseBuilder::create(const vector<uint8_t> &dataInBytes)
 {
     string planeName;
-    planeName = BytesConverter::fromVectorOfUINT8toString(dataInBytes, INIT_DATA_POSITION);
+    planeName = BytesConverter::fromVectorOfUINT8toString(dataInBytes, Frame::INITIAL_DATA_POSITION);
 
     auto command = make_unique<DataResponse>(planeName);
 

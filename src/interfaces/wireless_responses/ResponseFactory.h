@@ -14,9 +14,6 @@ namespace communication
 
     private:
         std::unique_ptr<ResponseBuilder> builder_;
-
-        const uint8_t RESPONSE_DATA_TYPE_POSITION = 5;
-
     };
 }
 

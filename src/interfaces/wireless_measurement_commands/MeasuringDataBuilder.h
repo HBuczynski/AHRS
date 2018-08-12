@@ -11,8 +11,6 @@ namespace communication
     public:
         virtual std::unique_ptr<MeasuringData> create(const std::vector<uint8_t> &dataInBytes) = 0;
 
-    protected:
-        const uint8_t initialDataPosition = 7;
     };
 }
 
