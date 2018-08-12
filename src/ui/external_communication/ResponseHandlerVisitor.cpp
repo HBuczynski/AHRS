@@ -39,3 +39,8 @@ void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
 {
 
 }
+
+void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
+{
+
+}

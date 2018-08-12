@@ -3,6 +3,7 @@
 #include "DataResponseBuilder.h"
 #include "AckResponseBuilder.h"
 #include "CalibratingStatusBuilder.h"
+#include "PlanesDatasetBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -27,6 +28,9 @@ unique_ptr<Response> ResponseFactory::createCommand(const vector<uint8_t> &comma
             return move(builder_->create(commandInBytes));
         case ResponseType::CALIBRATING_STATUS:
             builder_ = make_unique<CalibratingStatusBuilder>();
+            return move(builder_->create(commandInBytes));
+        case ResponseType::PLANES_DATASET:
+            builder_ = make_unique<PlanesDatasetBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");
