@@ -6,6 +6,7 @@
 #include "UIParameters.h"
 
 #include <memory>
+#include <vector>
 
 namespace config
 {
@@ -22,6 +23,7 @@ namespace config
 
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 
+        static std::vector<std::string> getPlanesDataset();
         static FeederExternalWireless getFeederExternalWireless(const std::string &filePath);
         static FeederInternalWireless getFeederInternalWireless(const std::string &filePath);
         static FeederMessageQueues getFeederMessageQueues(const std::string &filePath);

@@ -3,6 +3,7 @@
 
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/communication_process_feeder/CalibrateMgnDemandCommand.h>
 
 #include "RedundantSendingState.h"
 #include "MasterSendingState.h"
@@ -58,8 +59,10 @@ void CalibratingState::startCalibration(ClientUDPManager &clientUDPManager, cons
 
     try
     {
-        //TODO: create interprocess command
-        //mainMessageQueue
+        //TODO: add status ??
+        CalibrateMgnDemandCommand command(planeName);
+        const auto commandFrame = command.getFrameBytes();
+        mainMessageQueue->send(commandFrame.data(), commandFrame.size(), 0);
     }
     catch(interprocess_exception &ex)
     {
@@ -71,14 +74,8 @@ void CalibratingState::startCalibration(ClientUDPManager &clientUDPManager, cons
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("RegisteredUsersState :: Change state on RegisteredUsersState");
+        const string message = string("CalibratingState :: Send massage to Master Process to calibrate magnetometer.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("CalibratingState :: Calibration command has been sent again to the main procecss.");
-        logger_.writeLog(LogType::WARNING_LOG, message);
     }
 }
 

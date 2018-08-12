@@ -17,7 +17,7 @@ std::unique_ptr<FeederCommand> FeederCommandFactory::createCommand(const std::ve
 
     switch (type)
     {
-        case FeederCommandType::CALIBRATE_MAGNETOMETER :
+        case FeederCommandType::CALIBRATE_MAGNETOMETER_DEMAND :
             builder_ = make_unique<CalibrateMagnetometerBuilder>();
             return move(builder_->create(commandInBytes));
         default:

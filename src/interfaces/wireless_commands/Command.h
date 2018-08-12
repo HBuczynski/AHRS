@@ -14,7 +14,9 @@ namespace communication
         REMOVE_PLANE_DATA = 25,
         SET_PLANE_MAGNETOMETER_DATA = 30,
         COLLECT_DATA = 40,
-        END_CONNECTION = 50
+        END_CONNECTION = 50,
+        CALIBRATION_STATUS = 60,
+        START_ACQ = 70
     };
 
     class Command : public Frame

@@ -24,9 +24,12 @@ namespace communication
         virtual void visit(InitConnectionCommand& command) override;
         virtual void visit(EndConnectionCommand& command) override;
         virtual void visit(CallibrateMagnetometerCommand& command) override;
+        virtual void visit(CalibrationStatusCommand& command) override;
+        virtual void visit(StartAcquisitionCommand& command) override;
         virtual void visit(CollectDataCommand& command) override;
         virtual void visit(SetPlaneMagnetometerCommand& command) override;
         virtual void visit(RemovePlaneDataCommand& command) override;
+
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);

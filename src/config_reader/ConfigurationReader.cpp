@@ -9,7 +9,7 @@ ConfigurationReader::ConfigurationReader()
 ConfigurationReader::~ConfigurationReader()
 {}
 
-UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const std::string &filePath)
+UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const string &filePath)
 {
     JSONParser jsonParser(filePath);
     UIWirelessCommunication feederParameters;
@@ -20,61 +20,61 @@ UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const st
 
     configNames.push_back("sourcePort");
 
-    std::string lol = "trolo";
+    string lol = "trolo";
 
     jsonParser.getString(configNames, lol);
 }
 
-UIMessageQueues ConfigurationReader::getUIMessageQueues(const std::string &filePath)
+UIMessageQueues ConfigurationReader::getUIMessageQueues(const string &filePath)
 {
     UIMessageQueues parameters;
 
     return parameters;
 }
 
-UISharedMemory ConfigurationReader::getUISharedMemory(const std::string &filePath)
+UISharedMemory ConfigurationReader::getUISharedMemory(const string &filePath)
 {
     UISharedMemory parameters;
 
     return parameters;
 }
 
-FeederExternalWireless ConfigurationReader::getFeederExternalWireless(const std::string &filePath)
+FeederExternalWireless ConfigurationReader::getFeederExternalWireless(const string &filePath)
 {
     FeederExternalWireless  parameters;
 
     return parameters;
 }
 
-FeederInternalWireless ConfigurationReader::getFeederInternalWireless(const std::string &filePath)
+FeederInternalWireless ConfigurationReader::getFeederInternalWireless(const string &filePath)
 {
     FeederInternalWireless  parameters;
 
     return parameters;
 }
 
-FeederMessageQueues ConfigurationReader::getFeederMessageQueues(const std::string &filePath)
+FeederMessageQueues ConfigurationReader::getFeederMessageQueues(const string &filePath)
 {
     FeederMessageQueues  parameters;
 
     return parameters;
 }
 
-FeederSharedMemory ConfigurationReader::getFeederSharedMemory(const std::string &filePath)
+FeederSharedMemory ConfigurationReader::getFeederSharedMemory(const string &filePath)
 {
     FeederSharedMemory  parameters;
 
     return parameters;
 }
 
-FeederType ConfigurationReader::getFeederType(const std::string &filePath)
+FeederType ConfigurationReader::getFeederType(const string &filePath)
 {
     FeederType feederType;
 
     return feederType;
 }
 
-void ConfigurationReader::setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode)
+void ConfigurationReader::setUICommunicationMode(const string &filePath, uint8_t processNumber, UICommunicationMode mode)
 {
     JSONParser jsonParser(filePath);
 
@@ -88,7 +88,7 @@ void ConfigurationReader::setUICommunicationMode(const std::string &filePath, ui
     }
 }
 
-void ConfigurationReader::setFeederSystemValue(const std::string &filePath, FeederMode mode)
+void ConfigurationReader::setFeederSystemValue(const string &filePath, FeederMode mode)
 {
     JSONParser jsonParser(filePath);
 
@@ -102,8 +102,13 @@ void ConfigurationReader::setFeederSystemValue(const std::string &filePath, Feed
     }
 }
 
+vector<string> ConfigurationReader::getPlanesDataset()
+{
+    return vector<string>();
+}
+
 /*
-FeederParameters ConfigurationReader::getFeederParameters(const std::string &path)
+FeederParameters ConfigurationReader::getFeederParameters(const string &path)
 {
     JSONParser jsonParser(path);
     FeederParameters feederParameters;
@@ -156,7 +161,7 @@ FeederParameters ConfigurationReader::getFeederParameters(const std::string &pat
     return feederParameters;
 }
 
-UIParameters ConfigurationReader::getUIParameters(const std::string &path)
+UIParameters ConfigurationReader::getUIParameters(const string &path)
 {
     JSONParser jsonParser(path);
     UIParameters uiParameters;

@@ -1,7 +1,7 @@
 #ifndef AHRS_FEEDERCOMMANDVISITOR_H
 #define AHRS_FEEDERCOMMANDVISITOR_H
 
-#include "CalibrateMagnetometerCommand.h"
+#include "CalibrateMgnDemandCommand.h"
 
 namespace communication
 {
@@ -11,7 +11,7 @@ namespace communication
         FeederCommandVisitor(){};
         virtual ~FeederCommandVisitor(){};
 
-        virtual void visit(const CalibrateMagnetometerCommand& command);
+        virtual void visit(const CalibrateMgnDemandCommand& command);
     };
 }
 

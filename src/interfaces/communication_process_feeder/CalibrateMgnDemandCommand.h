@@ -7,11 +7,11 @@
 
 namespace communication
 {
-    class CalibrateMagnetometerCommand final : public FeederCommand
+    class CalibrateMgnDemandCommand final : public FeederCommand
     {
     public:
-        CalibrateMagnetometerCommand(const std::string& name);
-        ~CalibrateMagnetometerCommand();
+        CalibrateMgnDemandCommand(const std::string& name);
+        ~CalibrateMgnDemandCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;

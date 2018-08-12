@@ -7,6 +7,8 @@
 #include "CollectDataCommand.h"
 #include "SetPlaneMagnetometerCommand.h"
 #include "RemovePlaneDataCommand.h"
+#include "CalibrationStatusCommand.h"
+#include "StartAcquisitionCommand.h"
 
 namespace communication
 {
@@ -22,6 +24,8 @@ namespace communication
         virtual void visit(CollectDataCommand& command) = 0;
         virtual void visit(SetPlaneMagnetometerCommand& command) = 0;
         virtual void visit(RemovePlaneDataCommand& command) = 0;
+        virtual void visit(CalibrationStatusCommand& command) = 0;
+        virtual void visit(StartAcquisitionCommand& command) = 0;
     };
 }
 #endif

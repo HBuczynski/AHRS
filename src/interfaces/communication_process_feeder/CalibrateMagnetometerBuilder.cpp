@@ -1,5 +1,5 @@
 #include "CalibrateMagnetometerBuilder.h"
-#include "CalibrateMagnetometerCommand.h"
+#include "CalibrateMgnDemandCommand.h"
 
 #include <utility/BytesConverter.h>
 
@@ -18,7 +18,7 @@ unique_ptr<FeederCommand> CalibrateMagnetometerBuilder::create(const vector<uint
     uint8_t currentPosition = Frame::INITIAL_DATA_POSITION;
     string planeName = BytesConverter::fromVectorOfUINT8toString(commandInBytes, currentPosition);
 
-    auto command = make_unique<CalibrateMagnetometerCommand>(planeName);
+    auto command = make_unique<CalibrateMgnDemandCommand>(planeName);
 
     return move(command);
 }

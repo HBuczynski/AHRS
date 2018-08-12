@@ -9,7 +9,7 @@ namespace communication
 
     enum FeederCommandType : uint8_t
     {
-        CALIBRATE_MAGNETOMETER = 0x05
+        CALIBRATE_MAGNETOMETER_DEMAND = 0x05
     };
 
     class FeederCommand : public Frame

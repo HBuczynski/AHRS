@@ -9,7 +9,8 @@ namespace communication
     {
         PASSED = 0x01,
         FAILED = 0x02,
-        IN_THE_PROCESS = 0x03
+        IN_THE_PROCESS = 0x03,
+        IS_NOT_CALIBRATING = 0x04
     };
 
     class CalibratingStatusResponse final : public Response
