@@ -59,6 +59,12 @@ bool ApplicationManager::initializeMainQueue()
         return false;
     }
 
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("ApplicationManager :: Main queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     return true;
 }
 
@@ -80,6 +86,12 @@ bool ApplicationManager::initializeExternalQueue()
         }
 
         return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("ApplicationManager :: External queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     return true;
@@ -105,6 +117,12 @@ bool ApplicationManager::initializeInternalQueue()
         return false;
     }
 
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("ApplicationManager :: Internal queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     return true;
 }
 
@@ -114,11 +132,11 @@ bool ApplicationManager::initializeExternalSharedMemory()
     {
         // Creating shared memory's mutex.
         named_mutex::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        externalSharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.externalMemoryName.c_str());
+        externalSharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, sharedMemoryParameters_.externalMemoryName.c_str());
 
         // Creating shared memory.
         shared_memory_object::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        externalSharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
+        externalSharedMemory_ = std::make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
 
         // Resize shared memory.
         externalSharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
@@ -128,10 +146,16 @@ bool ApplicationManager::initializeExternalSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("ApplicationManager ::") + ex.what();
+            const std::string message = std::string("ApplicationManager:: External SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
         return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("ApplicationManager :: External shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     return true;
@@ -143,11 +167,11 @@ bool ApplicationManager::initializeInternalSharedMemory()
     {
         // Creating shared memory's mutex.
         named_mutex::remove(sharedMemoryParameters_.internalMemoryName.c_str());
-        internalSharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.internalMemoryName.c_str());
+        internalSharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, sharedMemoryParameters_.internalMemoryName.c_str());
 
         // Creating shared memory.
         shared_memory_object::remove(sharedMemoryParameters_.internalMemoryName.c_str());
-        internalSharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.internalMemoryName.c_str(), read_write);
+        internalSharedMemory_ = std::make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.internalMemoryName.c_str(), read_write);
 
         // Resize shared memory.
         internalSharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
@@ -156,11 +180,17 @@ bool ApplicationManager::initializeInternalSharedMemory()
     catch(interprocess_exception &ex)
     {
         if (logger_.isErrorEnable()) {
-            const std::string message = std::string("ApplicationManager ::") + ex.what();
+            const std::string message = std::string("ApplicationManager:: Internal SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
         return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("ApplicationManager :: Internal shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     return true;

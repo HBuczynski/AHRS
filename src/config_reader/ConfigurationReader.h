@@ -4,6 +4,7 @@
 #include "JSONParser.h"
 #include "FeederParameters.h"
 #include "UIParameters.h"
+#include "AircraftParameters.h"
 
 #include <memory>
 #include <vector>
@@ -26,7 +27,7 @@ namespace config
 
         /* Feeder Commands */
         // Getters
-        static std::vector<std::string> getPlanesDataset(const std::string &filePath);
+        static std::vector<config::AircraftParameters> getAircraftDatabase(const std::string &filePath);
         static FeederExecutableFiles getFeederExecutableFiles(const std::string &filePath);
         static FeederExternalWireless getFeederExternalWireless(const std::string &filePath);
         static FeederInternalWireless getFeederInternalWireless(const std::string &filePath);

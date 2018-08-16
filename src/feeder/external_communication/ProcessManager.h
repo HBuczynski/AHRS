@@ -29,8 +29,8 @@ namespace communication
         void runProcessConfiguration();
 
     private:
-        void initializeExternalCommunication();
-        void initializeMessageQueueCommunication();
+        bool initializeExternalCommunication();
+        bool initializeMessageQueueCommunication();
 
         config::FeederExternalWireless feederExternalWirelessParameters_;
         config::FeederMessageQueues messageQueuesParameters_;
@@ -45,7 +45,8 @@ namespace communication
         communication::FeederCommandFactory commandFactory_;
         
 
-        std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue;
+        std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue_;
+        std::shared_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
 
         utility::Logger &logger_;
     };

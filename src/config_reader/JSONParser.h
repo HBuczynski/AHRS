@@ -25,8 +25,12 @@ namespace config
 
         void setString(const std::vector<std::string> &hierarchyQueue, std::string &value);
 
+        void appendString(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, const std::string &value);
+        void appendFloat(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, float number);
+        void appendInt(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, int number);
+
     private:
-        Json::Value getFromLeaf(const std::vector<std::string> &hierarchyQueue);
+        Json::Value& getFromLeaf(const std::vector<std::string> &hierarchyQueue);
 
         std::string fileName_;
         std::fstream file_;

@@ -30,7 +30,7 @@ Logger::~Logger()
 {
 }
 
-Logger &Logger::getInstance()
+Logger &Logger::getInstance(const std::string& moduleName)
 {
 	if (!instance_)
 	{
@@ -40,16 +40,16 @@ Logger &Logger::getInstance()
 			instance_ = new Logger();
 			++instanceCounter_;
 
-			initFile();
+			initFile(moduleName);
 		}
 	}
 
 	return *instance_;
 }
 
-void Logger::initFile()
+void Logger::initFile(const std::string& moduleName)
 {
-    folderName_ = "log_files_" + TimeManager::getDate() + "_" + TimeManager::getPreciselyTime();
+    folderName_ = moduleName + "_" + TimeManager::getDate() + "_" + TimeManager::getPreciselyTime();
     mkdir(folderName_.c_str(), 0777);
 
 	fileName_ = folderName_ + "/" + "log_" + TimeManager::getDate() + "_" + TimeManager::getPreciselyTime() + ".txt";

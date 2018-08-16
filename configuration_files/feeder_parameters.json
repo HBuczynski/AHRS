@@ -34,8 +34,8 @@
 
     "ExecutableFiles" :
     {
-      "externalCommunication" : "lololo",
-      "internalCommunication" : "lololo"
+      "externalCommunication" : "external_feeder_communication",
+      "internalCommunication" : "internal_feeder_communication"
     }
   }
 }

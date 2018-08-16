@@ -19,5 +19,9 @@ void ExternalCommunicationVisitor::visit(const CalibrateMgnDemandCommand &comman
 
 void ExternalCommunicationVisitor::visit(const CalibrationStatusNotification &command)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ExternalCommunicationVisitor :: Rceived - CalibrationStatusNotification");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

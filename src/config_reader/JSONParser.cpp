@@ -55,36 +55,36 @@ void JSONParser::getString(const std::vector<std::string> &hierarchyQueue, strin
     value = getFromLeaf(hierarchyQueue).asString();
 }
 
-Json::Value JSONParser::getFromLeaf(const vector<string> &hierarchyQueue)
+Json::Value& JSONParser::getFromLeaf(const vector<string> &hierarchyQueue)
 {
     if(hierarchyQueue.size() == 1)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()];
         return value;
     }
     else if(hierarchyQueue.size() == 2)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()];
         return value;
     }
     else if(hierarchyQueue.size() == 3)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()];
         return value;
     }
     else if(hierarchyQueue.size() == 4)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()];
         return value;
     }
     else if(hierarchyQueue.size() == 5)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()][hierarchyQueue[4].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()][hierarchyQueue[4].c_str()];
         return value;
     }
     else if(hierarchyQueue.size() == 6)
     {
-        Json::Value value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()][hierarchyQueue[4].c_str()][hierarchyQueue[5].c_str()];
+        Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()][hierarchyQueue[1].c_str()][hierarchyQueue[2].c_str()][hierarchyQueue[3].c_str()][hierarchyQueue[4].c_str()][hierarchyQueue[5].c_str()];
         return value;
     }
     else
@@ -100,6 +100,26 @@ Json::Value JSONParser::getFromLeaf(const vector<string> &hierarchyQueue)
 }
 
 void JSONParser::setString(const vector<std::string> &hierarchyQueue, string &value)
+{
+    Json::Value& oldValue = getFromLeaf(hierarchyQueue);
+    oldValue = value;
+
+    file_.seekg(0, ios::beg);
+    file_.clear();
+    file_ << fileRoot_;
+}
+
+void JSONParser::appendString(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, const std::string &value)
+{
+
+}
+
+void JSONParser::appendFloat(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, float number)
+{
+
+}
+
+void JSONParser::appendInt(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, int number)
 {
 
 }

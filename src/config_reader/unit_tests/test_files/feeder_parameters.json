@@ -21,6 +21,7 @@
       "mainProcessQueueName" : "MainProcessQueue",
       "externalCommunicationQueueName" : "ExternalCommunicationQueue",
       "internalCommunicationQueueName": "InternalCommunicationQueue",
+      "messageQueueNumber" : 30,
       "messageSize": 400
     },
 
@@ -29,6 +30,12 @@
       "externalMemoryName" : "ExternalMemoryFeeder",
       "internalMemoryName" : "InternalMemoryFeeder",
       "size" : 100
+    },
+
+    "ExecutableFiles" :
+    {
+      "externalCommunication" : "lololo",
+      "internalCommunication" : "lololo"
     }
   }
 }

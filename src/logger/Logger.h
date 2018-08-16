@@ -24,7 +24,7 @@ namespace utility
 	class Logger
 	{
 	public:
-		static Logger &getInstance();
+		static Logger &getInstance(const std::string& moduleName  = "Log");
 
         void initLogger(InitLogStructure logParameters);
 
@@ -42,7 +42,7 @@ namespace utility
 		Logger();
 		~Logger();
 
-		static void initFile();
+		static void initFile(const std::string& moduleName);
 
         void registerLogType(LogType type);
 

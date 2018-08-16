@@ -2,6 +2,7 @@
 #define AHRS_PLANESDATASETRESPONSE_H
 
 #include "Response.h"
+#include <config_reader/AircraftParameters.h>
 
 #include <string>
 #include <vector>

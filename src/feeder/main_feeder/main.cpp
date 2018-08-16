@@ -10,7 +10,7 @@ using namespace main_process;
 
 int main()
 {
-    Logger &logger = Logger::getInstance();
+    Logger &logger = Logger::getInstance("Fd_main");
 
     InitLogStructure struc;
     struc.debugLog = true;

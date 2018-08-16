@@ -2,6 +2,7 @@
 
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/communication_process_feeder/CalibrationStatusNotification.h>
 #include <iostream>
 
 using namespace std;
@@ -16,16 +17,25 @@ ProcessManager::ProcessManager()
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
         logger_(Logger::getInstance())
 {
-    initializeMessageQueueCommunication();
-    initializeExternalCommunication();
+    bool isSuccess = true;
 
+    isSuccess = isSuccess & initializeMessageQueueCommunication();
+    isSuccess = isSuccess & initializeExternalCommunication();
+
+    if(isSuccess)
+    {
+        CalibrationStatusNotification notification(CalibrationStatus::PASSED);
+
+        const auto commandFrame = notification.getFrameBytes();
+        sendingMessageQueue_->send(commandFrame.data(), commandFrame.size(), 0);
+    }
     messageVisitor_.initializeClientUDPManager(clientUDPManager_);
 }
 
 ProcessManager::~ProcessManager()
 { }
 
-void ProcessManager::initializeExternalCommunication()
+bool ProcessManager::initializeExternalCommunication()
 {
     clientUDPManager_ = make_shared<ClientUDPManager>();
 
@@ -50,7 +60,8 @@ void ProcessManager::initializeExternalCommunication()
                 const string message = "ProcessManager: Inappropriate process communication type.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
-            break;
+
+            return false;
         }
     }
 
@@ -59,17 +70,16 @@ void ProcessManager::initializeExternalCommunication()
         const string message = "ProcessManager: Initialized external communication process. Process type: " + to_string(static_cast<int>(feederType_.mode));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    return true;
 }
 
-void ProcessManager::initializeMessageQueueCommunication()
+bool ProcessManager::initializeMessageQueueCommunication()
 {
     try
     {
-        message_queue::remove(messageQueuesParameters_.externalCommunicationQueueName.c_str());
-        receivingMessageQueue = make_shared<message_queue>(open_or_create,
-                                                  messageQueuesParameters_.externalCommunicationQueueName.c_str(),
-                                                  messageQueuesParameters_.messageQueueNumber,
-                                                  messageQueuesParameters_.messageSize);
+        receivingMessageQueue_ = make_shared<message_queue>(open_only, messageQueuesParameters_.externalCommunicationQueueName.c_str());
+        sendingMessageQueue_ = make_shared<message_queue>(open_only, messageQueuesParameters_.mainProcessQueueName.c_str());
     }
     catch(interprocess_exception &ex)
     {
@@ -78,7 +88,11 @@ void ProcessManager::initializeMessageQueueCommunication()
             const string message = string("ProcessManager :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
     }
+
+    return true;
 }
 
 void ProcessManager::runProcessConfiguration()
@@ -91,7 +105,7 @@ void ProcessManager::runProcessConfiguration()
         try
         {
             vector<uint8_t> packet(messageQueuesParameters_.messageSize);
-            receivingMessageQueue->receive(packet.data(), packet.size(), receivedSize, priority);
+            receivingMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
 
             packet.resize(receivedSize);
             packet.shrink_to_fit();
