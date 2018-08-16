@@ -41,6 +41,13 @@ UISharedMemory ConfigurationReader::getUISharedMemory(const string &filePath)
     return parameters;
 }
 
+UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSystemParameters(const std::string &filePath)
+{
+    UICommunicationSystemParameters uiCommunicationSystemParameters;
+
+    return uiCommunicationSystemParameters;
+}
+
 void ConfigurationReader::setUICommunicationMode(const string &filePath, uint8_t processNumber, UICommunicationMode mode)
 {
     JSONParser jsonParser(filePath);

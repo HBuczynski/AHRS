@@ -5,14 +5,12 @@
 #include <sys/wait.h>
 
 #include <logger/Logger.h>
-#include "Scheduler.h"
+#include "UIApplicationManager.h"
 
-using namespace utility;
-using namespace main_process;
 using namespace std;
 using namespace chrono;
-
-extern char **environ;
+using namespace utility;
+using namespace main_process;
 
 int main(int argc, char *argv[])
 {
@@ -28,8 +26,26 @@ int main(int argc, char *argv[])
 
     logger.initLogger(struc);
 
-    Scheduler processScheduler;
-    processScheduler.initializeCommunicationProcesses();
+    UIApplicationManager applicationManager;
+
+    if(applicationManager.initialize())
+    {
+        applicationManager.run();
+
+        while(true)
+        {
+
+        }
+    }
+    else
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("Main UI :: Initialization failed !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
 
     return 0;
 }

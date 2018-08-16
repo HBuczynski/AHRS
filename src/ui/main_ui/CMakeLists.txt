@@ -18,6 +18,5 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC switches)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC common_ui)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)

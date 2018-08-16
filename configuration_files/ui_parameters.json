@@ -8,23 +8,26 @@
       "secondSourcePort": 9000,
       "secondSourceAddress": "127.0.0.1",
 
-      "destinationPort": 8000,
-      "destinationAddress": "127.0.0.1"
+      "firstDestinationPort": 8000,
+      "firstDestinationAddress": "127.0.0.1",
+      "secondDestinationPort": 8000,
+      "secondDestinationAddress": "127.0.0.1"
     },
 
     "MessageQueues" :
     {
       "mainProcessQueueName" : "MainProcessQueue",
-      "mainCommunicationQueueName" : "MainCommunicationQueue",
-      "redundantCommunicationQueueName": "RedundantCommunicationQueue",
+      "firstCommunicationQueueName" : "FirstCommunicationQueueName",
+      "secondCommunicationQueueName": "SecondCommunicationQueueName",
       "guiProcessQueueName" : "GuiProcessQueue",
-      "messageSize": 400
 
+      "messageQueueNumber" : 20,
+      "messageSize": 400
     },
 
     "SharedMemory" :
     {
-      "dataSharedMemory" : "SharedMemoryUI",
+      "sharedMemoryName" : "SharedMemoryUI",
       "size" : 100
     }
   }

@@ -1,15 +1,15 @@
 # Specify the minimum version of cmake.
 cmake_minimum_required(VERSION 3.0)
 
-project(external_communication)
+project(external_ui_communication)
 
-set(PROJECT_NAME external_communication)
+set(PROJECT_NAME external_ui_communication)
 include_directories("..")
 
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
 
-add_library(${PROJECT_NAME} ${source_list})
+add_executable(${PROJECT_NAME} ${source_list})
 
 target_include_directories(
     ${PROJECT_NAME} PUBLIC
@@ -21,6 +21,9 @@ target_include_directories(
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_process_ui)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
@@ -28,7 +31,3 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
-
-if(BUILD_TESTS)
-#    add_subdirectory(unit_tests)
-endif()

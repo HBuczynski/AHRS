@@ -1,7 +1,6 @@
 #include "CommunicationProcessesHandler.h"
 #include <sys/wait.h>
 
-#include <common/InterprocessData.h>
 #include <unistd.h>
 #include <cstring>
 
@@ -25,7 +24,7 @@ CommunicationProcessesHandler::~CommunicationProcessesHandler()
 void CommunicationProcessesHandler::initializeProcesses()
 {
     // First communication process initialization.
-    char *firstArg1 = const_cast<char*>(COMMUNICATION_BINARY_FILE_NAME.c_str());
+    /*char *firstArg1 = const_cast<char*>(COMMUNICATION_BINARY_FILE_NAME.c_str());
     char *firstArg2 = const_cast<char*>(RECEIVING_QUEUE_NAME_FIRST_PROC.c_str());
     char *firstArg3 = const_cast<char*>(SHARED_MEMORY_NAME.c_str());
     char *firstArg4 = const_cast<char*>("MAIN");
@@ -40,7 +39,7 @@ void CommunicationProcessesHandler::initializeProcesses()
     char *secondArg4 = const_cast<char*>("REDUNDANT");
 
     char *secondArgs[] = {secondArg1, secondArg2, secondArg3, secondArg4, secondArg4, NULL};
-    launchProcess(secondCommunicationProcess_.first, secondAction_, secondArgs);
+    launchProcess(secondCommunicationProcess_.first, secondAction_, secondArgs);*/
 }
 
 void CommunicationProcessesHandler::launchProcess(pid_t &pid, posix_spawn_file_actions_t &action, char *args[])

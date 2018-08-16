@@ -18,4 +18,4 @@ namespace main_process
     };
 }
 
-#endif //AHRS_SWITCHESFACTORY_H
+#endif

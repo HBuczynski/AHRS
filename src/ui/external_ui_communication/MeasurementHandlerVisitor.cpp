@@ -1,31 +1,33 @@
-#include "DataHandlerVisitor.h"
+#include "MeasurementHandlerVisitor.h"
 
 #include <iostream>
-#include <common/InterprocessData.h>
+#include <config_reader/ConfigurationReader.h>
 #include <boost/interprocess/sync/scoped_lock.hpp>
 
 using namespace std;
+using namespace config;
 using namespace utility;
 using namespace communication;
 using namespace boost::interprocess;
 
-DataHandlerVisitor::DataHandlerVisitor()
-    : logger_(Logger::getInstance())
+MeasurementHandlerVisitor::MeasurementHandlerVisitor()
+    : uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+      logger_(Logger::getInstance())
 {
     initializeSharedMemory();
 }
 
-DataHandlerVisitor::~DataHandlerVisitor()
+MeasurementHandlerVisitor::~MeasurementHandlerVisitor()
 {}
 
-void DataHandlerVisitor::initializeSharedMemory()
+void MeasurementHandlerVisitor::initializeSharedMemory()
 {
     try
     {
         // Creating shared memory's mutex.
-        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, SHARED_MEMORY_MUTEX_NAME.c_str());
+        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
         // Creating shared memory.
-        sharedMemory_ = make_unique<shared_memory_object>(open_only, SHARED_MEMORY_NAME.c_str(), read_write);
+        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
         // Mapped shared memory.
         mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
     }
@@ -39,29 +41,29 @@ void DataHandlerVisitor::initializeSharedMemory()
     }
 }
 
-void DataHandlerVisitor::visit(ImuData &data)
+void MeasurementHandlerVisitor::visit(ImuData &data)
 {
     saveDataToSharedMemory(data.getFrameBytes());
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("DataHandlerVisitor :: Received ImuData.") + to_string((data.getMeasurement()));
+        const string message = string("MeasurementHandlerVisitor :: Received ImuData.") + to_string((data.getMeasurement()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
-void DataHandlerVisitor::visit(GpsData &data)
+void MeasurementHandlerVisitor::visit(GpsData &data)
 {
     saveDataToSharedMemory(data.getFrameBytes());
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("DataHandlerVisitor :: Received GPSData.");
+        const string message = string("MeasurementHandlerVisitor :: Received GPSData.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
-void DataHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t> &rawData)
+void MeasurementHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t> &rawData)
 {
     uint8_t *pointerToMemory;
     {

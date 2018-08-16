@@ -1,7 +1,7 @@
 #ifndef WAIC_SERVER_H
 #define WAIC_SERVER_H
 
-#include "DataHandlerVisitor.h"
+#include "MeasurementHandlerVisitor.h"
 #include <interfaces/wireless_commands/Command.h>
 #include <logger/Logger.h>
 #include <packet/ListenDatagramUDP.h>
@@ -35,7 +35,7 @@ namespace communication
 
         std::unique_ptr<ListenDatagramUDP> socket_;
         MeasuringDataFactory dataFactory_;
-        DataHandlerVisitor dataVisitor_;
+        MeasurementHandlerVisitor dataVisitor_;
 
         utility::Logger& logger_;
     };

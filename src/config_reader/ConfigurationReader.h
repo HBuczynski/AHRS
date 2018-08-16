@@ -22,6 +22,7 @@ namespace config
         static UIWirelessCommunication getUIWirelessCommunication(const std::string &filePath);
         static UIMessageQueues getUIMessageQueues(const std::string &filePath);
         static UISharedMemory getUISharedMemory(const std::string &filePath);
+        static UICommunicationSystemParameters getUICommunicationProcessSystemParameters(const std::string &filePath);
         // Setters
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 

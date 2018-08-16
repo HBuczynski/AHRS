@@ -1,20 +1,21 @@
 #ifndef AHRS_DATAHANDLERVISITOR_H
 #define AHRS_DATAHANDLERVISITOR_H
 
-#include "../../../../../../../../usr/include/boost/interprocess/shared_memory_object.hpp"
-#include "../../../../../../../../usr/include/boost/interprocess/mapped_region.hpp"
-#include "../../../../../../../../usr/include/boost/interprocess/sync/named_mutex.hpp"
+#include <boost/interprocess/ipc/message_queue.hpp>
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <config_reader/UIParameters.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataVisitor.h>
 
-#include "../../interfaces/wireless_measurement_commands/MeasuringDataVisitor.h"
-#include "../../logger/Logger.h"
+#include <vector>
+#include <logger/Logger.h>
 
 namespace communication
 {
-    class DataHandlerVisitor final : public MeasuringDataVisitor
+    class MeasurementHandlerVisitor final : public MeasuringDataVisitor
     {
     public:
-        DataHandlerVisitor();
-        ~DataHandlerVisitor();
+        MeasurementHandlerVisitor();
+        ~MeasurementHandlerVisitor();
 
         virtual void visit(ImuData& data) override;
         virtual void visit(GpsData& data) override;
@@ -23,11 +24,13 @@ namespace communication
         void initializeSharedMemory();
         void saveDataToSharedMemory(const std::vector<uint8_t> &rawData);
 
-        utility::Logger& logger_;
+        config::UISharedMemory uiSharedMemoryParameters_;
 
         std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
+
+        utility::Logger& logger_;
     };
 }
 #endif
