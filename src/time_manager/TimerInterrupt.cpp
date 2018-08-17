@@ -2,11 +2,6 @@
 #include <errno.h>
 #include <cstdio>
 #include <cstdlib>
-#include <sys/time.h>
-#include <string>
-#include <cstring>
-#include <csignal>
-#include <bits/siginfo.h>
 
 #include "TimerInterrupt.h"
 #include "TimerInterruptNotification.h"
@@ -72,6 +67,12 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
             const string message = string("TimerInterrupt :: Could not start timer.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+    }
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("TimerInterrupt :: Has been initialized.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 

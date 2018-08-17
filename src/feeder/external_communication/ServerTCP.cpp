@@ -23,6 +23,7 @@ ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, shared_ptr<ClientU
 
 ServerTCP::~ServerTCP()
 {
+    timerInterrupt_.stop();
     stopUserActivation();
     removeUsers();
 }
@@ -32,6 +33,12 @@ void ServerTCP::startUserActivation()
     runUserActivation_ = true;
 
     activationThread_ = thread(&ServerTCP::activateUsers, this);
+    timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
+}
+
+void ServerTCP::interruptNotification()
+{
+    updateClientList();
 }
 
 void ServerTCP::stopUserActivation()
@@ -81,16 +88,6 @@ void ServerTCP::activateUsers()
     }
 }
 
-void ServerTCP::startDataSending()
-{
-
-}
-
-void ServerTCP::stopDataSending()
-{
-
-}
-
 void ServerTCP::updateClientList()
 {
     bool isSuccess = false;
@@ -99,15 +96,14 @@ void ServerTCP::updateClientList()
     {
         if(!(*iter)->checkListenEnable())
         {
-            clientUDPManager_->removeClient((*iter)->getID());
-            clientList_.erase(iter);
-
-
             if(logger_.isInformationEnable())
             {
                 const string message = string("ServerTCP :: Client with ID -") + to_string((*iter)->getID()) + string("- was removed.");
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
+
+            clientUDPManager_->removeClient((*iter)->getID());
+            clientList_.erase(iter);
 
             isSuccess = true;
         }

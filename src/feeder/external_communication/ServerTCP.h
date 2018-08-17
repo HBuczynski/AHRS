@@ -3,6 +3,7 @@
 
 #include <interfaces/wireless_commands/Command.h>
 #include <logger/Logger.h>
+#include <time_manager/TimerInterrupt.h>
 
 #include "CommandHandlerVisitor.h"
 #include "ClientThreadTCP.h"
@@ -16,7 +17,7 @@
 
 namespace communication
 {
-    class ServerTCP
+    class ServerTCP final : public utility::TimerInterruptNotification
     {
     public:
         ServerTCP(uint16_t port, uint8_t maxClientNumber, std::shared_ptr<ClientUDPManager> clientUDPManager);
@@ -24,13 +25,13 @@ namespace communication
 
         void startUserActivation();
         void stopUserActivation();
-        void removeUsers();
 
-        void startDataSending();
-        void stopDataSending();
 
     private:
+        void interruptNotification() override;
+
         void activateUsers();
+        void removeUsers();
         void updateClientList();
 
         uint16_t port_;
@@ -42,7 +43,10 @@ namespace communication
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
         std::list<std::unique_ptr<ClientThreadTCP> > clientList_;
 
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;
+
+        const uint16_t USER_UPDATE_INTERVAL_MS = 1000;
     };
 }
 #endif

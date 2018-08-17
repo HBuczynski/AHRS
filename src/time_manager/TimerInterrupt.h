@@ -1,6 +1,12 @@
 #ifndef AHRS_TIMERINTERRUPT_H
 #define AHRS_TIMERINTERRUPT_H
 
+#include <sys/time.h>
+#include <string>
+#include <cstring>
+#include <csignal>
+#include <bits/siginfo.h>
+
 #include <logger/Logger.h>
 #include "TimerInterruptNotification.h"
 
