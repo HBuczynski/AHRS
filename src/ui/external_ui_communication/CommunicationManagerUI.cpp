@@ -88,10 +88,22 @@ bool CommunicationManagerUI::initializeClientConnection()
         return false;
     }
 
-    client_->connectToServer();
-    client_->startCommandSending();
+    if(client_->connectToServer())
+    {
+        client_->startCommandSending();
+        sendCommands(move(command));
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
 
-    sendCommands(move(command));
+        return false;
+    }
+
 
     return true;
 }
@@ -101,5 +113,50 @@ void CommunicationManagerUI::sendCommands(unique_ptr<Command> command)
     client_->sendCommand(move(command));
 }
 
+const UIExternalStateCode& CommunicationManagerUI::getCurrentState() const
+{
+    return currentState_->getStateCode();
+}
+
+void CommunicationManagerUI::setNewState(AbstractState *newState)
+{
+    if(newState != nullptr)
+    {
+        currentState_.reset(newState);
+    }
+    else
+    {
+        if(logger_.isWarningEnable())
+        {
+            const string message = string("CommunicationManagerUI :: Empty state has been forwarded to the state machine.");
+            logger_.writeLog(LogType::WARNING_LOG, message);
+        }
+    }
+}
+
+void CommunicationManagerUI::connectedToServer()
+{
+    currentState_->connectedToServer(*this);
+}
+
+void CommunicationManagerUI::redundantProcess()
+{
+    currentState_->redundantProcess(*this);
+}
+
+void CommunicationManagerUI::masterProcess()
+{
+    currentState_->masterProcess(*this);
+}
+
+void CommunicationManagerUI::restartProcess()
+{
+    currentState_->restartProcess(*this);
+}
+
+void CommunicationManagerUI::shutdownProcess()
+{
+    currentState_->shutdownProcess(*this);
+}
 
 

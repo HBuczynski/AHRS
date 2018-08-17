@@ -4,7 +4,7 @@
 using namespace std;
 using namespace communication;
 
-CurrentStateResponse::CurrentStateResponse(StateCode code)
+CurrentStateResponse::CurrentStateResponse(FeederExternalStateCode code)
         : Response(10, ResponseType::CURRENT_STATE_RES),
           code_(code)
 { }
@@ -33,12 +33,12 @@ void CurrentStateResponse::accept(ResponseVisitor &visitor)
     visitor.visit(*this);
 }
 
-StateCode CurrentStateResponse::getStateCode() const
+FeederExternalStateCode CurrentStateResponse::getStateCode() const
 {
     return code_;
 }
 
-void CurrentStateResponse::setAckType(StateCode code)
+void CurrentStateResponse::setAckType(FeederExternalStateCode code)
 {
     code = code_;
 }

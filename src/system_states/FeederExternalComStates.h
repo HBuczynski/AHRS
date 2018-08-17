@@ -1,7 +1,7 @@
 #ifndef AHRS_FEEDER_EXTERNAL_COM_STATES_H
 #define AHRS_FEEDER_EXTERNAL_COM_STATES_H
 
-enum class StateCode : uint8_t
+enum class FeederExternalStateCode : uint8_t
 {
     IDLE = 0x01,
     CALIBRATING = 0x02,

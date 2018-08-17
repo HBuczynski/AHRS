@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 ShutdownState::ShutdownState()
-    : AbstractState("ShutdownState", StateCode::SHUTDOWN)
+    : AbstractState("ShutdownState", FeederExternalStateCode::SHUTDOWN)
 { }
 
 ShutdownState::~ShutdownState()

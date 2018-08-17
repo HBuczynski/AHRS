@@ -6,7 +6,7 @@ using namespace std;
 using namespace communication;
 
 RedundantSendingState::RedundantSendingState()
-        : AbstractState("RedundantSendingState", StateCode::REDUNDANT_SENDING)
+        : AbstractState("RedundantSendingState", FeederExternalStateCode::REDUNDANT_SENDING)
 {
 
 }

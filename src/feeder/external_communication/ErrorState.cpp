@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 ErrorState::ErrorState()
-    : AbstractState("ErrorState", StateCode::ERROR)
+    : AbstractState("ErrorState", FeederExternalStateCode::ERROR)
 {
 
 }

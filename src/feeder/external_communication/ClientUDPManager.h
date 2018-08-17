@@ -36,7 +36,7 @@ namespace communication
         void startDataSending();
         void restartProcess();
         void shutdownProcess();
-        const StateCode& getCurrentState() const;
+        const FeederExternalStateCode& getCurrentState() const;
 
         void setNewState(AbstractState *newState);
 

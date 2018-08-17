@@ -19,7 +19,7 @@ using namespace communication;
 using namespace boost::interprocess;
 
 CalibratingState::CalibratingState()
-        : AbstractState("CalibratingState", StateCode::CALIBRATING),
+        : AbstractState("CalibratingState", FeederExternalStateCode::CALIBRATING),
           messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH))
 {
     initializeMessageQueue();

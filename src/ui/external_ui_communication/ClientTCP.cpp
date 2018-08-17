@@ -1,6 +1,7 @@
 #include "ClientTCP.h"
 
 #include <iostream>
+#include <interfaces/wireless_responses/AckResponse.h>
 
 using namespace std;
 using namespace utility;
@@ -18,12 +19,13 @@ ClientTCP::~ClientTCP()
     stopCommandSending();
 }
 
-void ClientTCP::connectToServer()
+bool ClientTCP::connectToServer()
 {
     socket_ = make_unique<SendStreamTCP>(port_, address_);
     try
     {
         socket_->connectToServer();
+        return true;
     }
     catch (exception &e)
     {
@@ -34,6 +36,8 @@ void ClientTCP::connectToServer()
                     string("-. Received exception: ") + e.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return false;
     }
 }
 
@@ -45,9 +49,9 @@ void ClientTCP::startCommandSending()
 
     // Clear elements in queue.
     commandQueue_.swap(emptyCommandQueue);
-    responseQueue_.swap(emptyResponseQueue);
+//    responseQueue_.swap(emptyResponseQueue);
 
-    // In case if the preious connection was finished and there is no certainty that previous thread was joined.
+    // In case if the previous connection was finished and there is no certainty that previous thread was joined.
     if(executeCommandThread_.joinable())
     {
         executeCommandThread_.join();
@@ -80,15 +84,15 @@ void ClientTCP::sendCommand(unique_ptr<Command> command)
     commandQueue_.push(move(command));
 }
 
-unique_ptr<Response> ClientTCP::getResponse()
-{
-    lock_guard<mutex> lock(responseQueueMutex_);
-
-    auto response = move(responseQueue_.front());
-    responseQueue_.pop();
-
-    return response;
-}
+//unique_ptr<Response> ClientTCP::getResponse()
+//{
+//    lock_guard<mutex> lock(responseQueueMutex_);
+//
+//    auto response = move(responseQueue_.front());
+//    responseQueue_.pop();
+//
+//    return response;
+//}
 
 bool ClientTCP::isCommandQueueEmpty()
 {
@@ -96,11 +100,11 @@ bool ClientTCP::isCommandQueueEmpty()
     return commandQueue_.empty();
 }
 
-bool ClientTCP::isResponseQueueEmpty()
-{
-    lock_guard<mutex> lock(responseQueueMutex_);
-    return responseQueue_.empty();
-}
+//bool ClientTCP::isResponseQueueEmpty()
+//{
+//    lock_guard<mutex> lock(responseQueueMutex_);
+//    return responseQueue_.empty();
+//}
 
 unique_ptr<Command> ClientTCP::getFromCommandQueue()
 {
@@ -112,11 +116,11 @@ unique_ptr<Command> ClientTCP::getFromCommandQueue()
     return command;
 }
 
-void ClientTCP::insertToResponseQueue(unique_ptr<Response> response)
-{
-    lock_guard<mutex> lock(responseQueueMutex_);
-    responseQueue_.push(move(response));
-}
+//void ClientTCP::insertToResponseQueue(unique_ptr<Response> response)
+//{
+//    lock_guard<mutex> lock(responseQueueMutex_);
+//    responseQueue_.push(move(response));
+//}
 
 void ClientTCP::executeCommands()
 {
@@ -125,7 +129,7 @@ void ClientTCP::executeCommands()
         if(!isCommandQueueEmpty())
         {
             const auto command = getFromCommandQueue();
-            const auto commandType = command->getFrameBytes()[COMMAND_TYPE_POSITION];
+            const auto commandType = command->getFrameBytes()[Frame::COMMAND_TYPE_POSITION];
             bool isEndConnectionSent = false;
 
             if(commandType == END_CONNECTION)
@@ -155,8 +159,7 @@ void ClientTCP::executeCommands()
                     unique_ptr<Response> response = responseFactory_.createCommand(responseFrame);
                     response->accept(responseHandler_);
 
-                    insertToResponseQueue(move(response));
-
+                    //insertToResponseQueue(move(response));
                     isSuccess = true;
                 }
             }
@@ -188,7 +191,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     if (commandSendingCounter == (COMMAND_SENDING_REPETITION - 1))
     {
         unique_ptr<Response> response = make_unique<AckResponse>(AckType::FAIL);
-        insertToResponseQueue(move(response));
+//        insertToResponseQueue(move(response));
 
         if(logger_.isErrorEnable())
         {
@@ -205,7 +208,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     if(isEndConnectionSent)
     {
         unique_ptr<Response> response = make_unique<AckResponse>(AckType::CONNECTION_ENDED);
-        insertToResponseQueue(move(response));
+//        insertToResponseQueue(move(response));
 
         if(logger_.isWarningEnable())
         {

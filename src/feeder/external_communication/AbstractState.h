@@ -13,7 +13,7 @@ namespace communication
     class AbstractState
     {
     public:
-        AbstractState(std::string name, StateCode stateCode);
+        AbstractState(std::string name, FeederExternalStateCode stateCode);
         virtual ~AbstractState();
 
         virtual void acceptedUsers(ClientUDPManager &clientUDPManager) = 0;
@@ -26,13 +26,13 @@ namespace communication
         virtual void restartProcess(ClientUDPManager &clientUDPManager) = 0;
         virtual void shutdownProcess(ClientUDPManager &clientUDPManager) = 0;
 
-        const StateCode& getStateCode() const;
+        const FeederExternalStateCode& getStateCode() const;
         const std::string& getName() const;
 
     protected:
         void setState(ClientUDPManager *machine, AbstractState *state);
 
-        StateCode stateCode_;
+        FeederExternalStateCode stateCode_;
         const std::string name_;
         utility::Logger& logger_;
     };

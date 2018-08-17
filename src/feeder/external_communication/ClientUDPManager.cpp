@@ -68,7 +68,7 @@ void ClientUDPManager::setNewState(AbstractState *newState)
         if(logger_.isWarningEnable())
         {
             const string message = string("ClientUDPManager :: Empty state has been forwarded to the state machine.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            logger_.writeLog(LogType::WARNING_LOG, message);
         }
     }
 }
@@ -98,7 +98,7 @@ void ClientUDPManager::shutdownProcess()
     currentState_->shutdownProcess(*this);
 }
 
-const StateCode &ClientUDPManager::getCurrentState() const
+const FeederExternalStateCode &ClientUDPManager::getCurrentState() const
 {
     return currentState_->getStateCode();
 }

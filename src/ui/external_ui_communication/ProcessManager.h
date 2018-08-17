@@ -33,7 +33,6 @@ namespace communication
         bool initializeSharedMemory();
         bool initializeWirelessCommunication();
 
-        void processReceivingManagementCommand();
         void handleMessage(const std::vector<uint8_t > &data);
 
         uint8_t processNumber_;

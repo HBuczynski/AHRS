@@ -1,0 +1,38 @@
+#ifndef AHRS_ABSTRACTSTATE_H
+#define AHRS_ABSTRACTSTATE_H
+
+#include <string>
+
+#include <../../system_states/UIExternalComStates.h>
+#include <logger/Logger.h>
+
+namespace communication
+{
+    class CommunicationManagerUI;
+
+    class AbstractState
+    {
+    public:
+        AbstractState(std::string name, UIExternalStateCode stateCode);
+        virtual ~AbstractState();
+
+        virtual void connectedToServer(CommunicationManagerUI &clientUDPManager) = 0;
+        virtual void redundantProcess(CommunicationManagerUI &clientUDPManager) = 0;
+        virtual void masterProcess(CommunicationManagerUI &clientUDPManager) = 0;
+        virtual void restartProcess(CommunicationManagerUI &clientUDPManager) = 0;
+        virtual void shutdownProcess(CommunicationManagerUI &clientUDPManager) = 0;
+
+        const UIExternalStateCode &getStateCode() const;
+        const std::string &getName() const;
+
+    protected:
+        void setState(CommunicationManagerUI *machine, AbstractState *state);
+
+        UIExternalStateCode stateCode_;
+        const std::string name_;
+        utility::Logger &logger_;
+    };
+
+}
+
+#endif

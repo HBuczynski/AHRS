@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 ResetState::ResetState()
-    : AbstractState("ResetState", StateCode::RESET)
+    : AbstractState("ResetState", FeederExternalStateCode::RESET)
 {
 
 }

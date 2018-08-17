@@ -9,7 +9,7 @@ using namespace utility;
 using namespace communication;
 
 CalibratedFailedState::CalibratedFailedState()
-    : AbstractState("CalibratedFailedState", StateCode::CALIBRATED_FAILED)
+    : AbstractState("CalibratedFailedState", FeederExternalStateCode::CALIBRATED_FAILED)
 {
 
 }

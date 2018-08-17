@@ -6,7 +6,7 @@ using namespace std;
 using namespace communication;
 
 MasterSendingState::MasterSendingState()
-    : AbstractState("MasterSendingState", StateCode::MASTER_SENDING)
+    : AbstractState("MasterSendingState", FeederExternalStateCode::MASTER_SENDING)
 {
 
 }

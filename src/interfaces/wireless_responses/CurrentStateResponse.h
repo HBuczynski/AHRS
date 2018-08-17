@@ -9,20 +9,20 @@ namespace communication
     class CurrentStateResponse final : public Response
     {
     public:
-        CurrentStateResponse(StateCode code);
+        CurrentStateResponse(FeederExternalStateCode code);
         ~CurrentStateResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(ResponseVisitor& visitor) override;
 
-        StateCode getStateCode() const;
-        void setAckType(StateCode code);
+        FeederExternalStateCode getStateCode() const;
+        void setAckType(FeederExternalStateCode code);
 
     private:
         virtual void initializeDataSize() override;
 
-        StateCode code_;
+        FeederExternalStateCode code_;
     };
 }
 

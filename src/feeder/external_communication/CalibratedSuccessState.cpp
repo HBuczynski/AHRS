@@ -14,7 +14,7 @@ using namespace utility;
 using namespace communication;
 
 CalibratedSuccessState::CalibratedSuccessState()
-    : AbstractState("CalibratedSuccessState", StateCode::CALIBRATED_SUCCESS)
+    : AbstractState("CalibratedSuccessState", FeederExternalStateCode::CALIBRATED_SUCCESS)
 { }
 
 CalibratedSuccessState::~CalibratedSuccessState()

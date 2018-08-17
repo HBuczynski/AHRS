@@ -12,7 +12,7 @@ CurrentStateBuilder::~CurrentStateBuilder()
 
 unique_ptr<Response> CurrentStateBuilder::create(const vector<uint8_t> &dataInBytes)
 {
-    const auto code = static_cast<StateCode >(dataInBytes[Frame::INITIAL_DATA_POSITION]);
+    const auto code = static_cast<FeederExternalStateCode >(dataInBytes[Frame::INITIAL_DATA_POSITION]);
 
     auto command = make_unique<CurrentStateResponse>(code);
 

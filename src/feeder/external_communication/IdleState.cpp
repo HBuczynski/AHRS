@@ -10,7 +10,7 @@ using namespace utility;
 using namespace communication;
 
 IdleState::IdleState()
-    : AbstractState("IdleState", StateCode::IDLE)
+    : AbstractState("IdleState", FeederExternalStateCode::IDLE)
 { }
 
 IdleState::~IdleState()

@@ -103,13 +103,13 @@ void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
     switch (clientUDPManager_->getCurrentState())
     {
-        case StateCode::CALIBRATED_SUCCESS :
+        case FeederExternalStateCode::CALIBRATED_SUCCESS :
             response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::PASSED);
             break;
-        case StateCode::CALIBRATED_FAILED :
+        case FeederExternalStateCode::CALIBRATED_FAILED :
             response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::FAILED);
             break;
-        case StateCode::CALIBRATING :
+        case FeederExternalStateCode::CALIBRATING :
             response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::IN_THE_PROCESS);
             break;
         default:
@@ -129,7 +129,7 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
 {
     clientUDPManager_->startDataSending();
 
-    if(clientUDPManager_->getCurrentState() == StateCode::MASTER_SENDING)
+    if(clientUDPManager_->getCurrentState() == FeederExternalStateCode::MASTER_SENDING)
     {
         response_ = std::make_unique<AckResponse>(AckType::OK);
     }

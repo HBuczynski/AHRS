@@ -10,7 +10,7 @@ using namespace utility;
 using namespace communication;
 
 RegisteredUsersState::RegisteredUsersState()
-    : AbstractState("RegisteredUsersState", StateCode::REGISTERED_USERS)
+    : AbstractState("RegisteredUsersState", FeederExternalStateCode::REGISTERED_USERS)
 { }
 
 RegisteredUsersState::~RegisteredUsersState()
