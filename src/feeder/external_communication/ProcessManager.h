@@ -12,6 +12,7 @@
 #include <utility>
 #include <thread>
 #include <mutex>
+#include <atomic>
 
 #include <logger/Logger.h>
 #include <config_reader/FeederParameters.h>
@@ -26,7 +27,8 @@ namespace communication
         ProcessManager();
         ~ProcessManager();
 
-        void runProcessConfiguration();
+        void startConfigurationProcess();
+        void stopConfigurationProcess();
 
     private:
         bool initializeExternalCommunication();
@@ -48,6 +50,7 @@ namespace communication
         std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue_;
         std::shared_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
 
+        std::atomic<bool> runConfigurationProcess_;
         utility::Logger &logger_;
     };
 }

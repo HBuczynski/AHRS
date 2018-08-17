@@ -10,7 +10,7 @@ using namespace chrono;
 
 int main(int argc , char *argv[])
 {
-    Logger &logger = Logger::getInstance("Fd_Internal_comm");
+    Logger &logger = Logger::getInstance("FD_Internal_comm");
 
     InitLogStructure struc;
     struc.debugLog = true;

@@ -10,7 +10,7 @@ using namespace communication;
 
 int main(int argc , char *argv[])
 {
-    Logger &logger = Logger::getInstance("Fd_External_comm");
+    Logger &logger = Logger::getInstance("FD_External_comm");
 
     InitLogStructure struc;
     struc.debugLog = true;
@@ -28,12 +28,7 @@ int main(int argc , char *argv[])
     }
 
     ProcessManager manager;
-    manager.runProcessConfiguration();
-
-    while(1)
-    {
-        this_thread::sleep_for(chrono::milliseconds(1));
-    }
-
+    manager.startConfigurationProcess();
+    
     return 0;
 }

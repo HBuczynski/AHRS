@@ -18,10 +18,10 @@ namespace main_process
         UIApplicationManager();
         ~UIApplicationManager();
 
-        void run();
-        void stopRun();
-
         bool initialize();
+
+        void startUISystem();
+        void stopUISystem();
 
     private:
         bool initializeMainProcessMessageQueue();
@@ -44,6 +44,7 @@ namespace main_process
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
+        std::atomic<bool> runSystem_;
         utility::Logger& logger_;
     };
 }

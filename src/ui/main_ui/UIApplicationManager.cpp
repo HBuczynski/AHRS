@@ -15,6 +15,7 @@ UIApplicationManager::UIApplicationManager()
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
+      runSystem_(true),
       logger_(Logger::getInstance())
 {}
 
@@ -46,7 +47,6 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
 {
     try
     {
-        cout << "Main name: " << uiMessageQueuesParameters_.mainProcessQueueName << endl;
         message_queue::remove(uiMessageQueuesParameters_.mainProcessQueueName.c_str());
         mainMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str(),
                 uiMessageQueuesParameters_.messageQueueNumber,
@@ -65,7 +65,7 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Main message queue has been initialized correctly.");
+        const std::string message = std::string("UIApplicationManager:: Main message queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -94,7 +94,7 @@ bool UIApplicationManager::initializeGUIMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Gui message queue has initialized correctly.");
+        const std::string message = std::string("UIApplicationManager:: Gui message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -123,7 +123,7 @@ bool UIApplicationManager::initializeFirstProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: First communication message queue has initialized correctly.");
+        const std::string message = std::string("UIApplicationManager:: First communication message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -152,7 +152,7 @@ bool UIApplicationManager::initializeSecondProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Second communication message queue has initialized correctly.");
+        const std::string message = std::string("UIApplicationManager:: Second communication message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -195,12 +195,15 @@ bool UIApplicationManager::initializeSharedMemory()
     return true;
 }
 
-void UIApplicationManager::run()
+void UIApplicationManager::startUISystem()
 {
+    while (runSystem_)
+    {
 
+    }
 }
 
-void UIApplicationManager::stopRun()
+void UIApplicationManager::stopUISystem()
 {
-
+    runSystem_ = false;
 }

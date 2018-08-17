@@ -14,7 +14,7 @@ using namespace main_process;
 
 int main(int argc, char *argv[])
 {
-    Logger &logger = Logger::getInstance();
+    Logger &logger = Logger::getInstance("UI_MAIN");
 
     InitLogStructure struc;
     struc.debugLog = true;
@@ -30,12 +30,8 @@ int main(int argc, char *argv[])
 
     if(applicationManager.initialize())
     {
-        applicationManager.run();
+        applicationManager.startUISystem();
 
-        while(true)
-        {
-
-        }
     }
     else
     {

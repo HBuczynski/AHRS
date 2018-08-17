@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <spawn.h>
 #include <cstdint>
+#include <atomic>
 
 #include <config_reader/FeederParameters.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
@@ -25,7 +26,9 @@ namespace main_process
         ~ApplicationManager();
 
         bool initialize();
-        void launchFeederSystem();
+
+        void startFeederSystem();
+        void stopFeederSystem();
 
     private:
         bool initializeMainQueue();
@@ -71,6 +74,7 @@ namespace main_process
         pid_t externalProcess_;
         pid_t internalProcess_;
 
+        std::atomic<bool> runFeederSystem_;
         utility::Logger &logger_;
     };
 }

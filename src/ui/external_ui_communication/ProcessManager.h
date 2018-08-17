@@ -22,6 +22,7 @@ namespace communication
         ~ProcessManager();
 
         bool initialize();
+        
         void startCommunication();
         void stopCommunication();
 

@@ -12,38 +12,109 @@ ConfigurationReader::~ConfigurationReader()
 UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const string &filePath)
 {
     JSONParser jsonParser(filePath);
-    UIWirelessCommunication feederParameters;
+    UIWirelessCommunication uiWirelessCommunication;
 
     vector<string> configNames;
-    configNames.push_back("Feeder");
+    configNames.push_back("UI");
     configNames.push_back("Wireless");
 
-    configNames.push_back("sourcePort");
+    configNames.push_back("firstSourcePort");
+    jsonParser.getUINT16t(configNames, uiWirelessCommunication.firstSourcePort);
 
-    string lol = "trolo";
+    configNames.pop_back();
+    configNames.push_back("firstSourceAddress");
+    jsonParser.getString(configNames, uiWirelessCommunication.firstSourceAddress);
 
-    jsonParser.getString(configNames, lol);
+    configNames.pop_back();
+    configNames.push_back("secondSourcePort");
+    jsonParser.getUINT16t(configNames, uiWirelessCommunication.secondSourcePort);
 
-    return  feederParameters;
+    configNames.pop_back();
+    configNames.push_back("secondSourceAddress");
+    jsonParser.getString(configNames, uiWirelessCommunication.secondSourceAddress);
+
+    configNames.pop_back();
+    configNames.push_back("firstDestinationPort");
+    jsonParser.getUINT16t(configNames, uiWirelessCommunication.firstDestinationPort);
+
+    configNames.pop_back();
+    configNames.push_back("firstDestinationAddress");
+    jsonParser.getString(configNames, uiWirelessCommunication.firstDestinationAddress);
+
+    configNames.pop_back();
+    configNames.push_back("secondDestinationPort");
+    jsonParser.getUINT16t(configNames, uiWirelessCommunication.firstDestinationPort);
+
+    configNames.pop_back();
+    configNames.push_back("secondDestinationAddress");
+    jsonParser.getString(configNames, uiWirelessCommunication.firstDestinationAddress);
+
+    return  uiWirelessCommunication;
 }
 
 UIMessageQueues ConfigurationReader::getUIMessageQueues(const string &filePath)
 {
-    UIMessageQueues parameters;
+    JSONParser jsonParser(filePath);
+    UIMessageQueues uiMessageQueues;
 
-    return parameters;
+    vector<string> configNames;
+    configNames.push_back("UI");
+    configNames.push_back("MessageQueues");
+
+    configNames.push_back("mainProcessQueueName");
+    jsonParser.getString(configNames, uiMessageQueues.mainProcessQueueName);
+
+    configNames.pop_back();
+    configNames.push_back("firstCommunicationQueueName");
+    jsonParser.getString(configNames, uiMessageQueues.firstCommunicationQueueName);
+
+    configNames.pop_back();
+    configNames.push_back("secondCommunicationQueueName");
+    jsonParser.getString(configNames, uiMessageQueues.secondCommunicationQueueName);
+
+    configNames.pop_back();
+    configNames.push_back("guiProcessQueueName");
+    jsonParser.getString(configNames, uiMessageQueues.guiProcessQueueName);
+
+    configNames.pop_back();
+    configNames.push_back("messageQueueNumber");
+    jsonParser.getUINT16t(configNames, uiMessageQueues.messageQueueNumber);
+
+    configNames.pop_back();
+    configNames.push_back("messageSize");
+    jsonParser.getUINT16t(configNames, uiMessageQueues.messageSize);
+
+    return uiMessageQueues;
 }
 
 UISharedMemory ConfigurationReader::getUISharedMemory(const string &filePath)
 {
-    UISharedMemory parameters;
+    JSONParser jsonParser(filePath);
+    UISharedMemory uiSharedMemory;
 
-    return parameters;
+    vector<string> configNames;
+    configNames.push_back("UI");
+    configNames.push_back("SharedMemory");
+
+    configNames.push_back("sharedMemoryName");
+    jsonParser.getString(configNames, uiSharedMemory.sharedMemoryName);
+
+    configNames.pop_back();
+    configNames.push_back("size");
+    jsonParser.getUINT16t(configNames, uiSharedMemory.sharedMemorySize);
+
+    return uiSharedMemory;
 }
 
 UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSystemParameters(const std::string &filePath)
 {
+    JSONParser jsonParser(filePath);
     UICommunicationSystemParameters uiCommunicationSystemParameters;
+
+    vector<string> configNames;
+    configNames.push_back("UIFirstCommunication");
+    configNames.push_back("mode");
+
 
     return uiCommunicationSystemParameters;
 }

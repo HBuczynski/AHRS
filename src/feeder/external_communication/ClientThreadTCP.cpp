@@ -90,22 +90,8 @@ void ClientThreadTCP::runListen()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
-            if(string(e.what()) ==  string("Received exception: Cannot receive packet.") )
-            {
-                runListenThread_ = false;
-                socket_.reset();
-            }
-
-            // // If socket has been closed or the connection has been lost, the thread has to be closed.
-            if(!runListenThread_)
-            {
-                if(logger_.isWarningEnable())
-                {
-                    const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
-                                           string("-. Connection was ended.");
-                    logger_.writeLog(LogType::WARNING_LOG, message);
-                }
-            }
+            runListenThread_ = false;
+            socket_.reset();
         }
     }
 }

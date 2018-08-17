@@ -12,7 +12,7 @@ using namespace communication;
 
 int main(int argc , char *argv[])
 {
-    Logger &logger = Logger::getInstance();
+    Logger &logger = Logger::getInstance("UI_External");
     InitLogStructure struc;
     struc.debugLog = true;
     struc.errroLog = true;

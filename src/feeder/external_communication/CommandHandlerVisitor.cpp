@@ -65,13 +65,7 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
     //TODO
     /*response_ = std::make_unique<PlanesDatasetResponse>(
             ConfigurationReader::getAircraftDatabase(FEEDER_AIRCRAFTS_DATABASE_FILE_PATH));*/
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 }
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)

@@ -10,7 +10,7 @@ using namespace main_process;
 
 int main()
 {
-    Logger &logger = Logger::getInstance("Fd_main");
+    Logger &logger = Logger::getInstance("FD_main");
 
     InitLogStructure struc;
     struc.debugLog = true;
@@ -25,12 +25,7 @@ int main()
 
     if(applicationManager.initialize())
     {
-        applicationManager.launchFeederSystem();
-
-        while (true)
-        {
-            this_thread::sleep_for(chrono::milliseconds(1));
-        }
+        applicationManager.startFeederSystem();
     }
     else
     {

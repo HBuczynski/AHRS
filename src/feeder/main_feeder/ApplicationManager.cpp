@@ -16,11 +16,17 @@ ApplicationManager::ApplicationManager()
     :   sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         executableFilesNames_(ConfigurationReader::getFeederExecutableFiles(FEEDER_PARAMETERS_FILE_PATH)),
+        runFeederSystem_(true),
         logger_(Logger::getInstance())
 {}
 
 ApplicationManager::~ApplicationManager()
-{}
+{
+    if(processingThread_.joinable())
+    {
+        processingThread_.join();
+    }
+}
 
 bool ApplicationManager::initialize()
 {
@@ -274,14 +280,14 @@ bool ApplicationManager::createInternalCommunicationProcess()
     }
 }
 
-void ApplicationManager::launchFeederSystem()
+void ApplicationManager::startFeederSystem()
 {
     processingThread_ = thread(&ApplicationManager::runProcessing, this);
+}
 
-    if(processingThread_.joinable())
-    {
-        processingThread_.join();
-    }
+void ApplicationManager::stopFeederSystem()
+{
+    runFeederSystem_ = false;
 }
 
 void ApplicationManager::runProcessing()
@@ -289,7 +295,7 @@ void ApplicationManager::runProcessing()
     unsigned int priority;
     message_queue::size_type receivedSize;
 
-    while(true)
+    while(runFeederSystem_)
     {
         try
         {

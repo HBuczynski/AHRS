@@ -15,7 +15,7 @@ ProcessManager::ProcessManager(uint8_t processNumber)
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
-      runCommunicationProcess_(false),
+      runCommunicationProcess_(true),
       logger_(Logger::getInstance())
 { }
 

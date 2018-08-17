@@ -95,11 +95,20 @@ void ServerTCP::updateClientList()
 {
     bool isSuccess = false;
 
-    for(auto iter = clientList_.begin(); (iter != clientList_.end()) & !isSuccess; ++iter)
+    for(auto iter = clientList_.begin(); (iter != clientList_.end() && !isSuccess); ++iter)
     {
         if(!(*iter)->checkListenEnable())
         {
+            clientUDPManager_->removeClient((*iter)->getID());
             clientList_.erase(iter);
+
+
+            if(logger_.isInformationEnable())
+            {
+                const string message = string("ServerTCP :: Client with ID -") + to_string((*iter)->getID()) + string("- was removed.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
+
             isSuccess = true;
         }
     }

@@ -15,6 +15,7 @@ ProcessManager::ProcessManager()
     :   feederExternalWirelessParameters_(ConfigurationReader::getFeederExternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
+        runConfigurationProcess_(true),
         logger_(Logger::getInstance())
 {
     bool isSuccess = true;
@@ -95,12 +96,12 @@ bool ProcessManager::initializeMessageQueueCommunication()
     return true;
 }
 
-void ProcessManager::runProcessConfiguration()
+void ProcessManager::startConfigurationProcess()
 {
     unsigned int priority;
     message_queue::size_type receivedSize;
 
-    while(true)
+    while(runConfigurationProcess_)
     {
         try
         {
@@ -141,6 +142,11 @@ void ProcessManager::runProcessConfiguration()
         }
 
     }
+}
+
+void ProcessManager::stopConfigurationProcess()
+{
+    runConfigurationProcess_ = false;
 }
 
 
