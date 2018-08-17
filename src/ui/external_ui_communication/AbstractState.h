@@ -16,11 +16,11 @@ namespace communication
         AbstractState(std::string name, UIExternalStateCode stateCode);
         virtual ~AbstractState();
 
-        virtual void connectedToServer(CommunicationManagerUI &clientUDPManager) = 0;
-        virtual void redundantProcess(CommunicationManagerUI &clientUDPManager) = 0;
-        virtual void masterProcess(CommunicationManagerUI &clientUDPManager) = 0;
-        virtual void restartProcess(CommunicationManagerUI &clientUDPManager) = 0;
-        virtual void shutdownProcess(CommunicationManagerUI &clientUDPManager) = 0;
+        virtual void connectedToServer(CommunicationManagerUI &communicationManagerUI) = 0;
+        virtual void redundantProcess(CommunicationManagerUI &communicationManagerUI) = 0;
+        virtual void masterProcess(CommunicationManagerUI &communicationManagerUI) = 0;
+        virtual void restartProcess(CommunicationManagerUI &communicationManagerUI) = 0;
+        virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) = 0;
 
         const UIExternalStateCode &getStateCode() const;
         const std::string &getName() const;

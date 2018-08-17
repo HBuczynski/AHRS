@@ -10,27 +10,27 @@ ErrorState::ErrorState()
 ErrorState::~ErrorState()
 {}
 
-void ErrorState::connectedToServer(CommunicationManagerUI &clientUDPManager)
+void ErrorState::connectedToServer(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void ErrorState::redundantProcess(CommunicationManagerUI &clientUDPManager)
+void ErrorState::redundantProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void ErrorState::masterProcess(CommunicationManagerUI &clientUDPManager)
+void ErrorState::masterProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void ErrorState::restartProcess(CommunicationManagerUI &clientUDPManager)
+void ErrorState::restartProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void ErrorState::shutdownProcess(CommunicationManagerUI &clientUDPManager)
+void ErrorState::shutdownProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }

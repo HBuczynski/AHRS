@@ -10,27 +10,27 @@ RedundantState::RedundantState()
 RedundantState::~RedundantState()
 {}
 
-void RedundantState::connectedToServer(CommunicationManagerUI &clientUDPManager)
+void RedundantState::connectedToServer(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void RedundantState::redundantProcess(CommunicationManagerUI &clientUDPManager)
+void RedundantState::redundantProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void RedundantState::masterProcess(CommunicationManagerUI &clientUDPManager)
+void RedundantState::masterProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void RedundantState::restartProcess(CommunicationManagerUI &clientUDPManager)
+void RedundantState::restartProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void RedundantState::shutdownProcess(CommunicationManagerUI &clientUDPManager)
+void RedundantState::shutdownProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }

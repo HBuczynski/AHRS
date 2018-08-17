@@ -1,4 +1,5 @@
 #include "CommunicationManagerUI.h"
+#include "IdleState.h"
 
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_commands/InitConnectionCommand.h>
@@ -15,7 +16,8 @@ using namespace utility;
 using namespace communication;
 
 CommunicationManagerUI::CommunicationManagerUI(uint8_t processNumber)
-    : processNumber_(processNumber),
+    : currentState_(make_unique<IdleState>()),
+      processNumber_(processNumber),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
 {}
@@ -104,6 +106,7 @@ bool CommunicationManagerUI::initializeClientConnection()
         return false;
     }
 
+    connectedToServer();
 
     return true;
 }
@@ -116,6 +119,11 @@ void CommunicationManagerUI::sendCommands(unique_ptr<Command> command)
 const UIExternalStateCode& CommunicationManagerUI::getCurrentState() const
 {
     return currentState_->getStateCode();
+}
+
+uint8_t CommunicationManagerUI::getProcessNumber() const
+{
+    return processNumber_;
 }
 
 void CommunicationManagerUI::setNewState(AbstractState *newState)

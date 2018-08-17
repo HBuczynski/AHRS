@@ -3,6 +3,8 @@
 
 #include "AbstractState.h"
 
+#include <config_reader/UIParameters.h>
+
 namespace communication
 {
     class ConnectedState final : public AbstractState
@@ -11,11 +13,12 @@ namespace communication
         ConnectedState();
         ~ConnectedState();
 
-        virtual void connectedToServer(CommunicationManagerUI &clientUDPManager) override;
-        virtual void redundantProcess(CommunicationManagerUI &clientUDPManager) override;
-        virtual void masterProcess(CommunicationManagerUI &clientUDPManager) override;
-        virtual void restartProcess(CommunicationManagerUI &clientUDPManager) override;
-        virtual void shutdownProcess(CommunicationManagerUI &clientUDPManager) override;
+        virtual void connectedToServer(CommunicationManagerUI &communicationManagerUI) override;
+        virtual void redundantProcess(CommunicationManagerUI &communicationManagerUI) override;
+        virtual void masterProcess(CommunicationManagerUI &communicationManagerUI) override;
+        virtual void restartProcess(CommunicationManagerUI &communicationManagerUI) override;
+        virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) override;
+
     };
 }
 

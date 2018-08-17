@@ -10,27 +10,27 @@ MasterState::MasterState()
 MasterState::~MasterState()
 {}
 
-void MasterState::connectedToServer(CommunicationManagerUI &clientUDPManager)
+void MasterState::connectedToServer(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void MasterState::redundantProcess(CommunicationManagerUI &clientUDPManager)
+void MasterState::redundantProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void MasterState::masterProcess(CommunicationManagerUI &clientUDPManager)
+void MasterState::masterProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void MasterState::restartProcess(CommunicationManagerUI &clientUDPManager)
+void MasterState::restartProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }
 
-void MasterState::shutdownProcess(CommunicationManagerUI &clientUDPManager)
+void MasterState::shutdownProcess(CommunicationManagerUI &communicationManagerUI)
 {
 
 }

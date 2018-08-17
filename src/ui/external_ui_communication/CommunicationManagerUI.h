@@ -19,6 +19,8 @@ namespace communication
         bool initialize();
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
 
+        uint8_t getProcessNumber() const ;
+
         // Machine state commands:
         void connectedToServer();
         void redundantProcess();
