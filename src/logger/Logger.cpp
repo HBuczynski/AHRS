@@ -116,6 +116,7 @@ void Logger::writeLog(LogType type, string rawMessage)
 
 	auto logHandler = typeRegister_.find(type);
 
+
 	if (logHandler != typeRegister_.end())
 	{
         string preciselyTime = TimeManager::getPreciselyTime();

@@ -5,7 +5,7 @@
     {
       "firstSourcePort": 9000,
       "firstSourceAddress": "127.0.0.1",
-      "secondSourcePort": 9000,
+      "secondSourcePort": 6000,
       "secondSourceAddress": "127.0.0.1",
 
       "firstDestinationPort": 8000,
@@ -29,6 +29,12 @@
     {
       "sharedMemoryName" : "SharedMemoryUI",
       "size" : 100
+    },
+
+    "ExecutableFiles" :
+    {
+      "externalCommunicationProcess" : "external_ui_communication",
+      "guiProcess" : "lololo"
     }
   }
 }

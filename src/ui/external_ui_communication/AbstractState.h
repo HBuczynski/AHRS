@@ -30,7 +30,7 @@ namespace communication
 
         UIExternalStateCode stateCode_;
         const std::string name_;
-        utility::Logger &logger_;
+
     };
 
 }

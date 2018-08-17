@@ -48,7 +48,7 @@ int main(int argc , char *argv[])
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("main :: Initialization failed !!");
+            const string message = string("Main External Communication:: Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

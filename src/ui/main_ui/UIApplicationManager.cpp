@@ -36,9 +36,8 @@ bool UIApplicationManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
     isSuccess = isSuccess & initializeGUIMessageQueue();
-    isSuccess = isSuccess & initializeFirstProcessMessageQueue();
-    isSuccess = isSuccess & initializeSecondProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
+    isSuccess = isSuccess & communicationProcessesHandler_.initialize();
 
     return isSuccess;
 }
@@ -95,64 +94,6 @@ bool UIApplicationManager::initializeGUIMessageQueue()
     if (logger_.isInformationEnable())
     {
         const std::string message = std::string("UIApplicationManager:: Gui message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    return true;
-}
-
-bool UIApplicationManager::initializeFirstProcessMessageQueue()
-{
-    try
-    {
-        message_queue::remove(uiMessageQueuesParameters_.firstCommunicationQueueName.c_str());
-        firstCommunicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.firstCommunicationQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
-    }
-    catch(interprocess_exception &ex)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("UIApplicationManager:: First communication message queue has not initialized correctly - ") + ex.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-
-        return false;
-    }
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager:: First communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    return true;
-}
-
-bool UIApplicationManager::initializeSecondProcessMessageQueue()
-{
-    try
-    {
-        message_queue::remove(uiMessageQueuesParameters_.secondCommunicationQueueName.c_str());
-        secondCommunicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.secondCommunicationQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
-    }
-    catch(interprocess_exception &ex)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("UIApplicationManager:: Second communication message queue has not initialized correctly - ") + ex.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-
-        return false;
-    }
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager:: Second communication message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 

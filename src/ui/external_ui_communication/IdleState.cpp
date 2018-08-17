@@ -11,7 +11,8 @@ using namespace communication;
 
 IdleState::IdleState()
         : AbstractState("IdleState", UIExternalStateCode::IDLE),
-          uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH))
+          uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH)),
+          logger_(Logger::getInstance())
 {}
 
 IdleState::~IdleState()
@@ -19,13 +20,13 @@ IdleState::~IdleState()
 
 void IdleState::connectedToServer(CommunicationManagerUI &communicationManagerUI)
 {
-    setState(&communicationManagerUI, new ConnectedState);
-
     if(logger_.isInformationEnable())
     {
         const string message = string("IdleState :: Change state on ConnectedState");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    setState(&communicationManagerUI, new ConnectedState() );
 
     if(communicationManagerUI.getProcessNumber() == 1)
     {

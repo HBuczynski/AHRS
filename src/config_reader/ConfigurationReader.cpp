@@ -9,6 +9,25 @@ ConfigurationReader::ConfigurationReader()
 ConfigurationReader::~ConfigurationReader()
 {}
 
+UIExecutableFiles ConfigurationReader::getUIExecutableFiles(const std::string &filePath)
+{
+    JSONParser jsonParser(filePath);
+    UIExecutableFiles uiExecutableFiles;
+
+    vector<string> configNames;
+    configNames.push_back("UI");
+    configNames.push_back("ExecutableFiles");
+
+    configNames.push_back("externalCommunicationProcess");
+    jsonParser.getString(configNames, uiExecutableFiles.externalCommunicationProcess);
+
+    configNames.pop_back();
+    configNames.push_back("guiProcess");
+    jsonParser.getString(configNames, uiExecutableFiles.guiProcess);
+
+    return uiExecutableFiles;
+}
+
 UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const string &filePath)
 {
     JSONParser jsonParser(filePath);
@@ -43,11 +62,11 @@ UIWirelessCommunication ConfigurationReader::getUIWirelessCommunication(const st
 
     configNames.pop_back();
     configNames.push_back("secondDestinationPort");
-    jsonParser.getUINT16t(configNames, uiWirelessCommunication.firstDestinationPort);
+    jsonParser.getUINT16t(configNames, uiWirelessCommunication.secondDestinationPort);
 
     configNames.pop_back();
     configNames.push_back("secondDestinationAddress");
-    jsonParser.getString(configNames, uiWirelessCommunication.firstDestinationAddress);
+    jsonParser.getString(configNames, uiWirelessCommunication.secondDestinationAddress);
 
     return  uiWirelessCommunication;
 }
@@ -115,6 +134,34 @@ UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSy
     configNames.push_back("UIFirstCommunication");
     configNames.push_back("mode");
 
+    string tempVariable;
+    jsonParser.getString(configNames, tempVariable);
+
+    if(tempVariable == "MASTER")
+    {
+        uiCommunicationSystemParameters.firstProcess.mode = UICommunicationMode::MASTER;
+    }
+    else if(tempVariable == "REDUNDANT")
+    {
+        uiCommunicationSystemParameters.firstProcess.mode = UICommunicationMode::REDUNDANT;
+    }
+
+    configNames.pop_back();
+    configNames.pop_back();
+    configNames.push_back("UISecondCommunication");
+    configNames.push_back("mode");
+
+    string tempVariable2;
+    jsonParser.getString(configNames, tempVariable2);
+
+    if(tempVariable2 == "MASTER")
+    {
+        uiCommunicationSystemParameters.secondProcess.mode = UICommunicationMode::MASTER;
+    }
+    else if(tempVariable2 == "REDUNDANT")
+    {
+        uiCommunicationSystemParameters.secondProcess.mode = UICommunicationMode::REDUNDANT;
+    }
 
     return uiCommunicationSystemParameters;
 }
@@ -309,3 +356,4 @@ std::vector<AircraftParameters> ConfigurationReader::getAircraftDatabase(const s
 {
     return vector<AircraftParameters>();
 }
+

@@ -7,7 +7,7 @@
 
   "UISecondCommunication" :
   {
-    "mode": "REDNUNDANT",
+    "mode": "REDUNDANT",
     "processNumber": 2
   }
 

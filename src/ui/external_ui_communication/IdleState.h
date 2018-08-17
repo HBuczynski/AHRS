@@ -18,9 +18,9 @@ namespace communication
         virtual void restartProcess(CommunicationManagerUI &communicationManagerUI) override;
         virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) override;
 
-
     private:
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
+        utility::Logger &logger_;
     };
 }
 

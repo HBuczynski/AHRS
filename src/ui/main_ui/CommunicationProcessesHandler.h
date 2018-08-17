@@ -9,34 +9,44 @@
 #include <atomic>
 
 #include <logger/Logger.h>
-#include <interfaces/communication_process_ui/UIChangeModeCommand.h>
+#include <config_reader/UIParameters.h>
+#include <boost/interprocess/ipc/message_queue.hpp>
 
 namespace main_process
 {
+    using ProcessID = std::pair<pid_t, config::UICommunicationMode>;
+
     class CommunicationProcessesHandler
     {
     public:
         CommunicationProcessesHandler();
         ~CommunicationProcessesHandler();
 
-        void initializeProcesses();
-        void terminate(communication::CommunicationProcessMode processMode);
-        void renewProcess(communication::CommunicationProcessMode processMode);
+        bool initialize();
 
+        void resetProcess(uint8_t processNumber);
         void switchProcesses();
 
     private:
-        void launchProcess(pid_t &pid, posix_spawn_file_actions_t &action, char *args[]);
+        bool initializeFirstProcessMessageQueue();
+        bool initializeSecondProcessMessageQueue();
+
+        bool launchFirstProcess();
+        bool launchSecondProcess();
+
         void waitOnProcess(pid_t &pid, posix_spawn_file_actions_t &action);
 
-        utility::Logger& logger_;
+        config::UIMessageQueues uiMessageQueuesParameters_;
+        config::UIExecutableFiles uiExecutableFiles_;
+        config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
-        posix_spawn_file_actions_t firstAction_;
-        std::pair<pid_t, communication::CommunicationProcessMode> firstCommunicationProcess_;
-        posix_spawn_file_actions_t secondAction_;
-        std::pair<pid_t, communication::CommunicationProcessMode> secondCommunicationProcess_;
+        std::shared_ptr<boost::interprocess::message_queue> firstCommunicationMessageQueue;
+        std::shared_ptr<boost::interprocess::message_queue> secondCommunicationMessageQueue;
+
+        utility::Logger& logger_;
+        std::map<uint8_t, ProcessID> externallProcessess_;
     };
 }
 
 
-#endif //AHRS_COMMUNICATIONPROCESSESHANDLER_H
+#endif

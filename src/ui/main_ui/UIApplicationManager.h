@@ -6,6 +6,7 @@
 #include <spawn.h>
 #include <map>
 
+#include "CommunicationProcessesHandler.h"
 #include <logger/Logger.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <config_reader/UIParameters.h>
@@ -26,8 +27,6 @@ namespace main_process
     private:
         bool initializeMainProcessMessageQueue();
         bool initializeGUIMessageQueue();
-        bool initializeFirstProcessMessageQueue();
-        bool initializeSecondProcessMessageQueue();
         bool initializeSharedMemory();
 
         config::UIWirelessCommunication uiWirelessCommunicationParameters_;
@@ -36,13 +35,13 @@ namespace main_process
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
         std::shared_ptr<boost::interprocess::message_queue> mainMessageQueue;
-        std::shared_ptr<boost::interprocess::message_queue> firstCommunicationMessageQueue;
-        std::shared_ptr<boost::interprocess::message_queue> secondCommunicationMessageQueue;
         std::shared_ptr<boost::interprocess::message_queue> guiCommunicationMessageQueue;
 
         std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
+
+        CommunicationProcessesHandler communicationProcessesHandler_;
 
         std::atomic<bool> runSystem_;
         utility::Logger& logger_;

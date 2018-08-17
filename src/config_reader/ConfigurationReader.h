@@ -19,6 +19,7 @@ namespace config
 
         /* UI Cockpit commands */
         // Getters
+        static UIExecutableFiles getUIExecutableFiles(const std::string &filePath);
         static UIWirelessCommunication getUIWirelessCommunication(const std::string &filePath);
         static UIMessageQueues getUIMessageQueues(const std::string &filePath);
         static UISharedMemory getUISharedMemory(const std::string &filePath);

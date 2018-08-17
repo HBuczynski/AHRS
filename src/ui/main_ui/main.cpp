@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
     if(applicationManager.initialize())
     {
         applicationManager.startUISystem();
-
     }
     else
     {

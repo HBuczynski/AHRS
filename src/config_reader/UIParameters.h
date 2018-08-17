@@ -56,6 +56,11 @@ namespace config
         UICommunicationProcess secondProcess;
     };
 
+    struct UIExecutableFiles
+    {
+        std::string externalCommunicationProcess;
+        std::string guiProcess;
+    };
 }
 
 #endif
