@@ -16,4 +16,4 @@ namespace communication
 }
 
 
-#endif //AHRS_UICHANGESTATEBUILDER_H
+#endif

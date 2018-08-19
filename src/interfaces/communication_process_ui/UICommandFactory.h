@@ -20,4 +20,5 @@ namespace communication
         std::unique_ptr<UICommandBuilder> builder_;
     };
 }
-#endif //AHRS_UICOMMANDFACTORY_H
+
+#endif

@@ -11,8 +11,7 @@ using namespace utility;
 using namespace communication;
 
 ConnectedState::ConnectedState()
-    : AbstractState("ConnectedState", UIExternalStateCode::CONNECTED),
-      logger_(Logger::getInstance())
+    : AbstractState("ConnectedState", UIExternalStateCode::CONNECTED)
 {}
 
 ConnectedState::~ConnectedState()

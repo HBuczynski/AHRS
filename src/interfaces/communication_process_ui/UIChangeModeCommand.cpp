@@ -24,7 +24,7 @@ vector<uint8_t> UIChangeModeCommand::getFrameBytes()
     frame.push_back(static_cast<uint8_t>(commandType_));
     frame.push_back(static_cast<uint8_t>(mode_));
 
-    return frame;;
+    return frame;
 }
 
 CommunicationProcessMode UIChangeModeCommand::getMode() const

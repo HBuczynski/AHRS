@@ -32,4 +32,4 @@ namespace communication
     };
 }
 
-#endif //AHRS_UICOMMAND_H
+#endif

@@ -1,5 +1,5 @@
-#ifndef AHRS_CONNECTEDSTATE_H
-#define AHRS_CONNECTEDSTATE_H
+#ifndef AHRS_CONNECTIONLOSTSTATE_H
+#define AHRS_CONNECTIONLOSTSTATE_H
 
 #include "AbstractState.h"
 
@@ -7,11 +7,11 @@
 
 namespace communication
 {
-    class ConnectedState final : public AbstractState
+    class ConnectionLostState final : public AbstractState
     {
     public:
-        ConnectedState();
-        ~ConnectedState();
+        ConnectionLostState();
+        ~ConnectionLostState();
 
         virtual void connectedToServer(CommunicationManagerUI &communicationManagerUI) override;
         virtual void redundantProcess(CommunicationManagerUI &communicationManagerUI) override;
@@ -20,5 +20,6 @@ namespace communication
         virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) override;
     };
 }
+
 
 #endif

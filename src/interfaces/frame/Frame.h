@@ -6,8 +6,6 @@
 
 namespace communication
 {
-    const uint8_t FRAME_INDEX = 1;
-    const uint8_t INTERFACE_INDEX = 2;
     const uint8_t END_STRING_IN_FRAME = '#';
 
     enum class FrameType : uint8_t
@@ -51,6 +49,7 @@ namespace communication
 
         static const uint8_t FRAME_TYPE = 1;
         static const uint8_t INTERFACE_TYPE = 2;
+        static const uint8_t DATA_SIZE_UINT16_POSITION = 4;
         static const uint8_t MEASUREMENT_DATA_TYPE_POSITION = 6;
         static const uint8_t RESPONSE_TYPE_POSITION = 6;
         static const uint8_t NOTIFICATION_TYPE_POSITION = 6;

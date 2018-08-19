@@ -7,7 +7,8 @@ using namespace communication;
 
 AbstractState::AbstractState::AbstractState(std::string name, UIExternalStateCode stateCode)
     :   stateCode_(stateCode),
-        name_(name)
+        name_(name),
+        logger_(Logger::getInstance())
 { }
 
 AbstractState::AbstractState::~AbstractState()
