@@ -1,18 +1,17 @@
 #include "UICommandFactory.h"
 #include "UIChangeModeBuilder.h"
+#include "ShutdownBuilder.h"
+#include "ReconnectBuilder.h"
+#include "SendingDataBuilder.h"
 
 using namespace std;
 using namespace communication;
 
 UICommandFactory::UICommandFactory()
-{
-
-}
+{}
 
 UICommandFactory::~UICommandFactory()
-{
-
-}
+{}
 
 unique_ptr<UICommand> UICommandFactory::createCommand(const vector<uint8_t> &commandInBytes)
 {
@@ -22,6 +21,14 @@ unique_ptr<UICommand> UICommandFactory::createCommand(const vector<uint8_t> &com
     {
         case UICommandType ::CHANGE_STATE :
             builder_ = make_unique<UIChangeModeBuilder>();
+            return move(builder_->create(commandInBytes));
+        case UICommandType ::SHUTDOWN :
+            builder_ = make_unique<ShutdownBuilder>();
+        case UICommandType ::RECONNECT :
+            builder_ = make_unique<ReconnectBuilder>();
+            return move(builder_->create(commandInBytes));
+        case UICommandType ::SEND_FRAME :
+            builder_ = make_unique<SendingDataBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

@@ -29,7 +29,6 @@ namespace communication
         virtual void initializeDataSize() override;
 
         CommunicationProcessMode mode_;
-
     };
 }
 #endif

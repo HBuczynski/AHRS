@@ -5,10 +5,10 @@ using namespace std;
 using namespace communication;
 
 CommunicationStatusBuilder::CommunicationStatusBuilder()
-{ }
+{}
 
 CommunicationStatusBuilder::~CommunicationStatusBuilder()
-{ }
+{}
 
 unique_ptr<UINotification> CommunicationStatusBuilder::create(const vector<uint8_t> &commandInBytes)
 {

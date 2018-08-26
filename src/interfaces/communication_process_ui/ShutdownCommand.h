@@ -1,15 +1,23 @@
-//
-// Created by hubert on 8/19/18.
-//
-
 #ifndef AHRS_SHUTDOWNCOMMAND_H
 #define AHRS_SHUTDOWNCOMMAND_H
 
+#include "UICommand.h"
 
-class ShutdownCommand
+namespace communication
 {
+    class ShutdownCommand : public UICommand
+    {
+    public:
+        ShutdownCommand();
+        ~ShutdownCommand();
 
-};
+        virtual std::vector<uint8_t > getFrameBytes() override;
+        virtual std::string getName() override;
+        virtual void accept(UICommandVisitor& visitor) override;
 
+    private:
+        virtual void initializeDataSize() override;
+    };
+}
 
-#endif //AHRS_SHUTDOWNCOMMAND_H
+#endif

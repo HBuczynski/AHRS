@@ -9,7 +9,10 @@ namespace communication
 
     enum UICommandType : uint8_t
     {
-        CHANGE_STATE = 0x05
+        CHANGE_STATE = 0x01,
+        SHUTDOWN = 0x02,
+        RECONNECT = 0x03,
+        SEND_FRAME = 0x04
     };
 
     class UICommand : public Frame
