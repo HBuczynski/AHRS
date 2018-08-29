@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 ReconnectCommand::ReconnectCommand()
-    : UICommand(10, UICommandType::SHUTDOWN)
+    : UICommand(10, UICommandType::RECONNECT)
 {}
 
 ReconnectCommand::~ReconnectCommand()
@@ -23,7 +23,7 @@ vector<uint8_t> ReconnectCommand::getFrameBytes()
 
 string ReconnectCommand::getName()
 {
-    return string("ShutdownCommand");
+    return string("ReconnectCommand");
 }
 
 void ReconnectCommand::accept(UICommandVisitor &visitor)

@@ -24,6 +24,7 @@ unique_ptr<UICommand> UICommandFactory::createCommand(const vector<uint8_t> &com
             return move(builder_->create(commandInBytes));
         case UICommandType ::SHUTDOWN :
             builder_ = make_unique<ShutdownBuilder>();
+            return move(builder_->create(commandInBytes));
         case UICommandType ::RECONNECT :
             builder_ = make_unique<ReconnectBuilder>();
             return move(builder_->create(commandInBytes));

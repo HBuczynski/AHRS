@@ -6,7 +6,9 @@ using namespace communication;
 
 ShutdownCommand::ShutdownCommand()
         : UICommand(10, UICommandType::SHUTDOWN)
-{}
+{
+    initializeDataSize();
+}
 
 ShutdownCommand::~ShutdownCommand()
 {}
