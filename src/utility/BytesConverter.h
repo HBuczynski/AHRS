@@ -21,6 +21,29 @@ namespace utility
 
         static void appendStringToVectorOfUINT8(std::string data, std::vector<uint8_t>& vec);
         static std::string fromVectorOfUINT8toString(const std::vector<uint8_t> &vec, uint16_t variablePosition);
+
+        template<typename T>
+        static std::vector<uint8_t> appendStructToVectorOfUINT8(T &data)
+        {
+            std::vector<uint8_t> vec(sizeof(T));
+
+            const uint8_t *start = reinterpret_cast<const uint8_t *>(std::addressof(data));
+            const uint8_t *end = start + sizeof(data);
+
+            std::copy(start, end, std::begin(vec));
+
+            return vec;
+        }
+
+        template<typename T>
+        static void fromVectorOfUINT8toStruct(const std::vector<uint8_t> &vec, uint16_t variablePosition, T& data)
+        {
+            uint8_t *object = reinterpret_cast<uint8_t *>(std::addressof(data));
+            const uint8_t *start = vec.data() + variablePosition;
+            const uint8_t *end = start + sizeof(T);
+
+            std::copy(start, end, object);
+        }
     };
 }
 #endif

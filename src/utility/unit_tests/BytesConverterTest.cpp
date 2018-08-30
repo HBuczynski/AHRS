@@ -2,10 +2,12 @@
 
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
+#include <config_reader/AircraftParameters.h>
 
 #include "../BytesConverter.h"
 
 #include <string>
+#include <iostream>
 
 BOOST_AUTO_TEST_SUITE(Conversions)
 
@@ -58,6 +60,21 @@ BOOST_AUTO_TEST_SUITE(Conversions)
         std::string nameAfterReverse = utility::BytesConverter::fromVectorOfUINT8toString(vec,0);
 
         BOOST_CHECK_EQUAL(name, nameAfterReverse);
+    }
+
+    BOOST_AUTO_TEST_CASE(ConvertStructToVectorAndReverse)
+    {
+        config::AircraftParameters aircraftParameters;
+        aircraftParameters.name = "lolowefffffffffffffffffffff";
+
+        uint16_t pos = 0;
+        std::vector<uint8_t> vec = utility::BytesConverter::appendStructToVectorOfUINT8(aircraftParameters);
+
+        config::AircraftParameters aircraftParameters2;
+        utility::BytesConverter::fromVectorOfUINT8toStruct<config::AircraftParameters>(vec, pos, aircraftParameters2);
+
+        bool isSuccess = (aircraftParameters.name == aircraftParameters2.name);
+        BOOST_CHECK_EQUAL(isSuccess, true);
     }
 
 
