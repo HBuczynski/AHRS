@@ -8,10 +8,26 @@
 #include "../CalibratingStatusResponse.h"
 #include "../PlanesDatasetResponse.h"
 
+#include <config_reader/AircraftParameters.h>
 #include <string>
 
 using namespace std;
+using namespace config;
 using namespace communication;
+
+bool compareNames(const char* name1, const char* name2, uint8_t sizeOfNames)
+{
+    for (uint8_t i = 0; i < sizeOfNames; ++i)
+    {
+        if(name1[i] != name2[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 
 BOOST_AUTO_TEST_SUITE( data )
 
@@ -58,27 +74,46 @@ BOOST_AUTO_TEST_SUITE( data )
 
     BOOST_AUTO_TEST_CASE( planeDataset )
     {
-//        vector<string> dataset;
-//        string plane_1 = "boeing";
-//        dataset.push_back(plane_1);
-//        string plane_2 = "bombardier4";
-//        dataset.push_back(plane_2);
-//        string plane_3 = "boeing_kk5";
-//        dataset.push_back(plane_3);
-//        string plane_4 = "airbus_11";
-//        dataset.push_back(plane_4);
-//
-//        PlanesDatasetResponse response(dataset);
-//        response.getFrameBytes();
-//
-//        uint16_t datasetSize =  plane_1.size() + plane_2.size() + plane_3.size() + plane_4.size();
-//
-//        BOOST_CHECK( FrameType::RESPONSE == response.getFrameType());
-//        BOOST_CHECK( ResponseType::PLANES_DATASET == response.getResponseType());
-//        BOOST_CHECK( dataset == response.getDataset());
-//        BOOST_CHECK( 1 == response.getSystemVersion());
-//        BOOST_CHECK( (sizeof(ResponseType::PLANES_DATASET) + datasetSize + dataset.size()* sizeof(END_STRING_IN_FRAME)) == response.getDataSize());
-//        BOOST_CHECK( "PlanesDatasetResponse" == response.getName());
+        vector<AircraftParameters> dataset;
+
+        AircraftParameters plane_1;
+        const char *temp = "Boeing";
+        strcpy(plane_1.name, temp);
+        dataset.push_back(plane_1);
+
+        AircraftParameters plane_2;
+        const char *temp_2 = "bombardier4";
+        strcpy(plane_1.name, temp_2);
+        dataset.push_back(plane_2);
+
+        AircraftParameters plane_3;
+        const char *temp_3 = "boeing_kk5";
+        strcpy(plane_1.name, temp_3);
+        dataset.push_back(plane_3);
+
+        AircraftParameters plane_4;
+        const char *temp_4 = "airbus_11";
+        strcpy(plane_1.name, temp_4);
+        dataset.push_back(plane_4);
+
+        PlanesDatasetResponse response(dataset);
+        response.getFrameBytes();
+
+
+        bool isSuccess = true;
+        const auto dataset2 = response.getDataset();
+
+        for(uint8_t i = 0; i < dataset.size(); ++i)
+        {
+            isSuccess = isSuccess & compareNames(dataset[i].name, dataset2[i].name, 32);
+        }
+
+        BOOST_CHECK( FrameType::RESPONSE == response.getFrameType());
+        BOOST_CHECK( ResponseType::PLANES_DATASET == response.getResponseType());
+        BOOST_CHECK( isSuccess == true);
+        BOOST_CHECK( 1 == response.getSystemVersion());
+        BOOST_CHECK( (sizeof(ResponseType::PLANES_DATASET) + dataset.size()* sizeof(AircraftParameters)) == response.getDataSize());
+        BOOST_CHECK( "PlanesDatasetResponse" == response.getName());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

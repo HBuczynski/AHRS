@@ -24,7 +24,8 @@ vector<uint8_t> PlanesDatasetResponse::getFrameBytes()
 
     for(const auto& plane : dataset_)
     {
-        //BytesConverter::appendStringToVectorOfUINT8(plane, frame);
+        const auto serializedPlane = BytesConverter::appendStructToVectorOfUINT8(plane);
+        frame.insert(frame.end(), serializedPlane.begin(), serializedPlane.end());
     }
 
     return frame;

@@ -65,7 +65,9 @@ BOOST_AUTO_TEST_SUITE(Conversions)
     BOOST_AUTO_TEST_CASE(ConvertStructToVectorAndReverse)
     {
         config::AircraftParameters aircraftParameters;
-        aircraftParameters.name = "lolowefffffffffffffffffffff";
+        const char *temp = "Boeing";
+
+        strcpy(aircraftParameters.name, temp);
 
         uint16_t pos = 0;
         std::vector<uint8_t> vec = utility::BytesConverter::appendStructToVectorOfUINT8(aircraftParameters);
@@ -73,7 +75,13 @@ BOOST_AUTO_TEST_SUITE(Conversions)
         config::AircraftParameters aircraftParameters2;
         utility::BytesConverter::fromVectorOfUINT8toStruct<config::AircraftParameters>(vec, pos, aircraftParameters2);
 
-        bool isSuccess = (aircraftParameters.name == aircraftParameters2.name);
+        bool isSuccess = true;
+
+        for(uint8_t i = 0; i < 32; ++i)
+        {
+            isSuccess = isSuccess & (aircraftParameters.name[i] == aircraftParameters2.name[i]);
+        }
+
         BOOST_CHECK_EQUAL(isSuccess, true);
     }
 

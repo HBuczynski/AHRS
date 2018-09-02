@@ -39,7 +39,7 @@ namespace utility
         static void fromVectorOfUINT8toStruct(const std::vector<uint8_t> &vec, uint16_t variablePosition, T& data)
         {
             uint8_t *object = reinterpret_cast<uint8_t *>(std::addressof(data));
-            const uint8_t *start = vec.data() + variablePosition;
+            const uint8_t *start = reinterpret_cast<const uint8_t *>(vec.data()) + variablePosition;
             const uint8_t *end = start + sizeof(T);
 
             std::copy(start, end, object);

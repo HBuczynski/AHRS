@@ -7,7 +7,7 @@ namespace config
 {
     struct AircraftParameters
     {
-        std::string name;
+        char name[32];
 
     };
 }
