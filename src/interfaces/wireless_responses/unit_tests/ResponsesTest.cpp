@@ -10,6 +10,7 @@
 
 #include <config_reader/AircraftParameters.h>
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 using namespace config;

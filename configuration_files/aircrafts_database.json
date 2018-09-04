@@ -3,12 +3,16 @@
   {
     "Bombardier" :
     {
-      "value" : 172.87
+      "calibrationX" : 172.87,
+      "calibrationY" : 12.87,
+      "calibrationZ" : 1.87
     },
 
     "Boeing" :
     {
-      "value" : 122.87
+      "calibrationX" : 172.87,
+      "calibrationY" : 12.87,
+      "calibrationZ" : 1.87
     }
   }
 }

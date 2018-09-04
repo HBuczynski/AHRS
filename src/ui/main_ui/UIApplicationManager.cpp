@@ -35,9 +35,9 @@ bool UIApplicationManager::initialize()
 {
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
-    isSuccess = isSuccess & initializeGUIMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & communicationProcessesHandler_.initialize();
+    isSuccess = isSuccess & guiProcessHandler_.initialize();
 
     return isSuccess;
 }
@@ -65,35 +65,6 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
     if (logger_.isInformationEnable())
     {
         const std::string message = std::string("UIApplicationManager:: Main message queue has been initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    return true;
-}
-
-bool UIApplicationManager::initializeGUIMessageQueue()
-{
-    try
-    {
-        message_queue::remove(uiMessageQueuesParameters_.guiProcessQueueName.c_str());
-        guiCommunicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.guiProcessQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
-    }
-    catch(interprocess_exception &ex)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("UIApplicationManager:: Gui message queue has not initialized correctly - ") + ex.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-
-        return false;
-    }
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager:: Gui message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 

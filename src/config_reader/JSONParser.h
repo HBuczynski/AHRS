@@ -17,6 +17,7 @@ namespace config
         JSONParser(const std::string &fileName);
         ~JSONParser();
 
+        const Json::Value& getBranch(const std::vector<std::string>& hierarchyQueue);
         void getUINT8t(const std::vector<std::string> &hierarchyQueue, uint8_t &value);
         void getUINT16t(const std::vector<std::string> &hierarchyQueue, uint16_t &value);
         void getUINT32t(const std::vector<std::string> &hierarchyQueue, uint32_t &value);

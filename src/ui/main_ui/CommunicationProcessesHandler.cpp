@@ -33,6 +33,7 @@ bool CommunicationProcessesHandler::initialize()
     isSuccess = isSuccess & initializeFirstProcessMessageQueue();
     isSuccess = isSuccess & initializeSecondProcessMessageQueue();
     isSuccess = isSuccess & launchFirstProcess();
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
     isSuccess = isSuccess & launchSecondProcess();
 
     return isSuccess;

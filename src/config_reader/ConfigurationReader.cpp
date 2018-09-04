@@ -1,5 +1,9 @@
 #include "ConfigurationReader.h"
 
+#include <string>
+#include <stdio.h>
+#include <cstring>
+
 using namespace std;
 using namespace config;
 
@@ -354,6 +358,32 @@ FeederExecutableFiles ConfigurationReader::getFeederExecutableFiles(const std::s
 
 std::vector<AircraftParameters> ConfigurationReader::getAircraftDatabase(const std::string &filePath)
 {
-    return vector<AircraftParameters>();
+    JSONParser jsonParser(filePath);
+
+    vector<string> names;
+    vector<AircraftParameters> planes;
+    const Json::Value& value = jsonParser.getBranch(names)["Aircrafts"];
+
+    for(auto iter = value.begin(); iter != value.end(); ++iter)
+    {
+        AircraftParameters plane;
+        string name = iter.key().asString().c_str();
+
+        strncpy(plane.name, name.c_str(), sizeof(plane.name));
+        plane.calibrationX = value[name]["calibrationX"].asDouble();
+        plane.calibrationY = value[name]["calibrationY"].asDouble();
+        plane.calibrationZ = value[name]["calibrationZ"].asDouble();
+
+        planes.push_back(plane);
+    }
+
+    return planes;
 }
 
+void ConfigurationReader::addAircraftToDatabase(const std::string &filePath, AircraftParameters plane)
+{
+//    JSONParser jsonParser(filePath);
+//
+//    vector<string> names;
+//    const Json::Value& value = jsonParser.getBranch(names)["Aircrafts"];
+}

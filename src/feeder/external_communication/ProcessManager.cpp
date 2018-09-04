@@ -25,10 +25,11 @@ ProcessManager::ProcessManager()
 
     if(isSuccess)
     {
-        CalibrationStatusNotification notification(CalibrationStatus::PASSED);
-
-        const auto commandFrame = notification.getFrameBytes();
-        sendingMessageQueue_->send(commandFrame.data(), commandFrame.size(), 0);
+        //TODO: send info about appropriate init
+//        CalibrationStatusNotification notification(CalibrationStatus::PASSED);
+//
+//        const auto commandFrame = notification.getFrameBytes();
+//        sendingMessageQueue_->send(commandFrame.data(), commandFrame.size(), 0);
     }
     messageVisitor_.initializeClientUDPManager(clientUDPManager_);
 }

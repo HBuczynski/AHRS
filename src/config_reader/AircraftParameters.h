@@ -8,7 +8,9 @@ namespace config
     struct AircraftParameters
     {
         char name[32];
-
+        double calibrationX;
+        double calibrationY;
+        double calibrationZ;
     };
 }
 #endif

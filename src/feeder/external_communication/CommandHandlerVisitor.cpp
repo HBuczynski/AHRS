@@ -62,10 +62,7 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 
     clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
 
-    //TODO
-    /*response_ = std::make_unique<PlanesDatasetResponse>(
-            ConfigurationReader::getAircraftDatabase(FEEDER_AIRCRAFTS_DATABASE_FILE_PATH));*/
-    response_ = std::make_unique<AckResponse>(AckType::OK);
+    response_ = std::make_unique<PlanesDatasetResponse>(ConfigurationReader::getAircraftDatabase(FEEDER_AIRCRAFTS_DATABASE_FILE_PATH));
 }
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)

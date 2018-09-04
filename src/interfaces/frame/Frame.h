@@ -21,7 +21,7 @@ namespace communication
         SCHEDULER_FEEDER = 1,
         ETHERNET_FEEDER = 2,
         COMMUNICATION_PROCESS_FEEDER = 3,
-        SCHEDULER_UI = 4,
+        GUI = 4,
         COMMUNICATION_PROCESS_UI = 5,
         WIRELESS = 6,
     };

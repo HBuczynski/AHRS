@@ -61,6 +61,7 @@ add_subdirectory("src/interfaces/communication_process_feeder"          communic
 add_subdirectory("src/interfaces/wireless_commands"                     wireless_commands               )
 add_subdirectory("src/interfaces/wireless_measurement_commands"         wireless_measurement_commands   )
 add_subdirectory("src/interfaces/wireless_responses"                    wireless_responses              )
+add_subdirectory("src/interfaces/gui"                                   gui_interface                   )
 if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL virtualBoard))
     add_subdirectory("src/feeder/main_feeder"                           main_feeder                     )
     add_subdirectory("src/feeder/external_communication"                external_feeder_communication   )

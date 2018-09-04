@@ -78,5 +78,12 @@ BOOST_AUTO_TEST_SUITE( parser )
         BOOST_CHECK(feederInternalWireless.firstPort == 4000);
     }
 
+    BOOST_AUTO_TEST_CASE( aircraftsDatabase )
+    {
+        const string filePath("../../src/config_reader/unit_tests/test_files/aircrafts_database.json");
+        ConfigurationReader::getAircraftDatabase(filePath);
+
+    }
+
 
 BOOST_AUTO_TEST_SUITE_END()

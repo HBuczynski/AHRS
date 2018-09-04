@@ -10,7 +10,7 @@
 
       "firstDestinationPort": 8000,
       "firstDestinationAddress": "127.0.0.1",
-      "secondDestinationPort": 8000,
+      "secondDestinationPort": 7000,
       "secondDestinationAddress": "127.0.0.1"
     },
 
@@ -34,7 +34,7 @@
     "ExecutableFiles" :
     {
       "externalCommunicationProcess" : "external_ui_communication",
-      "guiProcess" : "lololo"
+      "guiProcess" : "gui"
     }
   }
 }

@@ -37,15 +37,27 @@ void ResponseHandlerVisitor::visit(DataResponse &data)
 
 void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ResponseHandlerVisitor :: Received CalibratingStatusResponse.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ResponseHandlerVisitor :: Received PlanesDatasetResponse.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void ResponseHandlerVisitor::visit(CurrentStateResponse &data)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ResponseHandlerVisitor :: Received CurrentStateResponse.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

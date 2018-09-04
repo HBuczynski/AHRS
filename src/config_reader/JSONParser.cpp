@@ -57,7 +57,11 @@ void JSONParser::getString(const std::vector<std::string> &hierarchyQueue, strin
 
 Json::Value& JSONParser::getFromLeaf(const vector<string> &hierarchyQueue)
 {
-    if(hierarchyQueue.size() == 1)
+    if(hierarchyQueue.size() == 0)
+    {
+        return fileRoot_;
+    }
+    else if(hierarchyQueue.size() == 1)
     {
         Json::Value& value = fileRoot_[hierarchyQueue[0].c_str()];
         return value;
@@ -122,4 +126,9 @@ void JSONParser::appendFloat(const std::vector<std::string> &hierarchyQueue, con
 void JSONParser::appendInt(const std::vector<std::string> &hierarchyQueue, const std::string &keyValue, int number)
 {
 
+}
+
+const Json::Value &JSONParser::getBranch(const std::vector<std::string> &hierarchyQueue)
+{
+    return getFromLeaf(hierarchyQueue);
 }
