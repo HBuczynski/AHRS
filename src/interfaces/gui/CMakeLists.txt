@@ -24,6 +24,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC utility)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC frame)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
+
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 

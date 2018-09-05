@@ -11,7 +11,7 @@ namespace communication
         ACTIVE_CONNECTION = 0x02,
         CHOOSING_PLANE = 0x03,
         CALIBRATION = 0x04,
-        ACQUISITION = 0x05,
+        AHRS = 0x05,
         RESTART = 0x06,
         SHUTDOWN = 0x07
     };

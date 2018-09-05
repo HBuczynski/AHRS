@@ -37,6 +37,7 @@ target_include_directories(
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Svg)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC gui_interface)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
