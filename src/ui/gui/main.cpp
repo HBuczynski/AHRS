@@ -5,6 +5,7 @@
 #include "GUIApplicationManager.h"
 
 using namespace std;
+using namespace gui;
 using namespace chrono;
 using namespace utility;
 
@@ -27,13 +28,10 @@ int main( int argc, char *argv[] )
         logger.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-
     QApplication app( argc, argv );
 
-    MainWindow win;
-    win.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    win.show();
-
+    MainWindow mainWindow;
+    GUIApplicationManager applicationManager(&mainWindow);
     
     return app.exec();
 }

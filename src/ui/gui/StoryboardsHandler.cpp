@@ -60,6 +60,7 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     sizePolicy.setHorizontalStretch(2);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(widgetPFD->sizePolicy().hasHeightForWidth());
+
     widgetPFD->setSizePolicy(sizePolicy);
     widgetPFD->setMaximumSize(QSize(1024, 600));
 

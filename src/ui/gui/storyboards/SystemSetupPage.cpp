@@ -19,21 +19,21 @@ SystemSetupPage::~SystemSetupPage()
 
 void SystemSetupPage::setupPage()
 {
-    ui->frame_->setStyleSheet("background-color:black;");
-
-    ui->gridLayout->setSpacing(10);
-    ui->gridLayout->setContentsMargins(20, 20, 20, 20);
+   // ui->frame_->setStyleSheet("background-color:black;");
 
     QFont font("Arial", 20, QFont::Bold);
     ui->titleLabel_->setStyleSheet("QLabel { color : white}");
     ui->titleLabel_->setFont(font);
     ui->titleLabel_->setText("SYSTEM SETUP");
-    ui->titleLabel_->setAlignment(Qt::AlignCenter);
 
-    QListWidgetItem *itm = new QListWidgetItem();
-    itm->setText("My Item");
+    QFont actionFont("Arial", 15, QFont::Bold);
+    ui->actionLabel_->setStyleSheet("QLabel { color : white}");
+    ui->actionLabel_->setFont(actionFont);
+    ui->actionLabel_->setText("ACTION");
+    ui->actionLabel_->setAlignment(Qt::AlignLeft);
 
-    itm->setFont(font);
-
-    ui->listWidget_->insertItem(0, itm);
+    ui->resultLabel_->setStyleSheet("QLabel { color : white}");
+    ui->resultLabel_->setFont(actionFont);
+    ui->resultLabel_->setText("RESULT");
+    ui->resultLabel_->setAlignment(Qt::AlignLeft);
 }

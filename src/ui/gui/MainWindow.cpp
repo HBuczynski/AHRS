@@ -12,12 +12,6 @@ MainWindow::MainWindow( QWidget *parent ) :
     storyboardsHandler_( new StoryboardsHandler )
 {
     storyboardsHandler_->setupUi( this );
-
-    storyboardsHandler_->setWelcomePage();
-
-    storyboardsHandler_->setWidgetPFDPage();
-
-//    storyboardsHandler_->setSystemSetupPage();
 }
 
 MainWindow::~MainWindow()
@@ -25,4 +19,18 @@ MainWindow::~MainWindow()
     delete storyboardsHandler_;
 }
 
+void MainWindow::setWelcomePage()
+{
+    storyboardsHandler_->setWelcomePage();
+}
+
+void MainWindow::setWidgetPFDPage()
+{
+    storyboardsHandler_->setWidgetPFDPage();
+}
+
+void MainWindow::setSystemSetupPage()
+{
+    storyboardsHandler_->setSystemSetupPage();
+}
 

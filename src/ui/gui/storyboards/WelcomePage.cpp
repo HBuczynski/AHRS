@@ -22,7 +22,7 @@ void WelcomePage::setupPage()
 {
     ui_->verticalFrame_->resize(QSize(1024, 600));
 
-    QFont font("Arial", 50, QFont::Bold);
+    QFont font("Arial", 60, QFont::Bold);
     ui_->ahrsLabel_->setStyleSheet("QLabel { color : white}");
     ui_->ahrsLabel_->setFont(font);
     ui_->ahrsLabel_->setText("AHRS SYSTEM");
@@ -37,7 +37,7 @@ void WelcomePage::setupPage()
     QFont fontAuthor("Arial", 10, QFont::Bold);
     ui_->authorLabel_->setStyleSheet("QLabel { color : white}");
     ui_->authorLabel_->setFont(fontAuthor);
-    ui_->authorLabel_->setText("\u00A9 Copyright by Hubert Buczyński");
+    ui_->authorLabel_->setText("\u00A9 Copyright 2018 Hubert Buczyński");
     ui_->authorLabel_->setAlignment(Qt::AlignCenter);
 
 
