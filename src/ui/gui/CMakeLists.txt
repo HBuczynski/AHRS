@@ -5,24 +5,27 @@ project(gui)
 
 
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+
 set(PROJECT_NAME gui)
 # temp variable
 set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt5.8.0/5.8/gcc_64)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets Svg)
+
 include_directories(${Qt5_INCLUDE_DIR})
 link_directories(${Qt5_LIBRARY_DIRS})
 
 include_directories(../)
 
-
 link_directories(${CMAKE_BINARY_DIR}/../../lib)
 
-file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
-file(GLOB user_interfaces_list "${CMAKE_CURRENT_SOURCE_DIR}/*.ui")  
+file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/storyboards/*.cpp")
+file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/storyboards/*.h")
+file(GLOB user_interfaces_list "${CMAKE_CURRENT_SOURCE_DIR}/storyboards/*.ui")
 
 qt5_add_resources(IMG_RSC_ADDED qfi.qrc)
+
 qt5_wrap_ui(UI_GENERATED_HEADERS ${user_interfaces_list})
 
 add_executable(${PROJECT_NAME} ${source_list} ${UI_GENERATED_HEADERS} ${IMG_RSC_ADDED})

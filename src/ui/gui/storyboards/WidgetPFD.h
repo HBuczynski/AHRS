@@ -2,9 +2,9 @@
 #define WIDGETPFD_H
 
 
-#include <QWidget>
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget"
 
-#include <qfi_PFD.h>
+#include "qfi_PFD.h"
 
 #include "LayoutSquare.h"
 

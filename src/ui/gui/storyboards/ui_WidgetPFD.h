@@ -9,14 +9,14 @@
 #ifndef UI_WIDGETPFD_H
 #define UI_WIDGETPFD_H
 
-#include <QtCore/QVariant>
-#include <QtWidgets/QAction>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QFrame>
-#include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHeaderView>
-#include <QtWidgets/QWidget>
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtCore/QVariant"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QAction"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QButtonGroup"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFrame"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGridLayout"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QHeaderView"
+#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget"
 #include "qfi_PFD.h"
 
 QT_BEGIN_NAMESPACE
@@ -32,11 +32,11 @@ public:
     {
         if (WidgetPFD->objectName().isEmpty())
             WidgetPFD->setObjectName(QStringLiteral("WidgetPFD"));
-        WidgetPFD->resize(800, 480);
+        WidgetPFD->resize(1024, 600);
         framePFD = new QFrame(WidgetPFD);
         framePFD->setObjectName(QStringLiteral("framePFD"));
         framePFD->setGeometry(QRect(70, 70, 260, 260));
-        framePFD->setMaximumSize(QSize(800, 480));
+        framePFD->setMaximumSize(QSize(600, 300));
         framePFD->setStyleSheet(QLatin1String("#framePFD\n"
 "{\n"
 "	background-color: #000;\n"
@@ -46,7 +46,7 @@ public:
         framePFD->setFrameShadow(QFrame::Raised);
         gridLayout = new QGridLayout(framePFD);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        gridLayout->setContentsMargins(4, 4, 4, 4);
+        gridLayout->setContentsMargins(2, 2, 2, 2);
         graphicsPFD = new qfi_PFD(framePFD);
         graphicsPFD->setObjectName(QStringLiteral("graphicsPFD"));
         graphicsPFD->setEnabled(false);

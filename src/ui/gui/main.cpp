@@ -30,8 +30,8 @@ int main( int argc, char *argv[] )
 
     QApplication app( argc, argv );
 
-    MainWindow   win;
-
+    MainWindow win;
+    win.setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     win.show();
 
     
