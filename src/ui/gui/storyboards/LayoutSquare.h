@@ -1,11 +1,11 @@
 #ifndef LAYOUTSQUARE_H
 #define LAYOUTSQUARE_H
 
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLayout"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLayoutItem"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtCore/QPointer"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtCore/QRect"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidgetItem"
+#include <QtWidgets/QLayout>
+#include <QtWidgets/QLayoutItem>
+#include <QtCore/QPointer>
+#include <QtCore/QRect>
+#include <QtWidgets/QWidgetItem>
 
 class LayoutSquare : public QLayout
 {

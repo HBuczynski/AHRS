@@ -1,8 +1,8 @@
 #ifndef QFI_PFD_H
 #define QFI_PFD_H
 
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGraphicsView"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtSvg/QGraphicsSvgItem"
+#include <QtWidgets/QGraphicsView>
+#include <QtSvg/QGraphicsSvgItem>
 
 /** Primary Flight Display widget. */
 class qfi_PFD : public QGraphicsView

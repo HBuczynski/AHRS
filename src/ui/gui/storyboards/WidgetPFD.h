@@ -2,7 +2,7 @@
 #define WIDGETPFD_H
 
 
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget"
+#include <QtWidgets/QWidget>
 
 #include "qfi_PFD.h"
 

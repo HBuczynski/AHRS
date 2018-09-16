@@ -9,17 +9,17 @@
 #ifndef UI_SystemSetupPage_H
 #define UI_SystemSetupPage_H
 
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtCore/QVariant"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QAction"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QApplication"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QButtonGroup"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QFrame"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QGridLayout"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QHeaderView"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QLabel"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QListWidget"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QSpacerItem"
-#include "../../../../../../../../../usr/include/x86_64-linux-gnu/qt5/QtWidgets/QWidget"
+#include <QtCore/QVariant>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
