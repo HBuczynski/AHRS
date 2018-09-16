@@ -46,7 +46,7 @@ public:
         verticalFrame_->setGeometry(QRect(0, 0, 1024, 600));
         verticalLayout_ = new QVBoxLayout(verticalFrame_);
         verticalLayout_->setObjectName(QStringLiteral("verticalLayout_"));
-        verticalLayout_->setContentsMargins(0, -1, -1, -1);
+        verticalLayout_->setContentsMargins(0, 0, 0, 0);
         verticalSpacer_1 = new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_->addItem(verticalSpacer_1);
