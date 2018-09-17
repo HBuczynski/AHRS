@@ -41,6 +41,8 @@ private:
     WidgetPFD *widgetPFD;
     WelcomePage *welcomePage;
     SystemSetupPage *systemSetupPage_;
+
+    QWidget *previousWidget_;
 };
 
 #endif

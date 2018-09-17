@@ -5,6 +5,7 @@
 using namespace std;
 
 StoryboardsHandler::StoryboardsHandler()
+    : previousWidget_(nullptr)
 {}
 
 void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
@@ -53,22 +54,22 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
     gridLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
 
-    widgetPFD = new WidgetPFD();
-    widgetPFD->setObjectName(QStringLiteral("widgetPFD"));
-    widgetPFD->setEnabled(true);
-    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    sizePolicy.setHorizontalStretch(2);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(widgetPFD->sizePolicy().hasHeightForWidth());
+//    widgetPFD = new WidgetPFD();
+//    widgetPFD->setObjectName(QStringLiteral("widgetPFD"));
+//    widgetPFD->setEnabled(true);
+//    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+//    sizePolicy.setHorizontalStretch(2);
+//    sizePolicy.setVerticalStretch(0);
+//    sizePolicy.setHeightForWidth(widgetPFD->sizePolicy().hasHeightForWidth());
+//
+//    widgetPFD->setSizePolicy(sizePolicy);
+//    widgetPFD->setMaximumSize(QSize(1024, 600));
 
-    widgetPFD->setSizePolicy(sizePolicy);
-    widgetPFD->setMaximumSize(QSize(1024, 600));
-
-    welcomePage = new WelcomePage();
-    welcomePage->resize(QSize(1024, 600));
-
-    systemSetupPage_ = new SystemSetupPage();
-    systemSetupPage_->resize(QSize(1024, 600));
+//    welcomePage = new WelcomePage();
+//    welcomePage->resize(QSize(1024, 600));
+//
+//    systemSetupPage_ = new SystemSetupPage();
+//    systemSetupPage_->resize(QSize(1024, 600));
 
     gridLayout_4->addLayout(gridLayout_2, 0, 0, 1, 1);
 
@@ -83,15 +84,47 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
 
 void StoryboardsHandler::setWelcomePage()
 {
-    gridLayout_2->addWidget(welcomePage, 0, 0, 2, 1);
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+
+    }
+
+    welcomePage = new WelcomePage();
+    welcomePage->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(welcomePage);
+    previousWidget_ = welcomePage;
 }
 
 void StoryboardsHandler::setWidgetPFDPage()
 {
-    gridLayout_2->addWidget(widgetPFD, 0, 0, 2, 1);
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    widgetPFD = new WidgetPFD();
+    widgetPFD->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(widgetPFD);
+    previousWidget_ = widgetPFD;
 }
 
 void StoryboardsHandler::setSystemSetupPage()
 {
-    gridLayout_2->addWidget(systemSetupPage_, 0, 0, 2, 1);
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    systemSetupPage_ = new SystemSetupPage();
+    systemSetupPage_->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(systemSetupPage_);
+    previousWidget_ = systemSetupPage_;
+
 }

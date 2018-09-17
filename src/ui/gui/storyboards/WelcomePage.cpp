@@ -21,6 +21,7 @@ WelcomePage::~WelcomePage()
 void WelcomePage::setupPage()
 {
     ui_->verticalFrame_->resize(QSize(1024, 600));
+    this->setStyleSheet("background-color:black;");
 
     QFont font("Arial", 60, QFont::Bold);
     ui_->ahrsLabel_->setStyleSheet("QLabel { color : white}");
