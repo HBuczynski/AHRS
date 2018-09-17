@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <QApplication>
 
+#include <memory>
+
 #include <logger/Logger.h>
 #include "GUIApplicationManager.h"
 
@@ -30,8 +32,23 @@ int main( int argc, char *argv[] )
 
     QApplication app( argc, argv );
 
-    MainWindow mainWindow;
-    GUIApplicationManager applicationManager(&mainWindow);
+    auto mainWindow = make_shared<MainWindow>();
+    GUIApplicationManager applicationManager(mainWindow);
+
+//    if(applicationManager.initialize())
+//    {
+//        applicationManager.startGUI();
+//    }
+//    else
+//    {
+//        if(logger.isErrorEnable())
+//        {
+//            const string message = string("Main UI :: Initialization failed !!");
+//            logger.writeLog(LogType::ERROR_LOG, message);
+//        }
+//    }
+
+    applicationManager.startGUI();
     
     return app.exec();
 }

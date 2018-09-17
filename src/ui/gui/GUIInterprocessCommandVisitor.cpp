@@ -5,8 +5,9 @@ using namespace gui;
 using namespace utility;
 using namespace communication;
 
-GUIInterprocessCommandVisitor::GUIInterprocessCommandVisitor()
-    : logger_(Logger::getInstance())
+GUIInterprocessCommandVisitor::GUIInterprocessCommandVisitor(std::shared_ptr<MainWindow> mainWindow)
+    :   mainWindow_(mainWindow),
+        logger_(Logger::getInstance())
 {
     initializeWindowsContainer();
 }
@@ -54,7 +55,7 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
 
 void GUIInterprocessCommandVisitor::launchStartUPWindow()
 {
-
+    mainWindow_->setWelcomePage();
 }
 
 void GUIInterprocessCommandVisitor::launchActiveConnectionWindow()
@@ -74,7 +75,7 @@ void GUIInterprocessCommandVisitor::launchCalibrationWindow()
 
 void GUIInterprocessCommandVisitor::launchAHRSWindow()
 {
-
+    mainWindow_->setWidgetPFDPage();
 }
 
 void GUIInterprocessCommandVisitor::launchRestartWindow()
