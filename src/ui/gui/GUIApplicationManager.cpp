@@ -39,6 +39,7 @@ void GUIApplicationManager::startGUI()
     mainWindow_->setWelcomePage();
     mainWindow_->setWidgetPFDPage();
     mainWindow_->setWelcomePage();
+    mainWindow_->setCallibrationSettingPage();
 }
 
 bool GUIApplicationManager::initializeGUIMessageQueue()

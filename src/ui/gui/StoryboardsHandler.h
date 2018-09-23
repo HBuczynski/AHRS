@@ -17,6 +17,7 @@
 #include "storyboards/WidgetPFD.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
+#include "storyboards/CallibrationSettings.h"
 
 class StoryboardsHandler
 {
@@ -28,6 +29,7 @@ public:
     void setWelcomePage();
     void setWidgetPFDPage();
     void setSystemSetupPage();
+    void setCallibrationSettingPage();
 
 private:
 
@@ -41,6 +43,7 @@ private:
     WidgetPFD *widgetPFD;
     WelcomePage *welcomePage;
     SystemSetupPage *systemSetupPage_;
+    CallibrationSettings *callibrationSettings_;
 
     QWidget *previousWidget_;
 };

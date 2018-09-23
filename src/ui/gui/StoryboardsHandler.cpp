@@ -54,31 +54,11 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
     gridLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
 
-//    widgetPFD = new WidgetPFD();
-//    widgetPFD->setObjectName(QStringLiteral("widgetPFD"));
-//    widgetPFD->setEnabled(true);
-//    QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-//    sizePolicy.setHorizontalStretch(2);
-//    sizePolicy.setVerticalStretch(0);
-//    sizePolicy.setHeightForWidth(widgetPFD->sizePolicy().hasHeightForWidth());
-//
-//    widgetPFD->setSizePolicy(sizePolicy);
-//    widgetPFD->setMaximumSize(QSize(1024, 600));
-
-//    welcomePage = new WelcomePage();
-//    welcomePage->resize(QSize(1024, 600));
-//
-//    systemSetupPage_ = new SystemSetupPage();
-//    systemSetupPage_->resize(QSize(1024, 600));
-
     gridLayout_4->addLayout(gridLayout_2, 0, 0, 1, 1);
-
     splitter->addWidget(frame_2);
-
     gridLayout_5->addWidget(splitter, 0, 0, 1, 1);
 
     MainWindow->setCentralWidget(centralWidget);
-
     QMetaObject::connectSlotsByName(MainWindow);
 }
 
@@ -128,3 +108,19 @@ void StoryboardsHandler::setSystemSetupPage()
     previousWidget_ = systemSetupPage_;
 
 }
+
+void StoryboardsHandler::setCallibrationSettingPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    callibrationSettings_ = new CallibrationSettings();
+    callibrationSettings_->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(callibrationSettings_);
+    previousWidget_ = callibrationSettings_;
+}
+

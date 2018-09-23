@@ -16,6 +16,7 @@ public:
 
     void setWelcomePage();
     void setWidgetPFDPage();
+    void setCallibrationSettingPage();
     void setSystemSetupPage();
     
 private:
