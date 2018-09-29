@@ -91,28 +91,6 @@ public:
         m_pfd->setPitch( pitch );
     }
 
-//    inline void setFlightPathMarker( float aoa, float sideslip )
-//    {
-//        m_pfd->setFlightPathMarker( aoa, sideslip );
-//    }
-
-//    inline void setSlipSkid( float slipSkid )
-//    {
-//        m_pfd->setSlipSkid( slipSkid );
-//    }
-
-//    inline void setDevH( float devH )
-//    {
-//        m_pfd->setBarH( devH );
-//        m_pfd->setDotH( devH );
-//    }
-
-//    inline void setDevV( float devV )
-//    {
-//        m_pfd->setBarV( devV );
-//        m_pfd->setDotV( devV );
-//    }
-
     inline void setAltitude( float altitude )
     {
         m_pfd->setAltitude( altitude );
@@ -138,25 +116,10 @@ public:
         m_pfd->setHeading( heading );
     }
 
-//    inline void setTurnRate( float turnRate )
-//    {
-//        m_pfd->setTurnRate( turnRate );
-//    }
-
     inline void setClimbRate( float climbRate )
     {
         m_pfd->setClimbRate( climbRate );
     }
-
-//    inline void setIdentifier( const QString &ident, bool isVisible )
-//    {
-//        m_pfd->setIdent( ident, isVisible );
-//    }
-
-//    inline void setDistance( float dist, bool isVisible )
-//    {
-//        m_pfd->setDistance( dist, isVisible );
-//    }
 
 private:
 

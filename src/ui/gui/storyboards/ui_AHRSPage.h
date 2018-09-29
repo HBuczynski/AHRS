@@ -90,7 +90,7 @@ public:
         verticalLayout_2 = new QVBoxLayout(verticalFrame);
         verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(0, 8, 0, 0);
+        verticalLayout_2->setContentsMargins(0, 11, 0, 8);
         devicesLayout = new QGridLayout();
         devicesLayout->setSpacing(0);
         devicesLayout->setObjectName(QStringLiteral("devicesLayout"));
@@ -103,7 +103,7 @@ public:
 
         buttonFrame = new QFrame(AHRSPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
-        buttonFrame->setGeometry(QRect(512, 562, 512, 40));
+        buttonFrame->setGeometry(QRect(512, 555, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
         buttonFrame->setLineWidth(0);
         horizontalButtons = new QHBoxLayout(buttonFrame);
