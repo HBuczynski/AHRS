@@ -24,9 +24,9 @@ void MainWindow::setWelcomePage()
     storyboardsHandler_->setWelcomePage();
 }
 
-void MainWindow::setWidgetPFDPage()
+void MainWindow::setAHRSPage()
 {
-    storyboardsHandler_->setWidgetPFDPage();
+    storyboardsHandler_->setAHRSPage();
 }
 
 void MainWindow::setSystemSetupPage()

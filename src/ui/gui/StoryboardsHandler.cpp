@@ -78,7 +78,7 @@ void StoryboardsHandler::setWelcomePage()
     previousWidget_ = welcomePage;
 }
 
-void StoryboardsHandler::setWidgetPFDPage()
+void StoryboardsHandler::setAHRSPage()
 {
     if(previousWidget_)
     {
@@ -86,11 +86,11 @@ void StoryboardsHandler::setWidgetPFDPage()
         delete previousWidget_;
     }
 
-    widgetPFD = new WidgetPFD();
-    widgetPFD->resize(QSize(1024, 600));
+    ahrsPage = new AHRSPage();
+    ahrsPage->resize(QSize(1024, 600));
 
-    gridLayout_2->addWidget(widgetPFD);
-    previousWidget_ = widgetPFD;
+    gridLayout_2->addWidget(ahrsPage);
+    previousWidget_ = ahrsPage;
 }
 
 void StoryboardsHandler::setSystemSetupPage()

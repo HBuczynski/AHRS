@@ -37,9 +37,8 @@ void GUIApplicationManager::startGUI()
     mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     mainWindow_->show();
     mainWindow_->setWelcomePage();
-    mainWindow_->setWidgetPFDPage();
-    mainWindow_->setWelcomePage();
-    mainWindow_->setCallibrationSettingPage();
+    mainWindow_->setAHRSPage();
+    //mainWindow_->setWelcomePage();
 }
 
 bool GUIApplicationManager::initializeGUIMessageQueue()

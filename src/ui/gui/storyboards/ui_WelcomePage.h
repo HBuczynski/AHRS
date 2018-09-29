@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WelcomePage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -29,6 +29,8 @@ public:
     QVBoxLayout *verticalLayout_;
     QSpacerItem *verticalSpacer_1;
     QLabel *ahrsLabel_;
+    QSpacerItem *verticalSpacer;
+    QLabel *acronymDescription;
     QSpacerItem *verticalSpacer_2;
     QLabel *descriptionLabel_;
     QSpacerItem *verticalSpacer_3;
@@ -46,7 +48,7 @@ public:
         verticalFrame_->setGeometry(QRect(0, 0, 1024, 600));
         verticalLayout_ = new QVBoxLayout(verticalFrame_);
         verticalLayout_->setObjectName(QStringLiteral("verticalLayout_"));
-        verticalLayout_->setContentsMargins(0, 0, 0, 0);
+        verticalLayout_->setContentsMargins(0, -1, -1, -1);
         verticalSpacer_1 = new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_->addItem(verticalSpacer_1);
@@ -57,7 +59,17 @@ public:
 
         verticalLayout_->addWidget(ahrsLabel_);
 
-        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_->addItem(verticalSpacer);
+
+        acronymDescription = new QLabel(verticalFrame_);
+        acronymDescription->setObjectName(QStringLiteral("acronymDescription"));
+        acronymDescription->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_->addWidget(acronymDescription);
+
+        verticalSpacer_2 = new QSpacerItem(20, 220, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_->addItem(verticalSpacer_2);
 
@@ -67,7 +79,7 @@ public:
 
         verticalLayout_->addWidget(descriptionLabel_);
 
-        verticalSpacer_3 = new QSpacerItem(20, 240, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_3 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout_->addItem(verticalSpacer_3);
 
@@ -89,10 +101,11 @@ public:
 
     void retranslateUi(QWidget *WelcomePage)
     {
-        WelcomePage->setWindowTitle(QApplication::translate("WelcomePage", "Form", 0));
-        ahrsLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
-        descriptionLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
-        authorLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
+        WelcomePage->setWindowTitle(QApplication::translate("WelcomePage", "Form", Q_NULLPTR));
+        ahrsLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
+        acronymDescription->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
+        descriptionLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
+        authorLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };

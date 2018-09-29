@@ -1,11 +1,10 @@
 /***************************************************************************//**
- * @file example/WidgetPFD.h
+ * @file qfi_TC.h
  * @author  Marek M. Cel <marekcel@marekcel.pl>
- * @author Dave Culp <daveculp@cox.net>
  *
  * @section LICENSE
  *
- * Copyright (C) 2018 Marek M. Cel, Dave Culp
+ * Copyright (C) 2013 Marek M. Cel
  *
  * This file is part of QFlightInstruments. You can redistribute and modify it
  * under the terms of GNU General Public License as published by the Free
@@ -26,7 +25,7 @@
  *
  * ---
  *
- * Copyright (C) 2018 Marek M. Cel, Dave Culp
+ * Copyright (C) 2013 Marek M. Cel
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -46,127 +45,82 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  ******************************************************************************/
-#ifndef WIDGETPFD_H
-#define WIDGETPFD_H
+#ifndef QFI_TC_H
+#define QFI_TC_H
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <QWidget>
-
-#include "qfi_PFD.h"
-
-#include "LayoutSquare.h"
+#include <QGraphicsView>
+#include <QGraphicsSvgItem>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Ui
-{
-    class WidgetPFD;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-class WidgetPFD : public QWidget
+/** Turn Coordinator widget. */
+class qfi_TC : public QGraphicsView
 {
     Q_OBJECT
 
 public:
 
-    explicit WidgetPFD( QWidget *parent = 0 );
+    /** Constructor. */
+    qfi_TC( QWidget *parent = 0 );
 
-    virtual ~WidgetPFD();
+    /** Destructor. */
+    virtual ~qfi_TC();
 
-    inline void update()
-    {
-        m_pfd->update();
-    }
+    /** Reinitiates widget. */
+    void reinit();
 
-    inline void setRoll( float roll )
-    {
-        m_pfd->setRoll( roll );
-    }
+    /** Refreshes (redraws) widget. */
+    void update();
 
-    inline void setPitch( float pitch )
-    {
-        m_pfd->setPitch( pitch );
-    }
+    /** @param turn rate [deg/s] */
+    void setTurnRate( float turnRate );
 
-//    inline void setFlightPathMarker( float aoa, float sideslip )
-//    {
-//        m_pfd->setFlightPathMarker( aoa, sideslip );
-//    }
+    /** @param slip/skid ball angle [deg] */
+    void setSlipSkid( float slipSkid );
 
-//    inline void setSlipSkid( float slipSkid )
-//    {
-//        m_pfd->setSlipSkid( slipSkid );
-//    }
+protected:
 
-//    inline void setDevH( float devH )
-//    {
-//        m_pfd->setBarH( devH );
-//        m_pfd->setDotH( devH );
-//    }
-
-//    inline void setDevV( float devV )
-//    {
-//        m_pfd->setBarV( devV );
-//        m_pfd->setDotV( devV );
-//    }
-
-    inline void setAltitude( float altitude )
-    {
-        m_pfd->setAltitude( altitude );
-    }
-
-    inline void setPressure( float pressure )
-    {
-        m_pfd->setPressure( pressure, qfi_PFD::IN );
-    }
-
-    inline void setAirspeed( float airspeed )
-    {
-        m_pfd->setAirspeed( airspeed );
-    }
-
-    inline void setMachNo( float machNo )
-    {
-        m_pfd->setMachNo( machNo );
-    }
-
-    inline void setHeading( float heading )
-    {
-        m_pfd->setHeading( heading );
-    }
-
-//    inline void setTurnRate( float turnRate )
-//    {
-//        m_pfd->setTurnRate( turnRate );
-//    }
-
-    inline void setClimbRate( float climbRate )
-    {
-        m_pfd->setClimbRate( climbRate );
-    }
-
-//    inline void setIdentifier( const QString &ident, bool isVisible )
-//    {
-//        m_pfd->setIdent( ident, isVisible );
-//    }
-
-//    inline void setDistance( float dist, bool isVisible )
-//    {
-//        m_pfd->setDistance( dist, isVisible );
-//    }
+    void resizeEvent( QResizeEvent *event );
 
 private:
 
-    Ui::WidgetPFD *m_ui;
-    qfi_PFD       *m_pfd;
-    LayoutSquare  *m_layoutSq;
+    QGraphicsScene *m_scene;
 
-    void setupUi();
+    QGraphicsSvgItem *m_itemBack;
+    QGraphicsSvgItem *m_itemBall;
+    QGraphicsSvgItem *m_itemFace_1;
+    QGraphicsSvgItem *m_itemFace_2;
+    QGraphicsSvgItem *m_itemMark;
+    QGraphicsSvgItem *m_itemCase;
+
+    float m_turnRate;
+    float m_slipSkid;
+
+    float m_scaleX;
+    float m_scaleY;
+
+    const int m_originalHeight;
+    const int m_originalWidth;
+
+    QPointF m_originalMarkCtr;
+    QPointF m_originalBallCtr;
+
+    const int m_backZ;
+    const int m_ballZ;
+    const int m_face1Z;
+    const int m_face2Z;
+    const int m_markZ;
+    const int m_caseZ;
+
+    void init();
+
+    void reset();
+
+    void updateView();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif // WIDGETPFD_H
+#endif // QFI_TC_H

@@ -14,7 +14,7 @@
 #include <QtWidgets/QWidget>
 
 #include "MainWindow.h"
-#include "storyboards/WidgetPFD.h"
+#include "storyboards/AHRSPage.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
 #include "storyboards/CallibrationSettings.h"
@@ -27,7 +27,7 @@ public:
     void setupUi(QMainWindow *MainWindow);
 
     void setWelcomePage();
-    void setWidgetPFDPage();
+    void setAHRSPage();
     void setSystemSetupPage();
     void setCallibrationSettingPage();
 
@@ -40,7 +40,7 @@ private:
     QGridLayout *gridLayout_4;
     QGridLayout *gridLayout_2;
 
-    WidgetPFD *widgetPFD;
+    AHRSPage *ahrsPage;
     WelcomePage *welcomePage;
     SystemSetupPage *systemSetupPage_;
     CallibrationSettings *callibrationSettings_;

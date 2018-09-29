@@ -15,7 +15,7 @@ public:
     ~MainWindow();
 
     void setWelcomePage();
-    void setWidgetPFDPage();
+    void setAHRSPage();
     void setCallibrationSettingPage();
     void setSystemSetupPage();
     

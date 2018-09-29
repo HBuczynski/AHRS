@@ -75,7 +75,7 @@ void GUIInterprocessCommandVisitor::launchCalibrationWindow()
 
 void GUIInterprocessCommandVisitor::launchAHRSWindow()
 {
-    mainWindow_->setWidgetPFDPage();
+    mainWindow_->setAHRSPage();
 }
 
 void GUIInterprocessCommandVisitor::launchRestartWindow()

@@ -21,26 +21,31 @@ WelcomePage::~WelcomePage()
 void WelcomePage::setupPage()
 {
     ui_->verticalFrame_->resize(QSize(1024, 600));
+
     this->setStyleSheet("background-color:black;");
 
-    QFont font("Arial", 60, QFont::Bold);
-    ui_->ahrsLabel_->setStyleSheet("QLabel { color : white}");
+    QFont font("Arial", 70, QFont::Bold);
+    ui_->ahrsLabel_->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->ahrsLabel_->setFont(font);
-    ui_->ahrsLabel_->setText("AHRS SYSTEM");
+    ui_->ahrsLabel_->setText("A  H  R  S");
     ui_->ahrsLabel_->setAlignment(Qt::AlignCenter);
 
+    QFont fontDec("Arial", 12, QFont::Bold);
+    ui_->acronymDescription->setStyleSheet("QLabel { color : rgb(51,255,0)}");
+    ui_->acronymDescription->setFont(fontDec);
+    ui_->acronymDescription->setText("Attitude Heading Reference System");
+    ui_->acronymDescription->setAlignment(Qt::AlignCenter);
+
     QFont fontDescription("Arial", 10, QFont::Bold);
-    ui_->descriptionLabel_->setStyleSheet("QLabel { color : white}");
+    ui_->descriptionLabel_->setStyleSheet("QLabel { color : rgb(51,255,0)}");
     ui_->descriptionLabel_->setFont(fontDescription);
     ui_->descriptionLabel_->setText("This system is not intended for professional use.");
     ui_->descriptionLabel_->setAlignment(Qt::AlignCenter);
 
     QFont fontAuthor("Arial", 10, QFont::Bold);
-    ui_->authorLabel_->setStyleSheet("QLabel { color : white}");
+    ui_->authorLabel_->setStyleSheet("QLabel { color : rgb(51,255,0)}");
     ui_->authorLabel_->setFont(fontAuthor);
-    ui_->authorLabel_->setText("\u00A9 Copyright 2018 Hubert Buczyński");
+    ui_->authorLabel_->setText("\u00A9 Copyright by Hubert Buczyński");
     ui_->authorLabel_->setAlignment(Qt::AlignCenter);
-
-
 
 }

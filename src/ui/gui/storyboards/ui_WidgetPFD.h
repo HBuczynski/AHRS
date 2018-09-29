@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WidgetPFD.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.8.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -32,11 +32,10 @@ public:
     {
         if (WidgetPFD->objectName().isEmpty())
             WidgetPFD->setObjectName(QStringLiteral("WidgetPFD"));
-        WidgetPFD->resize(1024, 600);
+        WidgetPFD->resize(400, 400);
         framePFD = new QFrame(WidgetPFD);
         framePFD->setObjectName(QStringLiteral("framePFD"));
         framePFD->setGeometry(QRect(70, 70, 260, 260));
-        framePFD->setMaximumSize(QSize(600, 300));
         framePFD->setStyleSheet(QLatin1String("#framePFD\n"
 "{\n"
 "	background-color: #000;\n"
@@ -45,8 +44,8 @@ public:
         framePFD->setFrameShape(QFrame::StyledPanel);
         framePFD->setFrameShadow(QFrame::Raised);
         gridLayout = new QGridLayout(framePFD);
+        gridLayout->setContentsMargins(4, 4, 4, 4);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        gridLayout->setContentsMargins(2, 2, 2, 2);
         graphicsPFD = new qfi_PFD(framePFD);
         graphicsPFD->setObjectName(QStringLiteral("graphicsPFD"));
         graphicsPFD->setEnabled(false);
@@ -68,7 +67,7 @@ public:
 
     void retranslateUi(QWidget *WidgetPFD)
     {
-        WidgetPFD->setWindowTitle(QApplication::translate("WidgetPFD", "Form", 0));
+        WidgetPFD->setWindowTitle(QApplication::translate("WidgetPFD", "Form", Q_NULLPTR));
     } // retranslateUi
 
 };

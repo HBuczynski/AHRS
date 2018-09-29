@@ -1,11 +1,10 @@
 /***************************************************************************//**
- * @file example/WidgetPFD.h
+ * @file qfi_VSI.h
  * @author  Marek M. Cel <marekcel@marekcel.pl>
- * @author Dave Culp <daveculp@cox.net>
  *
  * @section LICENSE
  *
- * Copyright (C) 2018 Marek M. Cel, Dave Culp
+ * Copyright (C) 2013 Marek M. Cel
  *
  * This file is part of QFlightInstruments. You can redistribute and modify it
  * under the terms of GNU General Public License as published by the Free
@@ -26,7 +25,7 @@
  *
  * ---
  *
- * Copyright (C) 2018 Marek M. Cel, Dave Culp
+ * Copyright (C) 2013 Marek M. Cel
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the "Software"),
@@ -46,127 +45,71 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  ******************************************************************************/
-#ifndef WIDGETPFD_H
-#define WIDGETPFD_H
+#ifndef QFI_VSI_H
+#define QFI_VSI_H
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <QWidget>
-
-#include "qfi_PFD.h"
-
-#include "LayoutSquare.h"
+#include <QGraphicsView>
+#include <QGraphicsSvgItem>
 
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace Ui
-{
-    class WidgetPFD;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-class WidgetPFD : public QWidget
+/** Vertical Speed Indicator widget. */
+class qfi_VSI : public QGraphicsView
 {
     Q_OBJECT
 
 public:
 
-    explicit WidgetPFD( QWidget *parent = 0 );
+    /** Constructor. */
+    qfi_VSI( QWidget *parent = 0 );
 
-    virtual ~WidgetPFD();
+    /** Destructor. */
+    virtual ~qfi_VSI();
 
-    inline void update()
-    {
-        m_pfd->update();
-    }
+    /** Reinitiates widget. */
+    void reinit();
 
-    inline void setRoll( float roll )
-    {
-        m_pfd->setRoll( roll );
-    }
+    /** Refreshes (redraws) widget. */
+    void update();
 
-    inline void setPitch( float pitch )
-    {
-        m_pfd->setPitch( pitch );
-    }
+    /** @param climb rate [ft/min] */
+    void setClimbRate( float climbRate );
 
-//    inline void setFlightPathMarker( float aoa, float sideslip )
-//    {
-//        m_pfd->setFlightPathMarker( aoa, sideslip );
-//    }
+protected:
 
-//    inline void setSlipSkid( float slipSkid )
-//    {
-//        m_pfd->setSlipSkid( slipSkid );
-//    }
-
-//    inline void setDevH( float devH )
-//    {
-//        m_pfd->setBarH( devH );
-//        m_pfd->setDotH( devH );
-//    }
-
-//    inline void setDevV( float devV )
-//    {
-//        m_pfd->setBarV( devV );
-//        m_pfd->setDotV( devV );
-//    }
-
-    inline void setAltitude( float altitude )
-    {
-        m_pfd->setAltitude( altitude );
-    }
-
-    inline void setPressure( float pressure )
-    {
-        m_pfd->setPressure( pressure, qfi_PFD::IN );
-    }
-
-    inline void setAirspeed( float airspeed )
-    {
-        m_pfd->setAirspeed( airspeed );
-    }
-
-    inline void setMachNo( float machNo )
-    {
-        m_pfd->setMachNo( machNo );
-    }
-
-    inline void setHeading( float heading )
-    {
-        m_pfd->setHeading( heading );
-    }
-
-//    inline void setTurnRate( float turnRate )
-//    {
-//        m_pfd->setTurnRate( turnRate );
-//    }
-
-    inline void setClimbRate( float climbRate )
-    {
-        m_pfd->setClimbRate( climbRate );
-    }
-
-//    inline void setIdentifier( const QString &ident, bool isVisible )
-//    {
-//        m_pfd->setIdent( ident, isVisible );
-//    }
-
-//    inline void setDistance( float dist, bool isVisible )
-//    {
-//        m_pfd->setDistance( dist, isVisible );
-//    }
+    void resizeEvent( QResizeEvent *event );
 
 private:
 
-    Ui::WidgetPFD *m_ui;
-    qfi_PFD       *m_pfd;
-    LayoutSquare  *m_layoutSq;
+    QGraphicsScene *m_scene;
 
-    void setupUi();
+    QGraphicsSvgItem *m_itemFace;
+    QGraphicsSvgItem *m_itemHand;
+    QGraphicsSvgItem *m_itemCase;
+
+    float m_climbRate;
+
+    float m_scaleX;
+    float m_scaleY;
+
+    const int m_originalHeight;
+    const int m_originalWidth;
+
+    QPointF m_originalVsiCtr;
+
+    const int m_faceZ;
+    const int m_handZ;
+    const int m_caseZ;
+
+    void init();
+
+    void reset();
+
+    void updateView();
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#endif // WIDGETPFD_H
+#endif // QFI_VSI_H
