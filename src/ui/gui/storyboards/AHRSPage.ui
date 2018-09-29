@@ -191,7 +191,20 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QLabel" name="downFirst">
+     <widget class="QLabel" name="downFirstAHRS">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(75,75, 75);</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="downSecondAHRS">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(75,75, 75);</string>
       </property>
@@ -302,7 +315,20 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QLabel" name="upFirst">
+     <widget class="QLabel" name="upFirstAHRS">
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(45,45, 45);</string>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="upSecondAHRS">
       <property name="styleSheet">
        <string notr="true">background-color: rgb(45,45, 45);</string>
       </property>

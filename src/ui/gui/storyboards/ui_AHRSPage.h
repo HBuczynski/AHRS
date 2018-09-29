@@ -39,7 +39,8 @@ public:
     QGridLayout *buttonLayout;
     QFrame *horizontalHeader_2;
     QHBoxLayout *horizontalHeader;
-    QLabel *downFirst;
+    QLabel *downFirstAHRS;
+    QLabel *downSecondAHRS;
     QLabel *downGrdSpeed;
     QLabel *downAltGps;
     QLabel *downFltDuration;
@@ -47,7 +48,8 @@ public:
     QLabel *downPowerSupply;
     QFrame *horizontalHeader_3;
     QHBoxLayout *horizontalHeader_4;
-    QLabel *upFirst;
+    QLabel *upFirstAHRS;
+    QLabel *upSecondAHRS;
     QLabel *upGrdSpeed;
     QLabel *upAltGps;
     QLabel *upFltDuration;
@@ -90,7 +92,7 @@ public:
         verticalLayout_2 = new QVBoxLayout(verticalFrame);
         verticalLayout_2->setSpacing(0);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(0, 11, 0, 8);
+        verticalLayout_2->setContentsMargins(0, 8, 0, 0);
         devicesLayout = new QGridLayout();
         devicesLayout->setSpacing(0);
         devicesLayout->setObjectName(QStringLiteral("devicesLayout"));
@@ -103,7 +105,7 @@ public:
 
         buttonFrame = new QFrame(AHRSPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
-        buttonFrame->setGeometry(QRect(512, 555, 512, 40));
+        buttonFrame->setGeometry(QRect(512, 556, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
         buttonFrame->setLineWidth(0);
         horizontalButtons = new QHBoxLayout(buttonFrame);
@@ -125,12 +127,19 @@ public:
         horizontalHeader->setSpacing(3);
         horizontalHeader->setObjectName(QStringLiteral("horizontalHeader"));
         horizontalHeader->setContentsMargins(0, 0, 0, 0);
-        downFirst = new QLabel(horizontalHeader_2);
-        downFirst->setObjectName(QStringLiteral("downFirst"));
-        downFirst->setStyleSheet(QStringLiteral("background-color: rgb(75,75, 75);"));
-        downFirst->setAlignment(Qt::AlignCenter);
+        downFirstAHRS = new QLabel(horizontalHeader_2);
+        downFirstAHRS->setObjectName(QStringLiteral("downFirstAHRS"));
+        downFirstAHRS->setStyleSheet(QStringLiteral("background-color: rgb(75,75, 75);"));
+        downFirstAHRS->setAlignment(Qt::AlignCenter);
 
-        horizontalHeader->addWidget(downFirst);
+        horizontalHeader->addWidget(downFirstAHRS);
+
+        downSecondAHRS = new QLabel(horizontalHeader_2);
+        downSecondAHRS->setObjectName(QStringLiteral("downSecondAHRS"));
+        downSecondAHRS->setStyleSheet(QStringLiteral("background-color: rgb(75,75, 75);"));
+        downSecondAHRS->setAlignment(Qt::AlignCenter);
+
+        horizontalHeader->addWidget(downSecondAHRS);
 
         downGrdSpeed = new QLabel(horizontalHeader_2);
         downGrdSpeed->setObjectName(QStringLiteral("downGrdSpeed"));
@@ -176,12 +185,19 @@ public:
         horizontalHeader_4->setSpacing(3);
         horizontalHeader_4->setObjectName(QStringLiteral("horizontalHeader_4"));
         horizontalHeader_4->setContentsMargins(0, 0, 0, 0);
-        upFirst = new QLabel(horizontalHeader_3);
-        upFirst->setObjectName(QStringLiteral("upFirst"));
-        upFirst->setStyleSheet(QStringLiteral("background-color: rgb(45,45, 45);"));
-        upFirst->setAlignment(Qt::AlignCenter);
+        upFirstAHRS = new QLabel(horizontalHeader_3);
+        upFirstAHRS->setObjectName(QStringLiteral("upFirstAHRS"));
+        upFirstAHRS->setStyleSheet(QStringLiteral("background-color: rgb(45,45, 45);"));
+        upFirstAHRS->setAlignment(Qt::AlignCenter);
 
-        horizontalHeader_4->addWidget(upFirst);
+        horizontalHeader_4->addWidget(upFirstAHRS);
+
+        upSecondAHRS = new QLabel(horizontalHeader_3);
+        upSecondAHRS->setObjectName(QStringLiteral("upSecondAHRS"));
+        upSecondAHRS->setStyleSheet(QStringLiteral("background-color: rgb(45,45, 45);"));
+        upSecondAHRS->setAlignment(Qt::AlignCenter);
+
+        horizontalHeader_4->addWidget(upSecondAHRS);
 
         upGrdSpeed = new QLabel(horizontalHeader_3);
         upGrdSpeed->setObjectName(QStringLiteral("upGrdSpeed"));
@@ -227,13 +243,15 @@ public:
     void retranslateUi(QWidget *AHRSPage)
     {
         AHRSPage->setWindowTitle(QApplication::translate("AHRSPage", "Form", Q_NULLPTR));
-        downFirst->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
+        downFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
+        downSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         downGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         downAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         downFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         downBoxPower->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         downPowerSupply->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upFirst->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
+        upFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
+        upSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         upGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         upAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
         upFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));

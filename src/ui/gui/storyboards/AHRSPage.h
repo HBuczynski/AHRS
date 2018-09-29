@@ -7,7 +7,6 @@
 #include "WidgetTC.h"
 #include "WidgetVSI.h"
 
-
 #include "Buttons.h"
 
 namespace Ui {
