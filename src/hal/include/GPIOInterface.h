@@ -39,6 +39,8 @@ namespace hardware
         void activateFallingInterrupt(std::function<void()> callback);
 
     private:
+        uint8_t getMode(GPIOMode mode);
+        uint8_t getPullMode(GPIOPullMode pullMode);
 
         GPIO gpio_;
         std::function< void() > raisingInterruptCallback_;
