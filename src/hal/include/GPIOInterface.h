@@ -42,8 +42,8 @@ namespace hardware
         GPIO gpio_;
 
     private:
-        uint8_t getMode(GPIOMode mode);
-        uint8_t getPullMode(GPIOPullMode pullMode);
+        uint8_t getMode(GPIOMode mode) const;
+        uint8_t getPullMode(GPIOPullMode pullMode) const;
 
         std::function< void() > raisingInterruptCallback_;
         std::function< void() > fallingInterruptCallback_;
