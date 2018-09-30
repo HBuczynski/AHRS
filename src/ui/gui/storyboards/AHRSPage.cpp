@@ -1,9 +1,14 @@
 #include "AHRSPage.h"
 #include "ui_AHRSPage.h"
 
+using namespace std;
+using namespace utility;
+using namespace peripherals;
+
 AHRSPage::AHRSPage(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AHRSPage)
+    ui(new Ui::AHRSPage),
+    logger_(Logger::getInstance())
 {
     ui->setupUi(this);
 
@@ -12,19 +17,42 @@ AHRSPage::AHRSPage(QWidget *parent) :
 
 AHRSPage::~AHRSPage()
 {
+    if(buttons_)
+    {
+        delete buttons_;
+    }
+
+    if(widgetTC_)
+    {
+        delete widgetTC_;
+    }
+
+    if(widgetVSI_)
+    {
+        delete widgetVSI_;
+    }
+
+    if(widgetPFD_)
+    {
+        delete widgetPFD_;
+    }
+
     delete ui;
 }
 
 void AHRSPage::setup()
 {
+    // SETUP avionic devices
     widgetPFD_ = new WidgetPFD();
-
     ui->pfdLayout->addWidget(widgetPFD_);
-    widgetTC = new WidgetTC();
-    ui->devicesLayout->addWidget(widgetTC);
-    widgetVSI = new WidgetVSI();
-    ui->devicesLayout->addWidget(widgetVSI);
 
+    widgetTC_ = new WidgetTC();
+    ui->devicesLayout->addWidget(widgetTC_);
+
+    widgetVSI_ = new WidgetVSI();
+    ui->devicesLayout->addWidget(widgetVSI_);
+
+    // SETUP top labels
     QFont upFont("Arial", 10, QFont::Bold);
     QFont downFont("Arial", 13, QFont::Bold);
 
@@ -77,7 +105,96 @@ void AHRSPage::setup()
     ui->downPowerSupply->setFont(downFont);
     ui->downPowerSupply->setText("100 %");
 
-    buttons = new Buttons();
+    map<SwitchesCode, string> buttonNames;
+    buttonNames[SwitchesCode::FIRST_SWITCH] = "CALIBRATE";
+    buttonNames[SwitchesCode::SECOND_SWITCH] = "LOGS";
+    buttonNames[SwitchesCode::THIRD_SWITCH] = "MENU";
+    buttonNames[SwitchesCode::FOURTH_SWITCH] = "EXIT";
 
-    ui->buttonLayout->addWidget(buttons);
+    map<SwitchesCode, function<void()> > callbackFunctions;
+    callbackFunctions[SwitchesCode::FIRST_SWITCH] = bind(&AHRSPage::calibrateButton, this);
+    callbackFunctions[SwitchesCode::SECOND_SWITCH] = bind(&AHRSPage::menuButton, this);
+    callbackFunctions[SwitchesCode::THIRD_SWITCH] = bind(&AHRSPage::logsButton, this);
+    callbackFunctions[SwitchesCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
+
+    initializeButtons(buttonNames, callbackFunctions);
+}
+
+void AHRSPage::initializeButtons(map<SwitchesCode, string> name, map<SwitchesCode, function<void()> > callbackFunctions)
+{
+    buttons_ = new Buttons();
+    buttons_->initialize(name, callbackFunctions);
+
+    ui->buttonLayout->addWidget(buttons_);
+}
+
+void AHRSPage::calibrateButton()
+{
+
+}
+
+void AHRSPage::menuButton()
+{
+
+}
+
+void AHRSPage::logsButton()
+{
+
+}
+
+void AHRSPage::exitButton()
+{
+
+}
+
+void AHRSPage::setRoll( float roll )
+{
+    widgetPFD_->setRoll( roll );
+}
+
+void AHRSPage::setPitch( float pitch )
+{
+    widgetPFD_->setPitch( pitch );
+}
+
+void AHRSPage::setAltitude( float altitude )
+{
+    widgetPFD_->setAltitude( altitude );
+}
+
+void AHRSPage::setPressure( float pressure )
+{
+    widgetPFD_->setPressure( pressure);
+}
+
+void AHRSPage::setAirspeed( float airspeed )
+{
+    widgetPFD_->setAirspeed( airspeed );
+}
+
+void AHRSPage::setMachNo( float machNo )
+{
+    widgetPFD_->setMachNo( machNo );
+}
+
+void AHRSPage::setHeading( float heading )
+{
+    widgetPFD_->setHeading( heading );
+}
+
+void AHRSPage::setClimbRate( float climbRate )
+{
+    widgetPFD_->setClimbRate( climbRate );
+    widgetVSI_->setClimbRate( climbRate );
+}
+
+void AHRSPage::setTurnRate( float turnRate )
+{
+    widgetTC_->setTurnRate( turnRate );
+}
+
+void AHRSPage::setSlipSkid( float slipSkid )
+{
+    widgetTC_->setSlipSkid( slipSkid );
 }

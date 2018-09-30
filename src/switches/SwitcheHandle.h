@@ -15,13 +15,12 @@
 
 namespace  peripherals
 {
-    // change to enum class
     enum class SwitchesCode
     {
-        UP_SWITCH = 0x10,
-        BOTTOM_SWITCH = 0x20,
-        OK_SWITCH = 0x30,
-        CANCEL_SWITCH = 0x40
+        FIRST_SWITCH = 0x10,
+        SECOND_SWITCH = 0x20,
+        THIRD_SWITCH = 0x30,
+        FOURTH_SWITCH = 0x40
     };
 
     enum class SwitchState

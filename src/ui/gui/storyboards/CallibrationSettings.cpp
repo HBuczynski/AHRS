@@ -75,7 +75,7 @@ void CallibrationSettings::setupPage()
     ui->newPlaneLineEdit->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
     ui->newPlaneLineEdit->setFont(newPlaneFont);
 
-    // Line Under buttons
+    // Line Under buttons_
     ui->dotsLabel->setStyleSheet("QLabel { color : white}");
     ui->dotsLabel->setFont(labelFont);
     ui->dotsLabel->setText("................................................................................................"

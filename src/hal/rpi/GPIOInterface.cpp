@@ -28,19 +28,19 @@ bool GPIOInterface::initialize() const
 
 void GPIOInterface::pinWrite(int state)
 {
-
+    gpioWrite(gpio_.pinNumber, state);
 }
 
 int GPIOInterface::pinRead() const
 {
-
+    return gpioRead(gpio_.pinNumber);
 }
 
 void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
 {
     raisingInterruptCallback_ = callback;
 
-    //TODO
+    
 }
 
 void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
