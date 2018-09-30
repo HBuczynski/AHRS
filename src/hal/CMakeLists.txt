@@ -25,7 +25,7 @@ target_include_directories(
         "$<INSTALL_INTERFACE:include>"
 )
 
-if(${TARGET_PLATFROM} STREQUAL rpi)
+if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_ui))
     file(GLOB pigpio_source_list "../../3rd_party/PIGPIO/*.c")
     file(GLOB pigpio_header_list "../../3rd_party/PIGPIO/*.h")
 
