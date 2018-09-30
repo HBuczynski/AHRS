@@ -16,6 +16,8 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
         GPIO gpio;
 
         gpio.pinNumber = 23;
+        gpio.pinMode = GPIOMode::IN;
+        gpio.pushPullMode = GPIOPullMode::DOWN;
 
         GPIOInterface anInterface(gpio);
 

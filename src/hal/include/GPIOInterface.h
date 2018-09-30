@@ -5,12 +5,23 @@
 
 namespace hardware
 {
+    enum class GPIOMode : uint8_t
+    {
+        IN = 0x01,
+        OUT = 0x02
+    };
+
+    enum class GPIOPullMode : uint8_t
+    {
+        DOWN = 0x01,
+        UP = 0x02
+    };
 
     struct GPIO
     {
         uint8_t pinNumber;
-        uint8_t pinMode;
-        uint8_t pushPullMode;
+        GPIOMode pinMode;
+        GPIOPullMode pushPullMode;
     };
 
     class GPIOInterface
