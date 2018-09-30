@@ -4,7 +4,8 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-#include "../include/GPIOInterface.h"
+#include "../include/Switch.h"
+#include "../../../3rd_party/PIGPIO/pigpio.h"
 
 using namespace std;
 using namespace hardware;
@@ -19,11 +20,14 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
         gpio.pinMode = GPIOMode::IN;
         gpio.pushPullMode = GPIOPullMode::DOWN;
 
-        GPIOInterface anInterface(gpio);
+        Switch aSwitch(gpio);
+
+        aSwitch.registerHandler(FALLING_EDGE);
+        aSwitch.registerHandler(RISING_EDGE);
 
         while(1)
         {
-            cout << anInterface.pinRead() << endl;
+
         }
 
     }

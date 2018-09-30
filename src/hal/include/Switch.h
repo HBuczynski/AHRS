@@ -14,7 +14,9 @@ namespace hardware
         Switch(GPIO gpio);
         ~Switch();
 
-        bool registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &timeout = 0, void *intData = nullptr);
+        bool registerHandler(const int &edge, const int &timeout = 0, void *intData = nullptr);
+
+        static void callback(int gpio, int level, uint32_t tick, void *userdata);
 
     };
 }

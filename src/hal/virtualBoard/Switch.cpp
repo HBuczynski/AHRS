@@ -6,7 +6,7 @@ using namespace std;
 using namespace hardware;
 
 Switch::Switch(GPIO gpio)
-    : GPIOInterface(gpio)
+        : GPIOInterface(gpio)
 {
 }
 
@@ -17,12 +17,8 @@ Switch::~Switch()
 
 bool Switch::registerHandler(const int &edge, const int &timeout, void *intData)
 {
-    if(!gpioSetISRFuncEx(gpio_.pinNumber, edge, timeout, callback, intData))
-    {
-        std::cout << "ISR register correct." << std::endl;
-        return true;
-    }
-    return false;
+
+    return true;
 }
 
 void Switch::callback(int gpio, int level, uint32_t tick, void *userdata)
