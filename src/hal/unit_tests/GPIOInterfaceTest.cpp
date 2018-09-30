@@ -2,27 +2,27 @@
 
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
+#include <iostream>
 
 #include "../include/GPIOInterface.h"
 
-BOOST_AUTO_TEST_SUITE( test_multiply )
+using namespace std;
+using namespace hardware;
 
-    BOOST_AUTO_TEST_CASE( test_int )
+BOOST_AUTO_TEST_SUITE( gpio_test )
+
+    BOOST_AUTO_TEST_CASE( reading )
     {
-        BOOST_CHECK( 21 == 21);
-    }
+        GPIO gpio;
 
-    BOOST_AUTO_TEST_CASE( test_float )
-    {
-        BOOST_CHECK( 24.75 == 24.75);
-    }
+        gpio.pinNumber = 23;
 
-BOOST_AUTO_TEST_SUITE_END()
+        GPIOInterface anInterface(gpio);
 
-BOOST_AUTO_TEST_SUITE( test_computeInterest )
-
-    BOOST_AUTO_TEST_CASE( test_simple )
-    {
+        while(1)
+        {
+            cout << anInterface.pinRead() << endl;
+        }
 
     }
 

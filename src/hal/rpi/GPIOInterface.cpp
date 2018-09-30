@@ -18,7 +18,7 @@ GPIOInterface::~GPIOInterface()
 
 bool GPIOInterface::initialize() const
 {
-    if(!gpioSetMode(gpio_.pinNumber, gpio_.pinMode) && !gpioSetPullUpDown(gpio_.pinNumber, gpio_.pushPullMode))
+    if(!gpioSetMode(23, PI_INPUT) && !gpioSetPullUpDown(23, PI_PUD_DOWN))
     {
         return true;
     }
@@ -40,7 +40,7 @@ void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
 {
     raisingInterruptCallback_ = callback;
 
-    
+
 }
 
 void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
