@@ -21,7 +21,7 @@ GPIOInterface::~GPIOInterface()
 
 bool GPIOInterface::initialize() const
 {
-    if(!gpioSetMode(gpio_.pinNumber, getMode(gpio_.pinMode)) && !gpioSetPullUpDown(gpio_.pinNumber, gpio_.pushPullMode))
+    if(!gpioSetMode(gpio_.pinNumber, getMode(gpio_.pinMode)) && !gpioSetPullUpDown(gpio_.pinNumber, getPullMode(gpio_.pushPullMode)))
     {
         return true;
     }
