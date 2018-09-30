@@ -31,34 +31,34 @@ bool GPIOInterface::initialize() const
 
 uint8_t GPIOInterface::getMode(GPIOMode mode)
 {
-    uint8_t mode = 0;
+    uint8_t currentMode = 0;
 
-    if(gpio_.pinMode == GPIOMode::IN)
+    if(mode == GPIOMode::IN)
     {
-        mode = PI_INPUT;
+        currentMode = PI_INPUT;
     }
     else
     {
-        mode = PI_OUTPUT;
+        currentMode = PI_OUTPUT;
     }
 
-    return mode;
+    return currentMode;
 }
 
 uint8_t GPIOInterface::getPullMode(GPIOPullMode pullMode)
 {
-    uint8_t pullMode = 0;
+    uint8_t currentPullMode = 0;
 
-    if(gpio_.pushPullMode == GPIOPullMode::DOWN)
+    if(pullMode == GPIOPullMode::DOWN)
     {
-        pullMode = PI_PUD_DOWN;
+        currentPullMode = PI_PUD_DOWN;
     }
     else
     {
-        pullMode = PI_PUD_UP;
+        currentPullMode = PI_PUD_UP;
     }
 
-    return pullMode;
+    return currentPullMode;
 }
 
 void GPIOInterface::pinWrite(int state)
