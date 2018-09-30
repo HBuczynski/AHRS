@@ -3,9 +3,7 @@
 
 #include "GPIOInterface.h"
 
-#if defined(feeder) || defined(cockpit_ui)
-    #include "../../../3rd_party/PIGPIO/pigpio.h"
-#endif
+#include "../../../3rd_party/PIGPIO/pigpio.h"
 
 
 namespace hardware

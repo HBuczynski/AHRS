@@ -45,7 +45,7 @@ uint8_t GPIOInterface::getMode(GPIOMode mode) const
     return currentMode;
 }
 
-uint8_t GPIOInterface::getPullMode(GPIOPullMode pullMode) const 
+uint8_t GPIOInterface::getPullMode(GPIOPullMode pullMode) const
 {
     uint8_t currentPullMode = 0;
 
