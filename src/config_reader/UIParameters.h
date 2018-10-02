@@ -7,6 +7,8 @@ namespace config
 {
     const std::string UI_PARAMETERS_FILE_PATH = "../../configuration_files/ui_parameters.json";
     const std::string UI_COMMUNICATION_PROCESS_PARAMETERS_PATH = "../../configuration_files/ui_communication_processes.json";
+    const std::string UI_BUTTONS_PARAMETERS_PATH = "../../configuration_files/ui_buttons.json";
+
 
     enum class UICommunicationMode : uint8_t
     {

@@ -170,6 +170,21 @@ UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSy
     return uiCommunicationSystemParameters;
 }
 
+vector<hardware::GPIO> ConfigurationReader::getUISwitches(const string &filePath)
+{
+    JSONParser jsonParser(filePath);
+    vector<hardware::GPIO> uiSwitches;
+
+    vector<string> configNames;
+    configNames.push_back("UIButtons");
+    configNames.push_back("FirstButton");
+    configNames.push_back("PinNumber");
+
+
+
+    return uiSwitches;
+}
+
 void ConfigurationReader::setUICommunicationMode(const string &filePath, uint8_t processNumber, UICommunicationMode mode)
 {
     JSONParser jsonParser(filePath);

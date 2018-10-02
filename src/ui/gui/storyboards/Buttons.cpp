@@ -1,6 +1,10 @@
 #include "Buttons.h"
 #include "ui_Buttons.h"
 
+#include <functional>
+#include <config_reader/ConfigurationReader.h>
+#include <config_reader/UIParameters.h>
+
 using namespace std;
 using namespace utility;
 using namespace peripherals;
@@ -43,26 +47,49 @@ void Buttons::setup()
     ui->fourthButton->setText(" ");
 }
 
-void Buttons::initialize(map<SwitchesCode, string> name, map<SwitchesCode, function<void()> > callbackFunctions)
+void Buttons::initialize(const map<SwitchesCode, string> &names, const map<SwitchesCode, function<void()> > &callbackFunctions)
 {
-    name_ = name;
-    callbackFunctions_ = callbackFunctions;
-
-    initializeText();
+    initializeText(names);
+    initializeSwitches(callbackFunctions);
 }
 
-void Buttons::initializeText()
+void Buttons::initializeText(const map<SwitchesCode, string> &names)
 {
-    ui->firstButton->setText(getButtonText(SwitchesCode::FIRST_SWITCH).c_str());
-    ui->secondButton->setText(getButtonText(SwitchesCode::SECOND_SWITCH).c_str());
-    ui->thirdButton->setText(getButtonText(SwitchesCode::THIRD_SWITCH).c_str());
-    ui->fourthButton->setText(getButtonText(SwitchesCode::FOURTH_SWITCH).c_str());
+    ui->firstButton->setText(getButtonText(SwitchesCode::FIRST_SWITCH, names).c_str());
+    ui->secondButton->setText(getButtonText(SwitchesCode::SECOND_SWITCH, names).c_str());
+    ui->thirdButton->setText(getButtonText(SwitchesCode::THIRD_SWITCH, names).c_str());
+    ui->fourthButton->setText(getButtonText(SwitchesCode::FOURTH_SWITCH, names).c_str());
 }
 
-string Buttons::getButtonText(SwitchesCode switchCode)
+void Buttons::initializeSwitches(const map<SwitchesCode, function<void()> > &callbackFunctions)
 {
-    const auto firstSwitchName = name_.find(switchCode);
-    if(firstSwitchName != name_.end())
+    const function< void(SwitchesCode) > errorCallback = bind(&Buttons::switchError, this, std::placeholders::_1);
+    const auto switchesGPIO = config::ConfigurationReader::getUISwitches(config::UI_BUTTONS_PARAMETERS_PATH.c_str());
+    auto iterSwitchesGPIO = switchesGPIO.begin();
+
+    if(callbackFunctions.size() == switchesGPIO.size())
+    {
+        for (const auto callbackIter : callbackFunctions)
+        {
+            switches_[callbackIter.first] = make_unique<SwitcheHandle>((*iterSwitchesGPIO), callbackIter.first);
+            switches_[callbackIter.first]->initializeCallbacks(callbackIter.second, errorCallback);
+            ++iterSwitchesGPIO;
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = std::string("Buttons :: Wrong switches hardware initialization.");
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+}
+
+string Buttons::getButtonText(SwitchesCode switchCode, map<SwitchesCode, string> switchNames)
+{
+    const auto firstSwitchName = switchNames.find(switchCode);
+    if(firstSwitchName != switchNames.end())
     {
         return firstSwitchName->second;
     }
@@ -75,5 +102,14 @@ string Buttons::getButtonText(SwitchesCode switchCode)
         }
 
         return string("");
+    }
+}
+
+void Buttons::switchError(peripherals::SwitchesCode code)
+{
+    if(logger_.isErrorEnable())
+    {
+        const string message = std::string("Buttons :: Error from button interruption, BUTTONCode:" + to_string((int)code));
+        logger_.writeLog(LogType::ERROR_LOG, message);
     }
 }

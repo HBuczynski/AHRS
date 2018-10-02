@@ -6,6 +6,7 @@
 #include "UIParameters.h"
 #include "AircraftParameters.h"
 
+#include <hal/include/GPIOInterface.h>
 #include <memory>
 #include <vector>
 
@@ -24,6 +25,7 @@ namespace config
         static UIMessageQueues getUIMessageQueues(const std::string &filePath);
         static UISharedMemory getUISharedMemory(const std::string &filePath);
         static UICommunicationSystemParameters getUICommunicationProcessSystemParameters(const std::string &filePath);
+        static std::vector<hardware::GPIO> getUISwitches(const std::string &filePath);
         // Setters
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 

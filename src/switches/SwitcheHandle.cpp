@@ -10,20 +10,42 @@ using namespace peripherals;
 
 SwitcheHandle::SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code)
     :  gpio_(gpioProperties),
+       switch_(gpioProperties),
        code_(code),
        state_(SwitchState::LOW_STATE),
        errorInterruptCounter_(0),
        logger_(Logger::getInstance())
 {
-    function< void() > raisingCallback = bind(&SwitcheHandle::handleRaisingInterrupt, this);
-    function< void() > fallingCallback = bind(&SwitcheHandle::handleFallingInterrupt, this);
-
-    gpio_.activateRaisingInterrupt(raisingCallback);
-    gpio_.activateFallingInterrupt(fallingCallback);
+    initializeInterrupts();
 }
 
 SwitcheHandle::~SwitcheHandle()
 {}
+
+void SwitcheHandle::initializeInterrupts()
+{
+    bool isSuccess = true;
+
+    isSuccess = isSuccess & switch_.registerHandler(callback, FALLING_EDGE, 0, reinterpret_cast<void*>(this));
+    isSuccess = isSuccess & switch_.registerHandler(callback, RISING_EDGE, 0,  reinterpret_cast<void*>(this));
+
+    if(isSuccess)
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("SwitcheHandle :: Interrupts initialized successful for button: ") + to_string(static_cast<uint8_t>(code_));
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("SwitcheHandle :: Could not initialize interrupts for buttons: ") + to_string(static_cast<uint8_t>(code_));
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+}
 
 void SwitcheHandle::resetSwitch()
 {
@@ -31,10 +53,23 @@ void SwitcheHandle::resetSwitch()
     state_ = SwitchState::LOW_STATE;
 }
 
-void SwitcheHandle::initializeCallbacks(std::function< void(SwitchesCode) > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback)
+void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback)
 {
     pressedSwitchCallback_ = pressedSwitchCallback;
     errorCallback_ = errorCallback;
+}
+
+void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
+{
+    SwitcheHandle* switchHandle = reinterpret_cast<SwitcheHandle*>(userdata);
+    if(level == 1)
+    {
+        switchHandle->handleRaisingInterrupt();
+    }
+    else
+    {
+        switchHandle->handleFallingInterrupt();
+    }
 }
 
 void SwitcheHandle::handleRaisingInterrupt()
@@ -58,7 +93,7 @@ void SwitcheHandle::handleFallingInterrupt()
 {
     if(state_ == SwitchState::HIGH_AFTER_DEBONCE)
     {
-        pressedSwitchCallback_(code_);
+        pressedSwitchCallback_();
         state_ = SwitchState::LOW_STATE;
     }
     else

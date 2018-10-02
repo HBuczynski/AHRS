@@ -32,6 +32,7 @@ add_library(jsonlib STATIC "../../3rd_party/json/jsoncpp.cpp"
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC jsonlib)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

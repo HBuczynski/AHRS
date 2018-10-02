@@ -20,16 +20,18 @@ public:
     explicit Buttons(QWidget *parent = 0);
     ~Buttons();
 
-    void initialize(std::map<peripherals::SwitchesCode, std::string> name, std::map<peripherals::SwitchesCode, std::function<void()> > callbackFunctions);
+    void initialize(const std::map<peripherals::SwitchesCode, std::string> &names, const std::map<peripherals::SwitchesCode, std::function<void()> > &callbackFunctions);
 
 private:
     void setup();
-    void initializeText();
-    std::string getButtonText(peripherals::SwitchesCode switchCode);
+    void initializeText(const std::map<peripherals::SwitchesCode, std::string> &names);
+    void initializeSwitches(const std::map<peripherals::SwitchesCode, std::function<void()> > &callbackFunctions);
+
+    std::string getButtonText(peripherals::SwitchesCode switchCode, std::map<peripherals::SwitchesCode, std::string> names);
+    void switchError(peripherals::SwitchesCode code);
 
     Ui::Buttons *ui;
-    std::map<peripherals::SwitchesCode, std::string> name_;
-    std::map<peripherals::SwitchesCode, std::function<void()> > callbackFunctions_;
+    std::map<peripherals::SwitchesCode, std::unique_ptr<peripherals::SwitcheHandle> > switches_;
 
     utility::Logger& logger_;
 };

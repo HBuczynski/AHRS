@@ -10,16 +10,6 @@ GPIOInterface::GPIOInterface(GPIO gpio)
 GPIOInterface::~GPIOInterface()
 {}
 
-void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
-{
-    raisingInterruptCallback_ = callback;
-}
-
-void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
-{
-    fallingInterruptCallback_ = callback;
-}
-
 bool GPIOInterface::initialize() const
 {
     return true;

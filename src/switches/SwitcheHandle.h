@@ -3,6 +3,7 @@
 
 #include <logger/Logger.h>
 #include <hal/include/GPIOInterface.h>
+#include <hal/include/Switch.h>
 #include <chrono>
 #include <cstdio>
 #include <cstdlib>
@@ -39,9 +40,12 @@ namespace  peripherals
         ~SwitcheHandle();
 
         void resetSwitch();
-        void initializeCallbacks(std::function< void(SwitchesCode) > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback);
+        void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback);
 
     private:
+        void initializeInterrupts();
+        static void callback(int gpio, int level, uint32_t tick, void *userdata);
+
         void handleFallingInterrupt();
         void handleRaisingInterrupt();
 
@@ -57,11 +61,13 @@ namespace  peripherals
 
     private:
         hardware::GPIOInterface gpio_;
+        hardware::Switch switch_;
+
         SwitchesCode code_;
         SwitchState  state_;
 
         uint8_t errorInterruptCounter_;
-        std::function< void(SwitchesCode) > pressedSwitchCallback_;
+        std::function< void() > pressedSwitchCallback_;
         std::function< void(SwitchesCode) > errorCallback_;
 
         const uint32_t CRITICAL_TIME_SEC = 4;

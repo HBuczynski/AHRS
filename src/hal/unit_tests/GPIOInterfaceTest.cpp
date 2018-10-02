@@ -22,8 +22,8 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
 
         Switch aSwitch(gpio);
 
-        aSwitch.registerHandler(FALLING_EDGE);
-        aSwitch.registerHandler(RISING_EDGE);
+//        aSwitch.registerHandler(FALLING_EDGE);
+//        aSwitch.registerHandler(RISING_EDGE);
 
         while(1)
         {

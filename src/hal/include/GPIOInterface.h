@@ -35,9 +35,6 @@ namespace hardware
         void pinWrite(int state);
         int pinRead() const;
 
-        void activateRaisingInterrupt(std::function<void()> callback);
-        void activateFallingInterrupt(std::function<void()> callback);
-
     protected:
         GPIO gpio_;
 
@@ -45,8 +42,6 @@ namespace hardware
         uint8_t getMode(GPIOMode mode) const;
         uint8_t getPullMode(GPIOPullMode pullMode) const;
 
-        std::function< void() > raisingInterruptCallback_;
-        std::function< void() > fallingInterruptCallback_;
     };
 }
 

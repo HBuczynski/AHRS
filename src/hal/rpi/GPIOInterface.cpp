@@ -70,17 +70,3 @@ int GPIOInterface::pinRead() const
 {
     return gpioRead(gpio_.pinNumber);
 }
-
-void GPIOInterface::activateRaisingInterrupt(std::function<void()> callback)
-{
-    raisingInterruptCallback_ = callback;
-
-
-}
-
-void GPIOInterface::activateFallingInterrupt(std::function<void()> callback)
-{
-    fallingInterruptCallback_ = callback;
-
-    //TODO
-}

@@ -1,0 +1,32 @@
+{
+  "UIButtons" :
+  {
+    "FirstButton" :
+    {
+        "PinNumber" : 23,
+        "GPIOMode" : "IN"
+        "GPIOPullMode" : "UP"
+    },
+
+    "SecondButton" :
+    {
+        "PinNumber" : 23,
+        "GPIOMode" : "IN"
+        "GPIOPullMode" : "UP"
+    },
+
+    "ThirdButton" :
+    {
+        "PinNumber" : 23,
+        "GPIOMode" : "IN"
+        "GPIOPullMode" : "UP"
+    },
+
+    "FourthButton" :
+    {
+        "PinNumber" : 23,
+        "GPIOMode" : "IN"
+        "GPIOPullMode" : "UP"
+    }
+  }
+}
