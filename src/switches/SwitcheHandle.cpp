@@ -82,7 +82,8 @@ void SwitcheHandle::handleRaisingInterrupt()
     {
         cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
-        initializeDebounceTimer();
+        //initializeDebounceTimer();
+        changeStateAfterDebounce();
     }
     else
     {
@@ -97,7 +98,8 @@ void SwitcheHandle::handleFallingInterrupt()
         cout << "IN handleFallingInterrupt: HIGH_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
-        initializeDebounceTimer();
+        //initializeDebounceTimer();
+        changeStateAfterDebounce();
         initializeCriticalDelay();
 
     }
