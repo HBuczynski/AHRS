@@ -78,8 +78,8 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 
 void SwitcheHandle::handleRaisingInterrupt()
 {
-    cout << "State:  " << (int)state_ << endl;
-    
+    cout << "State:  " << (int)state_.load() << endl;
+
     if(state_ == SwitchState::LOW_STATE)
     {
         cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
@@ -95,7 +95,7 @@ void SwitcheHandle::handleRaisingInterrupt()
 
 void SwitcheHandle::handleFallingInterrupt()
 {
-    cout << "State:  " << (int)state_ << endl;
+    cout << "State:  " << (int)state_.load() << endl;
 
     if(state_ == SwitchState::HIGH_STATE)
     {

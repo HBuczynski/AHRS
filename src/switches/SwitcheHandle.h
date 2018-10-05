@@ -11,6 +11,7 @@
 #include <string>
 #include <cstring>
 #include <csignal>
+#include <atomic>
 
 #include <bits/siginfo.h>
 
@@ -24,7 +25,7 @@ namespace  peripherals
         FOURTH_SWITCH = 0x40
     };
 
-    enum class SwitchState
+    enum class SwitchState : uint8_t
     {
         LOW_DEBOUNCE_SECTION,
         LOW_STATE,
@@ -66,7 +67,7 @@ namespace  peripherals
         hardware::Switch switch_;
 
         SwitchesCode code_;
-        SwitchState  state_;
+        std::atomic<SwitchState>  state_;
 
         uint8_t errorInterruptCounter_;
         std::function< void() > pressedSwitchCallback_;
