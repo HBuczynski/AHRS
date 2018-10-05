@@ -34,7 +34,7 @@
     "ExecutableFiles" :
     {
       "externalCommunicationProcess" : "external_ui_communication",
-      "guiProcess" : "lololo"
+      "guiProcess" : "gui"
     }
   }
 }

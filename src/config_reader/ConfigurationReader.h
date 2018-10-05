@@ -18,7 +18,7 @@ namespace config
         ConfigurationReader();
         ~ConfigurationReader();
 
-        /* UI Cockpit commands */
+        /**** UI Cockpit commands ****/
         // Getters
         static UIExecutableFiles getUIExecutableFiles(const std::string &filePath);
         static UIWirelessCommunication getUIWirelessCommunication(const std::string &filePath);
@@ -29,7 +29,7 @@ namespace config
         // Setters
         static void setUICommunicationMode(const std::string &filePath, uint8_t processNumber, UICommunicationMode mode);
 
-        /* Feeder Commands */
+        /**** Feeder Commands ****/
         // Getters
         static std::vector<config::AircraftParameters> getAircraftDatabase(const std::string &filePath);
         static FeederExecutableFiles getFeederExecutableFiles(const std::string &filePath);
@@ -41,6 +41,10 @@ namespace config
         // Setters
         static void setFeederSystemValue(const std::string &filePath, FeederMode mode);
         static void addAircraftToDatabase(const std::string &filePath, AircraftParameters plane);
+
+    private:
+        static hardware::GPIOMode getGPIOMode(std::string mode);
+        static hardware::GPIOPullMode getGPIOPullMode(std::string pullMode);
     };
 }
 

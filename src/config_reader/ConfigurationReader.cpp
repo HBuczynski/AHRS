@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace config;
+using namespace hardware;
 
 ConfigurationReader::ConfigurationReader()
 {}
@@ -135,10 +136,13 @@ UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSy
     UICommunicationSystemParameters uiCommunicationSystemParameters;
 
     vector<string> configNames;
+
+    /**** FIRST Communication Process ****/
     configNames.push_back("UIFirstCommunication");
     configNames.push_back("mode");
 
     string tempVariable;
+    uint8_t tempProcessNumber;
     jsonParser.getString(configNames, tempVariable);
 
     if(tempVariable == "MASTER")
@@ -150,6 +154,13 @@ UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSy
         uiCommunicationSystemParameters.firstProcess.mode = UICommunicationMode::REDUNDANT;
     }
 
+    configNames.pop_back();
+    configNames.push_back("processNumber");
+    jsonParser.getUINT8t(configNames, tempProcessNumber);
+    uiCommunicationSystemParameters.firstProcess.processNumber = tempProcessNumber;
+
+
+    /**** SECOND Communication Process ****/
     configNames.pop_back();
     configNames.pop_back();
     configNames.push_back("UISecondCommunication");
@@ -167,22 +178,131 @@ UICommunicationSystemParameters ConfigurationReader::getUICommunicationProcessSy
         uiCommunicationSystemParameters.secondProcess.mode = UICommunicationMode::REDUNDANT;
     }
 
+    configNames.pop_back();
+    configNames.push_back("processNumber");
+    jsonParser.getUINT8t(configNames, tempProcessNumber);
+    uiCommunicationSystemParameters.secondProcess.processNumber = tempProcessNumber;
+
     return uiCommunicationSystemParameters;
 }
 
-vector<hardware::GPIO> ConfigurationReader::getUISwitches(const string &filePath)
+vector<GPIO> ConfigurationReader::getUISwitches(const string &filePath)
 {
     JSONParser jsonParser(filePath);
-    vector<hardware::GPIO> uiSwitches;
+    vector<GPIO> uiSwitches;
+
+    GPIO currentGPIO;
+    uint8_t currentPinNumber = 0;
+    string mode;
+    string pullMode;
 
     vector<string> configNames;
     configNames.push_back("UIButtons");
+
+    /***  FIRST Button  ***/
     configNames.push_back("FirstButton");
     configNames.push_back("PinNumber");
+    jsonParser.getUINT8t(configNames, currentPinNumber);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOMode");
+    jsonParser.getString(configNames, mode);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOPullMode");
+    jsonParser.getString(configNames, pullMode);
+
+    currentGPIO.pinNumber = currentPinNumber;
+    currentGPIO.pinMode = getGPIOMode(mode);
+    currentGPIO.pushPullMode = getGPIOPullMode(pullMode);
+    uiSwitches.push_back(currentGPIO);
 
 
+    /***  SECOND Button  ***/
+    configNames.pop_back();
+    configNames.pop_back();
+    configNames.push_back("SecondButton");
+    configNames.push_back("PinNumber");
+    jsonParser.getUINT8t(configNames, currentPinNumber);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOMode");
+    jsonParser.getString(configNames, mode);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOPullMode");
+    jsonParser.getString(configNames, pullMode);
+
+    currentGPIO.pinNumber = currentPinNumber;
+    currentGPIO.pinMode = getGPIOMode(mode);
+    currentGPIO.pushPullMode = getGPIOPullMode(pullMode);
+    uiSwitches.push_back(currentGPIO);
+
+    /***  THIRD Button  ***/
+    configNames.pop_back();
+    configNames.pop_back();
+    configNames.push_back("ThirdButton");
+    configNames.push_back("PinNumber");
+    jsonParser.getUINT8t(configNames, currentPinNumber);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOMode");
+    jsonParser.getString(configNames, mode);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOPullMode");
+    jsonParser.getString(configNames, pullMode);
+
+    currentGPIO.pinNumber = currentPinNumber;
+    currentGPIO.pinMode = getGPIOMode(mode);
+    currentGPIO.pushPullMode = getGPIOPullMode(pullMode);
+    uiSwitches.push_back(currentGPIO);
+
+    /***  FOURTH Button  ***/
+    configNames.pop_back();
+    configNames.pop_back();
+    configNames.push_back("FourthButton");
+    configNames.push_back("PinNumber");
+    jsonParser.getUINT8t(configNames, currentPinNumber);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOMode");
+    jsonParser.getString(configNames, mode);
+
+    configNames.pop_back();
+    configNames.push_back("GPIOPullMode");
+    jsonParser.getString(configNames, pullMode);
+
+    currentGPIO.pinNumber = currentPinNumber;
+    currentGPIO.pinMode = getGPIOMode(mode);
+    currentGPIO.pushPullMode = getGPIOPullMode(pullMode);
+    uiSwitches.push_back(currentGPIO);
 
     return uiSwitches;
+}
+
+GPIOMode ConfigurationReader::getGPIOMode(string mode)
+{
+    if(mode == "IN")
+    {
+        return GPIOMode::IN;
+    }
+    else
+    {
+        return GPIOMode::OUT;
+    }
+}
+
+GPIOPullMode ConfigurationReader::getGPIOPullMode(string pullMode)
+{
+    if(pullMode == "DOWN")
+    {
+        return GPIOPullMode::DOWN;
+    }
+    else
+    {
+        return GPIOPullMode::UP;
+    }
 }
 
 void ConfigurationReader::setUICommunicationMode(const string &filePath, uint8_t processNumber, UICommunicationMode mode)
