@@ -31,6 +31,8 @@ void SwitcheHandle::initializeInterrupts()
 
     if(isSuccess)
     {
+        cout << "SwitcheHandle :: Interrupts initialized successful for button: " + to_string(static_cast<uint8_t>(code_)) << endl;
+
         if(logger_.isInformationEnable())
         {
             const string message = string("SwitcheHandle :: Interrupts initialized successful for button: ") + to_string(static_cast<uint8_t>(code_));
@@ -61,6 +63,7 @@ void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCal
 
 void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 {
+    cout << "In callback" << endl;
     SwitcheHandle* switchHandle = reinterpret_cast<SwitcheHandle*>(userdata);
     if(level == 1)
     {
