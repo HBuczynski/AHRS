@@ -26,11 +26,12 @@ namespace  peripherals
 
     enum class SwitchState
     {
-        LOW_BEFORE_DEBOUNCE,
-        LOW_AFTER_DEBOUNCE,
+        LOW_DEBOUNCE_SECTION,
         LOW_STATE,
+        HIGH_DEBOUNCE_SECTION,
         HIGH_STATE,
-        ERROR_STATE
+        ERROR_CRITICAL_TIME,
+        ERROR_DEBOUNCE,
     };
 
     // Class is responsible for handle one of the button.

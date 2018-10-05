@@ -78,11 +78,10 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 
 void SwitcheHandle::handleRaisingInterrupt()
 {
-    if(state_ == SwitchState::LOW_AFTER_DEBOUNCE)
+    if(state_ == SwitchState::LOW_STATE)
     {
         cout << "In handleRaisingInterrupt: LOW_AFTER_DEBOUNCE" << endl;
-        pressedSwitchCallback_();
-        state_ = SwitchState::HIGH_STATE;
+        state_ = SwitchState::LOW_DEBOUNCE_SECTION;
     }
     else
     {
@@ -95,12 +94,11 @@ void SwitcheHandle::handleFallingInterrupt()
     if(state_ == SwitchState::HIGH_STATE)
     {
         cout << "IN Falling Interrupt" << endl;
-        state_ = SwitchState::LOW_BEFORE_DEBOUNCE;
+        state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
-        //initializeDebounceTimer();
+        initializeDebounceTimer();
         //initializeCriticalDelay();
 
-        errorInterruptCounter_ = 0;
     }
     else
     {
@@ -112,9 +110,9 @@ void SwitcheHandle::checkErrorInterruptCounter()
 {
     ++errorInterruptCounter_;
 
-    if(errorInterruptCounter_ >= 200)
+    if(errorInterruptCounter_ >= 20)
     {
-        state_ = SwitchState::ERROR_STATE;
+        state_ = SwitchState::ERROR_DEBOUNCE;
         errorCallback_(code_);
     }
 }
@@ -176,7 +174,18 @@ void SwitcheHandle::handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc)
 
 void SwitcheHandle::changeStateAfterDebounce()
 {
-    state_ = SwitchState::LOW_AFTER_DEBOUNCE;
+    if(state_ == SwitchState::HIGH_DEBOUNCE_SECTION)
+    {
+        state_ = SwitchState::LOW_STATE;
+        errorInterruptCounter_ = 0;
+
+    }
+    else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
+    {
+        pressedSwitchCallback_();
+        state_ = SwitchState::HIGH_STATE;
+        errorInterruptCounter_ = 0;
+    }
 }
 
 void SwitcheHandle::initializeCriticalDelay()
@@ -236,7 +245,7 @@ void SwitcheHandle::handleCriticalDelayTimer(int sigNumb, siginfo_t *si, void *u
 
 void SwitcheHandle::changeOnDelayState()
 {
-    state_ = SwitchState::ERROR_STATE;
+    state_ = SwitchState::ERROR_CRITICAL_TIME;
     errorCallback_(code_);
 
     state_ = SwitchState::HIGH_STATE;
