@@ -186,6 +186,7 @@ void SwitcheHandle::changeStateAfterDebounce()
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
         cout << "IRQ: HIGHT_STATE" << endl;
+        timer_delete(criticalDelayTimerID_);
         pressedSwitchCallback_();
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
