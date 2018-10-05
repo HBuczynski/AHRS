@@ -80,8 +80,9 @@ void SwitcheHandle::handleRaisingInterrupt()
 {
     if(state_ == SwitchState::LOW_STATE)
     {
-        cout << "In handleRaisingInterrupt: LOW_AFTER_DEBOUNCE" << endl;
+        cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
+        initializeDebounceTimer();
     }
     else
     {
@@ -93,7 +94,7 @@ void SwitcheHandle::handleFallingInterrupt()
 {
     if(state_ == SwitchState::HIGH_STATE)
     {
-        cout << "IN Falling Interrupt" << endl;
+        cout << "IN handleFallingInterrupt: HIGH_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
         initializeDebounceTimer();
@@ -174,14 +175,17 @@ void SwitcheHandle::handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc)
 
 void SwitcheHandle::changeStateAfterDebounce()
 {
+    cout << "AFTER DEB:   ";
     if(state_ == SwitchState::HIGH_DEBOUNCE_SECTION)
     {
+        cout << "IRQ: LOW_STATE" << endl;
         state_ = SwitchState::LOW_STATE;
         errorInterruptCounter_ = 0;
 
     }
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
+        cout << "IRQ: HIGHT_STATE" << endl;
         pressedSwitchCallback_();
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
