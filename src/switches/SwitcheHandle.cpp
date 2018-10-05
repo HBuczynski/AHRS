@@ -63,14 +63,15 @@ void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCal
 
 void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 {
-    cout << "In callback" << endl;
     SwitcheHandle* switchHandle = reinterpret_cast<SwitcheHandle*>(userdata);
     if(level == 1)
     {
+        cout << "In callback: Raising Interrupt" << endl;
         switchHandle->handleRaisingInterrupt();
     }
     else
     {
+        cout << "In callback: Falling Interrupt" << endl;
         switchHandle->handleFallingInterrupt();
     }
 }
@@ -79,7 +80,7 @@ void SwitcheHandle::handleRaisingInterrupt()
 {
     if(state_ == SwitchState::LOW_AFTER_DEBOUNCE)
     {
-
+        cout << "In handleRaisingInterrupt: LOW_AFTER_DEBOUNCE" << endl;
         pressedSwitchCallback_();
         state_ = SwitchState::HIGH_STATE;
     }
@@ -93,10 +94,11 @@ void SwitcheHandle::handleFallingInterrupt()
 {
     if(state_ == SwitchState::HIGH_STATE)
     {
+        cout << "IN Falling Interrupt" << endl;
         state_ = SwitchState::LOW_BEFORE_DEBOUNCE;
 
-        initializeDebounceTimer();
-        initializeCriticalDelay();
+        //initializeDebounceTimer();
+        //initializeCriticalDelay();
 
         errorInterruptCounter_ = 0;
     }
@@ -236,4 +238,6 @@ void SwitcheHandle::changeOnDelayState()
 {
     state_ = SwitchState::ERROR_STATE;
     errorCallback_(code_);
+
+    state_ = SwitchState::HIGH_STATE;
 }
