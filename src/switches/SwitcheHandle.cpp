@@ -12,7 +12,7 @@ SwitcheHandle::SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code)
     :  gpio_(gpioProperties),
        switch_(gpioProperties),
        code_(code),
-       state_(SwitchState::LOW_STATE),
+       state_(SwitchState::HIGH_STATE),
        errorInterruptCounter_(0),
        logger_(Logger::getInstance())
 {
@@ -74,14 +74,11 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 
 void SwitcheHandle::handleRaisingInterrupt()
 {
-    if(state_ == SwitchState::LOW_STATE)
+    if(state_ == SwitchState::LOW_AFTER_DEBOUNCE)
     {
-        state_ = SwitchState::HIGH_BEFORE_DEBOUNCE;
 
-        initializeDebounceTimer();
-        initializeCriticalDelay();
-
-        errorInterruptCounter_ = 0;
+        pressedSwitchCallback_();
+        state_ = SwitchState::HIGH_STATE;
     }
     else
     {
@@ -91,10 +88,14 @@ void SwitcheHandle::handleRaisingInterrupt()
 
 void SwitcheHandle::handleFallingInterrupt()
 {
-    if(state_ == SwitchState::HIGH_AFTER_DEBONCE)
+    if(state_ == SwitchState::HIGH_STATE)
     {
-        pressedSwitchCallback_();
-        state_ = SwitchState::LOW_STATE;
+        state_ = SwitchState::LOW_BEFORE_DEBOUNCE;
+
+        initializeDebounceTimer();
+        initializeCriticalDelay();
+
+        errorInterruptCounter_ = 0;
     }
     else
     {
@@ -115,7 +116,6 @@ void SwitcheHandle::checkErrorInterruptCounter()
 
 void SwitcheHandle::initializeDebounceTimer()
 {
-    timer_t timerID;
     struct sigevent signalEvent;
     struct sigaction signalAction;
     struct itimerspec timerSpecs;
@@ -135,7 +135,7 @@ void SwitcheHandle::initializeDebounceTimer()
     signalEvent.sigev_value.sival_ptr = (void*) this;
     signalEvent.sigev_signo = SIGALRM;
 
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID)!= 0)
+    if (timer_create(CLOCK_REALTIME, &signalEvent, &debounceTimerID_)!= 0)
     {
         if(logger_.isErrorEnable())
         {
@@ -153,7 +153,7 @@ void SwitcheHandle::initializeDebounceTimer()
         }
     }
 
-    if (timer_settime(timerID, 0, &timerSpecs, NULL) == -1)
+    if (timer_settime(debounceTimerID_, 0, &timerSpecs, NULL) == -1)
     {
         if(logger_.isErrorEnable())
         {
@@ -171,12 +171,11 @@ void SwitcheHandle::handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc)
 
 void SwitcheHandle::changeStateAfterDebounce()
 {
-    state_ = SwitchState::HIGH_AFTER_DEBONCE;
+    state_ = SwitchState::LOW_AFTER_DEBOUNCE;
 }
 
 void SwitcheHandle::initializeCriticalDelay()
 {
-    timer_t timerID;
     struct sigevent signalEvent;
     struct sigaction signalAction;
     struct itimerspec timerSpecs;
@@ -196,7 +195,7 @@ void SwitcheHandle::initializeCriticalDelay()
     signalEvent.sigev_value.sival_ptr = (void*) this;
     signalEvent.sigev_signo = SIGALRM;
 
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID)!= 0)
+    if (timer_create(CLOCK_REALTIME, &signalEvent, &criticalDelayTimerID_)!= 0)
     {
         if(logger_.isErrorEnable())
         {
@@ -214,7 +213,7 @@ void SwitcheHandle::initializeCriticalDelay()
         }
     }
 
-    if (timer_settime(timerID, 0, &timerSpecs, NULL) == -1)
+    if (timer_settime(criticalDelayTimerID_, 0, &timerSpecs, NULL) == -1)
     {
         if(logger_.isErrorEnable())
         {

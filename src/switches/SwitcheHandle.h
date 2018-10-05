@@ -26,9 +26,10 @@ namespace  peripherals
 
     enum class SwitchState
     {
-        HIGH_BEFORE_DEBOUNCE,
-        HIGH_AFTER_DEBONCE,
+        LOW_BEFORE_DEBOUNCE,
+        LOW_AFTER_DEBOUNCE,
         LOW_STATE,
+        HIGH_STATE,
         ERROR_STATE
     };
 
@@ -69,6 +70,9 @@ namespace  peripherals
         uint8_t errorInterruptCounter_;
         std::function< void() > pressedSwitchCallback_;
         std::function< void(SwitchesCode) > errorCallback_;
+
+        timer_t debounceTimerID_;
+        timer_t criticalDelayTimerID_;
 
         const uint32_t CRITICAL_TIME_SEC = 4;
         const uint64_t DEBOUNCE_TIME_NANO_SEC = 1000000;
