@@ -13,12 +13,17 @@ Switch::Switch(GPIO gpio)
 Switch::~Switch()
 {}
 
-bool Switch::registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &timeout, void *intData)
+bool Switch::registerHandler(/*gpioISRFuncEx_t fun, */const int &edge, const int &timeout, void *intData)
 {
-    if(!gpioSetISRFuncEx(gpio_.pinNumber, edge, timeout, fun, intData))
+    if(!gpioSetISRFuncEx(gpio_.pinNumber, edge, timeout, callback, intData))
     {
         std::cout << "ISR register correct." << std::endl;
         return true;
     }
     return false;
+}
+
+void Switch::callback(int gpio, int level, uint32_t tick, void *userdata)
+{
+    cout << "Level: " << level << endl;
 }

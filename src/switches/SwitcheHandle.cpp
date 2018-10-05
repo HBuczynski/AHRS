@@ -25,9 +25,9 @@ SwitcheHandle::~SwitcheHandle()
 void SwitcheHandle::initializeInterrupts()
 {
     bool isSuccess = true;
-
-    isSuccess = isSuccess & switch_.registerHandler(callback, FALLING_EDGE, 0, reinterpret_cast<void*>(this));
-    isSuccess = isSuccess & switch_.registerHandler(callback, RISING_EDGE, 0,  reinterpret_cast<void*>(this));
+//
+//    isSuccess = isSuccess & switch_.registerHandler(callback, FALLING_EDGE, 0, reinterpret_cast<void*>(this));
+//    isSuccess = isSuccess & switch_.registerHandler(callback, RISING_EDGE, 0,  reinterpret_cast<void*>(this));
 
     if(isSuccess)
     {

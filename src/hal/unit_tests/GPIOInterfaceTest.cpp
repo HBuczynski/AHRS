@@ -12,18 +12,19 @@ using namespace hardware;
 
 BOOST_AUTO_TEST_SUITE( gpio_test )
 
+
     BOOST_AUTO_TEST_CASE( reading )
     {
         GPIO gpio;
 
         gpio.pinNumber = 23;
         gpio.pinMode = GPIOMode::IN;
-        gpio.pushPullMode = GPIOPullMode::DOWN;
+        gpio.pushPullMode = GPIOPullMode::UP;
 
         Switch aSwitch(gpio);
 
-//        aSwitch.registerHandler(FALLING_EDGE);
-//        aSwitch.registerHandler(RISING_EDGE);
+        aSwitch.registerHandler(FALLING_EDGE);
+        aSwitch.registerHandler(RISING_EDGE);
 
         while(1)
         {
