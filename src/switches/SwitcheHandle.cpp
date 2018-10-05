@@ -98,7 +98,7 @@ void SwitcheHandle::handleFallingInterrupt()
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
         initializeDebounceTimer();
-        //initializeCriticalDelay();
+        initializeCriticalDelay();
 
     }
     else
