@@ -31,11 +31,10 @@ void Switch::callback(int gpio, int level, uint32_t tick, void *userdata)
 
    if( (counter%2) == level)
 	cout << "OK";
-  else
+   else
 	cout << "FALSE";
-
 
 	counter++;
 
-cout << ":  " << counter << endl;
+   cout << ":  " << counter << endl;
 }
