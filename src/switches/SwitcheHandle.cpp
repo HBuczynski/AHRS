@@ -111,11 +111,15 @@ void SwitcheHandle::checkErrorInterruptCounter()
 {
     ++errorInterruptCounter_;
 
+    cout << "Debounce error" << endl;
+
     if(errorInterruptCounter_ >= 20)
     {
         state_ = SwitchState::ERROR_DEBOUNCE;
         errorCallback_(code_);
     }
+
+    state_ = SwitchState::HIGH_STATE;
 }
 
 void SwitcheHandle::initializeDebounceTimer()
@@ -250,6 +254,7 @@ void SwitcheHandle::handleCriticalDelayTimer(int sigNumb, siginfo_t *si, void *u
 
 void SwitcheHandle::changeOnDelayState()
 {
+    cout << "Delay error" << endl;
     state_ = SwitchState::ERROR_CRITICAL_TIME;
     errorCallback_(code_);
 
