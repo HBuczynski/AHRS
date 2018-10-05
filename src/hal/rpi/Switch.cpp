@@ -5,6 +5,8 @@
 using namespace std;
 using namespace hardware;
 
+int Switch::counter = 0;
+
 Switch::Switch(GPIO gpio)
     : GPIOInterface(gpio)
 {
@@ -25,5 +27,15 @@ bool Switch::registerHandler(/*gpioISRFuncEx_t fun, */const int &edge, const int
 
 void Switch::callback(int gpio, int level, uint32_t tick, void *userdata)
 {
-    cout << "Level: " << level << endl;
+    //cout << "Level: " << level << endl;
+
+   if( (counter%2) == level)
+	cout << "OK";
+  else
+	cout << "FALSE";
+
+
+	counter++;
+
+cout << ":  " << counter << endl;
 }
