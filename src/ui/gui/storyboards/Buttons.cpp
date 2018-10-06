@@ -47,23 +47,23 @@ void Buttons::setup()
     ui->fourthButton->setText(" ");
 }
 
-void Buttons::initialize(const map<SwitchesCode, string> &names, const map<SwitchesCode, function<void()> > &callbackFunctions)
+void Buttons::initialize(const map<SwitchCode, string> &names, const map<SwitchCode, function<void()> > &callbackFunctions)
 {
     initializeText(names);
     initializeSwitches(callbackFunctions);
 }
 
-void Buttons::initializeText(const map<SwitchesCode, string> &names)
+void Buttons::initializeText(const map<SwitchCode, string> &names)
 {
-    ui->firstButton->setText(getButtonText(SwitchesCode::FIRST_SWITCH, names).c_str());
-    ui->secondButton->setText(getButtonText(SwitchesCode::SECOND_SWITCH, names).c_str());
-    ui->thirdButton->setText(getButtonText(SwitchesCode::THIRD_SWITCH, names).c_str());
-    ui->fourthButton->setText(getButtonText(SwitchesCode::FOURTH_SWITCH, names).c_str());
+    ui->firstButton->setText(getButtonText(SwitchCode::FIRST_SWITCH, names).c_str());
+    ui->secondButton->setText(getButtonText(SwitchCode::SECOND_SWITCH, names).c_str());
+    ui->thirdButton->setText(getButtonText(SwitchCode::THIRD_SWITCH, names).c_str());
+    ui->fourthButton->setText(getButtonText(SwitchCode::FOURTH_SWITCH, names).c_str());
 }
 
-void Buttons::initializeSwitches(const map<SwitchesCode, function<void()> > &callbackFunctions)
+void Buttons::initializeSwitches(const map<SwitchCode, function<void()> > &callbackFunctions)
 {
-    const function< void(SwitchState) > errorCallback = bind(&Buttons::switchError, this, std::placeholders::_1);
+    const function< void(SwitchCode, SwitchState) > errorCallback = bind(&Buttons::switchError, this, std::placeholders::_1, std::placeholders::_2);
     const auto switchesGPIO = config::ConfigurationReader::getUISwitches(config::UI_BUTTONS_PARAMETERS_PATH.c_str());
     auto iterSwitchesGPIO = switchesGPIO.begin();
 
@@ -86,7 +86,7 @@ void Buttons::initializeSwitches(const map<SwitchesCode, function<void()> > &cal
     }
 }
 
-string Buttons::getButtonText(SwitchesCode switchCode, map<SwitchesCode, string> switchNames)
+string Buttons::getButtonText(SwitchCode switchCode, map<SwitchCode, string> switchNames)
 {
     const auto firstSwitchName = switchNames.find(switchCode);
     if(firstSwitchName != switchNames.end())
@@ -105,11 +105,12 @@ string Buttons::getButtonText(SwitchesCode switchCode, map<SwitchesCode, string>
     }
 }
 
-void Buttons::switchError(peripherals::SwitchState state)
+void Buttons::switchError(SwitchCode code, SwitchState state)
 {
     if(logger_.isErrorEnable())
     {
-        const string message = std::string("Buttons :: Error from button interruption, state:" + to_string((int)state));
+        const string message = string("Buttons :: Error from button interruption, Switch number:" + to_string((int)code)) +
+                string(" Switch state: ") + to_string((int)state);
         logger_.writeLog(LogType::ERROR_LOG, message);
     }
 }

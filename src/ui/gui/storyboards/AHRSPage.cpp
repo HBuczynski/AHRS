@@ -105,22 +105,22 @@ void AHRSPage::setup()
     ui->downPowerSupply->setFont(downFont);
     ui->downPowerSupply->setText("100 %");
 
-    map<SwitchesCode, string> buttonNames;
-    buttonNames[SwitchesCode::FIRST_SWITCH] = "CALIBRATE";
-    buttonNames[SwitchesCode::SECOND_SWITCH] = "LOGS";
-    buttonNames[SwitchesCode::THIRD_SWITCH] = "MENU";
-    buttonNames[SwitchesCode::FOURTH_SWITCH] = "EXIT";
+    map<SwitchCode, string> buttonNames;
+    buttonNames[SwitchCode::FIRST_SWITCH] = "CALIBRATE";
+    buttonNames[SwitchCode::SECOND_SWITCH] = "LOGS";
+    buttonNames[SwitchCode::THIRD_SWITCH] = "MENU";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "EXIT";
 
-    map<SwitchesCode, function<void()> > callbackFunctions;
-    callbackFunctions[SwitchesCode::FIRST_SWITCH] = bind(&AHRSPage::calibrateButton, this);
-    callbackFunctions[SwitchesCode::SECOND_SWITCH] = bind(&AHRSPage::menuButton, this);
-    callbackFunctions[SwitchesCode::THIRD_SWITCH] = bind(&AHRSPage::logsButton, this);
-    callbackFunctions[SwitchesCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
+    map<SwitchCode, function<void()> > callbackFunctions;
+    callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&AHRSPage::calibrateButton, this);
+    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&AHRSPage::menuButton, this);
+    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&AHRSPage::logsButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 }
 
-void AHRSPage::initializeButtons(map<SwitchesCode, string> name, map<SwitchesCode, function<void()> > callbackFunctions)
+void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
     buttons_ = new Buttons();
     buttons_->initialize(name, callbackFunctions);

@@ -18,7 +18,7 @@
 
 namespace  peripherals
 {
-    enum class SwitchesCode : uint8_t
+    enum class SwitchCode : uint8_t
     {
         FIRST_SWITCH = 0x01,
         SECOND_SWITCH = 0x02,
@@ -40,11 +40,11 @@ namespace  peripherals
     class SwitchHandle final : public utility::TimerInterruptNotification
     {
     public:
-        SwitchHandle(hardware::GPIO gpioProperties, SwitchesCode code);
+        SwitchHandle(hardware::GPIO gpioProperties, SwitchCode code);
         ~SwitchHandle();
 
         void resetSwitch();
-        void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback);
+        void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchCode, SwitchState) > errorCallback);
 
     private:
         void initializeGPIOInterrupts();
@@ -63,12 +63,12 @@ namespace  peripherals
         hardware::GPIOInterface gpio_;
         hardware::Switch switch_;
 
-        SwitchesCode code_;
+        SwitchCode code_;
         std::atomic<SwitchState>  state_;
 
         uint8_t errorInterruptCounter_;
         std::function< void() > pressedSwitchCallback_;
-        std::function< void(SwitchState) > errorCallback_;
+        std::function< void(SwitchCode, SwitchState) > errorCallback_;
 
         utility::TimerInterrupt debounceTimerID_;
         utility::TimerInterrupt criticalDelayTimerID_;

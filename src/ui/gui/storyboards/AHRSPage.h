@@ -35,7 +35,7 @@ public:
 
 private:
     void setup();
-    void initializeButtons(std::map<peripherals::SwitchesCode, std::string> name, std::map<peripherals::SwitchesCode, std::function<void()> > callbackFunctions);
+    void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
     void calibrateButton();
     void menuButton();

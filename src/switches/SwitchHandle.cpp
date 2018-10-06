@@ -8,7 +8,7 @@ using namespace utility;
 using namespace hardware;
 using namespace peripherals;
 
-SwitchHandle::SwitchHandle(hardware::GPIO gpioProperties, SwitchesCode code)
+SwitchHandle::SwitchHandle(hardware::GPIO gpioProperties, SwitchCode code)
     :  gpio_(gpioProperties),
        switch_(gpioProperties),
        code_(code),
@@ -53,7 +53,7 @@ void SwitchHandle::resetSwitch()
     state_ = SwitchState::LOW_STATE;
 }
 
-void SwitchHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback)
+void SwitchHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchCode, SwitchState) > errorCallback)
 {
     pressedSwitchCallback_ = pressedSwitchCallback;
     errorCallback_ = errorCallback;
@@ -135,7 +135,7 @@ void SwitchHandle::checkErrorInterruptCounter()
         }
 
         state_ = SwitchState::ERROR_DEBOUNCE;
-        errorCallback_(state_);
+        errorCallback_(code_, state_);
     }
 
     state_ = SwitchState::HIGH_STATE;
@@ -182,5 +182,5 @@ void SwitchHandle::changeOnDelayState()
     }
 
     state_ = SwitchState::ERROR_CRITICAL_TIME;
-    errorCallback_(state_);
+    errorCallback_(code_, state_);
 }
