@@ -31,8 +31,6 @@ void SwitcheHandle::initializeGPIOInterrupts()
 
     if(isSuccess)
     {
-        cout << "SwitcheHandle :: Interrupts initialized successful for button: " + to_string(static_cast<uint8_t>(code_)) << endl;
-
         if(logger_.isInformationEnable())
         {
             const string message = string("SwitcheHandle :: Interrupts initialized successful for button: ") + to_string(static_cast<uint8_t>(code_));
@@ -66,23 +64,18 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
     SwitcheHandle* switchHandle = reinterpret_cast<SwitcheHandle*>(userdata);
     if(level == 1)
     {
-        cout << "In callback: Raising Interrupt" << endl;
         switchHandle->handleRaisingInterrupt();
     }
     else
     {
-        cout << "In callback: Falling Interrupt" << endl;
         switchHandle->handleFallingInterrupt();
     }
 }
 
 void SwitcheHandle::handleRaisingInterrupt()
 {
-    cout << "State:  " << (int)state_.load() << endl;
-
     if(state_ == SwitchState::LOW_STATE)
     {
-        cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
         debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
     }
@@ -98,11 +91,8 @@ void SwitcheHandle::handleRaisingInterrupt()
 
 void SwitcheHandle::handleFallingInterrupt()
 {
-    cout << "State:  " << (int)state_.load() << endl;
-
     if(state_ == SwitchState::HIGH_STATE)
     {
-        cout << "IN handleFallingInterrupt: HIGH_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
         debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
@@ -117,8 +107,6 @@ void SwitcheHandle::handleFallingInterrupt()
 void SwitcheHandle::checkErrorInterruptCounter()
 {
     ++errorInterruptCounter_;
-
-    cout << "Debounce error" << endl;
 
     if(errorInterruptCounter_ >= 20)
     {
@@ -143,19 +131,17 @@ void SwitcheHandle::interruptNotification(timer_t timerID)
 
 void SwitcheHandle::changeStateAfterDebounce()
 {
-    cout << "AFTER DEB:   ";
     if(state_ == SwitchState::HIGH_DEBOUNCE_SECTION)
     {
-        cout << "IRQ: LOW_STATE" << endl;
         state_ = SwitchState::LOW_STATE;
         errorInterruptCounter_ = 0;
 
     }
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
-        cout << "IRQ: HIGHT_STATE" << endl;
         criticalDelayTimerID_.stop();
         pressedSwitchCallback_();
+
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
     }
@@ -163,7 +149,6 @@ void SwitcheHandle::changeStateAfterDebounce()
 
 void SwitcheHandle::changeOnDelayState()
 {
-    cout << "Delay error" << endl;
     state_ = SwitchState::ERROR_CRITICAL_TIME;
     errorCallback_(state_);
 }
