@@ -20,10 +20,10 @@ namespace  peripherals
 {
     enum class SwitchesCode : uint8_t
     {
-        FIRST_SWITCH = 0x10,
-        SECOND_SWITCH = 0x20,
-        THIRD_SWITCH = 0x30,
-        FOURTH_SWITCH = 0x40
+        FIRST_SWITCH = 0x01,
+        SECOND_SWITCH = 0x02,
+        THIRD_SWITCH = 0x03,
+        FOURTH_SWITCH = 0x04
     };
 
     enum class SwitchState : uint8_t

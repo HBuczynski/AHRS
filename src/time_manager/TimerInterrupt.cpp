@@ -138,10 +138,10 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
         }
     }
 
-    if ( logger_.isInformationEnable())
+    if ( logger_.isDebugEnable())
     {
         const string message = string("TimerInterrupt :: Has been initialized.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 }
 
