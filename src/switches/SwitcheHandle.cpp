@@ -74,6 +74,14 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 
 void SwitcheHandle::handleRaisingInterrupt()
 {
+    if(logger_.isDebugEnable())
+    {
+        const string message = string("SwitcheHandle :: HandleRaisingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+                + to_string(static_cast<uint8_t>(state_.load()));
+
+        logger_.writeLog(LogType::DEBUG_LOG, message);
+    }
+
     if(state_ == SwitchState::LOW_STATE)
     {
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
@@ -91,6 +99,14 @@ void SwitcheHandle::handleRaisingInterrupt()
 
 void SwitcheHandle::handleFallingInterrupt()
 {
+    if(logger_.isDebugEnable())
+    {
+        const string message = string("SwitcheHandle :: HandleFallingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+                               + to_string(static_cast<uint8_t>(state_.load()));
+
+        logger_.writeLog(LogType::DEBUG_LOG, message);
+    }
+
     if(state_ == SwitchState::HIGH_STATE)
     {
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
@@ -110,6 +126,14 @@ void SwitcheHandle::checkErrorInterruptCounter()
 
     if(errorInterruptCounter_ >= 20)
     {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("SwitcheHandle :: Exceeded debounce counter, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+                                   + to_string(static_cast<uint8_t>(state_.load()));
+
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
         state_ = SwitchState::ERROR_DEBOUNCE;
         errorCallback_(state_);
     }
@@ -149,6 +173,14 @@ void SwitcheHandle::changeStateAfterDebounce()
 
 void SwitcheHandle::changeOnDelayState()
 {
+    if(logger_.isErrorEnable())
+    {
+        const string message = string("SwitcheHandle :: Exceeded critical pressing time, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+                               + to_string(static_cast<uint8_t>(state_.load()));
+
+        logger_.writeLog(LogType::ERROR_LOG, message);
+    }
+
     state_ = SwitchState::ERROR_CRITICAL_TIME;
     errorCallback_(state_);
 }

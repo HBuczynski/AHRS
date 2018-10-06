@@ -75,10 +75,10 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
         }
     }
 
-    if(logger_.isInformationEnable())
+    if(logger_.isDebugEnable())
     {
         const string message = string("TimerInterrupt :: Has been initialized.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 }
 
@@ -149,10 +149,10 @@ void TimerInterrupt::stop()
 {
     if(timer_delete(timerID) == 0)
     {
-        if(logger_.isInformationEnable())
+        if(logger_.isDebugEnable())
         {
             const string message = string("TimerInterrupt :: Stopped timer correctly.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            logger_.writeLog(LogType::DEBUG_LOG, message);
         }
     }
     else
