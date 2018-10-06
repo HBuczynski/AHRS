@@ -28,20 +28,20 @@ namespace  peripherals
 
     enum class SwitchState : uint8_t
     {
-        LOW_DEBOUNCE_SECTION,
-        LOW_STATE,
-        HIGH_DEBOUNCE_SECTION,
-        HIGH_STATE,
-        ERROR_CRITICAL_TIME,
-        ERROR_DEBOUNCE,
+        LOW_DEBOUNCE_SECTION = 0x01,
+        LOW_STATE = 0x02,
+        HIGH_DEBOUNCE_SECTION = 0x03,
+        HIGH_STATE = 0x04,
+        ERROR_CRITICAL_TIME = 0x05,
+        ERROR_DEBOUNCE = 0x06,
     };
 
     // Class is responsible for handle one of the button.
-    class SwitcheHandle final : public utility::TimerInterruptNotification
+    class SwitchHandle final : public utility::TimerInterruptNotification
     {
     public:
-        SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code);
-        ~SwitcheHandle();
+        SwitchHandle(hardware::GPIO gpioProperties, SwitchesCode code);
+        ~SwitchHandle();
 
         void resetSwitch();
         void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback);

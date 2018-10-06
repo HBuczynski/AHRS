@@ -1,4 +1,4 @@
-#include "SwitcheHandle.h"
+#include "SwitchHandle.h"
 #include <thread>
 #include <system_error>
 #include <iostream>
@@ -8,7 +8,7 @@ using namespace utility;
 using namespace hardware;
 using namespace peripherals;
 
-SwitcheHandle::SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code)
+SwitchHandle::SwitchHandle(hardware::GPIO gpioProperties, SwitchesCode code)
     :  gpio_(gpioProperties),
        switch_(gpioProperties),
        code_(code),
@@ -19,10 +19,10 @@ SwitcheHandle::SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code)
     initializeGPIOInterrupts();
 }
 
-SwitcheHandle::~SwitcheHandle()
+SwitchHandle::~SwitchHandle()
 {}
 
-void SwitcheHandle::initializeGPIOInterrupts()
+void SwitchHandle::initializeGPIOInterrupts()
 {
     bool isSuccess = true;
 
@@ -33,7 +33,7 @@ void SwitcheHandle::initializeGPIOInterrupts()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("SwitcheHandle :: Interrupts initialized successful for button: ") + to_string(static_cast<uint8_t>(code_));
+            const string message = string("SwitchHandle :: Interrupts initialized successful for button: ") + to_string(static_cast<uint8_t>(code_));
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -41,27 +41,27 @@ void SwitcheHandle::initializeGPIOInterrupts()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("SwitcheHandle :: Could not initialize interrupts for buttons: ") + to_string(static_cast<uint8_t>(code_));
+            const string message = string("SwitchHandle :: Could not initialize interrupts for buttons: ") + to_string(static_cast<uint8_t>(code_));
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 }
 
-void SwitcheHandle::resetSwitch()
+void SwitchHandle::resetSwitch()
 {
     gpio_.pinWrite(0);
     state_ = SwitchState::LOW_STATE;
 }
 
-void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback)
+void SwitchHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback)
 {
     pressedSwitchCallback_ = pressedSwitchCallback;
     errorCallback_ = errorCallback;
 }
 
-void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
+void SwitchHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
 {
-    SwitcheHandle* switchHandle = reinterpret_cast<SwitcheHandle*>(userdata);
+    SwitchHandle* switchHandle = reinterpret_cast<SwitchHandle*>(userdata);
     if(level == 1)
     {
         switchHandle->handleRaisingInterrupt();
@@ -72,11 +72,11 @@ void SwitcheHandle::callback(int gpio, int level, uint32_t tick, void *userdata)
     }
 }
 
-void SwitcheHandle::handleRaisingInterrupt()
+void SwitchHandle::handleRaisingInterrupt()
 {
     if(logger_.isDebugEnable())
     {
-        const string message = string("SwitcheHandle :: HandleRaisingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+        const string message = string("SwitchHandle :: HandleRaisingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
                 + to_string(static_cast<uint8_t>(state_.load()));
 
         logger_.writeLog(LogType::DEBUG_LOG, message);
@@ -97,11 +97,11 @@ void SwitcheHandle::handleRaisingInterrupt()
     }
 }
 
-void SwitcheHandle::handleFallingInterrupt()
+void SwitchHandle::handleFallingInterrupt()
 {
     if(logger_.isDebugEnable())
     {
-        const string message = string("SwitcheHandle :: HandleFallingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+        const string message = string("SwitchHandle :: HandleFallingInterrupt, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
                                + to_string(static_cast<uint8_t>(state_.load()));
 
         logger_.writeLog(LogType::DEBUG_LOG, message);
@@ -120,7 +120,7 @@ void SwitcheHandle::handleFallingInterrupt()
     }
 }
 
-void SwitcheHandle::checkErrorInterruptCounter()
+void SwitchHandle::checkErrorInterruptCounter()
 {
     ++errorInterruptCounter_;
 
@@ -128,7 +128,7 @@ void SwitcheHandle::checkErrorInterruptCounter()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("SwitcheHandle :: Exceeded debounce counter, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+            const string message = string("SwitchHandle :: Exceeded debounce counter, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
                                    + to_string(static_cast<uint8_t>(state_.load()));
 
             logger_.writeLog(LogType::ERROR_LOG, message);
@@ -141,7 +141,7 @@ void SwitcheHandle::checkErrorInterruptCounter()
     state_ = SwitchState::HIGH_STATE;
 }
 
-void SwitcheHandle::interruptNotification(timer_t timerID)
+void SwitchHandle::interruptNotification(timer_t timerID)
 {
     if(timerID == debounceTimerID_.getTimerID())
     {
@@ -153,7 +153,7 @@ void SwitcheHandle::interruptNotification(timer_t timerID)
     }
 }
 
-void SwitcheHandle::changeStateAfterDebounce()
+void SwitchHandle::changeStateAfterDebounce()
 {
     if(state_ == SwitchState::HIGH_DEBOUNCE_SECTION)
     {
@@ -171,11 +171,11 @@ void SwitcheHandle::changeStateAfterDebounce()
     }
 }
 
-void SwitcheHandle::changeOnDelayState()
+void SwitchHandle::changeOnDelayState()
 {
     if(logger_.isErrorEnable())
     {
-        const string message = string("SwitcheHandle :: Exceeded critical pressing time, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
+        const string message = string("SwitchHandle :: Exceeded critical pressing time, SWITCH: ") + to_string(static_cast<uint8_t>(code_)) + string(" State -- ")
                                + to_string(static_cast<uint8_t>(state_.load()));
 
         logger_.writeLog(LogType::ERROR_LOG, message);

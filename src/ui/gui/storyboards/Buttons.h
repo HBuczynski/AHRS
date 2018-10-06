@@ -6,7 +6,7 @@
 #include <functional>
 
 #include <QWidget>
-#include <switches/SwitcheHandle.h>
+#include "../../../switches/SwitchHandle.h"
 
 namespace Ui {
 class Buttons;
@@ -31,7 +31,7 @@ private:
     void switchError(peripherals::SwitchState state);
 
     Ui::Buttons *ui;
-    std::map<peripherals::SwitchesCode, std::unique_ptr<peripherals::SwitcheHandle> > switches_;
+    std::map<peripherals::SwitchesCode, std::unique_ptr<peripherals::SwitchHandle> > switches_;
 
     utility::Logger& logger_;
 };

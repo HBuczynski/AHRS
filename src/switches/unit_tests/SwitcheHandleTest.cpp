@@ -3,7 +3,7 @@
 #define BOOST_TEST_DYN_LINK
 
 #include <boost/test/unit_test.hpp>
-#include "../SwitcheHandle.h"
+#include "switches/SwitchHandle.h"
 
 #include <iostream>
 
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
         gpio.pinMode = GPIOMode::IN;
         gpio.pushPullMode = GPIOPullMode::DOWN;
 
-        SwitcheHandle handle(gpio, SwitchesCode::FOURTH_SWITCH);
+        SwitchHandle handle(gpio, SwitchesCode::FOURTH_SWITCH);
 
         function< void() > pressedSwitchCallback = []() { cout << "Pressed Button." << endl;};
         function< void(SwitchState) > errorCallback = [](SwitchState state) { cout << "Error " << (int)state << endl;};

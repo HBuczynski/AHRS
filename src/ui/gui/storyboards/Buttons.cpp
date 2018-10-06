@@ -71,7 +71,7 @@ void Buttons::initializeSwitches(const map<SwitchesCode, function<void()> > &cal
     {
         for (const auto callbackIter : callbackFunctions)
         {
-            switches_[callbackIter.first] = make_unique<SwitcheHandle>((*iterSwitchesGPIO), callbackIter.first);
+            switches_[callbackIter.first] = make_unique<SwitchHandle>((*iterSwitchesGPIO), callbackIter.first);
             switches_[callbackIter.first]->initializeCallbacks(callbackIter.second, errorCallback);
             ++iterSwitchesGPIO;
         }
