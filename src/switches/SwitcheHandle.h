@@ -18,7 +18,7 @@
 
 namespace  peripherals
 {
-    enum class SwitchesCode
+    enum class SwitchesCode : uint8_t
     {
         FIRST_SWITCH = 0x10,
         SECOND_SWITCH = 0x20,
@@ -44,7 +44,7 @@ namespace  peripherals
         ~SwitcheHandle();
 
         void resetSwitch();
-        void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback);
+        void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback);
 
     private:
         void initializeGPIOInterrupts();
@@ -68,7 +68,7 @@ namespace  peripherals
 
         uint8_t errorInterruptCounter_;
         std::function< void() > pressedSwitchCallback_;
-        std::function< void(SwitchesCode) > errorCallback_;
+        std::function< void(SwitchState) > errorCallback_;
 
         utility::TimerInterrupt debounceTimerID_;
         utility::TimerInterrupt criticalDelayTimerID_;

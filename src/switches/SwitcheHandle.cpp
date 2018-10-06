@@ -55,7 +55,7 @@ void SwitcheHandle::resetSwitch()
     state_ = SwitchState::LOW_STATE;
 }
 
-void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback)
+void SwitcheHandle::initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchState) > errorCallback)
 {
     pressedSwitchCallback_ = pressedSwitchCallback;
     errorCallback_ = errorCallback;
@@ -85,6 +85,10 @@ void SwitcheHandle::handleRaisingInterrupt()
         cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
         debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+    }
+    else if(state_ == SwitchState::ERROR_CRITICAL_TIME)
+    {
+        state_ = SwitchState::HIGH_STATE;
     }
     else
     {
@@ -119,7 +123,7 @@ void SwitcheHandle::checkErrorInterruptCounter()
     if(errorInterruptCounter_ >= 20)
     {
         state_ = SwitchState::ERROR_DEBOUNCE;
-        errorCallback_(code_);
+        errorCallback_(state_);
     }
 
     state_ = SwitchState::HIGH_STATE;
@@ -161,7 +165,5 @@ void SwitcheHandle::changeOnDelayState()
 {
     cout << "Delay error" << endl;
     state_ = SwitchState::ERROR_CRITICAL_TIME;
-    errorCallback_(code_);
-
-    state_ = SwitchState::HIGH_STATE;
+    errorCallback_(state_);
 }

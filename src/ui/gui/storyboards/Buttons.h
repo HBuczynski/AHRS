@@ -28,7 +28,7 @@ private:
     void initializeSwitches(const std::map<peripherals::SwitchesCode, std::function<void()> > &callbackFunctions);
 
     std::string getButtonText(peripherals::SwitchesCode switchCode, std::map<peripherals::SwitchesCode, std::string> names);
-    void switchError(peripherals::SwitchesCode code);
+    void switchError(peripherals::SwitchState state);
 
     Ui::Buttons *ui;
     std::map<peripherals::SwitchesCode, std::unique_ptr<peripherals::SwitcheHandle> > switches_;

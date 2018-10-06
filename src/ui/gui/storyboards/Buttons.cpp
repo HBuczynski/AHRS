@@ -63,7 +63,7 @@ void Buttons::initializeText(const map<SwitchesCode, string> &names)
 
 void Buttons::initializeSwitches(const map<SwitchesCode, function<void()> > &callbackFunctions)
 {
-    const function< void(SwitchesCode) > errorCallback = bind(&Buttons::switchError, this, std::placeholders::_1);
+    const function< void(SwitchState) > errorCallback = bind(&Buttons::switchError, this, std::placeholders::_1);
     const auto switchesGPIO = config::ConfigurationReader::getUISwitches(config::UI_BUTTONS_PARAMETERS_PATH.c_str());
     auto iterSwitchesGPIO = switchesGPIO.begin();
 
@@ -105,11 +105,11 @@ string Buttons::getButtonText(SwitchesCode switchCode, map<SwitchesCode, string>
     }
 }
 
-void Buttons::switchError(peripherals::SwitchesCode code)
+void Buttons::switchError(peripherals::SwitchState state)
 {
     if(logger_.isErrorEnable())
     {
-        const string message = std::string("Buttons :: Error from button interruption, BUTTONCode:" + to_string((int)code));
+        const string message = std::string("Buttons :: Error from button interruption, state:" + to_string((int)state));
         logger_.writeLog(LogType::ERROR_LOG, message);
     }
 }

@@ -24,7 +24,7 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
         SwitcheHandle handle(gpio, SwitchesCode::FOURTH_SWITCH);
 
         function< void() > pressedSwitchCallback = []() { cout << "Pressed Button." << endl;};
-        function< void(SwitchesCode) > errorCallback = [](SwitchesCode code) { cout << "Error " << (int)code << endl;};
+        function< void(SwitchState) > errorCallback = [](SwitchState state) { cout << "Error " << (int)state << endl;};
 
         handle.initializeCallbacks(pressedSwitchCallback, errorCallback);
 
