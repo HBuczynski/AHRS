@@ -1,6 +1,8 @@
 #ifndef AHRS_TIMERINTERRUPTNOTIFICATION_H
 #define AHRS_TIMERINTERRUPTNOTIFICATION_H
 
+#include <sys/time.h>
+
 namespace utility
 {
     class TimerInterruptNotification
@@ -9,7 +11,7 @@ namespace utility
         TimerInterruptNotification() {};
         virtual ~TimerInterruptNotification() {};
 
-        virtual void interruptNotification() = 0;
+        virtual void interruptNotification(timer_t timerID) = 0;
     };
 }
 

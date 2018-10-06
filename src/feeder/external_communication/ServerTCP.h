@@ -28,7 +28,7 @@ namespace communication
 
 
     private:
-        void interruptNotification() override;
+        void interruptNotification(timer_t timerID) override;
 
         void activateUsers();
         void removeUsers();

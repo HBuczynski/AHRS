@@ -16,13 +16,13 @@ SwitcheHandle::SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code)
        errorInterruptCounter_(0),
        logger_(Logger::getInstance())
 {
-    initializeInterrupts();
+    initializeGPIOInterrupts();
 }
 
 SwitcheHandle::~SwitcheHandle()
 {}
 
-void SwitcheHandle::initializeInterrupts()
+void SwitcheHandle::initializeGPIOInterrupts()
 {
     bool isSuccess = true;
 
@@ -84,8 +84,7 @@ void SwitcheHandle::handleRaisingInterrupt()
     {
         cout << "In handleRaisingInterrupt: LOW_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
-        //initializeDebounceTimer();
-        changeStateAfterDebounce();
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
     }
     else
     {
@@ -102,10 +101,8 @@ void SwitcheHandle::handleFallingInterrupt()
         cout << "IN handleFallingInterrupt: HIGH_DEBOUNCE_SECTION" << endl;
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
-        //initializeDebounceTimer();
-        changeStateAfterDebounce();
-        initializeCriticalDelay();
-
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+        criticalDelayTimerID_.startSingleInterrupt(CRITICAL_TIME_MSSEC, this);
     }
     else
     {
@@ -128,59 +125,16 @@ void SwitcheHandle::checkErrorInterruptCounter()
     state_ = SwitchState::HIGH_STATE;
 }
 
-void SwitcheHandle::initializeDebounceTimer()
+void SwitcheHandle::interruptNotification(timer_t timerID)
 {
-    struct sigevent signalEvent;
-    struct sigaction signalAction;
-    struct itimerspec timerSpecs;
-
-    timerSpecs.it_value.tv_sec = 0;
-    timerSpecs.it_value.tv_nsec = DEBOUNCE_TIME_NANO_SEC;
-    timerSpecs.it_interval.tv_sec = 0;
-    timerSpecs.it_interval.tv_nsec = 0;
-
-    sigemptyset(&signalAction.sa_mask);
-
-    signalAction.sa_flags = SA_SIGINFO;
-    signalAction.sa_sigaction = SwitcheHandle::handleDebounceTimer;
-
-    memset(&signalEvent, 0, sizeof(signalEvent));
-    signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void*) this;
-    signalEvent.sigev_signo = SIGALRM;
-
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &debounceTimerID_)!= 0)
+    if(timerID == debounceTimerID_.getTimerID())
     {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not create debounce timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
+        changeStateAfterDebounce();
     }
-
-    if (sigaction(SIGALRM, &signalAction, NULL))
+    else if (timerID == criticalDelayTimerID_.getTimerID())
     {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not install new signal handler debounce timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
+        changeOnDelayState();
     }
-
-    if (timer_settime(debounceTimerID_, 0, &timerSpecs, NULL) == -1)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not start debounce timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-}
-
-void SwitcheHandle::handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc)
-{
-    SwitcheHandle * switcheHandleClass = reinterpret_cast<SwitcheHandle *> (si->si_value.sival_ptr);
-    switcheHandleClass->changeStateAfterDebounce();
 }
 
 void SwitcheHandle::changeStateAfterDebounce()
@@ -196,66 +150,11 @@ void SwitcheHandle::changeStateAfterDebounce()
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
         cout << "IRQ: HIGHT_STATE" << endl;
-        timer_delete(criticalDelayTimerID_);
+        criticalDelayTimerID_.stop();
         pressedSwitchCallback_();
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
     }
-}
-
-void SwitcheHandle::initializeCriticalDelay()
-{
-    struct sigevent signalEvent;
-    struct sigaction signalAction;
-    struct itimerspec timerSpecs;
-
-    timerSpecs.it_value.tv_sec = CRITICAL_TIME_SEC;
-    timerSpecs.it_value.tv_nsec = 0;
-    timerSpecs.it_interval.tv_sec = 0;
-    timerSpecs.it_interval.tv_nsec = 0;
-
-    sigemptyset(&signalAction.sa_mask);
-
-    signalAction.sa_flags = SA_SIGINFO;
-    signalAction.sa_sigaction = SwitcheHandle::handleCriticalDelayTimer;
-
-    memset(&signalEvent, 0, sizeof(signalEvent));
-    signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void*) this;
-    signalEvent.sigev_signo = SIGALRM;
-
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &criticalDelayTimerID_)!= 0)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not create delay timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-
-    if (sigaction(SIGALRM, &signalAction, NULL))
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not install new signal handler delay timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-
-    if (timer_settime(criticalDelayTimerID_, 0, &timerSpecs, NULL) == -1)
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("SwitcheHandle :: Could not start delay timer -- ") + to_string(static_cast<uint8_t>(code_));
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-}
-
-void SwitcheHandle::handleCriticalDelayTimer(int sigNumb, siginfo_t *si, void *uc)
-{
-    SwitcheHandle * switcheHandleClass = reinterpret_cast<SwitcheHandle *> (si->si_value.sival_ptr);
-    switcheHandleClass->changeOnDelayState();
 }
 
 void SwitcheHandle::changeOnDelayState()

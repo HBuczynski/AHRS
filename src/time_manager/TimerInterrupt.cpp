@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
 
 #include "TimerInterrupt.h"
 #include "TimerInterruptNotification.h"
@@ -38,8 +39,12 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
     signalAction.sa_sigaction = TimerInterrupt::handleInterrupt;
 
     memset(&signalEvent, 0, sizeof(signalEvent));
+
+    interruptObject.objectToNotify = objectToNotify;
+    interruptObject.timerID = &timerID;
+    
     signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void*) objectToNotify;
+    signalEvent.sigev_value.sival_ptr = (void*) (&interruptObject);
     signalEvent.sigev_signo = SIGALRM;
 
     if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID)!= 0)
@@ -49,6 +54,7 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
             const string message = string("TimerInterrupt :: Could not create debounce timer");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
     }
 
     if (sigaction(SIGALRM, &signalAction, NULL))
@@ -76,14 +82,14 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
     }
 }
 
-void TimerInterrupt::startSingle(uint32_t timeInMilliseconds, TimerInterruptNotification* objectToNotify)
+void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterruptNotification* objectToNotify)
 {
     struct sigevent signalEvent;
     struct sigaction signalAction;
     struct itimerspec timerSpecs;
 
-    uint16_t seconds = timeInMilliseconds / 1000;
-    uint32_t  nanoseconds = timeInMilliseconds*1000 - seconds*1000000;
+    uint16_t seconds = inMilliseconds / 1000;
+    uint32_t nanoseconds = inMilliseconds * 1000 - seconds * 1000000;
 
     timerSpecs.it_value.tv_sec = seconds;
     timerSpecs.it_value.tv_nsec = nanoseconds;
@@ -96,35 +102,46 @@ void TimerInterrupt::startSingle(uint32_t timeInMilliseconds, TimerInterruptNoti
     signalAction.sa_sigaction = TimerInterrupt::handleInterrupt;
 
     memset(&signalEvent, 0, sizeof(signalEvent));
+
+    interruptObject.objectToNotify = objectToNotify;
+    interruptObject.timerID = &timerID;
+
     signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void*) objectToNotify;
+    signalEvent.sigev_value.sival_ptr = (void *) (&interruptObject);
     signalEvent.sigev_signo = SIGALRM;
 
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID)!= 0)
+    if ( timer_create(CLOCK_REALTIME, &signalEvent, &timerID) != 0 )
     {
-        if(logger_.isErrorEnable())
+        if ( logger_.isErrorEnable())
         {
             const string message = string("TimerInterrupt :: Could not create debounce timer");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
     }
 
-    if (sigaction(SIGALRM, &signalAction, NULL))
+    if ( sigaction(SIGALRM, &signalAction, NULL))
     {
-        if(logger_.isErrorEnable())
+        if ( logger_.isErrorEnable())
         {
             const string message = string("TimerInterrupt :: Could not install new signal.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 
-    if (timer_settime(timerID, 0, &timerSpecs, NULL) == -1)
+    if ( timer_settime(timerID, 0, &timerSpecs, NULL) == -1 )
     {
-        if(logger_.isErrorEnable())
+        if ( logger_.isErrorEnable())
         {
             const string message = string("TimerInterrupt :: Could not start timer.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+    }
+
+    if ( logger_.isInformationEnable())
+    {
+        const string message = string("TimerInterrupt :: Has been initialized.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
@@ -148,8 +165,13 @@ void TimerInterrupt::stop()
     }
 }
 
+timer_t TimerInterrupt::getTimerID() const
+{
+    return timerID;
+}
+
 void TimerInterrupt::handleInterrupt(int sigNumb, siginfo_t *si, void *uc)
 {
-    TimerInterruptNotification* notification = reinterpret_cast<TimerInterruptNotification*>(si->si_value.sival_ptr);
-    notification->interruptNotification();
+    InterruptObject* interruptObject = reinterpret_cast<InterruptObject*>(si->si_value.sival_ptr);
+    interruptObject->objectToNotify->interruptNotification((*interruptObject->timerID));
 }

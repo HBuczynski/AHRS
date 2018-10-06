@@ -3,6 +3,7 @@
 
 #include <logger/Logger.h>
 #include <hal/include/GPIOInterface.h>
+#include <time_manager/TimerInterrupt.h>
 #include <hal/include/Switch.h>
 #include <chrono>
 #include <cstdio>
@@ -36,7 +37,7 @@ namespace  peripherals
     };
 
     // Class is responsible for handle one of the button.
-    class SwitcheHandle
+    class SwitcheHandle final : public utility::TimerInterruptNotification
     {
     public:
         SwitcheHandle(hardware::GPIO gpioProperties, SwitchesCode code);
@@ -46,18 +47,14 @@ namespace  peripherals
         void initializeCallbacks(std::function< void() > pressedSwitchCallback, std::function< void(SwitchesCode) > errorCallback);
 
     private:
-        void initializeInterrupts();
+        void initializeGPIOInterrupts();
         static void callback(int gpio, int level, uint32_t tick, void *userdata);
 
         void handleFallingInterrupt();
         void handleRaisingInterrupt();
 
-        void initializeDebounceTimer();
-        static void handleDebounceTimer(int sigNumb, siginfo_t *si, void *uc);
+        void interruptNotification(timer_t timerID);
         void changeStateAfterDebounce();
-
-        void initializeCriticalDelay();
-        static void handleCriticalDelayTimer(int sigNumb, siginfo_t *si, void *uc);
         void changeOnDelayState();
 
         void checkErrorInterruptCounter();
@@ -73,11 +70,11 @@ namespace  peripherals
         std::function< void() > pressedSwitchCallback_;
         std::function< void(SwitchesCode) > errorCallback_;
 
-        timer_t debounceTimerID_;
-        timer_t criticalDelayTimerID_;
+        utility::TimerInterrupt debounceTimerID_;
+        utility::TimerInterrupt criticalDelayTimerID_;
 
-        const uint32_t CRITICAL_TIME_SEC = 4;
-        const uint64_t DEBOUNCE_TIME_NANO_SEC = 1000000;
+        const uint32_t CRITICAL_TIME_MSSEC = 4000;
+        const uint64_t DEBOUNCE_TIME_MSSEC = 10;
 
         utility::Logger& logger_;
     };

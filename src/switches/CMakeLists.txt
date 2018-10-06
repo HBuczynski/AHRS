@@ -23,6 +23,7 @@ target_include_directories(
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

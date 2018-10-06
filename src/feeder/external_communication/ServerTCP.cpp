@@ -36,7 +36,7 @@ void ServerTCP::startUserActivation()
     timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
 }
 
-void ServerTCP::interruptNotification()
+void ServerTCP::interruptNotification(timer_t timerID)
 {
     updateClientList();
 }
