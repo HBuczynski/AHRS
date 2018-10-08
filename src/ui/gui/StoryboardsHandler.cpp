@@ -146,15 +146,6 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
-    if(previousWidget_)
-    {
-        gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
-    }
-
-    cout << "Remove AHRS " << endl;
-
-
     exitPage = new ExitPage(this);
 
     cout << "initialized Exit " << endl;
@@ -162,5 +153,13 @@ void StoryboardsHandler::setExitPage()
     exitPage->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(exitPage);
+
+
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
     previousWidget_ = exitPage;
 }
