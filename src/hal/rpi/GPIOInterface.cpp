@@ -10,6 +10,8 @@ using namespace std;
 GPIOInterface::GPIOInterface(GPIO gpio)
         : gpio_(gpio)
 {
+    PIGPIOInitializer::initialize();
+
     initialize();
 }
 

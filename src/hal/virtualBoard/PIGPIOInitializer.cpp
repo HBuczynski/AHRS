@@ -26,8 +26,6 @@ void PIGPIOInitializer::terminate()
 {
     if(initializerFlag_)
     {
-
-
         initializerFlag_ = false;
     }
 }
