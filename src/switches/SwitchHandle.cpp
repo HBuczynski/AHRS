@@ -86,10 +86,9 @@ void SwitchHandle::handleRaisingInterrupt()
     {
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
         //debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+        state_ = SwitchState::HIGH_STATE;
 
         pressedSwitchCallback_();
-
-        state_ = SwitchState::HIGH_STATE;
     }
     else if(state_ == SwitchState::ERROR_CRITICAL_TIME)
     {

@@ -146,6 +146,7 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
+    cout << "In exit callback" << endl;
     controller_->setExitPage();
 }
 
