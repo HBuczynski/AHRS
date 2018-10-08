@@ -90,7 +90,7 @@ void StoryboardsHandler::setAHRSPage()
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
+        //delete previousWidget_;
     }
 
     ahrsPage = new AHRSPage(this);
@@ -105,7 +105,7 @@ void StoryboardsHandler::setSystemSetupPage()
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
+        //delete previousWidget_;
     }
 
     systemSetupPage_ = new SystemSetupPage();
@@ -136,7 +136,7 @@ void StoryboardsHandler::setRestartPage()
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
+        //delete previousWidget_;
     }
 
     restartPage = new RestartPage();
@@ -148,18 +148,16 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
-//    if(previousWidget_)
-//    {
-//        gridLayout_2->removeWidget(previousWidget_);
-//        delete previousWidget_;
-//    }
-
-
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        //delete previousWidget_;
+    }
 
     cout << "initialized Exit " << endl;
 
     exitPage->resize(QSize(1024, 600));
 
-    gridLayout_2->replaceWidget(previousWidget_, exitPage);
+    gridLayout_2->addWidget(exitPage);
     previousWidget_ = exitPage;
 }

@@ -32,6 +32,8 @@ ExitPage::~ExitPage()
 void ExitPage::setupPage()
 {
     // Title label
+    this->setStyleSheet("background-color:black;");
+
     QFont font("Arial", 35, QFont::Bold);
     ui->titleLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui->titleLabel->setFont(font);

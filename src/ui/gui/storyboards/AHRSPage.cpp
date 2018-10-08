@@ -49,6 +49,9 @@ void AHRSPage::setup()
 {
     // SETUP avionic devices
     widgetPFD_ = new WidgetPFD();
+
+    this->setStyleSheet("background-color:black;");
+
     ui->pfdLayout->addWidget(widgetPFD_);
 
     widgetTC_ = new WidgetTC();
