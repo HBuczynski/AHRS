@@ -16,8 +16,6 @@ PIGPIOInitializer::~PIGPIOInitializer()
 
 void PIGPIOInitializer::initialize()
 {
-    cout << initializerFlag_ << endl;
-
     if(!initializerFlag_)
     {
         gpioCfgSocketPort(9500);
