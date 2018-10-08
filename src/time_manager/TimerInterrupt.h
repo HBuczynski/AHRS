@@ -6,6 +6,7 @@
 #include <cstring>
 #include <csignal>
 #include <bits/siginfo.h>
+#include <atomic>
 
 #include <logger/Logger.h>
 
@@ -36,7 +37,7 @@ namespace utility
 
         InterruptObject interruptObject;
         timer_t timerID;
-        bool isInitialized_;
+        std::atomic<bool> isInitialized_;
 
         utility::Logger &logger_;
     };
