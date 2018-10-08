@@ -34,15 +34,36 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
         gpio.pinMode = GPIOMode::IN;
         gpio.pushPullMode = GPIOPullMode::DOWN;
 
+        bool ok = true;
+
+        {
+            SwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
+
+            function<void()> pressedSwitchCallback = [&]() { ok = false; cout << "Pressed Button." << endl; };
+            function<void(SwitchCode, SwitchState)> errorCallback = [](SwitchCode code, SwitchState state) {
+                cout << "Error:: State -- " << (int) state << "  Code --" << (int) code << endl;
+            };
+
+            handle.initializeCallbacks(pressedSwitchCallback, errorCallback);
+
+            while (ok)
+            {}
+
+            ok = true;
+        }
+
         SwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
 
-        function< void() > pressedSwitchCallback = []() { cout << "Pressed Button." << endl;};
-        function< void(SwitchCode, SwitchState) > errorCallback = [](SwitchCode code, SwitchState state) { cout << "Error:: State -- " << (int)state << "  Code --" << (int)code << endl;};
+        function<void()> pressedSwitchCallback = []() { cout << "Pressed Button." << endl; };
+        function<void(SwitchCode, SwitchState)> errorCallback = [](SwitchCode code, SwitchState state) {
+            cout << "Error:: State -- " << (int) state << "  Code --" << (int) code << endl;
+        };
 
         handle.initializeCallbacks(pressedSwitchCallback, errorCallback);
 
-        while(1)
-        { }
+        while (1)
+        {}
+
     }
 
 BOOST_AUTO_TEST_SUITE_END()
