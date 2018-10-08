@@ -8,6 +8,7 @@
 #include <QWidget>
 #include "../../../switches/SwitchHandle.h"
 
+
 namespace Ui {
 class Buttons;
 }

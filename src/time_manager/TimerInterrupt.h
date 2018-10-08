@@ -36,6 +36,7 @@ namespace utility
 
         InterruptObject interruptObject;
         timer_t timerID;
+        bool isInitialized_;
 
         utility::Logger &logger_;
     };

@@ -5,10 +5,11 @@ using namespace std;
 using namespace utility;
 using namespace peripherals;
 
-AHRSPage::AHRSPage(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::AHRSPage),
-    logger_(Logger::getInstance())
+AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
+    :   QWidget(parent),
+        controller_(controller),
+        ui(new Ui::AHRSPage),
+        logger_(Logger::getInstance())
 {
     ui->setupUi(this);
 
@@ -145,7 +146,7 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-
+    controller_->setRestartPage();
 }
 
 void AHRSPage::setRoll( float roll )

@@ -62,6 +62,11 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     QMetaObject::connectSlotsByName(MainWindow);
 }
 
+void StoryboardsHandler::backToPreviousPage()
+{
+
+}
+
 void StoryboardsHandler::setWelcomePage()
 {
     if(previousWidget_)
@@ -86,7 +91,7 @@ void StoryboardsHandler::setAHRSPage()
         delete previousWidget_;
     }
 
-    ahrsPage = new AHRSPage();
+    ahrsPage = new AHRSPage(this);
     ahrsPage->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(ahrsPage);
@@ -124,3 +129,17 @@ void StoryboardsHandler::setCallibrationSettingPage()
     previousWidget_ = callibrationSettings_;
 }
 
+void StoryboardsHandler::setRestartPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    restartPage = new RestartPage();
+    restartPage->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(restartPage);
+    previousWidget_ = restartPage;
+}

@@ -11,12 +11,16 @@ using namespace std;
 using namespace utility;
 
 TimerInterrupt::TimerInterrupt()
-    : logger_(Logger::getInstance())
+    :   isInitialized_(false),
+        logger_(Logger::getInstance())
 {}
 
 TimerInterrupt::~TimerInterrupt()
 {
-    stop();
+    if(isInitialized_)
+    {
+        stop();
+    }
 }
 
 void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterruptNotification *objectToNotify)
@@ -55,6 +59,7 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
+        return;
     }
 
     if (sigaction(SIGALRM, &signalAction, NULL))
@@ -64,6 +69,8 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
             const string message = string("TimerInterrupt :: Could not install new signal.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return;
     }
 
     if (timer_settime(timerID, 0, &timerSpecs, NULL) == -1)
@@ -73,13 +80,18 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
             const string message = string("TimerInterrupt :: Could not start timer.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return;
     }
+
 
     if(logger_.isDebugEnable())
     {
         const string message = string("TimerInterrupt :: Has been initialized.");
         logger_.writeLog(LogType::DEBUG_LOG, message);
     }
+
+    isInitialized_ = true;
 }
 
 void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterruptNotification* objectToNotify)
@@ -118,6 +130,7 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
+        return;
     }
 
     if ( sigaction(SIGALRM, &signalAction, NULL))
@@ -127,6 +140,8 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
             const string message = string("TimerInterrupt :: Could not install new signal.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return;
     }
 
     if ( timer_settime(timerID, 0, &timerSpecs, NULL) == -1 )
@@ -136,6 +151,8 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
             const string message = string("TimerInterrupt :: Could not start timer.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+
+        return;
     }
 
     if ( logger_.isDebugEnable())
@@ -143,25 +160,32 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
         const string message = string("TimerInterrupt :: Has been initialized.");
         logger_.writeLog(LogType::DEBUG_LOG, message);
     }
+
+    isInitialized_ = true;
 }
 
 void TimerInterrupt::stop()
 {
-    if(timer_delete(timerID) == 0)
+    if(isInitialized_)
     {
-        if(logger_.isDebugEnable())
+        if ( timer_delete(timerID) == 0 )
         {
-            const string message = string("TimerInterrupt :: Stopped timer correctly.");
-            logger_.writeLog(LogType::DEBUG_LOG, message);
+            if ( logger_.isDebugEnable())
+            {
+                const string message = string("TimerInterrupt :: Stopped timer correctly.");
+                logger_.writeLog(LogType::DEBUG_LOG, message);
+            }
         }
-    }
-    else
-    {
-        if(logger_.isErrorEnable())
+        else
         {
-            const string message = string("TimerInterrupt :: Could not stop timer. Errno: ") + strerror(errno);
-            logger_.writeLog(LogType::ERROR_LOG, message);
+            if ( logger_.isErrorEnable())
+            {
+                const string message = string("TimerInterrupt :: Could not stop timer. Errno: ") + strerror(errno);
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
         }
+
+        isInitialized_ = false;
     }
 }
 

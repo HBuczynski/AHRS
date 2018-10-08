@@ -38,3 +38,8 @@ void MainWindow::setCallibrationSettingPage()
 {
     storyboardsHandler_->setCallibrationSettingPage();
 }
+
+void MainWindow::setRestartPage()
+{
+    storyboardsHandler_->setRestartPage();
+}

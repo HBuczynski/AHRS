@@ -18,6 +18,7 @@ public:
     void setAHRSPage();
     void setCallibrationSettingPage();
     void setSystemSetupPage();
+    void setRestartPage();
     
 private:
     StoryboardsHandler *storyboardsHandler_;

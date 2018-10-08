@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "../PageController.h"
+
 #include "WidgetPFD.h"
 #include "WidgetTC.h"
 #include "WidgetVSI.h"
@@ -18,7 +20,7 @@ class AHRSPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit AHRSPage(QWidget *parent = 0);
+    explicit AHRSPage(gui::PageController *controller, QWidget *parent = 0);
     ~AHRSPage();
 
     inline void setRoll( float roll );
@@ -41,6 +43,8 @@ private:
     void menuButton();
     void logsButton();
     void exitButton();
+
+    gui::PageController *controller_;
 
     Buttons *buttons_;
     WidgetTC *widgetTC_;

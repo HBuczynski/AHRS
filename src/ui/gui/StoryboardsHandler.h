@@ -14,22 +14,28 @@
 #include <QtWidgets/QWidget>
 
 #include "MainWindow.h"
+#include "PageController.h"
 #include "storyboards/AHRSPage.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
 #include "storyboards/CallibrationSettings.h"
+#include "storyboards/RestartPage.h"
 
-class StoryboardsHandler
+
+class StoryboardsHandler final : public gui::PageController
 {
 public:
     StoryboardsHandler();
 
     void setupUi(QMainWindow *MainWindow);
 
-    void setWelcomePage();
-    void setAHRSPage();
-    void setSystemSetupPage();
-    void setCallibrationSettingPage();
+    void backToPreviousPage() override;
+
+    void setWelcomePage() override;
+    void setAHRSPage() override;
+    void setSystemSetupPage() override;
+    void setCallibrationSettingPage() override;
+    void setRestartPage() override;
 
 private:
 
@@ -41,6 +47,7 @@ private:
     QGridLayout *gridLayout_2;
 
     AHRSPage *ahrsPage;
+    RestartPage *restartPage;
     WelcomePage *welcomePage;
     SystemSetupPage *systemSetupPage_;
     CallibrationSettings *callibrationSettings_;
