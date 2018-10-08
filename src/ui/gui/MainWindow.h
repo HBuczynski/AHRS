@@ -19,6 +19,7 @@ public:
     void setCallibrationSettingPage();
     void setSystemSetupPage();
     void setRestartPage();
+    void setExitPage();
     
 private:
     StoryboardsHandler *storyboardsHandler_;

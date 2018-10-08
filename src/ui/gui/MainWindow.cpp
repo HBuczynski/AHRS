@@ -43,3 +43,8 @@ void MainWindow::setRestartPage()
 {
     storyboardsHandler_->setRestartPage();
 }
+
+void MainWindow::setExitPage()
+{
+    storyboardsHandler_->setExitPage();
+}

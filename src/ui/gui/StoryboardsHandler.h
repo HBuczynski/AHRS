@@ -15,6 +15,7 @@
 
 #include "MainWindow.h"
 #include "PageController.h"
+#include "storyboards/ExitPage.h"
 #include "storyboards/AHRSPage.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
@@ -36,6 +37,7 @@ public:
     void setSystemSetupPage() override;
     void setCallibrationSettingPage() override;
     void setRestartPage() override;
+    void setExitPage() override;
 
 private:
 
@@ -47,6 +49,7 @@ private:
     QGridLayout *gridLayout_2;
 
     AHRSPage *ahrsPage;
+    ExitPage *exitPage;
     RestartPage *restartPage;
     WelcomePage *welcomePage;
     SystemSetupPage *systemSetupPage_;

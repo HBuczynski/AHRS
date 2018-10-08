@@ -143,3 +143,18 @@ void StoryboardsHandler::setRestartPage()
     gridLayout_2->addWidget(restartPage);
     previousWidget_ = restartPage;
 }
+
+void StoryboardsHandler::setExitPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    exitPage = new ExitPage(this);
+    exitPage->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(exitPage);
+    previousWidget_ = exitPage;
+}
