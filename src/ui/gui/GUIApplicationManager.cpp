@@ -37,7 +37,6 @@ void GUIApplicationManager::startGUI()
     mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     mainWindow_->show();
     mainWindow_->setAHRSPage();
-    mainWindow_->setExitPage();
 }
 
 bool GUIApplicationManager::initializeGUIMessageQueue()

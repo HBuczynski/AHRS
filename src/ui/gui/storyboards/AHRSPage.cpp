@@ -18,6 +18,8 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
 AHRSPage::~AHRSPage()
 {
+    delete ui;
+
     if(buttons_)
     {
         delete buttons_;
@@ -37,8 +39,6 @@ AHRSPage::~AHRSPage()
     {
         delete widgetPFD_;
     }
-
-    delete ui;
 }
 
 void AHRSPage::setup()
@@ -146,7 +146,7 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-    controller_->setRestartPage();
+    controller_->setExitPage();
 }
 
 void AHRSPage::setRoll( float roll )

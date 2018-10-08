@@ -20,12 +20,12 @@ ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
 
 ExitPage::~ExitPage()
 {
+    delete ui;
+
     if(buttons)
     {
         delete buttons;
     }
-
-    delete ui;
 }
 
 void ExitPage::setupPage()
