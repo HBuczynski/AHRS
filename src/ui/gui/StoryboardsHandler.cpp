@@ -60,6 +60,8 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
 
     MainWindow->setCentralWidget(centralWidget);
     QMetaObject::connectSlotsByName(MainWindow);
+
+    exitPage = new ExitPage(this);
 }
 
 void StoryboardsHandler::backToPreviousPage()
@@ -152,8 +154,7 @@ void StoryboardsHandler::setExitPage()
 //        delete previousWidget_;
 //    }
 
-    cout << "Remove AHRS " << endl;
-    exitPage = new ExitPage(this);
+
 
     cout << "initialized Exit " << endl;
 
