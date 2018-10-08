@@ -17,14 +17,14 @@ TimerInterrupt::TimerInterrupt()
 
 TimerInterrupt::~TimerInterrupt()
 {
-    if(isInitialized_)
-    {
-        stop();
-    }
+
+    stop();
 }
 
 void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterruptNotification *objectToNotify)
 {
+    stop();
+
     struct sigevent signalEvent;
     struct sigaction signalAction;
     struct itimerspec timerSpecs;
@@ -96,6 +96,8 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
 
 void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterruptNotification* objectToNotify)
 {
+    stop();
+    
     struct sigevent signalEvent;
     struct sigaction signalAction;
     struct itimerspec timerSpecs;
