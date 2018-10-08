@@ -60,8 +60,6 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
 
     MainWindow->setCentralWidget(centralWidget);
     QMetaObject::connectSlotsByName(MainWindow);
-
-    exitPage = new ExitPage(this);
 }
 
 void StoryboardsHandler::backToPreviousPage()
