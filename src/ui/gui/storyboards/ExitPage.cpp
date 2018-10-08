@@ -14,6 +14,7 @@ ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    cout << "In exiit page constr" << endl;
     setupPage();
     highlightCurrentOption(currentOption_);
 }

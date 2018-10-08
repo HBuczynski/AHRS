@@ -20,6 +20,7 @@ Buttons::Buttons(QWidget *parent) :
 
 Buttons::~Buttons()
 {
+    cout << "Buttons destructor " << endl;
     delete ui;
 }
 

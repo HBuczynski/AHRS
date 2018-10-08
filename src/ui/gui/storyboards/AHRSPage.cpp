@@ -25,6 +25,8 @@ AHRSPage::~AHRSPage()
         delete buttons_;
     }
 
+    cout << "After buttons destructor" << endl;
+
     if(widgetTC_)
     {
         delete widgetTC_;
@@ -39,6 +41,8 @@ AHRSPage::~AHRSPage()
     {
         delete widgetPFD_;
     }
+
+    cout << "After AHRS destructor" << endl;
 }
 
 void AHRSPage::setup()
