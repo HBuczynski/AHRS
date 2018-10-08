@@ -86,8 +86,11 @@ void ExitPage::highlightCurrentOption(uint8_t newOption)
 
 void ExitPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
+    cout << "Buttons init" << endl;
     buttons = new Buttons();
     buttons->initialize(name, callbackFunctions);
+
+    cout << "After buttons init" << endl;
 
     ui->buttonLayout->addWidget(buttons);
 }

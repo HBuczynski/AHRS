@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-#include "../../hal/include/PIGPIOInitializer.h"
-
 using namespace std;
 
 StoryboardsHandler::StoryboardsHandler()
@@ -150,7 +148,6 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
-    hardware::PIGPIOInitializer::terminate();
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
