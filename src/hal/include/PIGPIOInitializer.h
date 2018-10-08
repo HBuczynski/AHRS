@@ -13,6 +13,8 @@ namespace hardware
 
         static void initialize();
 
+        static void terminate();
+
     private:
         static std::atomic<bool> initializerFlag_;
     };

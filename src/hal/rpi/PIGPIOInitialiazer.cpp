@@ -26,3 +26,13 @@ void PIGPIOInitializer::initialize()
         initializerFlag_ = true;
     }
 }
+
+void PIGPIOInitializer::terminate()
+{
+    if(initializerFlag_)
+    {
+        gpioTerminate();
+
+        initializerFlag_ = false;
+    }
+}

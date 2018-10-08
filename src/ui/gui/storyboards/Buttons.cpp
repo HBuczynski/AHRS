@@ -5,6 +5,8 @@
 #include <config_reader/ConfigurationReader.h>
 #include <config_reader/UIParameters.h>
 
+#include <hal/include/PIGPIOInitializer.h>
+
 using namespace std;
 using namespace utility;
 using namespace peripherals;
@@ -14,12 +16,14 @@ Buttons::Buttons(QWidget *parent) :
     ui(new Ui::Buttons),
     logger_(Logger::getInstance())
 {
+    hardware::PIGPIOInitializer::initialize();
     ui->setupUi(this);
     setup();
 }
 
 Buttons::~Buttons()
 {
+    hardware::PIGPIOInitializer::terminate();
     delete ui;
 }
 
