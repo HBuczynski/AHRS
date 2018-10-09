@@ -23,42 +23,42 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
     MainWindow->setPalette(pal);
 
-    centralWidget = new QWidget(MainWindow);
+    centralWidget = make_unique<QWidget>(MainWindow);
     centralWidget->setObjectName(QStringLiteral("centralWidget"));
     centralWidget->setMaximumSize(QSize(1024, 600));
 
-    gridLayout_5 = new QGridLayout(centralWidget);
+    gridLayout_5 = make_unique<QGridLayout>(centralWidget.get());
     gridLayout_5->setSpacing(2);
     gridLayout_5->setContentsMargins(2, 2, 2, 2);
     gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
 
-    splitter = new QSplitter(centralWidget);
+    splitter = make_unique<QSplitter>(centralWidget.get());
     splitter->setObjectName(QStringLiteral("splitter"));
     splitter->setEnabled(true);
     splitter->setMaximumSize(QSize(1024, 600));
     splitter->setOrientation(Qt::Horizontal);
-    frame_2 = new QFrame(splitter);
+    frame_2 = make_unique<QFrame>(splitter.get());
     frame_2->setObjectName(QStringLiteral("frame_2"));
     frame_2->setMaximumSize(QSize(1024, 600));
     frame_2->setFrameShape(QFrame::StyledPanel);
     frame_2->setFrameShadow(QFrame::Raised);
 
-    gridLayout_4 = new QGridLayout(frame_2);
+    gridLayout_4 = make_unique<QGridLayout>(frame_2.get());
     gridLayout_4->setSpacing(2);
     gridLayout_4->setContentsMargins(2, 2, 2, 2);
     gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
     gridLayout_4->setSizeConstraint(QLayout::SetMaximumSize);
     gridLayout_4->setContentsMargins(0, 3, 0, 3);
-    gridLayout_2 = new QGridLayout();
+    gridLayout_2 = make_unique<QGridLayout>();
     gridLayout_2->setSpacing(2);
     gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
     gridLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
 
-    gridLayout_4->addLayout(gridLayout_2, 0, 0, 1, 1);
-    splitter->addWidget(frame_2);
-    gridLayout_5->addWidget(splitter, 0, 0, 1, 1);
+    gridLayout_4->addLayout(gridLayout_2.get(), 0, 0, 1, 1);
+    splitter->addWidget(frame_2.get());
+    gridLayout_5->addWidget(splitter.get(), 0, 0, 1, 1);
 
-    MainWindow->setCentralWidget(centralWidget);
+    MainWindow->setCentralWidget(centralWidget.get());
     QMetaObject::connectSlotsByName(MainWindow);
 }
 
@@ -73,21 +73,20 @@ void StoryboardsHandler::setWelcomePage()
     {
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
-
     }
 
-    welcomePage = new WelcomePage();
-    welcomePage->resize(QSize(1024, 600));
+    welcomePage_ = new WelcomePage();
+    welcomePage_->resize(QSize(1024, 600));
 
-    gridLayout_2->addWidget(welcomePage);
-    previousWidget_ = welcomePage;
+    gridLayout_2->addWidget(welcomePage_);
+    previousWidget_ = welcomePage_;
 }
 
 void StoryboardsHandler::setAHRSPage()
 {
-    ahrsPage = new AHRSPage(this);
-    ahrsPage->resize(QSize(1024, 600));
-    ahrsPage->initialize();
+    ahrsPage_ = new AHRSPage(this);
+    ahrsPage_->resize(QSize(1024, 600));
+    ahrsPage_->initialize();
 
     if(previousWidget_)
     {
@@ -95,8 +94,8 @@ void StoryboardsHandler::setAHRSPage()
         delete previousWidget_;
     }
 
-    gridLayout_2->addWidget(ahrsPage);
-    previousWidget_ = ahrsPage;
+    gridLayout_2->addWidget(ahrsPage_);
+    previousWidget_ = ahrsPage_;
 }
 
 void StoryboardsHandler::setSystemSetupPage()
@@ -132,8 +131,8 @@ void StoryboardsHandler::setCallibrationSettingPage()
 
 void StoryboardsHandler::setRestartPage()
 {
-    restartPage = new RestartPage();
-    restartPage->resize(QSize(1024, 600));
+    restartPage_ = new RestartPage();
+    restartPage_->resize(QSize(1024, 600));
 
     if(previousWidget_)
     {
@@ -141,8 +140,8 @@ void StoryboardsHandler::setRestartPage()
         delete previousWidget_;
     }
 
-    gridLayout_2->addWidget(restartPage);
-    previousWidget_ = restartPage;
+    gridLayout_2->addWidget(restartPage_);
+    previousWidget_ = restartPage_;
 }
 
 void StoryboardsHandler::setExitPage()
@@ -153,10 +152,10 @@ void StoryboardsHandler::setExitPage()
         delete previousWidget_;
     }
 
-    exitPage = new ExitPage(this);
-    exitPage->resize(QSize(1024, 600));
-    exitPage->initialize();
+    exitPage_ = new ExitPage(this);
+    exitPage_->resize(QSize(1024, 600));
+    exitPage_->initialize();
 
-    gridLayout_2->addWidget(exitPage);
-    previousWidget_ = exitPage;
+    gridLayout_2->addWidget(exitPage_);
+    previousWidget_ = exitPage_;
 }
