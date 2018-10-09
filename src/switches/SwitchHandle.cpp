@@ -87,10 +87,9 @@ void SwitchHandle::handleRaisingInterrupt()
     if(state_ == SwitchState::LOW_STATE)
     {
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
-        //debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
-        state_ = SwitchState::HIGH_STATE;
-
-        pressedSwitchCallback_();
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+//        state_ = SwitchState::HIGH_STATE;
+//        pressedSwitchCallback_();
     }
     else if(state_ == SwitchState::ERROR_CRITICAL_TIME)
     {
@@ -116,10 +115,10 @@ void SwitchHandle::handleFallingInterrupt()
     {
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
-        //debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
-        //criticalDelayTimerID_.startSingleInterrupt(CRITICAL_TIME_MSSEC, this);
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+        criticalDelayTimerID_.startSingleInterrupt(CRITICAL_TIME_MSSEC, this);
 
-        state_ = SwitchState::LOW_STATE;
+        //state_ = SwitchState::LOW_STATE;
     }
     else
     {
@@ -171,10 +170,10 @@ void SwitchHandle::changeStateAfterDebounce()
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
         criticalDelayTimerID_.stop();
-        pressedSwitchCallback_();
-
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
+
+        pressedSwitchCallback_();
     }
 }
 
