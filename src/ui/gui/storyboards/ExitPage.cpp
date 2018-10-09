@@ -14,7 +14,6 @@ ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    cout << "In exiit page constr" << endl;
     setupPage();
     highlightCurrentOption(currentOption_);
 
@@ -24,8 +23,6 @@ ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
 ExitPage::~ExitPage()
 {
     delete ui;
-
-    cout << "EXIT destructor " << endl;
 
     if(buttons)
     {
@@ -95,15 +92,10 @@ void ExitPage::highlightCurrentOption(uint8_t newOption)
 
 void ExitPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    cout << "Buttons init" << endl;
     buttons = new Buttons();
     buttons->initialize(name, callbackFunctions);
 
-    cout << "After buttons init" << endl;
-
     ui->buttonLayout->addWidget(buttons);
-
-    cout << "After adding buttons to layout." << endl;
 }
 
 void ExitPage::firstButton()
@@ -128,7 +120,6 @@ void ExitPage::submit()
 {
     if(currentOption_ == 0)
     {
-        //controller_->setAHRSPage();
         emit informPrev();
     }
 }

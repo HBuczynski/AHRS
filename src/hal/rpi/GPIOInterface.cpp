@@ -18,10 +18,7 @@ GPIOInterface::GPIOInterface(GPIO gpio)
 }
 
 GPIOInterface::~GPIOInterface()
-{
-    cout << "IN GPIOInterface destructor" << endl;
-}
-
+{}
 
 bool GPIOInterface::initialize() const
 {

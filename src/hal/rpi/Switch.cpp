@@ -17,7 +17,6 @@ bool Switch::registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &ti
 {
     if(!gpioSetISRFuncEx(gpio_.pinNumber, edge, timeout, fun, intData))
     {
-        std::cout << "ISR register correct." << std::endl;
         return true;
     }
     return false;

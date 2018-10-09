@@ -86,8 +86,6 @@ void StoryboardsHandler::setWelcomePage()
 
 void StoryboardsHandler::setAHRSPage()
 {
-    cout << "Start AHRS " << endl;
-
     ahrsPage = new AHRSPage(this);
     ahrsPage->resize(QSize(1024, 600));
     ahrsPage->initialize();
@@ -100,20 +98,18 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
-
-    //ahrsPage->exitButton();
 }
 
 void StoryboardsHandler::setSystemSetupPage()
 {
+    systemSetupPage_ = new SystemSetupPage();
+    systemSetupPage_->resize(QSize(1024, 600));
+
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
-
-    systemSetupPage_ = new SystemSetupPage();
-    systemSetupPage_->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(systemSetupPage_);
     previousWidget_ = systemSetupPage_;
@@ -122,14 +118,14 @@ void StoryboardsHandler::setSystemSetupPage()
 
 void StoryboardsHandler::setCallibrationSettingPage()
 {
+    callibrationSettings_ = new CallibrationSettings();
+    callibrationSettings_->resize(QSize(1024, 600));
+
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
-
-    callibrationSettings_ = new CallibrationSettings();
-    callibrationSettings_->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(callibrationSettings_);
     previousWidget_ = callibrationSettings_;
@@ -158,13 +154,10 @@ void StoryboardsHandler::setExitPage()
         delete previousWidget_;
     }
 
-    cout << "initialized Exit " << endl;
     exitPage = new ExitPage(this);
     exitPage->resize(QSize(1024, 600));
     exitPage->initialize();
 
-    cout << "Before adding exit page to main" << endl;
     gridLayout_2->addWidget(exitPage);
-    cout << "After adding" << endl;
     previousWidget_ = exitPage;
 }

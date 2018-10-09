@@ -22,30 +22,20 @@ AHRSPage::~AHRSPage()
 {
     delete ui;
 
-    cout << "In AHRS destructor" << endl;
-
     if(widgetTC_)
     {
         delete widgetTC_;
     }
-
-    cout << "widgetTC_ destructor" << endl;
 
     if(widgetVSI_)
     {
         delete widgetVSI_;
     }
 
-    cout << "widgetVSI_ destructor" << endl;
-
     if(widgetPFD_)
     {
         delete widgetPFD_;
     }
-
-    cout << "widgetPFD_ destructor" << endl;
-
-    cout << "After AHRS destructor" << endl;
 }
 
 void AHRSPage::setup()
@@ -161,7 +151,6 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-    cout << "In exit callback" << endl;
     emit funSignal();
 }
 

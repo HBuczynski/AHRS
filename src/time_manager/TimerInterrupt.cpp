@@ -17,7 +17,6 @@ TimerInterrupt::TimerInterrupt()
 
 TimerInterrupt::~TimerInterrupt()
 {
-
     stop();
 }
 
