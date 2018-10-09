@@ -38,7 +38,6 @@ void GUIApplicationManager::startGUI()
     mainWindow_->show();
     mainWindow_->setAHRSPage();
     mainWindow_->setExitPage();
-    mainWindow_->setAHRSPage();
 }
 
 bool GUIApplicationManager::initializeGUIMessageQueue()

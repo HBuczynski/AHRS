@@ -62,9 +62,9 @@ void ExitPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "";
-    buttonNames[SwitchCode::SECOND_SWITCH] = "\u21E6";
+    buttonNames[SwitchCode::SECOND_SWITCH] = "< LEFT";//"\u21E6";
     buttonNames[SwitchCode::THIRD_SWITCH] = "SUBMIT";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "\u21E8";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "RIGHT >";//"\u21E8";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&ExitPage::firstButton, this);

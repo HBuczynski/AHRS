@@ -11,40 +11,43 @@ using namespace peripherals;
 
 Buttons::Buttons(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Buttons),
+    ui_(new Ui::Buttons),
     logger_(Logger::getInstance())
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
     setup();
 }
 
 Buttons::~Buttons()
 {
-    delete ui;
+    if(ui_)
+    {
+        delete ui_;
+    }
 }
 
 void Buttons::setup()
 {
     QFont font("Arial", 15, QFont::Bold);
-    ui->firstButton->setStyleSheet("QLabel { color: cyan}");
-    ui->firstButton->setFont(font);
-    ui->firstButton->setAlignment(Qt::AlignCenter);
-    ui->firstButton->setText(" ");
+    ui_->firstButton->setStyleSheet("QLabel { color: cyan}");
+    ui_->firstButton->setFont(font);
+    ui_->firstButton->setAlignment(Qt::AlignCenter);
+    ui_->firstButton->setText(" ");
 
-    ui->secondButton->setStyleSheet("QLabel { color: cyan }");
-    ui->secondButton->setFont(font);
-    ui->secondButton->setAlignment(Qt::AlignCenter);
-    ui->secondButton->setText(" ");
+    ui_->secondButton->setStyleSheet("QLabel { color: cyan }");
+    ui_->secondButton->setFont(font);
+    ui_->secondButton->setAlignment(Qt::AlignCenter);
+    ui_->secondButton->setText(" ");
 
-    ui->thirdButton->setStyleSheet("QLabel { color: cyan}");
-    ui->thirdButton->setFont(font);
-    ui->thirdButton->setAlignment(Qt::AlignCenter);
-    ui->thirdButton->setText(" ");
+    ui_->thirdButton->setStyleSheet("QLabel { color: cyan}");
+    ui_->thirdButton->setFont(font);
+    ui_->thirdButton->setAlignment(Qt::AlignCenter);
+    ui_->thirdButton->setText(" ");
 
-    ui->fourthButton->setStyleSheet("QLabel { color: cyan}");
-    ui->fourthButton->setFont(font);
-    ui->fourthButton->setAlignment(Qt::AlignCenter);
-    ui->fourthButton->setText(" ");
+    ui_->fourthButton->setStyleSheet("QLabel { color: cyan}");
+    ui_->fourthButton->setFont(font);
+    ui_->fourthButton->setAlignment(Qt::AlignCenter);
+    ui_->fourthButton->setText(" ");
 }
 
 void Buttons::initialize(const map<SwitchCode, string> &names, const map<SwitchCode, function<void()> > &callbackFunctions)
@@ -55,10 +58,10 @@ void Buttons::initialize(const map<SwitchCode, string> &names, const map<SwitchC
 
 void Buttons::initializeText(const map<SwitchCode, string> &names)
 {
-    ui->firstButton->setText(getButtonText(SwitchCode::FIRST_SWITCH, names).c_str());
-    ui->secondButton->setText(getButtonText(SwitchCode::SECOND_SWITCH, names).c_str());
-    ui->thirdButton->setText(getButtonText(SwitchCode::THIRD_SWITCH, names).c_str());
-    ui->fourthButton->setText(getButtonText(SwitchCode::FOURTH_SWITCH, names).c_str());
+    ui_->firstButton->setText(getButtonText(SwitchCode::FIRST_SWITCH, names).c_str());
+    ui_->secondButton->setText(getButtonText(SwitchCode::SECOND_SWITCH, names).c_str());
+    ui_->thirdButton->setText(getButtonText(SwitchCode::THIRD_SWITCH, names).c_str());
+    ui_->fourthButton->setText(getButtonText(SwitchCode::FOURTH_SWITCH, names).c_str());
 }
 
 void Buttons::initializeSwitches(const map<SwitchCode, function<void()> > &callbackFunctions)

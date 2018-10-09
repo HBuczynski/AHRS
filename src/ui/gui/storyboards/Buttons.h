@@ -31,7 +31,7 @@ private:
     std::string getButtonText(peripherals::SwitchCode switchCode, std::map<peripherals::SwitchCode, std::string> names);
     void switchError(peripherals::SwitchCode code, peripherals::SwitchState state);
 
-    Ui::Buttons *ui;
+    Ui::Buttons *ui_;
     std::map<peripherals::SwitchCode, std::unique_ptr<peripherals::SwitchHandle> > switches_;
 
     utility::Logger& logger_;
