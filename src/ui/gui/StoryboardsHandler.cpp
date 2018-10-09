@@ -61,11 +61,7 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     MainWindow->setCentralWidget(centralWidget);
     QMetaObject::connectSlotsByName(MainWindow);
 
-    exitPage = new ExitPage();
-    exitPage->resize(QSize(1024, 600));
 
-    ahrsPage = new AHRSPage(this);
-    ahrsPage->resize(QSize(1024, 600));
 }
 
 void StoryboardsHandler::backToPreviousPage()
@@ -91,15 +87,20 @@ void StoryboardsHandler::setWelcomePage()
 
 void StoryboardsHandler::setAHRSPage()
 {
+    cout << "Start AHRS " << endl;
+
+    ahrsPage = new AHRSPage(this);
+    ahrsPage->resize(QSize(1024, 600));
+    ahrsPage->initialize();
+
+
+
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        //delete previousWidget_;
+        delete previousWidget_;
     }
-
-    cout << "Start AHRS " << endl;
-    ahrsPage->initialize();
-
+    
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
 }
@@ -137,14 +138,14 @@ void StoryboardsHandler::setCallibrationSettingPage()
 
 void StoryboardsHandler::setRestartPage()
 {
+    restartPage = new RestartPage();
+    restartPage->resize(QSize(1024, 600));
+
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        //delete previousWidget_;
+        delete previousWidget_;
     }
-
-    restartPage = new RestartPage();
-    restartPage->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(restartPage);
     previousWidget_ = restartPage;
@@ -155,10 +156,12 @@ void StoryboardsHandler::setExitPage()
     if(previousWidget_)
     {
         gridLayout_2->removeWidget(previousWidget_);
-        //delete previousWidget_;
+        delete previousWidget_;
     }
 
     cout << "initialized Exit " << endl;
+    exitPage = new ExitPage();
+    exitPage->resize(QSize(1024, 600));
     exitPage->initialize();
 
     cout << "Before adding exit page to main" << endl;
