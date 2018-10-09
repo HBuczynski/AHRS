@@ -23,6 +23,8 @@ ExitPage::~ExitPage()
 {
     delete ui;
 
+    cout << "EXIT destructor " << endl;
+
     if(buttons)
     {
         delete buttons;
