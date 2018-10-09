@@ -103,6 +103,8 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
+
+    ahrsPage->exitButton();
 }
 
 void StoryboardsHandler::setSystemSetupPage()

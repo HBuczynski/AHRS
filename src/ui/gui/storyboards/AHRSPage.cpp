@@ -132,7 +132,7 @@ void AHRSPage::initialize()
 
     initializeButtons(buttonNames, callbackFunctions);
 
-    QObject::connect(this, SIGNAL(funSignal()), (QObject*)controller_, SLOT(controller_->change()));
+    //QObject::connect(this, SIGNAL(funSignal()), (QObject*)controller_, SLOT(controller_->change()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -162,8 +162,8 @@ void AHRSPage::logsButton()
 void AHRSPage::exitButton()
 {
     cout << "In exit callback" << endl;
-    //controller_->setExitPage();
-    emit funSignal();
+    controller_->setExitPage();
+    //emit funSignal();
 }
 
 void AHRSPage::setRoll( float roll )

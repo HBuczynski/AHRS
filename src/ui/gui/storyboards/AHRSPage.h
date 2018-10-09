@@ -36,6 +36,7 @@ public:
 
     inline void setTurnRate( float turnRate );
     inline void setSlipSkid( float slipSkid );
+    void exitButton();
 
 signals:
     void funSignal();
@@ -48,7 +49,7 @@ private:
     void calibrateButton();
     void menuButton();
     void logsButton();
-    void exitButton();
+
 
     gui::PageController *controller_;
 
