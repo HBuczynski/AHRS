@@ -124,7 +124,7 @@ void ExitPage::submit()
 {
     if(currentOption_ == 0)
     {
-        //controller_->setAHRSPage();
+        controller_->setAHRSPage();
     }
 }
 
