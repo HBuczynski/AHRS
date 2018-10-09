@@ -34,14 +34,15 @@ public:
     void backToPreviousPage() override;
 
     void setWelcomePage() override;
-    void setAHRSPage() override;
+
     void setSystemSetupPage() override;
     void setCallibrationSettingPage() override;
     void setRestartPage() override;
-    void setExitPage() override;
+
 
 public slots:
-    void change();
+    void setExitPage() override;
+    void setAHRSPage() override;
 
 private:
 

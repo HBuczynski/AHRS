@@ -92,7 +92,7 @@ void StoryboardsHandler::setAHRSPage()
     ahrsPage->resize(QSize(1024, 600));
     ahrsPage->initialize();
 
-    QObject::connect(ahrsPage, SIGNAL(funSignal()), this, SLOT(change()));
+    QObject::connect(ahrsPage, SIGNAL(funSignal()), this, SLOT(setExitPage()));
 
 
     if(previousWidget_)
@@ -103,6 +103,8 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
+//
+//    ahrsPage->exitButton();
 }
 
 void StoryboardsHandler::setSystemSetupPage()
@@ -164,13 +166,10 @@ void StoryboardsHandler::setExitPage()
     exitPage->resize(QSize(1024, 600));
     exitPage->initialize();
 
+    QObject::connect(exitPage, SIGNAL(informPrev()), this, SLOT(setAHRSPage()));
+
     cout << "Before adding exit page to main" << endl;
     gridLayout_2->addWidget(exitPage);
     cout << "After adding" << endl;
     previousWidget_ = exitPage;
-}
-
-void StoryboardsHandler::change()
-{
-    setExitPage();
 }

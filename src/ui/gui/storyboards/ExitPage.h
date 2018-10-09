@@ -22,6 +22,9 @@ public:
 
     void initialize();
 
+signals:
+    void informPrev();
+
 private:
     void setupPage();
 
