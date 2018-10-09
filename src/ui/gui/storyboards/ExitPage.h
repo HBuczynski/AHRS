@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QWidget>
 #include <vector>
+#include <memory>
 
 #include "Buttons.h"
 #include "../PageController.h"
@@ -23,13 +24,12 @@ public:
     void initialize();
 
 signals:
-    void informPrev();
+    void signalAHRSPage();
 
 private:
     void setupPage();
 
     void highlightCurrentOption(uint8_t newOption);
-
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
     void firstButton();
@@ -38,13 +38,12 @@ private:
     void rightArrow();
 
     uint8_t currentOption_;
-    Buttons *buttons;
-    Ui::ExitPage *ui;
+    std::unique_ptr<Buttons> buttons_;
+    Ui::ExitPage *ui_;
     gui::PageController* controller_;
 
-    const uint8_t MAX_OPTIONS_NUMBER;
-
     std::vector<QLabel*> labels_;
+    const uint8_t MAX_OPTIONS_NUMBER;
 };
 
 #endif // EXITPAGE_H

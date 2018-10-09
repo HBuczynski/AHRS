@@ -5,35 +5,35 @@
 
 SystemSetupPage::SystemSetupPage(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::SystemSetupPage)
+    ui_(new Ui::SystemSetupPage)
 {
-    ui->setupUi(this);
-
+    ui_->setupUi(this);
     setupPage();
 }
 
 SystemSetupPage::~SystemSetupPage()
 {
-    delete ui;
+    if(ui_)
+    {
+        delete ui_;
+    }
 }
 
 void SystemSetupPage::setupPage()
 {
-   // ui->frame_->setStyleSheet("background-color:black;");
-
     QFont font("Arial", 20, QFont::Bold);
-    ui->titleLabel_->setStyleSheet("QLabel { color : white}");
-    ui->titleLabel_->setFont(font);
-    ui->titleLabel_->setText("SYSTEM SETUP");
+    ui_->titleLabel_->setStyleSheet("QLabel { color : white}");
+    ui_->titleLabel_->setFont(font);
+    ui_->titleLabel_->setText("SYSTEM SETUP");
 
     QFont actionFont("Arial", 15, QFont::Bold);
-    ui->actionLabel_->setStyleSheet("QLabel { color : white}");
-    ui->actionLabel_->setFont(actionFont);
-    ui->actionLabel_->setText("ACTION");
-    ui->actionLabel_->setAlignment(Qt::AlignLeft);
+    ui_->actionLabel_->setStyleSheet("QLabel { color : white}");
+    ui_->actionLabel_->setFont(actionFont);
+    ui_->actionLabel_->setText("ACTION");
+    ui_->actionLabel_->setAlignment(Qt::AlignLeft);
 
-    ui->resultLabel_->setStyleSheet("QLabel { color : white}");
-    ui->resultLabel_->setFont(actionFont);
-    ui->resultLabel_->setText("RESULT");
-    ui->resultLabel_->setAlignment(Qt::AlignLeft);
+    ui_->resultLabel_->setStyleSheet("QLabel { color : white}");
+    ui_->resultLabel_->setFont(actionFont);
+    ui_->resultLabel_->setText("RESULT");
+    ui_->resultLabel_->setAlignment(Qt::AlignLeft);
 }

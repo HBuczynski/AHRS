@@ -15,7 +15,10 @@ WelcomePage::WelcomePage(QWidget *parent) :
 
 WelcomePage::~WelcomePage()
 {
-    delete ui_;
+    if(ui_)
+    {
+        delete ui_;
+    }
 }
 
 void WelcomePage::setupPage()

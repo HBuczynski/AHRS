@@ -18,7 +18,7 @@ public:
 private:
     void setupPage();
 
-    Ui::SystemSetupPage *ui;
+    Ui::SystemSetupPage *ui_;
 };
 
 #endif // SYSTEMSETUPPAGE_H

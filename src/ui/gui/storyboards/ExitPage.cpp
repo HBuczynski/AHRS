@@ -8,25 +8,21 @@ using namespace peripherals;
 ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
     QWidget(parent),
     currentOption_(0),
-    ui(new Ui::ExitPage),
+    ui_(new Ui::ExitPage),
     controller_(controller),
     MAX_OPTIONS_NUMBER(3)
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
     setupPage();
     highlightCurrentOption(currentOption_);
-
-    QObject::connect(this, SIGNAL(informPrev()), controller_, SLOT(setAHRSPage()));
 }
 
 ExitPage::~ExitPage()
 {
-    delete ui;
-
-    if(buttons)
+    if(ui_)
     {
-        delete buttons;
+        delete ui_;
     }
 }
 
@@ -36,32 +32,30 @@ void ExitPage::setupPage()
     this->setStyleSheet("background-color:black;");
 
     QFont font("Arial", 35, QFont::Bold);
-    ui->titleLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
-    ui->titleLabel->setFont(font);
-    ui->titleLabel->setText("EXIT");
-    ui->titleLabel->setAlignment(Qt::AlignCenter);
+    ui_->titleLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->titleLabel->setFont(font);
+    ui_->titleLabel->setText("EXIT");
+    ui_->titleLabel->setAlignment(Qt::AlignCenter);
 
     QFont options("Arial", 20, QFont::Bold);
-    ui->cancelLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
-    ui->cancelLabel->setFont(options);
-    ui->cancelLabel->setText("CANCEL");
-    ui->cancelLabel->setAlignment(Qt::AlignCenter);
+    ui_->cancelLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
+    ui_->cancelLabel->setFont(options);
+    ui_->cancelLabel->setText("CANCEL");
+    ui_->cancelLabel->setAlignment(Qt::AlignCenter);
 
-    ui->restartLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
-    ui->restartLabel->setFont(options);
-    ui->restartLabel->setText("RESTART");
-    ui->restartLabel->setAlignment(Qt::AlignCenter);
+    ui_->restartLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
+    ui_->restartLabel->setFont(options);
+    ui_->restartLabel->setText("RESTART");
+    ui_->restartLabel->setAlignment(Qt::AlignCenter);
 
-    ui->exitLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
-    ui->exitLabel->setFont(options);
-    ui->exitLabel->setText("QUIT");
-    ui->exitLabel->setAlignment(Qt::AlignCenter);
+    ui_->exitLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
+    ui_->exitLabel->setFont(options);
+    ui_->exitLabel->setText("QUIT");
+    ui_->exitLabel->setAlignment(Qt::AlignCenter);
 
-
-
-    labels_.push_back(ui->cancelLabel);
-    labels_.push_back(ui->restartLabel);
-    labels_.push_back(ui->exitLabel);
+    labels_.push_back(ui_->cancelLabel);
+    labels_.push_back(ui_->restartLabel);
+    labels_.push_back(ui_->exitLabel);
 }
 
 void ExitPage::initialize()
@@ -79,12 +73,13 @@ void ExitPage::initialize()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&ExitPage::rightArrow, this);
 
     initializeButtons(buttonNames, callbackFunctions);
+
+    QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
 }
 
 void ExitPage::highlightCurrentOption(uint8_t newOption)
 {
     labels_[currentOption_]->setStyleSheet("QLabel { color: rgb(255,255,255); background: rgb(0,0,0);}");
-
     labels_[newOption]->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
 
     currentOption_ = newOption;
@@ -92,15 +87,15 @@ void ExitPage::highlightCurrentOption(uint8_t newOption)
 
 void ExitPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons = new Buttons();
-    buttons->initialize(name, callbackFunctions);
+    buttons_ = make_unique<Buttons>();
+    buttons_->initialize(name, callbackFunctions);
 
-    ui->buttonLayout->addWidget(buttons);
+    ui_->buttonLayout->addWidget(buttons_.get());
 }
 
 void ExitPage::firstButton()
 {
-
+    ///TBD
 }
 
 void ExitPage::leftArrow()
@@ -112,15 +107,14 @@ void ExitPage::leftArrow()
         tempNumber += MAX_OPTIONS_NUMBER;
     }
 
-
-   highlightCurrentOption(tempNumber);
+    highlightCurrentOption(tempNumber);
 }
 
 void ExitPage::submit()
 {
     if(currentOption_ == 0)
     {
-        emit informPrev();
+        emit signalAHRSPage();
     }
 }
 
