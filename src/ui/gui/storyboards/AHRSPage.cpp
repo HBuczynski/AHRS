@@ -160,7 +160,8 @@ void AHRSPage::logsButton()
 void AHRSPage::exitButton()
 {
     cout << "In exit callback" << endl;
-    controller_->setExitPage();
+    //controller_->setExitPage();
+    emit fun();
 }
 
 void AHRSPage::setRoll( float roll )

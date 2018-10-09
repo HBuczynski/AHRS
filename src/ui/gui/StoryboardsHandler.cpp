@@ -61,7 +61,6 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     MainWindow->setCentralWidget(centralWidget);
     QMetaObject::connectSlotsByName(MainWindow);
 
-
 }
 
 void StoryboardsHandler::backToPreviousPage()
@@ -93,6 +92,7 @@ void StoryboardsHandler::setAHRSPage()
     ahrsPage->resize(QSize(1024, 600));
     ahrsPage->initialize();
 
+    QObject::connect(this, SIGNAL(change()), ahrsPage, SLOT(fun()));
 
 
     if(previousWidget_)
@@ -168,4 +168,9 @@ void StoryboardsHandler::setExitPage()
     gridLayout_2->addWidget(exitPage);
     cout << "After adding" << endl;
     previousWidget_ = exitPage;
+}
+
+void StoryboardsHandler::change()
+{
+    setExitPage();
 }

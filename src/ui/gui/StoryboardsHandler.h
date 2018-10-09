@@ -23,8 +23,9 @@
 #include "storyboards/RestartPage.h"
 
 
-class StoryboardsHandler final : public gui::PageController
+class StoryboardsHandler final : public QObject, public gui::PageController
 {
+    Q_OBJECT
 public:
     StoryboardsHandler();
 
@@ -38,6 +39,9 @@ public:
     void setCallibrationSettingPage() override;
     void setRestartPage() override;
     void setExitPage() override;
+
+public slots:
+    void change();
 
 private:
 

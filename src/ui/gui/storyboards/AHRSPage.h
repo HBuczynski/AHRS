@@ -37,6 +37,10 @@ public:
     inline void setTurnRate( float turnRate );
     inline void setSlipSkid( float slipSkid );
 
+    signals:
+    void fun();
+
+
 private:
     void setup();
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
