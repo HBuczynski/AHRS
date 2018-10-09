@@ -23,6 +23,8 @@ public:
     explicit AHRSPage(gui::PageController *controller, QWidget *parent = 0);
     ~AHRSPage();
 
+    void initialize();
+
     inline void setRoll( float roll );
     inline void setPitch( float pitch );
     inline void setAltitude( float altitude );

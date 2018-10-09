@@ -20,6 +20,8 @@ public:
     explicit ExitPage(/*gui::PageController* controller,*/ QWidget *parent = 0);
     ~ExitPage();
 
+    void initialize();
+
 private:
     void setupPage();
 

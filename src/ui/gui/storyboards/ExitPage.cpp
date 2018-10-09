@@ -56,6 +56,15 @@ void ExitPage::setupPage()
     ui->exitLabel->setText("QUIT");
     ui->exitLabel->setAlignment(Qt::AlignCenter);
 
+
+
+    labels_.push_back(ui->cancelLabel);
+    labels_.push_back(ui->restartLabel);
+    labels_.push_back(ui->exitLabel);
+}
+
+void ExitPage::initialize()
+{
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "";
     buttonNames[SwitchCode::SECOND_SWITCH] = "\u21E6";
@@ -69,10 +78,6 @@ void ExitPage::setupPage()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&ExitPage::rightArrow, this);
 
     initializeButtons(buttonNames, callbackFunctions);
-
-    labels_.push_back(ui->cancelLabel);
-    labels_.push_back(ui->restartLabel);
-    labels_.push_back(ui->exitLabel);
 }
 
 void ExitPage::highlightCurrentOption(uint8_t newOption)

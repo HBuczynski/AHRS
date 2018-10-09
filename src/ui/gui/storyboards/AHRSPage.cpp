@@ -113,6 +113,10 @@ void AHRSPage::setup()
     ui->downPowerSupply->setFont(downFont);
     ui->downPowerSupply->setText("100 %");
 
+}
+
+void AHRSPage::initialize()
+{
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "CALIBRATE";
     buttonNames[SwitchCode::SECOND_SWITCH] = "LOGS";

@@ -98,6 +98,7 @@ void StoryboardsHandler::setAHRSPage()
     }
 
     cout << "Start AHRS " << endl;
+    ahrsPage->initialize();
 
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
@@ -158,6 +159,7 @@ void StoryboardsHandler::setExitPage()
     }
 
     cout << "initialized Exit " << endl;
+    exitPage->initialize();
 
     cout << "Before adding exit page to main" << endl;
     gridLayout_2->addWidget(exitPage);
