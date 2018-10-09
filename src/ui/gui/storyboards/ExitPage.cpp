@@ -93,6 +93,8 @@ void ExitPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, f
     cout << "After buttons init" << endl;
 
     ui->buttonLayout->addWidget(buttons);
+
+    cout << "After adding buttons to layout." << endl;
 }
 
 void ExitPage::firstButton()
