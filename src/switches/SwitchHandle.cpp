@@ -21,7 +21,7 @@ SwitchHandle::SwitchHandle(hardware::GPIO gpioProperties, SwitchCode code)
 
 SwitchHandle::~SwitchHandle()
 {
-    cout << "Switched Handler destructor,"  << endl;
+    cout << "Switched Handler destructor."  << endl;
 }
 
 void SwitchHandle::initializeGPIOInterrupts()

@@ -1,5 +1,7 @@
 #include "../include/GPIOInterface.h"
 #include <system_error>
+#include <iostream>
+
 #include "../../../3rd_party/PIGPIO/pigpio.h"
 
 #include "../include/PIGPIOInitializer.h"
@@ -16,7 +18,9 @@ GPIOInterface::GPIOInterface(GPIO gpio)
 }
 
 GPIOInterface::~GPIOInterface()
-{}
+{
+    cout << "IN GPIOInterface destructor" << endl;
+}
 
 
 bool GPIOInterface::initialize() const
