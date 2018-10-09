@@ -131,6 +131,8 @@ void AHRSPage::initialize()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
+
+    QObject::connect(this, SIGNAL(this->fun()), (QObject*)controller_, SLOT(controller_->change()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)

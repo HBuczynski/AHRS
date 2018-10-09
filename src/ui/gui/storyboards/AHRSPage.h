@@ -37,7 +37,7 @@ public:
     inline void setTurnRate( float turnRate );
     inline void setSlipSkid( float slipSkid );
 
-    signals:
+signals:
     void fun();
 
 
