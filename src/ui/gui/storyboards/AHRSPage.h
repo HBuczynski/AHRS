@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "../PageController.h"
-
+#include <memory>
 #include "WidgetPFD.h"
 #include "WidgetTC.h"
 #include "WidgetVSI.h"
@@ -48,7 +48,7 @@ private:
 
     gui::PageController *controller_;
 
-    Buttons *buttons_;
+    std::unique_ptr<Buttons> buttons_;
     WidgetTC *widgetTC_;
     WidgetVSI *widgetVSI_;
     WidgetPFD *widgetPFD_;

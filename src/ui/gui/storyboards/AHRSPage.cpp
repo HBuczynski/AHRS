@@ -20,12 +20,7 @@ AHRSPage::~AHRSPage()
 {
     delete ui;
 
-    if(buttons_)
-    {
-        delete buttons_;
-    }
-
-    cout << "After buttons destructor" << endl;
+    cout << "In AHRS destructor" << endl;
 
     if(widgetTC_)
     {
@@ -134,10 +129,11 @@ void AHRSPage::initialize()
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = new Buttons();
+
+    buttons_ = make_unique<Buttons>();
     buttons_->initialize(name, callbackFunctions);
 
-    ui->buttonLayout->addWidget(buttons_);
+    ui->buttonLayout->addWidget(buttons_.get());
 }
 
 void AHRSPage::calibrateButton()
