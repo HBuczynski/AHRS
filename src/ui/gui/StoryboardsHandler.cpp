@@ -92,7 +92,7 @@ void StoryboardsHandler::setAHRSPage()
     ahrsPage->resize(QSize(1024, 600));
     ahrsPage->initialize();
 
-    QObject::connect(this, SIGNAL(change()), ahrsPage, SLOT(fun()));
+    QObject::connect(ahrsPage, SIGNAL(ahrsPage->fun()), this, SLOT(change()));
 
 
     if(previousWidget_)
