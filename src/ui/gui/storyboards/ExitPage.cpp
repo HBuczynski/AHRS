@@ -5,11 +5,11 @@ using namespace std;
 using namespace utility;
 using namespace peripherals;
 
-ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
+ExitPage::ExitPage(/*gui::PageController* controller,*/ QWidget *parent) :
     QWidget(parent),
     currentOption_(0),
     ui(new Ui::ExitPage),
-    controller_(controller),
+    //controller_(controller),
     MAX_OPTIONS_NUMBER(3)
 {
     ui->setupUi(this);
@@ -117,7 +117,7 @@ void ExitPage::submit()
 {
     if(currentOption_ == 0)
     {
-        controller_->setAHRSPage();
+        //controller_->setAHRSPage();
     }
 }
 

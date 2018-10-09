@@ -156,7 +156,7 @@ void StoryboardsHandler::setExitPage()
 
     cout << "initialized Exit " << endl;
 
-    exitPage = new ExitPage(this);
+    exitPage = new ExitPage();
     exitPage->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(exitPage);

@@ -17,7 +17,7 @@ class ExitPage : public QWidget
     Q_OBJECT
 
 public:
-    explicit ExitPage(gui::PageController* controller, QWidget *parent = 0);
+    explicit ExitPage(/*gui::PageController* controller,*/ QWidget *parent = 0);
     ~ExitPage();
 
 private:
