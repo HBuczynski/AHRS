@@ -87,6 +87,8 @@ void SwitchHandle::handleRaisingInterrupt()
     if(state_ == SwitchState::LOW_STATE)
     {
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
+
+        cout << "Raising timer init" << endl;
         debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
 //        state_ = SwitchState::HIGH_STATE;
 //        pressedSwitchCallback_();
@@ -169,7 +171,10 @@ void SwitchHandle::changeStateAfterDebounce()
     }
     else if(state_ == SwitchState::LOW_DEBOUNCE_SECTION)
     {
+        cout << "zatrzymanie critical" << endl;
         criticalDelayTimerID_.stop();
+        cout << "after critical" << endl;
+
         state_ = SwitchState::HIGH_STATE;
         errorInterruptCounter_ = 0;
 
