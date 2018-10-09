@@ -100,7 +100,7 @@ void StoryboardsHandler::setAHRSPage()
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
-    
+
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
 }
