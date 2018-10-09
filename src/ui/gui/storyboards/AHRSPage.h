@@ -38,7 +38,7 @@ public:
     inline void setSlipSkid( float slipSkid );
 
 signals:
-    void fun();
+    void funSignal();
 
 
 private:
