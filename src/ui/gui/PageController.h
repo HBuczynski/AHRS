@@ -1,9 +1,11 @@
 #ifndef AHRS_PAGECONTROLLER_H
 #define AHRS_PAGECONTROLLER_H
 
+#include <QObject>
+
 namespace gui
 {
-    class PageController
+    class PageController : public QObject
     {
     public:
         PageController() {};

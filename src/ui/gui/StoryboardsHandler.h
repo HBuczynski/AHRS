@@ -23,7 +23,7 @@
 #include "storyboards/RestartPage.h"
 
 
-class StoryboardsHandler final : public QObject, public gui::PageController
+class StoryboardsHandler final : public gui::PageController
 {
     Q_OBJECT
 public:
@@ -31,16 +31,12 @@ public:
 
     void setupUi(QMainWindow *MainWindow);
 
+public slots:
     void backToPreviousPage() override;
-
     void setWelcomePage() override;
-
     void setSystemSetupPage() override;
     void setCallibrationSettingPage() override;
     void setRestartPage() override;
-
-
-public slots:
     void setExitPage() override;
     void setAHRSPage() override;
 

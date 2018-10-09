@@ -14,6 +14,8 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     ui->setupUi(this);
 
     setup();
+
+    QObject::connect(this, SIGNAL(funSignal()), controller_, SLOT(setExitPage()));
 }
 
 AHRSPage::~AHRSPage()
@@ -131,8 +133,6 @@ void AHRSPage::initialize()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
-
-    //QObject::connect(this, SIGNAL(funSignal()), (QObject*)controller_, SLOT(controller_->change()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -162,7 +162,6 @@ void AHRSPage::logsButton()
 void AHRSPage::exitButton()
 {
     cout << "In exit callback" << endl;
-    //controller_->setExitPage();
     emit funSignal();
 }
 

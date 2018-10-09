@@ -5,11 +5,11 @@ using namespace std;
 using namespace utility;
 using namespace peripherals;
 
-ExitPage::ExitPage(/*gui::PageController* controller,*/ QWidget *parent) :
+ExitPage::ExitPage(gui::PageController* controller, QWidget *parent) :
     QWidget(parent),
     currentOption_(0),
     ui(new Ui::ExitPage),
-    //controller_(controller),
+    controller_(controller),
     MAX_OPTIONS_NUMBER(3)
 {
     ui->setupUi(this);
@@ -17,6 +17,8 @@ ExitPage::ExitPage(/*gui::PageController* controller,*/ QWidget *parent) :
     cout << "In exiit page constr" << endl;
     setupPage();
     highlightCurrentOption(currentOption_);
+
+    QObject::connect(this, SIGNAL(informPrev()), controller_, SLOT(setAHRSPage()));
 }
 
 ExitPage::~ExitPage()
