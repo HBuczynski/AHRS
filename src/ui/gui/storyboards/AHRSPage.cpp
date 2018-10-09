@@ -8,104 +8,87 @@ using namespace peripherals;
 AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     :   QWidget(parent),
         controller_(controller),
-        ui(new Ui::AHRSPage),
+        ui_(new Ui::AHRSPage),
         logger_(Logger::getInstance())
 {
-    ui->setupUi(this);
-
+    ui_->setupUi(this);
     setup();
-
-    QObject::connect(this, SIGNAL(funSignal()), controller_, SLOT(setExitPage()));
 }
 
 AHRSPage::~AHRSPage()
 {
-    delete ui;
-
-    if(widgetTC_)
+    if(ui_)
     {
-        delete widgetTC_;
-    }
-
-    if(widgetVSI_)
-    {
-        delete widgetVSI_;
-    }
-
-    if(widgetPFD_)
-    {
-        delete widgetPFD_;
+        delete ui_;
     }
 }
 
 void AHRSPage::setup()
 {
     // SETUP avionic devices
-    widgetPFD_ = new WidgetPFD();
-
     this->setStyleSheet("background-color:black;");
 
-    ui->pfdLayout->addWidget(widgetPFD_);
+    widgetPFD_ = make_unique<WidgetPFD>();
+    ui_->pfdLayout->addWidget(widgetPFD_.get());
 
-    widgetTC_ = new WidgetTC();
-    ui->devicesLayout->addWidget(widgetTC_);
+    widgetTC_ = make_unique<WidgetTC>();
+    ui_->devicesLayout->addWidget(widgetTC_.get());
 
-    widgetVSI_ = new WidgetVSI();
-    ui->devicesLayout->addWidget(widgetVSI_);
+    widgetVSI_ = make_unique<WidgetVSI>();
+    ui_->devicesLayout->addWidget(widgetVSI_.get());
 
     // SETUP top labels
     QFont upFont("Arial", 10, QFont::Bold);
     QFont downFont("Arial", 13, QFont::Bold);
 
-    ui->upFirstAHRS->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upFirstAHRS->setFont(upFont);
-    ui->upFirstAHRS->setText("AHRS I");
-    ui->downFirstAHRS->setStyleSheet("QLabel {color : black; background-color: rgb(51,255,0)}");
-    ui->downFirstAHRS->setFont(downFont);
-    ui->downFirstAHRS->setText("MASTER");
+    ui_->upFirstAHRS->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upFirstAHRS->setFont(upFont);
+    ui_->upFirstAHRS->setText("AHRS I");
+    ui_->downFirstAHRS->setStyleSheet("QLabel {color : black; background-color: rgb(51,255,0)}");
+    ui_->downFirstAHRS->setFont(downFont);
+    ui_->downFirstAHRS->setText("MASTER");
 
-    ui->upSecondAHRS->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upSecondAHRS->setFont(upFont);
-    ui->upSecondAHRS->setText("AHRS II");
-    ui->downSecondAHRS->setStyleSheet("QLabel {color : black; background-color: rgb(51,255,0)}");
-    ui->downSecondAHRS->setFont(downFont);
-    ui->downSecondAHRS->setText("REDUNDANT");
+    ui_->upSecondAHRS->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upSecondAHRS->setFont(upFont);
+    ui_->upSecondAHRS->setText("AHRS II");
+    ui_->downSecondAHRS->setStyleSheet("QLabel {color : black; background-color: rgb(51,255,0)}");
+    ui_->downSecondAHRS->setFont(downFont);
+    ui_->downSecondAHRS->setText("REDUNDANT");
 
-    ui->upGrdSpeed->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upGrdSpeed->setFont(upFont);
-    ui->upGrdSpeed->setText("GRD SPEED");
-    ui->downGrdSpeed->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
-    ui->downGrdSpeed->setFont(downFont);
-    ui->downGrdSpeed->setText("0 kts");
+    ui_->upGrdSpeed->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upGrdSpeed->setFont(upFont);
+    ui_->upGrdSpeed->setText("GRD SPEED");
+    ui_->downGrdSpeed->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
+    ui_->downGrdSpeed->setFont(downFont);
+    ui_->downGrdSpeed->setText("0 kts");
 
-    ui->upAltGps->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upAltGps->setFont(upFont);
-    ui->upAltGps->setText("ALT (GPS)");
-    ui->downAltGps->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
-    ui->downAltGps->setFont(downFont);
-    ui->downAltGps->setText("0 ft");
+    ui_->upAltGps->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upAltGps->setFont(upFont);
+    ui_->upAltGps->setText("ALT (GPS)");
+    ui_->downAltGps->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
+    ui_->downAltGps->setFont(downFont);
+    ui_->downAltGps->setText("0 ft");
 
-    ui->upFltDuration->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upFltDuration->setFont(upFont);
-    ui->upFltDuration->setText("FLIGHT DURATION");
-    ui->downFltDuration->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
-    ui->downFltDuration->setFont(downFont);
-    ui->downFltDuration->setText("00:00:00");
+    ui_->upFltDuration->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upFltDuration->setFont(upFont);
+    ui_->upFltDuration->setText("FLIGHT DURATION");
+    ui_->downFltDuration->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
+    ui_->downFltDuration->setFont(downFont);
+    ui_->downFltDuration->setText("00:00:00");
 
-    ui->upBoxPower->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upBoxPower->setFont(upFont);
-    ui->upBoxPower->setText("FEEDER POWER");
-    ui->downBoxPower->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
-    ui->downBoxPower->setFont(downFont);
-    ui->downBoxPower->setText("100 %");
+    ui_->upBoxPower->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upBoxPower->setFont(upFont);
+    ui_->upBoxPower->setText("FEEDER POWER");
+    ui_->downBoxPower->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
+    ui_->downBoxPower->setFont(downFont);
+    ui_->downBoxPower->setText("100 %");
 
-    ui->upPowerSupply->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
-    ui->upPowerSupply->setFont(upFont);
-    ui->upPowerSupply->setText("POWER");
-    ui->downPowerSupply->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
-    ui->downPowerSupply->setFont(downFont);
-    ui->downPowerSupply->setText("100 %");
-
+    ui_->upPowerSupply->setStyleSheet("QLabel {color : white; background-color: rgb(45,45, 45)}");
+    ui_->upPowerSupply->setFont(upFont);
+    ui_->upPowerSupply->setText("POWER");
+    ui_->downPowerSupply->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
+    ui_->downPowerSupply->setFont(downFont);
+    ui_->downPowerSupply->setText("100 %");
 }
 
 void AHRSPage::initialize()
@@ -123,35 +106,36 @@ void AHRSPage::initialize()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
+
+    QObject::connect(this, SIGNAL(signalEXITPage()), controller_, SLOT(setExitPage()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-
     buttons_ = make_unique<Buttons>();
     buttons_->initialize(name, callbackFunctions);
 
-    ui->buttonLayout->addWidget(buttons_.get());
+    ui_->buttonLayout->addWidget(buttons_.get());
 }
 
 void AHRSPage::calibrateButton()
 {
-
+    ///TBD
 }
 
 void AHRSPage::menuButton()
 {
-
+    ///TBD
 }
 
 void AHRSPage::logsButton()
 {
-
+    ///TBD
 }
 
 void AHRSPage::exitButton()
 {
-    emit funSignal();
+    emit signalEXITPage();
 }
 
 void AHRSPage::setRoll( float roll )

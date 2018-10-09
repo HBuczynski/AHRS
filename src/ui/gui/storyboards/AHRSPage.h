@@ -2,9 +2,9 @@
 #define AHRSPAGE_H
 
 #include <QWidget>
+#include <memory>
 
 #include "../PageController.h"
-#include <memory>
 #include "WidgetPFD.h"
 #include "WidgetTC.h"
 #include "WidgetVSI.h"
@@ -36,11 +36,9 @@ public:
 
     inline void setTurnRate( float turnRate );
     inline void setSlipSkid( float slipSkid );
-    void exitButton();
 
 signals:
-    void funSignal();
-
+    void signalEXITPage();
 
 private:
     void setup();
@@ -49,15 +47,15 @@ private:
     void calibrateButton();
     void menuButton();
     void logsButton();
-
+    void exitButton();
 
     gui::PageController *controller_;
 
     std::unique_ptr<Buttons> buttons_;
-    WidgetTC *widgetTC_;
-    WidgetVSI *widgetVSI_;
-    WidgetPFD *widgetPFD_;
-    Ui::AHRSPage *ui;
+    std::unique_ptr<WidgetTC> widgetTC_;
+    std::unique_ptr<WidgetVSI> widgetVSI_;
+    std::unique_ptr<WidgetPFD> widgetPFD_;
+    Ui::AHRSPage *ui_;
 
     utility::Logger& logger_;
 };
