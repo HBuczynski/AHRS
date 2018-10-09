@@ -60,6 +60,12 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
 
     MainWindow->setCentralWidget(centralWidget);
     QMetaObject::connectSlotsByName(MainWindow);
+
+    exitPage = new ExitPage();
+    exitPage->resize(QSize(1024, 600));
+
+    ahrsPage = new AHRSPage(this);
+    ahrsPage->resize(QSize(1024, 600));
 }
 
 void StoryboardsHandler::backToPreviousPage()
@@ -92,9 +98,6 @@ void StoryboardsHandler::setAHRSPage()
     }
 
     cout << "Start AHRS " << endl;
-
-    ahrsPage = new AHRSPage(this);
-    ahrsPage->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(ahrsPage);
     previousWidget_ = ahrsPage;
@@ -155,9 +158,6 @@ void StoryboardsHandler::setExitPage()
     }
 
     cout << "initialized Exit " << endl;
-
-    exitPage = new ExitPage();
-    exitPage->resize(QSize(1024, 600));
 
     cout << "Before adding exit page to main" << endl;
     gridLayout_2->addWidget(exitPage);
