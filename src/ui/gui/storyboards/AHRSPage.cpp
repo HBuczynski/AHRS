@@ -108,6 +108,7 @@ void AHRSPage::initialize()
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalEXITPage()), controller_, SLOT(setExitPage()));
+    QObject::connect(this, SIGNAL(signalLOGSPage()), controller_, SLOT(setLogsPage()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -130,7 +131,7 @@ void AHRSPage::menuButton()
 
 void AHRSPage::logsButton()
 {
-    ///TBD
+    emit signalLOGSPage();
 }
 
 void AHRSPage::exitButton()
