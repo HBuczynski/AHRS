@@ -101,14 +101,15 @@ void AHRSPage::initialize()
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&AHRSPage::calibrateButton, this);
-    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&AHRSPage::menuButton, this);
-    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&AHRSPage::logsButton, this);
+    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&AHRSPage::logsButton, this);
+    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&AHRSPage::menuButton, this);
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalEXITPage()), controller_, SLOT(setExitPage()));
     QObject::connect(this, SIGNAL(signalLOGSPage()), controller_, SLOT(setLogsPage()));
+    QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -126,7 +127,7 @@ void AHRSPage::calibrateButton()
 
 void AHRSPage::menuButton()
 {
-    ///TBD
+    emit signalMENUPage();
 }
 
 void AHRSPage::logsButton()

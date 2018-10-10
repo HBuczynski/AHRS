@@ -178,5 +178,16 @@ void StoryboardsHandler::setLogsPage()
 
 void StoryboardsHandler::setMenuPage()
 {
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
 
+    mainPage_ = new MainPage(this);
+    mainPage_->resize(QSize(1024, 600));
+    mainPage_->initialize();
+
+    gridLayout_2->addWidget(mainPage_);
+    previousWidget_ = mainPage_;
 }

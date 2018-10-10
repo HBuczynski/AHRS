@@ -40,6 +40,7 @@ public:
 signals:
     void signalEXITPage();
     void signalLOGSPage();
+    void signalMENUPage();
 
 private:
     void setup();
