@@ -19,6 +19,8 @@ namespace gui
         virtual void setCallibrationSettingPage() = 0;
         virtual void setRestartPage() = 0;
         virtual void setExitPage() = 0;
+        virtual void setLogsPage() = 0;
+        virtual void setMenuPage() = 0;
     };
 }
 

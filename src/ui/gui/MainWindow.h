@@ -20,6 +20,8 @@ public:
     void setSystemSetupPage();
     void setRestartPage();
     void setExitPage();
+    void setLogsPage();
+    void setMenuPage();
     
 private:
     StoryboardsHandler *storyboardsHandler_;

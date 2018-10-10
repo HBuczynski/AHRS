@@ -48,3 +48,13 @@ void MainWindow::setExitPage()
 {
     storyboardsHandler_->setExitPage();
 }
+
+void MainWindow::setLogsPage()
+{
+    storyboardsHandler_->setLogsPage();
+}
+
+void MainWindow::setMenuPage()
+{
+    storyboardsHandler_->setMenuPage();
+}

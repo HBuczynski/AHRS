@@ -159,3 +159,24 @@ void StoryboardsHandler::setExitPage()
     gridLayout_2->addWidget(exitPage_);
     previousWidget_ = exitPage_;
 }
+
+void StoryboardsHandler::setLogsPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    logsPage_ = new LogsPage(this);
+    logsPage_->resize(QSize(1024, 600));
+    logsPage_->initialize();
+
+    gridLayout_2->addWidget(logsPage_);
+    previousWidget_ = logsPage_;
+}
+
+void StoryboardsHandler::setMenuPage()
+{
+
+}
