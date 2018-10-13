@@ -17,13 +17,16 @@ GUIInterprocessCommandVisitor::~GUIInterprocessCommandVisitor()
 
 void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 {
-    windoowsContainer_[WindowType::START_UP] = bind(&GUIInterprocessCommandVisitor::launchStartUPWindow, this);
-    windoowsContainer_[WindowType::ACTIVE_CONNECTION] = bind(&GUIInterprocessCommandVisitor::launchActiveConnectionWindow, this);
+    windoowsContainer_[WindowType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
+    windoowsContainer_[WindowType::CONNECTION_ESTABLISHED] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
     windoowsContainer_[WindowType::CHOOSING_PLANE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
     windoowsContainer_[WindowType::CALIBRATION] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
     windoowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
     windoowsContainer_[WindowType::RESTART] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
     windoowsContainer_[WindowType::SHUTDOWN] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
+
+    QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
+    QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
@@ -49,13 +52,16 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
-
-
 }
 
-void GUIInterprocessCommandVisitor::launchStartUPWindow()
+void GUIInterprocessCommandVisitor::launchStartPage()
 {
-    mainWindow_->setWelcomePage();
+    emit signalWelcomePage();
+}
+
+void GUIInterprocessCommandVisitor::launchCommunicationEstablished()
+{
+    emit signalEstablishingConnection();
 }
 
 void GUIInterprocessCommandVisitor::launchActiveConnectionWindow()

@@ -12,6 +12,8 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <config_reader/UIParameters.h>
 
+#include "machine_state/UIAbstractState.h"
+
 namespace main_process
 {
     class UIApplicationManager
@@ -24,6 +26,11 @@ namespace main_process
 
         void startUISystem();
         void stopUISystem();
+
+        void setWelcomePage();
+        void communicationInProgress();
+
+        void setNewState(UIAbstractState *newState);
 
     private:
         bool initializeMainProcessMessageQueue();
@@ -42,6 +49,7 @@ namespace main_process
 
         CommunicationProcessesHandler communicationProcessesHandler_;
         GuiProcessHandler guiProcessHandler_;
+        std::unique_ptr<UIAbstractState> currentState_;
 
         std::atomic<bool> runSystem_;
         utility::Logger& logger_;

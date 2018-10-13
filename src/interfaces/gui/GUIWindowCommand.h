@@ -7,13 +7,19 @@ namespace communication
 {
     enum class WindowType : uint8_t
     {
-        START_UP = 0x01,
-        ACTIVE_CONNECTION = 0x02,
-        CHOOSING_PLANE = 0x03,
-        CALIBRATION = 0x04,
-        AHRS = 0x05,
-        RESTART = 0x06,
-        SHUTDOWN = 0x07
+        CONNECTION_ESTABLISHED = 0x01,
+        INFO_MASTER_OK = 0x02,
+        INFO_MASTER_FALSE = 0x03,
+        INFO_REDUNDANT_OK = 0x04,
+        INFO_REDUNDANT_FALSE = 0x05,
+        INFO_BITS_OK = 0x06,
+        INFO_BITS_FALSE = 0x07,
+        CHOOSING_PLANE = 0x08,
+        CALIBRATION = 0x09,
+        AHRS = 0x0A,
+        RESTART = 0x0B,
+        SHUTDOWN = 0x0C,
+        WELCOME_PAGE = 0x11
     };
 
     class GUIWindowCommand : public GUICommand

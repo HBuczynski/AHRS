@@ -32,6 +32,11 @@ bool GuiProcessHandler::initialize()
     return isSuccess;
 }
 
+void GuiProcessHandler::sendMessage(const std::vector<uint8_t> &message)
+{
+    communicationMessageQueue->send(message.data(), message.size(), 0);
+}
+
 void GuiProcessHandler::resetProcess()
 {
 

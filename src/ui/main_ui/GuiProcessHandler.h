@@ -7,6 +7,7 @@
 #include <spawn.h>
 #include <cstdint>
 #include <atomic>
+#include <vector>
 
 #include <logger/Logger.h>
 #include <config_reader/UIParameters.h>
@@ -21,6 +22,7 @@ namespace main_process
         ~GuiProcessHandler();
 
         bool initialize();
+        void sendMessage(const std::vector<uint8_t>& message);
         void resetProcess();
 
     private:

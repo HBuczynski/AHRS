@@ -9,19 +9,24 @@ using namespace gui;
 using namespace std;
 using namespace config;
 using namespace utility;
+using namespace communication;
 using namespace boost::interprocess;
 
 GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWindow)
     : mainWindow_(mainWindow),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
-      logger_(Logger::getInstance())
+      runCommunicationThread_(false),
+      logger_(Logger::getInstance()),
+      WELCOME_PAGE_DURATION_MS(3000)
 {
     interprocessCommandVisitor_ = make_shared<GUIInterprocessCommandVisitor>(mainWindow);
 }
 
 GUIApplicationManager::~GUIApplicationManager()
-{}
+{
+    stopGUI();
+}
 
 bool GUIApplicationManager::initialize()
 {
@@ -34,10 +39,20 @@ bool GUIApplicationManager::initialize()
 
 void GUIApplicationManager::startGUI()
 {
+    runCommunicationThread_ = true;
+    interprocessCommunicationThread_ = thread(&GUIApplicationManager::interprocessCommunication, this);
+
     mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     mainWindow_->show();
-    mainWindow_->setAHRSPage();
-    mainWindow_->setInformationPage();
+}
+
+void GUIApplicationManager::stopGUI()
+{
+    if(interprocessCommunicationThread_.joinable())
+    {
+        runCommunicationThread_ = false;
+        interprocessCommunicationThread_.join();
+    }
 }
 
 bool GUIApplicationManager::initializeGUIMessageQueue()
@@ -89,4 +104,65 @@ bool GUIApplicationManager::initializeSharedMemory()
     }
 
     return true;
+}
+
+void GUIApplicationManager::interprocessCommunication()
+{
+    unsigned int priority;
+    message_queue::size_type receivedSize;
+
+    while(runCommunicationThread_)
+    {
+        try
+        {
+            vector<uint8_t> packet(uiMessageQueuesParameters_.messageSize);
+            communicationMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
+
+            packet.resize(receivedSize);
+            packet.shrink_to_fit();
+
+            handleCommand(packet);
+        }
+        catch(interprocess_exception &ex)
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("ProcessManager :: ") + ex.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+
+    }
+}
+
+void GUIApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
+{
+    const auto interfaceType = static_cast<InterfaceType>(packet[Frame::INTERFACE_TYPE]);
+
+    if(interfaceType == InterfaceType::GUI)
+    {
+        const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+        if(frameType == FrameType::COMMAND)
+        {
+            const auto command = commandFactory_.createCommand(packet);
+            command->accept(*(interprocessCommandVisitor_.get()));
+        }
+        else
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("GUIApplicationManager :: Received wrong type of message.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("GUIApplicationManager :: Received wrong type of interface.");
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
 }

@@ -28,9 +28,7 @@ namespace communication
 
         void broadcast(std::vector<uint8_t> frame);
 
-
         // Managing finite machine state
-
         void acceptedUsers();
         void startCalibration(const std::string &planeName, PlaneStatus status);
         void startDataSending();

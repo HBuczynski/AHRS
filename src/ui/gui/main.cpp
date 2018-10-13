@@ -35,20 +35,20 @@ int main( int argc, char *argv[] )
     auto mainWindow = make_shared<MainWindow>();
     GUIApplicationManager applicationManager(mainWindow);
 
-//    if(applicationManager.initialize())
-//    {
-//        applicationManager.startGUI();
-//    }
-//    else
-//    {
-//        if(logger.isErrorEnable())
-//        {
-//            const string message = string("Main UI :: Initialization failed !!");
-//            logger.writeLog(LogType::ERROR_LOG, message);
-//        }
-//    }
+    if(applicationManager.initialize())
+    {
+        applicationManager.startGUI();
+    }
+    else
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("Main UI :: Initialization failed !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
 
-    applicationManager.startGUI();
+    //applicationManager.startGUI();
     
     return app.exec();
 }

@@ -12,19 +12,25 @@
 
 namespace gui
 {
-    class GUIInterprocessCommandVisitor final : public communication::GUICommandVisitor
+    class GUIInterprocessCommandVisitor: public QWidget, public communication::GUICommandVisitor
     {
+        Q_OBJECT
     public:
         GUIInterprocessCommandVisitor(std::shared_ptr<MainWindow> mainWindow);
         ~GUIInterprocessCommandVisitor();
 
         void visit(communication::GUIWindowCommand& command) override;
 
+    signals:
+        void signalWelcomePage();
+        void signalEstablishingConnection();
+
     private:
 
         void initializeWindowsContainer();
 
-        void launchStartUPWindow();
+        void launchStartPage();
+        void launchCommunicationEstablished();
         void launchActiveConnectionWindow();
         void launchChoosingPlaneWindow();
         void launchCalibrationWindow();

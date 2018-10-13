@@ -66,7 +66,7 @@ void CalibratedSuccessState::startDataSending(ClientUDPManager &clientUDPManager
         {
             if (logger_.isErrorEnable()) {
                 const string message = string("RegisteredUsersState :: Wrong FeederMode.");
-                logger_.writeLog(LogType::INFORMATION_LOG, message);
+                logger_.writeLog(LogType::ERROR_LOG, message);
             }
             break;
         }

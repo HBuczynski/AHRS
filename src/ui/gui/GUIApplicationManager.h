@@ -5,7 +5,12 @@
 #include "StoryboardsHandler.h"
 #include "GUIInterprocessCommandVisitor.h"
 
+#include <interfaces/gui/GUICommandFactory.h>
+
+#include <atomic>
 #include <memory>
+#include <thread>
+
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/mapped_region.hpp>
@@ -21,10 +26,14 @@ namespace gui
 
         bool initialize();
         void startGUI();
+        void stopGUI();
 
     private:
         bool initializeGUIMessageQueue();
         bool initializeSharedMemory();
+
+        void interprocessCommunication();
+        void handleCommand(const std::vector<uint8_t>& packet);
 
         std::shared_ptr<MainWindow> mainWindow_;
         std::shared_ptr<GUIInterprocessCommandVisitor> interprocessCommandVisitor_;
@@ -38,7 +47,13 @@ namespace gui
 
         std::unique_ptr<boost::interprocess::message_queue> communicationMessageQueue_;
 
+        std::atomic<bool> runCommunicationThread_;
+        std::thread interprocessCommunicationThread_;
+
+        communication::GUICommandFactory commandFactory_;
+
         utility::Logger& logger_;
+        const uint32_t WELCOME_PAGE_DURATION_MS;
     };
 }
 

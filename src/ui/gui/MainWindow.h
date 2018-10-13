@@ -9,11 +9,12 @@ class StoryboardsHandler;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow( QWidget *parent = 0 );
     ~MainWindow();
 
+public slots:
     void setWelcomePage();
     void setAHRSPage();
     void setCallibrationSettingPage();

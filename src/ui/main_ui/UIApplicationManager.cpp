@@ -1,13 +1,17 @@
 #include <unistd.h>
 #include "UIApplicationManager.h"
-
+#include <interfaces/gui/GUIWindowCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
+
+#include "machine_state/UIIdleState.h"
+#include "machine_state/UIWelcameState.h"
 
 using namespace std;
 using namespace utility;
 using namespace config;
 using namespace main_process;
+using namespace communication;
 using namespace boost::interprocess;
 
 UIApplicationManager::UIApplicationManager()
@@ -15,6 +19,7 @@ UIApplicationManager::UIApplicationManager()
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
+      currentState_(make_unique<UIIdleState>()),
       runSystem_(true),
       logger_(Logger::getInstance())
 {}
@@ -36,7 +41,7 @@ bool UIApplicationManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
-    isSuccess = isSuccess & communicationProcessesHandler_.initialize();
+    //isSuccess = isSuccess & communicationProcessesHandler_.initialize();
     isSuccess = isSuccess & guiProcessHandler_.initialize();
 
     return isSuccess;
@@ -109,6 +114,9 @@ bool UIApplicationManager::initializeSharedMemory()
 
 void UIApplicationManager::startUISystem()
 {
+    setNewState(new UIWelcameState);
+    currentState_->setWelcomePage(*this);
+
     while (runSystem_)
     {
 
@@ -118,4 +126,51 @@ void UIApplicationManager::startUISystem()
 void UIApplicationManager::stopUISystem()
 {
     runSystem_ = false;
+}
+
+void UIApplicationManager::setWelcomePage()
+{
+    auto command = GUIWindowCommand(WindowType::WELCOME_PAGE);
+    guiProcessHandler_.sendMessage(command.getFrameBytes());
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void UIApplicationManager::communicationInProgress()
+{
+    auto command = GUIWindowCommand(WindowType::CONNECTION_ESTABLISHED);
+    guiProcessHandler_.sendMessage(command.getFrameBytes());
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void UIApplicationManager::setNewState(UIAbstractState *newState)
+{
+
+    if(newState != nullptr)
+    {
+        currentState_.reset(newState);
+
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("UIApplicationManager :: Change state: " + newState->getName());
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+    else
+    {
+        if(logger_.isWarningEnable())
+        {
+            const string message = string("UIApplicationManager :: Empty state has been forwarded to the state machine.");
+            logger_.writeLog(LogType::WARNING_LOG, message);
+        }
+    }
 }
