@@ -20,6 +20,8 @@ UIApplicationManager::UIApplicationManager()
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
       currentState_(make_unique<UIIdleState>()),
+      externalCommunicationVisitor_(make_unique<ExternalCommunicationVisitor>(this)),
+      guiInterprocessVisitor_(make_unique<GUIInterprocessVisitor>(this)),
       runSystem_(true),
       logger_(Logger::getInstance())
 {}
@@ -52,7 +54,7 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
     try
     {
         message_queue::remove(uiMessageQueuesParameters_.mainProcessQueueName.c_str());
-        mainMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str(),
+        mainMessageQueue_ = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str(),
                 uiMessageQueuesParameters_.messageQueueNumber,
                 uiMessageQueuesParameters_.messageSize);
     }
@@ -117,9 +119,80 @@ void UIApplicationManager::startUISystem()
     setNewState(new UIWelcomeState);
     currentState_->setWelcomePage(*this);
 
-    while (runSystem_)
+    unsigned int priority;
+    message_queue::size_type receivedSize;
+
+    while(runSystem_)
     {
-        //TODO: Add command handlers.
+        try
+        {
+            vector<uint8_t> packet(uiMessageQueuesParameters_.messageSize);
+            mainMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
+
+            packet.resize(receivedSize);
+            packet.shrink_to_fit();
+
+            handleMessage(packet);
+        }
+        catch(interprocess_exception &ex)
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("ProcessManager :: ") + ex.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+
+    }
+}
+
+void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
+{
+    const auto interfaceType = static_cast<InterfaceType>(packet[Frame::INTERFACE_TYPE]);
+
+    if(interfaceType == InterfaceType::GUI)
+    {
+        const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+        if(frameType == FrameType::RESPONSE)
+        {
+            const auto response = guiResponseFactory_.createCommand(packet);
+            response->accept(*(guiInterprocessVisitor_.get()));
+        }
+        else
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("UIApplicationManager :: Received wrong type of GUI's message");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
+    else if (interfaceType == InterfaceType::COMMUNICATION_PROCESS_UI)
+    {
+        const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+        if(frameType == FrameType::NOTIFICATION)
+        {
+            const auto notification = uiNotificationFactory_.createCommand(packet);
+            notification->accept(*(externalCommunicationVisitor_.get()));
+        }
+        else
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("UIApplicationManager :: Received wrong type of COMMUNICATION_PROCESS_UI's message.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("UIApplicationManager :: Received wrong type of interface.");
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
     }
 }
 

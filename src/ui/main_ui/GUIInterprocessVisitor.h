@@ -1,14 +1,22 @@
 #ifndef AHRS_GUICOMMUNICATIONVISITOR_H
 #define AHRS_GUICOMMUNICATIONVISITOR_H
 
+#include <interfaces/gui/GUIResponseVisitor.h>
+
 namespace main_process
 {
-    class GUIInterprocessVisitor
+    class UIApplicationManager;
+
+    class GUIInterprocessVisitor final : public communication::GUIResponseVisitor
     {
     public:
-        GUIInterprocessVisitor();
+        GUIInterprocessVisitor(UIApplicationManager *uiApplicationManager);
         ~GUIInterprocessVisitor();
 
+        void visit(communication::GUIPlaneResponse& data);
+
+    private:
+        UIApplicationManager* uiApplicationManager_;
     };
 }
 

@@ -3,14 +3,19 @@
 
 #include <cstdint>
 #include <atomic>
-#include <spawn.h>
-#include <map>
+#include <memory>
 
-#include "CommunicationProcessesHandler.h"
-#include "GuiProcessHandler.h"
 #include <logger/Logger.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <config_reader/UIParameters.h>
+#include <interfaces/gui/GUIResponseFactory.h>
+#include <interfaces/communication_process_ui/UINotificationFactory.h>
+
+#include "CommunicationProcessesHandler.h"
+#include "GuiProcessHandler.h"
+
+#include "ExternalCommunicationVisitor.h"
+#include "GUIInterprocessVisitor.h"
 
 #include "machine_state/UIAbstractState.h"
 
@@ -38,12 +43,14 @@ namespace main_process
         bool initializeMainProcessMessageQueue();
         bool initializeSharedMemory();
 
+        void handleMessage(const std::vector<uint8_t>& packet);
+
         config::UIWirelessCommunication uiWirelessCommunicationParameters_;
         config::UIMessageQueues uiMessageQueuesParameters_;
         config::UISharedMemory uiSharedMemoryParameters_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
-        std::shared_ptr<boost::interprocess::message_queue> mainMessageQueue;
+        std::shared_ptr<boost::interprocess::message_queue> mainMessageQueue_;
 
         std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
@@ -52,6 +59,11 @@ namespace main_process
         CommunicationProcessesHandler communicationProcessesHandler_;
         GuiProcessHandler guiProcessHandler_;
         std::unique_ptr<UIAbstractState> currentState_;
+
+        std::unique_ptr<ExternalCommunicationVisitor> externalCommunicationVisitor_;
+        communication::UINotificationFactory uiNotificationFactory_;
+        std::unique_ptr<GUIInterprocessVisitor> guiInterprocessVisitor_;
+        communication::GUIResponseFactory guiResponseFactory_;
 
         std::atomic<bool> runSystem_;
         utility::Logger& logger_;
