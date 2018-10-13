@@ -58,3 +58,13 @@ void MainWindow::setMenuPage()
 {
     storyboardsHandler_->setMenuPage();
 }
+
+void MainWindow::setConnectingPage()
+{
+    storyboardsHandler_->setConnectingPage();
+}
+
+void MainWindow::setInformationPage()
+{
+    storyboardsHandler_->setInformationPage();
+}

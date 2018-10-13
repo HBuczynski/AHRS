@@ -25,6 +25,8 @@
 #include "storyboards/SystemSetupPage.h"
 #include "storyboards/CallibrationSettings.h"
 #include "storyboards/RestartPage.h"
+#include "storyboards/InformationPage.h"
+#include "storyboards/ConnectingPage.h"
 
 
 class StoryboardsHandler final : public gui::PageController
@@ -45,6 +47,8 @@ public slots:
     void setAHRSPage() override;
     void setLogsPage() override;
     void setMenuPage() override;
+    void setConnectingPage() override;
+    void setInformationPage() override;
 
 private:
 
@@ -63,6 +67,8 @@ private:
     WelcomePage* welcomePage_;
     SystemSetupPage* systemSetupPage_;
     CallibrationSettings* callibrationSettings_;
+    InformationPage* informationPage_;
+    ConnectingPage* connectingPage_;
 
     QWidget *previousWidget_;
 };

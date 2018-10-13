@@ -22,7 +22,9 @@ public:
     void setExitPage();
     void setLogsPage();
     void setMenuPage();
-    
+    void setConnectingPage();
+    void setInformationPage();
+
 private:
     StoryboardsHandler *storyboardsHandler_;
 };

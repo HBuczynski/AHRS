@@ -191,3 +191,33 @@ void StoryboardsHandler::setMenuPage()
     gridLayout_2->addWidget(mainPage_);
     previousWidget_ = mainPage_;
 }
+
+void StoryboardsHandler::setConnectingPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    connectingPage_ = new ConnectingPage();
+    connectingPage_->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(connectingPage_);
+    previousWidget_ = connectingPage_;
+}
+
+void StoryboardsHandler::setInformationPage()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    informationPage_ = new InformationPage();
+    informationPage_->resize(QSize(1024, 600));
+
+    gridLayout_2->addWidget(informationPage_);
+    previousWidget_ = informationPage_;
+}

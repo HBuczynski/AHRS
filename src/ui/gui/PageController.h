@@ -21,6 +21,8 @@ namespace gui
         virtual void setExitPage() = 0;
         virtual void setLogsPage() = 0;
         virtual void setMenuPage() = 0;
+        virtual void setConnectingPage() = 0;
+        virtual void setInformationPage() = 0;
     };
 }
 
