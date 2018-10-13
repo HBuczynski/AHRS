@@ -10,6 +10,7 @@ GUIInterprocessCommandVisitor::GUIInterprocessCommandVisitor(std::shared_ptr<Mai
         logger_(Logger::getInstance())
 {
     initializeWindowsContainer();
+    initializeSignalsAndSlots();
 }
 
 GUIInterprocessCommandVisitor::~GUIInterprocessCommandVisitor()
@@ -27,7 +28,10 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
     windoowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
     windoowsContainer_[WindowType::RESTART] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
     windoowsContainer_[WindowType::SHUTDOWN] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
+}
 
+void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
+{
     QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
     QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
     QObject::connect(this, SIGNAL(signalInfoBitsOK()), mainWindow_.get(), SLOT(setInformationPageBITOk()));
@@ -102,7 +106,7 @@ void GUIInterprocessCommandVisitor::launchCalibrationWindow()
 
 void GUIInterprocessCommandVisitor::launchAHRSWindow()
 {
-    mainWindow_->setAHRSPage();
+
 }
 
 void GUIInterprocessCommandVisitor::launchRestartWindow()

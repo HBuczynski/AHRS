@@ -5,7 +5,7 @@
 #include <config_reader/ConfigurationReader.h>
 
 #include "machine_state/UIIdleState.h"
-#include "machine_state/UIWelcameState.h"
+#include "ui/main_ui/machine_state/UIWelcomeState.h"
 
 using namespace std;
 using namespace utility;
@@ -41,7 +41,7 @@ bool UIApplicationManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
-    //isSuccess = isSuccess & communicationProcessesHandler_.initialize();
+    isSuccess = isSuccess & communicationProcessesHandler_.initialize();
     isSuccess = isSuccess & guiProcessHandler_.initialize();
 
     return isSuccess;
@@ -114,12 +114,12 @@ bool UIApplicationManager::initializeSharedMemory()
 
 void UIApplicationManager::startUISystem()
 {
-    setNewState(new UIWelcameState);
+    setNewState(new UIWelcomeState);
     currentState_->setWelcomePage(*this);
 
     while (runSystem_)
     {
-
+        //TODO: Add command handlers.
     }
 }
 

@@ -1,4 +1,4 @@
-#include "UIWelcameState.h"
+#include "UIWelcomeState.h"
 #include "UIEstablishingConnectionState.h"
 
 #include "../UIApplicationManager.h"
@@ -9,20 +9,19 @@ using namespace std;
 using namespace utility;
 using namespace main_process;
 
-UIWelcameState::UIWelcameState()
-    :  UIAbstractState("UIWelcameState", UIMainStateCode::WELCOME_PAGE)
-{
-}
-
-UIWelcameState::~UIWelcameState()
+UIWelcomeState::UIWelcomeState()
+    :  UIAbstractState("UIWelcomeState", UIMainStateCode::WELCOME_PAGE)
 {}
 
-void UIWelcameState::setWelcomePage(UIApplicationManager &uiApplicationManager)
+UIWelcomeState::~UIWelcomeState()
+{}
+
+void UIWelcomeState::setWelcomePage(UIApplicationManager &uiApplicationManager)
 {
     uiApplicationManager.setWelcomePage();
 
     if (logger_.isInformationEnable()) {
-        const string message = string("UIWelcameState :: Change to welcomePage.");
+        const string message = string("UIWelcomeState :: Change to welcomePage.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -31,7 +30,7 @@ void UIWelcameState::setWelcomePage(UIApplicationManager &uiApplicationManager)
     setState(&uiApplicationManager, new UIEstablishingConnectionState());
 }
 
-void UIWelcameState::communicationInProgress(UIApplicationManager &uiApplicationManager)
+void UIWelcomeState::communicationInProgress(UIApplicationManager &uiApplicationManager)
 {
 
 }

@@ -5,6 +5,9 @@ namespace main_process
 {
     class ExternalCommunicationVisitor
     {
+    public:
+        ExternalCommunicationVisitor();
+        ~ExternalCommunicationVisitor();
 
     };
 }

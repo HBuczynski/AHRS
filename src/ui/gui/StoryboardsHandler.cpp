@@ -116,8 +116,8 @@ void StoryboardsHandler::setSystemSetupPage()
 
 void StoryboardsHandler::setCallibrationSettingPage()
 {
-    callibrationSettings_ = new CallibrationSettings();
-    callibrationSettings_->resize(QSize(1024, 600));
+    calibrationSettings_ = new CallibrationSettings();
+    calibrationSettings_->resize(QSize(1024, 600));
 
     if(previousWidget_)
     {
@@ -125,8 +125,8 @@ void StoryboardsHandler::setCallibrationSettingPage()
         delete previousWidget_;
     }
 
-    gridLayout_2->addWidget(callibrationSettings_);
-    previousWidget_ = callibrationSettings_;
+    gridLayout_2->addWidget(calibrationSettings_);
+    previousWidget_ = calibrationSettings_;
 }
 
 void StoryboardsHandler::setRestartPage()

@@ -48,9 +48,10 @@ public slots:
     void setLogsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
-    void setInformationPageConnectionOK();
-    void setInformationPageBitOK();
-    void setInformationPageBitFalse();
+    void setInformationPageConnectionOK() override;
+    void setInformationPageBitOK() override;
+    void setInformationPageBitFalse() override;
+
 private:
 
     std::unique_ptr<QWidget> centralWidget;
@@ -67,7 +68,7 @@ private:
     RestartPage* restartPage_;
     WelcomePage* welcomePage_;
     SystemSetupPage* systemSetupPage_;
-    CallibrationSettings* callibrationSettings_;
+    CallibrationSettings* calibrationSettings_;
     InformationPage* informationPage_;
     ConnectingPage* connectingPage_;
 

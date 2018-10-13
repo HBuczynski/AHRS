@@ -5,11 +5,11 @@
 
 namespace main_process
 {
-    class UIWelcameState final : public UIAbstractState
+    class UIWelcomeState final : public UIAbstractState
     {
     public:
-        UIWelcameState();
-        ~UIWelcameState();
+        UIWelcomeState();
+        ~UIWelcomeState();
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);

@@ -5,8 +5,11 @@ namespace main_process
 {
     class GUIInterprocessVisitor
     {
+    public:
+        GUIInterprocessVisitor();
+        ~GUIInterprocessVisitor();
 
     };
 }
 
-#endif //AHRS_GUICOMMUNICATIONVISITOR_H
+#endif

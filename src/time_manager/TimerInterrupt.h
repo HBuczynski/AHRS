@@ -35,8 +35,8 @@ namespace utility
 
         static void handleInterrupt(int sigNumb, siginfo_t *si, void *uc);
 
-        InterruptObject interruptObject;
-        timer_t timerID;
+        InterruptObject interruptObject_;
+        timer_t timerID_;
         std::atomic<bool> isInitialized_;
 
         utility::Logger &logger_;

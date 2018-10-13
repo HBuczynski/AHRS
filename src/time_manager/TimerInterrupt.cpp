@@ -43,14 +43,14 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
 
     memset(&signalEvent, 0, sizeof(signalEvent));
 
-    interruptObject.objectToNotify = objectToNotify;
-    interruptObject.timerID = &timerID;
+    interruptObject_.objectToNotify = objectToNotify;
+    interruptObject_.timerID = &timerID_;
     
     signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void*) (&interruptObject);
+    signalEvent.sigev_value.sival_ptr = (void*) (&interruptObject_);
     signalEvent.sigev_signo = SIGALRM;
 
-    if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID)!= 0)
+    if (timer_create(CLOCK_REALTIME, &signalEvent, &timerID_)!= 0)
     {
         if(logger_.isErrorEnable())
         {
@@ -72,7 +72,7 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
         return;
     }
 
-    if (timer_settime(timerID, 0, &timerSpecs, NULL) == -1)
+    if (timer_settime(timerID_, 0, &timerSpecs, NULL) == -1)
     {
         if(logger_.isErrorEnable())
         {
@@ -116,14 +116,14 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
 
     memset(&signalEvent, 0, sizeof(signalEvent));
 
-    interruptObject.objectToNotify = objectToNotify;
-    interruptObject.timerID = &timerID;
+    interruptObject_.objectToNotify = objectToNotify;
+    interruptObject_.timerID = &timerID_;
 
     signalEvent.sigev_notify = SIGEV_SIGNAL;
-    signalEvent.sigev_value.sival_ptr = (void *) (&interruptObject);
+    signalEvent.sigev_value.sival_ptr = (void *) (&interruptObject_);
     signalEvent.sigev_signo = SIGALRM;
 
-    if ( timer_create(CLOCK_REALTIME, &signalEvent, &timerID) != 0 )
+    if ( timer_create(CLOCK_REALTIME, &signalEvent, &timerID_) != 0 )
     {
         if ( logger_.isErrorEnable())
         {
@@ -145,7 +145,7 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
         return;
     }
 
-    if ( timer_settime(timerID, 0, &timerSpecs, NULL) == -1 )
+    if ( timer_settime(timerID_, 0, &timerSpecs, NULL) == -1 )
     {
         if ( logger_.isErrorEnable())
         {
@@ -169,7 +169,7 @@ void TimerInterrupt::stop()
 {
     if(isInitialized_)
     {
-        if ( timer_delete(timerID) == 0 )
+        if ( timer_delete(timerID_) == 0 )
         {
             if ( logger_.isDebugEnable())
             {
@@ -192,7 +192,7 @@ void TimerInterrupt::stop()
 
 timer_t TimerInterrupt::getTimerID() const
 {
-    return timerID;
+    return timerID_;
 }
 
 void TimerInterrupt::handleInterrupt(int sigNumb, siginfo_t *si, void *uc)

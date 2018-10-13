@@ -91,7 +91,7 @@ void SwitchHandle::handleRaisingInterrupt()
     if(state_ == SwitchState::LOW_STATE)
     {
         state_ = SwitchState::LOW_DEBOUNCE_SECTION;
-        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MS, this);
     }
     else if(state_ == SwitchState::ERROR_CRITICAL_TIME)
     {
@@ -117,8 +117,8 @@ void SwitchHandle::handleFallingInterrupt()
     {
         state_ = SwitchState::HIGH_DEBOUNCE_SECTION;
 
-        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MSSEC, this);
-        criticalDelayTimerID_.startSingleInterrupt(CRITICAL_TIME_MSSEC, this);
+        debounceTimerID_.startSingleInterrupt(DEBOUNCE_TIME_MS, this);
+        criticalDelayTimerID_.startSingleInterrupt(CRITICAL_TIME_MS, this);
     }
     else
     {

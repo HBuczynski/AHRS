@@ -29,8 +29,8 @@ namespace gui
         void signalInfoConnectionOk();
 
     private:
-
         void initializeWindowsContainer();
+        void initializeSignalsAndSlots();
 
         void launchStartPage();
         void launchCommunicationEstablished();
@@ -48,7 +48,6 @@ namespace gui
 
         std::shared_ptr<MainWindow> mainWindow_;
         utility::Logger& logger_;
-
     };
 }
 

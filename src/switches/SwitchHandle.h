@@ -73,8 +73,8 @@ namespace  peripherals
         utility::TimerInterrupt debounceTimerID_;
         utility::TimerInterrupt criticalDelayTimerID_;
 
-        const uint32_t CRITICAL_TIME_MSSEC = 4000;
-        const uint64_t DEBOUNCE_TIME_MSSEC = 10;
+        const uint32_t CRITICAL_TIME_MS = 4000;
+        const uint64_t DEBOUNCE_TIME_MS = 10;
 
         utility::Logger& logger_;
     };

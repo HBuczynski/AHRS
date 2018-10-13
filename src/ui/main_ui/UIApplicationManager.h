@@ -27,10 +27,12 @@ namespace main_process
         void startUISystem();
         void stopUISystem();
 
+        /***** Machine State methods *****/
         void setWelcomePage();
         void communicationInProgress();
 
         void setNewState(UIAbstractState *newState);
+        /***** END Machine State *****/
 
     private:
         bool initializeMainProcessMessageQueue();
