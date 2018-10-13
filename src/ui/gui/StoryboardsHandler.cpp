@@ -207,7 +207,7 @@ void StoryboardsHandler::setConnectingPage()
     previousWidget_ = connectingPage_;
 }
 
-void StoryboardsHandler::setInformationPage()
+void StoryboardsHandler::setInformationPageConnectionOK()
 {
     if(previousWidget_)
     {
@@ -217,6 +217,46 @@ void StoryboardsHandler::setInformationPage()
 
     informationPage_ = new InformationPage();
     informationPage_->resize(QSize(1024, 600));
+    informationPage_->setMasterConnectionEstablished();
+    informationPage_->setSecondaryConnectionEstablished();
+
+    gridLayout_2->addWidget(informationPage_);
+    previousWidget_ = informationPage_;
+}
+
+void StoryboardsHandler::setInformationPageBitOK()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    informationPage_ = new InformationPage();
+    informationPage_->resize(QSize(1024, 600));
+
+    informationPage_->setMasterConnectionEstablished();
+    informationPage_->setSecondaryConnectionEstablished();
+    informationPage_->setBITS();
+
+    gridLayout_2->addWidget(informationPage_);
+    previousWidget_ = informationPage_;
+}
+
+void StoryboardsHandler::setInformationPageBitFalse()
+{
+    if(previousWidget_)
+    {
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    informationPage_ = new InformationPage();
+    informationPage_->resize(QSize(1024, 600));
+
+    informationPage_->setMasterConnectionEstablished();
+    informationPage_->setSecondaryConnectionEstablished();
+    informationPage_->setBITSFailed();
 
     gridLayout_2->addWidget(informationPage_);
     previousWidget_ = informationPage_;

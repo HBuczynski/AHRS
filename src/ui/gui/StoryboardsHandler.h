@@ -48,8 +48,9 @@ public slots:
     void setLogsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
-    void setInformationPage() override;
-
+    void setInformationPageConnectionOK();
+    void setInformationPageBitOK();
+    void setInformationPageBitFalse();
 private:
 
     std::unique_ptr<QWidget> centralWidget;

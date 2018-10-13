@@ -1,8 +1,8 @@
 #include "InterprocessExtCommunicationVisitor.h"
 
-#include "CalibratingState.h"
-#include "CalibratedFailedState.h"
-#include "CalibratedSuccessState.h"
+#include "machine_state/CalibratingState.h"
+#include "machine_state/CalibratedFailedState.h"
+#include "machine_state/CalibratedSuccessState.h"
 
 using namespace std;
 using namespace utility;

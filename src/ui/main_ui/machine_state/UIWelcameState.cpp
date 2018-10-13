@@ -26,7 +26,7 @@ void UIWelcameState::setWelcomePage(UIApplicationManager &uiApplicationManager)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    this_thread::sleep_for(3s);
+    this_thread::sleep_for(2s);
     uiApplicationManager.communicationInProgress();
     setState(&uiApplicationManager, new UIEstablishingConnectionState());
 }

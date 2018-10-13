@@ -142,7 +142,7 @@ void UIApplicationManager::setWelcomePage()
 
 void UIApplicationManager::communicationInProgress()
 {
-    auto command = GUIWindowCommand(WindowType::CONNECTION_ESTABLISHED);
+    auto command = GUIWindowCommand(WindowType::CONNECTION_ESTABLISHING);
     guiProcessHandler_.sendMessage(command.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -154,7 +154,6 @@ void UIApplicationManager::communicationInProgress()
 
 void UIApplicationManager::setNewState(UIAbstractState *newState)
 {
-
     if(newState != nullptr)
     {
         currentState_.reset(newState);

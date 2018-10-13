@@ -6,7 +6,10 @@ enum class UIMainStateCode : uint8_t
 {
     IDLE = 0x01,
     WELCOME_PAGE = 0x02,
-    ESTABLISHING_CONNECTION = 0x03
+    ESTABLISHING_CONNECTION = 0x03,
+    COMMUNICATION_OK = 0x04,
+    BITS_OK = 0x05,
+    BITS_FALSE = 0x06
 };
 
 #endif //AHRS_UIMAINSTATES_H

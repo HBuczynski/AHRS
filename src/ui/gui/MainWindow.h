@@ -25,6 +25,8 @@ public slots:
     void setMenuPage();
     void setConnectingPage();
     void setInformationPage();
+    void setInformationPageBITOk();
+    void setInformationPageBITFalse();
 
 private:
     StoryboardsHandler *storyboardsHandler_;

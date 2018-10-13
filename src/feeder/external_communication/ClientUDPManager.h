@@ -3,7 +3,7 @@
 
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
 
-#include "AbstractState.h"
+#include "machine_state/AbstractState.h"
 #include "ClientUDP.h"
 
 #include <list>

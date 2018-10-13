@@ -1,6 +1,6 @@
 #include "ClientUDPManager.h"
 
-#include "IdleState.h"
+#include "machine_state/IdleState.h"
 
 using namespace std;
 using namespace utility;

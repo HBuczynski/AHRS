@@ -66,5 +66,15 @@ void MainWindow::setConnectingPage()
 
 void MainWindow::setInformationPage()
 {
-    storyboardsHandler_->setInformationPage();
+    storyboardsHandler_->setInformationPageConnectionOK();
+}
+
+void MainWindow::setInformationPageBITOk()
+{
+    storyboardsHandler_->setInformationPageBitOK();
+}
+
+void MainWindow::setInformationPageBITFalse()
+{
+    storyboardsHandler_->setInformationPageBitFalse();
 }

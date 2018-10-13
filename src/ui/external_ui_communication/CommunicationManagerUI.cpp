@@ -1,5 +1,5 @@
 #include "CommunicationManagerUI.h"
-#include "IdleState.h"
+#include "ui/external_ui_communication/machine_state/IdleState.h"
 
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_commands/InitConnectionCommand.h>

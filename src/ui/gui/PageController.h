@@ -22,7 +22,9 @@ namespace gui
         virtual void setLogsPage() = 0;
         virtual void setMenuPage() = 0;
         virtual void setConnectingPage() = 0;
-        virtual void setInformationPage() = 0;
+        virtual void setInformationPageConnectionOK() = 0;
+        virtual void setInformationPageBitOK() = 0;
+        virtual void setInformationPageBitFalse() = 0;
     };
 }
 

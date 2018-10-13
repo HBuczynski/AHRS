@@ -6,8 +6,8 @@ project(external_ui_communication)
 set(PROJECT_NAME external_ui_communication)
 include_directories("..")
 
-file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
-file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h") 
+file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp" "${CMAKE_CURRENT_SOURCE_DIR}/machine_state/*.cpp")
+file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/machine_state/*.h")
 
 add_executable(${PROJECT_NAME} ${source_list})
 
