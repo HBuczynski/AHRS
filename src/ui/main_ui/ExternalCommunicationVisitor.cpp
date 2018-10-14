@@ -30,8 +30,20 @@ void ExternalCommunicationVisitor::visit(CommunicationStatusNotification& comman
         case UIExternalStateCode::MASTER :
             get<0>(informationParameters_) = 1;
             //uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_), get<2>(informationParameters_));
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), 1, 0);
+            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), 1, 1);
 
             uiApplicationManager_->setNewState( new UICommunicationState);
+            break;
+        case UIExternalStateCode::IDLE :
+            break;
+        case UIExternalStateCode::CONNECTED :
+            break;
+        case UIExternalStateCode::REDUNDANT :
+            break;
+        case UIExternalStateCode::CONNECTION_LOST :
+            break;
+        default:
+
+            break;
     }
 }
