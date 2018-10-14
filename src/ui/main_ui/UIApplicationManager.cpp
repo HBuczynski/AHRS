@@ -226,9 +226,9 @@ void UIApplicationManager::communicationInProgress()
     }
 }
 
-void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
+void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant)
 {
-    auto command = GUIInformationWindowCommand(master, redundant, bits);
+    auto command = GUIInformationWindowCommand(master, redundant, bitMaster, bitRedundant);
     guiProcessHandler_.sendMessage(command.getFrameBytes());
 
     if(logger_.isInformationEnable())

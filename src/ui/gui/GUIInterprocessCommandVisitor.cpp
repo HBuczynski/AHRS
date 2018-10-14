@@ -63,7 +63,7 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
 
 void GUIInterprocessCommandVisitor::visit(GUIInformationWindowCommand &command)
 {
-    emit signalInformationPage(command.getMasterConnection(), command.getRedundantConnection(), command.getBitsPerformance());
+    emit signalInformationPage(command.getMasterConnection(), command.getRedundantConnection(), command.getBitsMaster());
 }
 
 void GUIInterprocessCommandVisitor::launchStartPage()

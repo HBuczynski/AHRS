@@ -4,11 +4,12 @@
 using namespace std;
 using namespace communication;
 
-GUIInformationWindowCommand::GUIInformationWindowCommand(uint8_t masterConnection, uint8_t redundantConnection, uint8_t bitsPerformance)
+GUIInformationWindowCommand::GUIInformationWindowCommand(uint8_t masterConnection, uint8_t redundantConnection, uint8_t bitsMaster, uint8_t bitsRedundant)
         : GUICommand(10, GUICommandType::INFORMATION_WINDOW),
           masterConnection_(masterConnection),
           redundantConnection_(redundantConnection),
-          bitsPerformance_(bitsPerformance)
+          bitsMaster_(bitsMaster),
+          bitsRedundant_(bitsRedundant)
 {}
 
 GUIInformationWindowCommand::~GUIInformationWindowCommand()
@@ -22,7 +23,7 @@ vector<uint8_t> GUIInformationWindowCommand::getFrameBytes()
     frame.push_back(static_cast<uint8_t>(commandType_));
     frame.push_back(static_cast<uint8_t>(masterConnection_));
     frame.push_back(static_cast<uint8_t>(redundantConnection_));
-    frame.push_back(static_cast<uint8_t>(bitsPerformance_));
+    frame.push_back(static_cast<uint8_t>(bitsMaster_));
 
     return frame;
 }
@@ -57,17 +58,29 @@ uint8_t GUIInformationWindowCommand::getRedundantConnection() const
     return redundantConnection_;
 }
 
-void GUIInformationWindowCommand::setBitsPerformance(uint8_t state)
+void GUIInformationWindowCommand::setBitsMaster(uint8_t state)
 {
-    bitsPerformance_ = state;
+    bitsMaster_ = state;
 }
 
-uint8_t GUIInformationWindowCommand::getBitsPerformance() const
+uint8_t GUIInformationWindowCommand::getBitsMaster() const
 {
-    return bitsPerformance_;
+    return bitsMaster_;
 }
+
+void GUIInformationWindowCommand::setBitsRedundant(uint8_t state)
+{
+    bitsRedundant_ = state;
+}
+
+uint8_t GUIInformationWindowCommand::getBitsRedundant() const
+{
+    return bitsRedundant_;
+}
+
 
 void GUIInformationWindowCommand::initializeDataSize()
 {
-    setDataSize(sizeof(commandType_) + sizeof(masterConnection_) + sizeof(redundantConnection_) + sizeof(bitsPerformance_));
+    setDataSize(sizeof(commandType_) + sizeof(masterConnection_) + sizeof(redundantConnection_) + sizeof(bitsMaster_) + + sizeof(bitsRedundant_));
 }
+

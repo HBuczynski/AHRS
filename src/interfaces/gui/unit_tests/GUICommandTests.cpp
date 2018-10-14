@@ -28,15 +28,18 @@ BOOST_AUTO_TEST_SUITE( command )
 
     BOOST_AUTO_TEST_CASE( informationWindow )
     {
-            uint8_t master, redundant, bits = 1;
-            
-            GUIInformationWindowCommand command(master, redundant, bits);
+            uint8_t master =1;
+            uint8_t redundant = 1;
+            uint8_t bitsMaster = 1;
+            uint8_t bitsRedundant = 1;
+
+            GUIInformationWindowCommand command(master, redundant, bitsMaster, bitsRedundant);
             command.getFrameBytes();
             
             BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
             BOOST_CHECK( GUICommandType::INFORMATION_WINDOW == command.getCommandType());
             BOOST_CHECK( 1 == command.getSystemVersion());
-            BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(master) + sizeof(redundant) + sizeof(bits)) == command.getDataSize()));
+            BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(master) + sizeof(redundant) + sizeof(bitsMaster) + sizeof(bitsRedundant) ) == command.getDataSize()));
             BOOST_CHECK( "GUIInformationWindowCommand" == command.getName());
     }
 

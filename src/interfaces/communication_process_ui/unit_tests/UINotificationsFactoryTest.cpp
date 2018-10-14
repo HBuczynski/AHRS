@@ -16,12 +16,14 @@ BOOST_AUTO_TEST_SUITE( factory )
     {
             UINotificationFactory factory;
             UIExternalStateCode code = UIExternalStateCode::CONNECTION_LOST;
+            uint8_t processNumber = 1;
 
-            CommunicationStatusNotification command(code);
+            CommunicationStatusNotification command(code, processNumber);
 
             auto commandFromVec = static_pointer_cast<CommunicationStatusNotification, UINotification>(factory.createCommand(command.getFrameBytes()));
 
             BOOST_CHECK( commandFromVec->getState() == command.getState());
+            BOOST_CHECK( commandFromVec->getProcessNumber() == command.getProcessNumber());
             BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
             BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
             BOOST_CHECK( commandFromVec->getSystemVersion() == 1);

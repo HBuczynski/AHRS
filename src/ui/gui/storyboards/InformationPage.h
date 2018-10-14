@@ -27,8 +27,10 @@ public:
     void setMasterConnectionFailed();
     void setSecondaryConnectionEstablished();
     void setSecondaryConnectionFailed();
-    void setBITS();
-    void setBITSFailed();
+    void setBITSMaster();
+    void setBITSMasterFailed();
+    void setBITSRedundant();
+    void setBITRedundantFailed();
 
 signals:
     void signalAHRSPage();

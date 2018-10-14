@@ -8,7 +8,7 @@ namespace communication
     class GUIInformationWindowCommand : public GUICommand
     {
     public:
-        GUIInformationWindowCommand(uint8_t masterConnection, uint8_t redundantConnection, uint8_t bitsPerformance);
+        GUIInformationWindowCommand(uint8_t masterConnection, uint8_t redundantConnection, uint8_t bitsMaster, uint8_t bitsRedundant);
         ~GUIInformationWindowCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -21,15 +21,19 @@ namespace communication
         void setRedundantConnection(uint8_t state);
         uint8_t getRedundantConnection() const;
 
-        void setBitsPerformance(uint8_t state);
-        uint8_t getBitsPerformance() const;
+        void setBitsMaster(uint8_t state);
+        uint8_t getBitsMaster() const;
+
+        void setBitsRedundant(uint8_t state);
+        uint8_t getBitsRedundant() const;
 
     private:
         virtual void initializeDataSize() override;
 
         uint8_t masterConnection_;
         uint8_t redundantConnection_;
-        uint8_t bitsPerformance_;
+        uint8_t bitsMaster_;
+        uint8_t bitsRedundant_;
     };
 }
 

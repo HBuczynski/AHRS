@@ -247,11 +247,11 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 
     if(bits == 1)
     {
-        informationPage_->setBITS();
+        informationPage_->setBITSMaster();
     }
     else if (bits == 0)
     {
-        informationPage_->setBITSFailed();
+        informationPage_->setBITSMasterFailed();
     }
 
     gridLayout_2->addWidget(informationPage_);

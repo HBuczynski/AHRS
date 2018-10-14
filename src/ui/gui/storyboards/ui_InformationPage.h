@@ -58,6 +58,15 @@ public:
     QSpacerItem *horizontalSpacer_12;
     QLabel *rightLabel_3;
     QSpacerItem *horizontalSpacer_8;
+    QSpacerItem *verticalSpacer_6;
+    QHBoxLayout *horizontalLayout_8;
+    QSpacerItem *horizontalSpacer_17;
+    QLabel *lefLabel_5;
+    QSpacerItem *horizontalSpacer_18;
+    QLabel *dotsLabel_5;
+    QSpacerItem *horizontalSpacer_19;
+    QLabel *rightLabel_5;
+    QSpacerItem *horizontalSpacer_20;
     QSpacerItem *verticalSpacer_5;
     QFrame *buttonFrame;
     QHBoxLayout *horizontalButtons;
@@ -186,8 +195,8 @@ public:
 
         lefLabel_3 = new QLabel(verticalFrame);
         lefLabel_3->setObjectName(QStringLiteral("lefLabel_3"));
-        lefLabel_3->setMinimumSize(QSize(50, 0));
-        lefLabel_3->setMaximumSize(QSize(50, 16777215));
+        lefLabel_3->setMinimumSize(QSize(140, 0));
+        lefLabel_3->setMaximumSize(QSize(140, 16777215));
 
         horizontalLayout_6->addWidget(lefLabel_3);
 
@@ -219,6 +228,52 @@ public:
 
 
         verticalLayout->addLayout(horizontalLayout_6);
+
+        verticalSpacer_6 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout->addItem(verticalSpacer_6);
+
+        horizontalLayout_8 = new QHBoxLayout();
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        horizontalSpacer_17 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_17);
+
+        lefLabel_5 = new QLabel(verticalFrame);
+        lefLabel_5->setObjectName(QStringLiteral("lefLabel_5"));
+        lefLabel_5->setMinimumSize(QSize(180, 0));
+        lefLabel_5->setMaximumSize(QSize(180, 16777215));
+
+        horizontalLayout_8->addWidget(lefLabel_5);
+
+        horizontalSpacer_18 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_18);
+
+        dotsLabel_5 = new QLabel(verticalFrame);
+        dotsLabel_5->setObjectName(QStringLiteral("dotsLabel_5"));
+        dotsLabel_5->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_8->addWidget(dotsLabel_5);
+
+        horizontalSpacer_19 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_19);
+
+        rightLabel_5 = new QLabel(verticalFrame);
+        rightLabel_5->setObjectName(QStringLiteral("rightLabel_5"));
+        rightLabel_5->setMinimumSize(QSize(90, 0));
+        rightLabel_5->setMaximumSize(QSize(90, 16777215));
+        rightLabel_5->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+
+        horizontalLayout_8->addWidget(rightLabel_5);
+
+        horizontalSpacer_20 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_8->addItem(horizontalSpacer_20);
+
+
+        verticalLayout->addLayout(horizontalLayout_8);
 
         verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -258,6 +313,9 @@ public:
         lefLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
         dotsLabel_3->setText(QString());
         rightLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        lefLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        dotsLabel_5->setText(QString());
+        rightLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -58,7 +58,7 @@ void InformationPage::pageSetup()
 
     ui_->lefLabel_3->setStyleSheet("QLabel { color : white}");
     ui_->lefLabel_3->setFont(labelFont);
-    ui_->lefLabel_3->setText("BITS");
+    ui_->lefLabel_3->setText("BITS MASTER");
 
     ui_->dotsLabel_3->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel_3->setFont(labelFont);
@@ -68,6 +68,20 @@ void InformationPage::pageSetup()
     ui_->rightLabel_3->setStyleSheet("QLabel { color : white}");
     ui_->rightLabel_3->setFont(sqareFont);
     ui_->rightLabel_3->setText("\u25FB\u25FB\u25FB");
+
+    ui_->lefLabel_5->setStyleSheet("QLabel { color : white}");
+    ui_->lefLabel_5->setFont(labelFont);
+    ui_->lefLabel_5->setText("BITS REDUNDANT");
+
+    ui_->dotsLabel_5->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabel_5->setFont(labelFont);
+    ui_->dotsLabel_5->setText("............................................................................................................................."
+                              "..................................................................");
+
+    ui_->rightLabel_5->setStyleSheet("QLabel { color : white}");
+    ui_->rightLabel_5->setFont(sqareFont);
+    ui_->rightLabel_5->setText("\u25FB\u25FB\u25FB");
+
 
     buttons_ = make_unique<Buttons>();
     ui_->buttonLayout->addWidget(buttons_.get());
@@ -155,22 +169,41 @@ void InformationPage::setSecondaryConnectionFailed()
     ui_->rightLabel_2->setAlignment(Qt::AlignLeft);
 }
 
-void InformationPage::setBITS()
+void InformationPage::setBITSMaster()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
     ui_->rightLabel_3->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->rightLabel_3->setFont(sqareFont);
     ui_->rightLabel_3->setText("TRUE");
-    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);;
+    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);
 }
 
-void InformationPage::setBITSFailed()
+void InformationPage::setBITSMasterFailed()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
     ui_->rightLabel_3->setStyleSheet("QLabel { color: red}");
     ui_->rightLabel_3->setFont(sqareFont);
     ui_->rightLabel_3->setText("FALSE");
-    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);;
+    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);
+}
+
+
+void InformationPage::setBITSRedundant()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->rightLabel_5->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->rightLabel_5->setFont(sqareFont);
+    ui_->rightLabel_5->setText("TRUE");
+    ui_->rightLabel_5->setAlignment(Qt::AlignLeft);
+}
+
+void InformationPage::setBITRedundantFailed()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->rightLabel_5->setStyleSheet("QLabel { color: red}");
+    ui_->rightLabel_5->setFont(sqareFont);
+    ui_->rightLabel_5->setText("FALSE");
+    ui_->rightLabel_5->setAlignment(Qt::AlignLeft);;
 }
 
 void InformationPage::firstButton()
