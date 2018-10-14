@@ -35,6 +35,7 @@ namespace main_process
         /***** Machine State methods *****/
         void setWelcomePage();
         void communicationInProgress();
+        void setInformationPage();
 
         void setNewState(UIAbstractState *newState);
         /***** END Machine State *****/

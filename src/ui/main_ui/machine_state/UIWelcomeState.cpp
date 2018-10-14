@@ -34,3 +34,8 @@ void UIWelcomeState::communicationInProgress(UIApplicationManager &uiApplication
 {
 
 }
+
+void UIWelcomeState::setInformationPage(UIApplicationManager &uiApplicationManager)
+{
+
+}

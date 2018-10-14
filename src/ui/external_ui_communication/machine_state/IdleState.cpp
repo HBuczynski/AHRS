@@ -2,6 +2,9 @@
 #include "IdleState.h"
 #include "ConnectedState.h"
 
+#include "MasterState.h"
+#include "RedundantState.h"
+
 #include "CommunicationManagerUI.h"
 
 using namespace std;
@@ -25,8 +28,6 @@ void IdleState::connectedToServer(CommunicationManagerUI &communicationManagerUI
         const string message = string("IdleState :: Change state on ConnectedState");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
-
-    setState(&communicationManagerUI, new ConnectedState() );
 
     if(communicationManagerUI.getProcessNumber() == 1)
     {
@@ -54,12 +55,24 @@ void IdleState::connectedToServer(CommunicationManagerUI &communicationManagerUI
 
 void IdleState::redundantProcess(CommunicationManagerUI &communicationManagerUI)
 {
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ConnectedState :: Change state on RedundantState");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
+    setState(&communicationManagerUI, new RedundantState);
 }
 
 void IdleState::masterProcess(CommunicationManagerUI &communicationManagerUI)
 {
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ConnectedState :: Change state on MasterState");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
+    setState(&communicationManagerUI, new MasterState);
 }
 
 void IdleState::restartProcess(CommunicationManagerUI &communicationManagerUI)

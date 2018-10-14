@@ -13,6 +13,7 @@ namespace main_process
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);
+        void setInformationPage(UIApplicationManager &uiApplicationManager);
     };
 }
 

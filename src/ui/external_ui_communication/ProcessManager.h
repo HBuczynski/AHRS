@@ -2,6 +2,7 @@
 #define AHRS_PROCESSMANAGER_H
 
 #include <boost/interprocess/ipc/message_queue.hpp>
+#include <time_manager/TimerInterrupt.h>
 
 #include <thread>
 #include <memory>
@@ -15,14 +16,14 @@
 
 namespace communication
 {
-    class ProcessManager
+    class ProcessManager final : public utility::TimerInterruptNotification
     {
     public:
         ProcessManager(uint8_t processNumber);
         ~ProcessManager();
 
         bool initialize();
-        
+
         void startCommunication();
         void stopCommunication();
 
@@ -32,10 +33,15 @@ namespace communication
         bool initializeCommunicationProcessMessageQueue();
         bool initializeSharedMemory();
         bool initializeWirelessCommunication();
+        void connectToFeeder();
 
-        void handleMessage(const std::vector<uint8_t > &data);
+        void interruptNotification(timer_t timerID);
+
+        void handleMessageQueue(const std::vector<uint8_t> &data);
+        void sendMessageToMainProcess(const std::vector<uint8_t > &data);
 
         uint8_t processNumber_;
+        utility::TimerInterrupt connectionEstablishingInterrupt_;
 
         config::UIWirelessCommunication uiWirelessCommunicationParameters_;
         config::UIMessageQueues uiMessageQueuesParameters_;
@@ -52,6 +58,7 @@ namespace communication
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
+        std::atomic<bool> connectionEstablished_;
         std::atomic<bool> runCommunicationProcess_;
         utility::Logger& logger_;
     };

@@ -1,6 +1,7 @@
 #include "GUICommandFactory.h"
 
 #include "GUIWindowBuilder.h"
+#include "GUIInformationWindowBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -19,6 +20,9 @@ unique_ptr<GUICommand> GUICommandFactory::createCommand(const vector<uint8_t> &c
     {
         case GUICommandType::CHANGE_WINDOW :
             builder_ = make_unique<GUIWindowBuilder>();
+            return move(builder_->create(commandInBytes));
+        case GUICommandType::INFORMATION_WINDOW :
+            builder_ = make_unique<GUIInformationWindowBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

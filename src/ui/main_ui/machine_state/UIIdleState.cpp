@@ -22,3 +22,8 @@ void UIIdleState::communicationInProgress(UIApplicationManager &uiApplicationMan
 {
 
 }
+
+void UIIdleState::setInformationPage(UIApplicationManager &uiApplicationManager)
+{
+
+}

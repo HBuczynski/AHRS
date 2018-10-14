@@ -225,6 +225,18 @@ void UIApplicationManager::communicationInProgress()
     }
 }
 
+void UIApplicationManager::setInformationPage()
+{
+    auto command = GUIWindowCommand(WindowType::INFO_CONNECTION_OK);
+    guiProcessHandler_.sendMessage(command.getFrameBytes());
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
 void UIApplicationManager::setNewState(UIAbstractState *newState)
 {
     if(newState != nullptr)
@@ -246,3 +258,4 @@ void UIApplicationManager::setNewState(UIAbstractState *newState)
         }
     }
 }
+

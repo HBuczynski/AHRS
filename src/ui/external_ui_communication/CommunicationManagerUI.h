@@ -16,12 +16,14 @@ namespace communication
         CommunicationManagerUI(uint8_t processNumber);
         ~CommunicationManagerUI();
 
-        bool initialize();
+        bool initializeServer();
+        bool connectToFeeder();
+
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
 
         uint8_t getProcessNumber() const ;
 
-        // Machine state commands:
+        /***** Machine State Commands *****/
         void connectedToServer();
         void redundantProcess();
         void masterProcess();
@@ -30,12 +32,9 @@ namespace communication
 
         const UIExternalStateCode& getCurrentState() const;
         void setNewState(AbstractState *newState);
+        /*********************************/
 
     private:
-
-        bool initializeServer();
-        bool initializeClientConnection();
-
         std::unique_ptr<AbstractState> currentState_;
 
         uint8_t processNumber_;

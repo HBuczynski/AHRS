@@ -4,6 +4,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../GUIWindowCommand.h"
+#include "../GUIInformationWindowCommand.h"
 
 using namespace std;
 using namespace communication;
@@ -24,6 +25,20 @@ BOOST_AUTO_TEST_SUITE( command )
                 BOOST_CHECK( ((sizeof(type) + sizeof(GUICommandType::CHANGE_WINDOW)) == command.getDataSize()));
                 BOOST_CHECK( "GUIWindowCommand" == command.getName());
         }
+
+    BOOST_AUTO_TEST_CASE( informationWindow )
+    {
+            uint8_t master, redundant, bits = 1;
+            
+            GUIInformationWindowCommand command(master, redundant, bits);
+            command.getFrameBytes();
+            
+            BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
+            BOOST_CHECK( GUICommandType::INFORMATION_WINDOW == command.getCommandType());
+            BOOST_CHECK( 1 == command.getSystemVersion());
+            BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(master) + sizeof(redundant) + sizeof(bits)) == command.getDataSize()));
+            BOOST_CHECK( "GUIInformationWindowCommand" == command.getName());
+    }
 
 
 BOOST_AUTO_TEST_SUITE_END()

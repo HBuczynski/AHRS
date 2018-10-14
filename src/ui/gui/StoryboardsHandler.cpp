@@ -215,8 +215,10 @@ void StoryboardsHandler::setInformationPageConnectionOK()
         delete previousWidget_;
     }
 
-    informationPage_ = new InformationPage();
+    informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
+    informationPage_->initializeExit();
+
     informationPage_->setMasterConnectionEstablished();
     informationPage_->setSecondaryConnectionEstablished();
 
@@ -232,8 +234,9 @@ void StoryboardsHandler::setInformationPageBitOK()
         delete previousWidget_;
     }
 
-    informationPage_ = new InformationPage();
+    informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
+    informationPage_->initializeExit();
 
     informationPage_->setMasterConnectionEstablished();
     informationPage_->setSecondaryConnectionEstablished();
@@ -251,8 +254,9 @@ void StoryboardsHandler::setInformationPageBitFalse()
         delete previousWidget_;
     }
 
-    informationPage_ = new InformationPage();
+    informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
+    informationPage_->initializeExit();
 
     informationPage_->setMasterConnectionEstablished();
     informationPage_->setSecondaryConnectionEstablished();

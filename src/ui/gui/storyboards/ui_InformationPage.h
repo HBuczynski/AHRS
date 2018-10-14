@@ -14,10 +14,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFrame>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -33,28 +33,35 @@ public:
     QLabel *titleLabel;
     QSpacerItem *verticalSpacer;
     QHBoxLayout *horizontalLayout_3;
+    QSpacerItem *horizontalSpacer_2;
     QLabel *lefLabel;
     QSpacerItem *horizontalSpacer_6;
     QLabel *dotsLabel;
     QSpacerItem *horizontalSpacer_5;
     QLabel *rightLabel;
+    QSpacerItem *horizontalSpacer;
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_3;
     QLabel *lefLabel_2;
     QSpacerItem *horizontalSpacer_9;
     QLabel *dotsLabel_2;
     QSpacerItem *horizontalSpacer_10;
     QLabel *rightLabel_2;
+    QSpacerItem *horizontalSpacer_7;
     QSpacerItem *verticalSpacer_4;
     QHBoxLayout *horizontalLayout_6;
+    QSpacerItem *horizontalSpacer_4;
     QLabel *lefLabel_3;
     QSpacerItem *horizontalSpacer_11;
     QLabel *dotsLabel_3;
     QSpacerItem *horizontalSpacer_12;
     QLabel *rightLabel_3;
+    QSpacerItem *horizontalSpacer_8;
     QSpacerItem *verticalSpacer_5;
-    QProgressBar *progressBar;
-    QSpacerItem *verticalSpacer_6;
+    QFrame *buttonFrame;
+    QHBoxLayout *horizontalButtons;
+    QGridLayout *buttonLayout;
 
     void setupUi(QWidget *InformationPage)
     {
@@ -81,10 +88,14 @@ public:
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalSpacer_2 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer_2);
+
         lefLabel = new QLabel(verticalFrame);
         lefLabel->setObjectName(QStringLiteral("lefLabel"));
-        lefLabel->setMinimumSize(QSize(280, 0));
-        lefLabel->setMaximumSize(QSize(280, 16777215));
+        lefLabel->setMinimumSize(QSize(230, 0));
+        lefLabel->setMaximumSize(QSize(230, 16777215));
 
         horizontalLayout_3->addWidget(lefLabel);
 
@@ -104,11 +115,15 @@ public:
 
         rightLabel = new QLabel(verticalFrame);
         rightLabel->setObjectName(QStringLiteral("rightLabel"));
-        rightLabel->setMinimumSize(QSize(160, 0));
-        rightLabel->setMaximumSize(QSize(160, 16777215));
-        rightLabel->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        rightLabel->setMinimumSize(QSize(90, 0));
+        rightLabel->setMaximumSize(QSize(90, 16777215));
+        rightLabel->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
         horizontalLayout_3->addWidget(rightLabel);
+
+        horizontalSpacer = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_3->addItem(horizontalSpacer);
 
 
         verticalLayout->addLayout(horizontalLayout_3);
@@ -119,10 +134,14 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_3 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_3);
+
         lefLabel_2 = new QLabel(verticalFrame);
         lefLabel_2->setObjectName(QStringLiteral("lefLabel_2"));
-        lefLabel_2->setMinimumSize(QSize(280, 0));
-        lefLabel_2->setMaximumSize(QSize(280, 16777215));
+        lefLabel_2->setMinimumSize(QSize(267, 0));
+        lefLabel_2->setMaximumSize(QSize(267, 16777215));
 
         horizontalLayout_5->addWidget(lefLabel_2);
 
@@ -142,11 +161,15 @@ public:
 
         rightLabel_2 = new QLabel(verticalFrame);
         rightLabel_2->setObjectName(QStringLiteral("rightLabel_2"));
-        rightLabel_2->setMinimumSize(QSize(160, 0));
-        rightLabel_2->setMaximumSize(QSize(160, 16777215));
-        rightLabel_2->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        rightLabel_2->setMinimumSize(QSize(90, 0));
+        rightLabel_2->setMaximumSize(QSize(90, 16777215));
+        rightLabel_2->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
         horizontalLayout_5->addWidget(rightLabel_2);
+
+        horizontalSpacer_7 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_7);
 
 
         verticalLayout->addLayout(horizontalLayout_5);
@@ -157,10 +180,14 @@ public:
 
         horizontalLayout_6 = new QHBoxLayout();
         horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalSpacer_4 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_4);
+
         lefLabel_3 = new QLabel(verticalFrame);
         lefLabel_3->setObjectName(QStringLiteral("lefLabel_3"));
-        lefLabel_3->setMinimumSize(QSize(280, 0));
-        lefLabel_3->setMaximumSize(QSize(280, 16777215));
+        lefLabel_3->setMinimumSize(QSize(50, 0));
+        lefLabel_3->setMaximumSize(QSize(50, 16777215));
 
         horizontalLayout_6->addWidget(lefLabel_3);
 
@@ -180,11 +207,15 @@ public:
 
         rightLabel_3 = new QLabel(verticalFrame);
         rightLabel_3->setObjectName(QStringLiteral("rightLabel_3"));
-        rightLabel_3->setMinimumSize(QSize(160, 0));
-        rightLabel_3->setMaximumSize(QSize(160, 16777215));
-        rightLabel_3->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+        rightLabel_3->setMinimumSize(QSize(90, 0));
+        rightLabel_3->setMaximumSize(QSize(90, 16777215));
+        rightLabel_3->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
 
         horizontalLayout_6->addWidget(rightLabel_3);
+
+        horizontalSpacer_8 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_8);
 
 
         verticalLayout->addLayout(horizontalLayout_6);
@@ -193,16 +224,20 @@ public:
 
         verticalLayout->addItem(verticalSpacer_5);
 
-        progressBar = new QProgressBar(verticalFrame);
-        progressBar->setObjectName(QStringLiteral("progressBar"));
-        progressBar->setValue(24);
-        progressBar->setTextVisible(false);
+        buttonFrame = new QFrame(InformationPage);
+        buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
+        buttonFrame->setGeometry(QRect(512, 560, 512, 40));
+        buttonFrame->setStyleSheet(QStringLiteral(""));
+        buttonFrame->setLineWidth(0);
+        horizontalButtons = new QHBoxLayout(buttonFrame);
+        horizontalButtons->setSpacing(0);
+        horizontalButtons->setObjectName(QStringLiteral("horizontalButtons"));
+        horizontalButtons->setContentsMargins(0, 0, 0, 0);
+        buttonLayout = new QGridLayout();
+        buttonLayout->setSpacing(0);
+        buttonLayout->setObjectName(QStringLiteral("buttonLayout"));
 
-        verticalLayout->addWidget(progressBar);
-
-        verticalSpacer_6 = new QSpacerItem(20, 10, QSizePolicy::Minimum, QSizePolicy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_6);
+        horizontalButtons->addLayout(buttonLayout);
 
 
         retranslateUi(InformationPage);

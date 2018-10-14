@@ -47,7 +47,7 @@ void SwitchHandle::initializeGPIOInterrupts()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("SwitchHandle :: Could not initialize interrupts for buttons: ") + to_string(static_cast<uint8_t>(code_));
+            const string message = string("SwitchHandle :: Could not initializeExit interrupts for buttons: ") + to_string(static_cast<uint8_t>(code_));
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

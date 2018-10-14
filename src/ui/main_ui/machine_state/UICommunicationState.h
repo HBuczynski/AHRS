@@ -5,14 +5,15 @@
 
 namespace main_process
 {
-    class CommunicationOKState final : public UIAbstractState
+    class UICommunicationState final : public UIAbstractState
     {
     public:
-        CommunicationOKState();
-        ~CommunicationOKState();
+        UICommunicationState();
+        ~UICommunicationState();
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);
+        void setInformationPage(UIApplicationManager &uiApplicationManager);
     };
 }
 

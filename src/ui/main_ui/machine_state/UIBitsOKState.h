@@ -5,14 +5,15 @@
 
 namespace main_process
 {
-    class BitsOKState final : public UIAbstractState
+    class UIBitsOKState final : public UIAbstractState
     {
     public:
-        BitsOKState();
-        ~BitsOKState();
+        UIBitsOKState();
+        ~UIBitsOKState();
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);
+        void setInformationPage(UIApplicationManager &uiApplicationManager);
     };
 }
 

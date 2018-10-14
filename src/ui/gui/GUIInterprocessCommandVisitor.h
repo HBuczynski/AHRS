@@ -20,6 +20,7 @@ namespace gui
         ~GUIInterprocessCommandVisitor();
 
         void visit(communication::GUIWindowCommand& command) override;
+        void visit(communication::GUIInformationWindowCommand& command) override;
 
     signals:
         void signalWelcomePage();

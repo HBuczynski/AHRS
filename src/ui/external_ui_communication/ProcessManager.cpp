@@ -2,6 +2,7 @@
 #include <interfaces/wireless_commands/Command.h>
 
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
 
 using namespace std;
 using namespace config;
@@ -15,6 +16,7 @@ ProcessManager::ProcessManager(uint8_t processNumber)
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
+      connectionEstablished_(false),
       runCommunicationProcess_(true),
       logger_(Logger::getInstance())
 { }
@@ -29,6 +31,7 @@ bool ProcessManager::initialize()
     isSuccess = isSuccess & initializeCommunicationProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & initializeWirelessCommunication();
+    connectToFeeder();
 
     return isSuccess;
 }
@@ -137,7 +140,7 @@ bool ProcessManager::initializeWirelessCommunication()
 {
     communicationManagerUI_ = make_shared<CommunicationManagerUI>(processNumber_);
 
-    if(communicationManagerUI_->initialize())
+    if(communicationManagerUI_->initializeServer())
     {
         if (logger_.isInformationEnable())
         {
@@ -156,6 +159,32 @@ bool ProcessManager::initializeWirelessCommunication()
         }
 
         return false;
+    }
+}
+
+void ProcessManager::connectToFeeder()
+{
+    connectionEstablishingInterrupt_.startPeriodic(1000, this);
+}
+
+void ProcessManager::interruptNotification(timer_t timerID)
+{
+    if(!connectionEstablished_)
+    {
+        if ( connectionEstablishingInterrupt_.getTimerID() == timerID )
+        {
+            if ( communicationManagerUI_->connectToFeeder())
+            {
+                auto notification = CommunicationStatusNotification(communicationManagerUI_->getCurrentState());
+                sendMessageToMainProcess(notification.getFrameBytes());
+
+                connectionEstablished_ = true;
+            }
+        }
+    }
+    else
+    {
+        connectionEstablishingInterrupt_.stop();
     }
 }
 
@@ -179,7 +208,7 @@ void ProcessManager::startCommunication()
             packet.resize(receivedSize);
             packet.shrink_to_fit();
 
-            handleMessage(packet);
+            handleMessageQueue(packet);
         }
         catch(interprocess_exception &ex)
         {
@@ -192,8 +221,18 @@ void ProcessManager::startCommunication()
     }
 }
 
-void ProcessManager::handleMessage(const vector<uint8_t > &data)
+void ProcessManager::handleMessageQueue(const vector<uint8_t> &data)
 {
     //TODO: check packet correctness: header, CRC, checksum
+}
 
+void ProcessManager::sendMessageToMainProcess(const vector<uint8_t> &data)
+{
+    sendingMessageQueue_->send(data.data(), data.size(), 0);
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Send msg to main process.";
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

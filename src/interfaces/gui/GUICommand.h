@@ -9,7 +9,8 @@ namespace communication
 
     enum GUICommandType : uint8_t
     {
-        CHANGE_WINDOW = 0x01
+        CHANGE_WINDOW = 0x01,
+        INFORMATION_WINDOW = 0x02,
     };
 
     class GUICommand : public Frame

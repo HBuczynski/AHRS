@@ -64,6 +64,11 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
     }
 }
 
+void GUIInterprocessCommandVisitor::visit(communication::GUIInformationWindowCommand &command)
+{
+
+}
+
 void GUIInterprocessCommandVisitor::launchStartPage()
 {
     emit signalWelcomePage();

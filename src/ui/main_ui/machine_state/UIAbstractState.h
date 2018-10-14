@@ -17,6 +17,7 @@ namespace main_process
 
         virtual void setWelcomePage(UIApplicationManager &uiApplicationManager) = 0;
         virtual void communicationInProgress(UIApplicationManager &uiApplicationManager) = 0;
+        virtual void setInformationPage(UIApplicationManager &uiApplicationManager) = 0;
 
         const UIMainStateCode& getStateCode() const;
         const std::string& getName() const;

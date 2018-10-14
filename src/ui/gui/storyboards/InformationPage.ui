@@ -65,16 +65,32 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="lefLabel">
         <property name="minimumSize">
          <size>
-          <width>280</width>
+          <width>230</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>280</width>
+          <width>230</width>
           <height>16777215</height>
          </size>
         </property>
@@ -129,13 +145,13 @@
        <widget class="QLabel" name="rightLabel">
         <property name="minimumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>16777215</height>
          </size>
         </property>
@@ -143,9 +159,25 @@
          <string>TextLabel</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -168,16 +200,32 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="lefLabel_2">
         <property name="minimumSize">
          <size>
-          <width>280</width>
+          <width>267</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>280</width>
+          <width>267</width>
           <height>16777215</height>
          </size>
         </property>
@@ -232,13 +280,13 @@
        <widget class="QLabel" name="rightLabel_2">
         <property name="minimumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>16777215</height>
          </size>
         </property>
@@ -246,9 +294,25 @@
          <string>TextLabel</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_7">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -271,16 +335,32 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_6">
       <item>
+       <spacer name="horizontalSpacer_4">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="lefLabel_3">
         <property name="minimumSize">
          <size>
-          <width>280</width>
+          <width>50</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>280</width>
+          <width>50</width>
           <height>16777215</height>
          </size>
         </property>
@@ -335,13 +415,13 @@
        <widget class="QLabel" name="rightLabel_3">
         <property name="minimumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>160</width>
+          <width>90</width>
           <height>16777215</height>
          </size>
         </property>
@@ -349,9 +429,25 @@
          <string>TextLabel</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>35</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>
@@ -368,31 +464,45 @@
       </property>
      </spacer>
     </item>
+   </layout>
+  </widget>
+  <widget class="QFrame" name="buttonFrame">
+   <property name="geometry">
+    <rect>
+     <x>512</x>
+     <y>560</y>
+     <width>512</width>
+     <height>40</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="lineWidth">
+    <number>0</number>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalButtons">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="QProgressBar" name="progressBar">
-      <property name="value">
-       <number>24</number>
+     <layout class="QGridLayout" name="buttonLayout">
+      <property name="spacing">
+       <number>0</number>
       </property>
-      <property name="textVisible">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <spacer name="verticalSpacer_6">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>10</height>
-       </size>
-      </property>
-     </spacer>
+     </layout>
     </item>
    </layout>
   </widget>

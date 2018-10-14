@@ -2,6 +2,7 @@
 #define AHRS_GGUICommandVISITOR_H
 
 #include "GUIWindowCommand.h"
+#include "GUIInformationWindowCommand.h"
 
 namespace communication
 {
@@ -12,6 +13,7 @@ namespace communication
         virtual ~GUICommandVisitor(){};
 
         virtual void visit(GUIWindowCommand& command) = 0;
+        virtual void visit(GUIInformationWindowCommand& command) = 0;
     };
 }
 

@@ -25,15 +25,6 @@ CommunicationManagerUI::CommunicationManagerUI(uint8_t processNumber)
 CommunicationManagerUI::~CommunicationManagerUI()
 {}
 
-bool CommunicationManagerUI::initialize()
-{
-    bool isSuccess = true;
-    isSuccess = isSuccess & initializeServer();
-    isSuccess = isSuccess & initializeClientConnection();
-
-    return isSuccess;
-}
-
 bool CommunicationManagerUI::initializeServer()
 {
     if(processNumber_ == 1)
@@ -66,7 +57,7 @@ bool CommunicationManagerUI::initializeServer()
     return true;
 }
 
-bool CommunicationManagerUI::initializeClientConnection()
+bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
     if(processNumber_ == 1)
