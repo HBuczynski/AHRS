@@ -30,12 +30,5 @@ void UIEstablishingConnectionState::communicationInProgress(UIApplicationManager
 
 void UIEstablishingConnectionState::setInformationPage(UIApplicationManager &uiApplicationManager)
 {
-    uiApplicationManager.setInformationPage();
 
-    if (logger_.isInformationEnable()) {
-        const string message = string("UIWelcomeState :: Change to UIEstablishingConnectionState.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    setState(&uiApplicationManager, new UICommunicationState());
 }

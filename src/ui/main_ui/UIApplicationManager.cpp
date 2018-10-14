@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include "UIApplicationManager.h"
 #include <interfaces/gui/GUIWindowCommand.h>
+#include <interfaces/gui/GUIInformationWindowCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 
@@ -225,9 +226,9 @@ void UIApplicationManager::communicationInProgress()
     }
 }
 
-void UIApplicationManager::setInformationPage()
+void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
 {
-    auto command = GUIWindowCommand(WindowType::INFO_CONNECTION_OK);
+    auto command = GUIInformationWindowCommand(master, redundant, bits);
     guiProcessHandler_.sendMessage(command.getFrameBytes());
 
     if(logger_.isInformationEnable())

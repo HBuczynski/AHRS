@@ -207,7 +207,7 @@ void StoryboardsHandler::setConnectingPage()
     previousWidget_ = connectingPage_;
 }
 
-void StoryboardsHandler::setInformationPageConnectionOK()
+void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
 {
     if(previousWidget_)
     {
@@ -217,50 +217,42 @@ void StoryboardsHandler::setInformationPageConnectionOK()
 
     informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
-    informationPage_->initializeExit();
 
-    informationPage_->setMasterConnectionEstablished();
-    informationPage_->setSecondaryConnectionEstablished();
-
-    gridLayout_2->addWidget(informationPage_);
-    previousWidget_ = informationPage_;
-}
-
-void StoryboardsHandler::setInformationPageBitOK()
-{
-    if(previousWidget_)
+    if(master == 1 && redundant == 1 && bits == 1)
     {
-        gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
+        informationPage_->initializeContinue();
+    }
+    else
+    {
+        informationPage_->initializeExit();
     }
 
-    informationPage_ = new InformationPage(this);
-    informationPage_->resize(QSize(1024, 600));
-    informationPage_->initializeExit();
-
-    informationPage_->setMasterConnectionEstablished();
-    informationPage_->setSecondaryConnectionEstablished();
-    informationPage_->setBITS();
-
-    gridLayout_2->addWidget(informationPage_);
-    previousWidget_ = informationPage_;
-}
-
-void StoryboardsHandler::setInformationPageBitFalse()
-{
-    if(previousWidget_)
+    if(master == 1)
     {
-        gridLayout_2->removeWidget(previousWidget_);
-        delete previousWidget_;
+        informationPage_->setMasterConnectionEstablished();
+    }
+    else if (master == 0)
+    {
+        informationPage_->setMasterConnectionFailed();
     }
 
-    informationPage_ = new InformationPage(this);
-    informationPage_->resize(QSize(1024, 600));
-    informationPage_->initializeExit();
+    if(redundant == 1)
+    {
+        informationPage_->setSecondaryConnectionEstablished();
+    }
+    else if (redundant == 0)
+    {
+        informationPage_->setSecondaryConnectionFailed();
+    }
 
-    informationPage_->setMasterConnectionEstablished();
-    informationPage_->setSecondaryConnectionEstablished();
-    informationPage_->setBITSFailed();
+    if(bits == 1)
+    {
+        informationPage_->setBITS();
+    }
+    else if (bits == 0)
+    {
+        informationPage_->setBITSFailed();
+    }
 
     gridLayout_2->addWidget(informationPage_);
     previousWidget_ = informationPage_;

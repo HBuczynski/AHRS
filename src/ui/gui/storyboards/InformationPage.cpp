@@ -79,7 +79,7 @@ void InformationPage::initializeExit()
     buttonNames[SwitchCode::FIRST_SWITCH] = "";
     buttonNames[SwitchCode::SECOND_SWITCH] = "";
     buttonNames[SwitchCode::THIRD_SWITCH] = "";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "<EXIT>";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "EXIT";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
@@ -98,7 +98,7 @@ void InformationPage::initializeContinue()
     buttonNames[SwitchCode::FIRST_SWITCH] = "";
     buttonNames[SwitchCode::SECOND_SWITCH] = "";
     buttonNames[SwitchCode::THIRD_SWITCH] = "";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "<CONTINUE>";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "CONTINUE";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);

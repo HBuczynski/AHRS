@@ -48,9 +48,7 @@ public slots:
     void setLogsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
-    void setInformationPageConnectionOK() override;
-    void setInformationPageBitOK() override;
-    void setInformationPageBitFalse() override;
+    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits) override;
 
 private:
 

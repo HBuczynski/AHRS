@@ -22,9 +22,8 @@ namespace gui
         virtual void setLogsPage() = 0;
         virtual void setMenuPage() = 0;
         virtual void setConnectingPage() = 0;
-        virtual void setInformationPageConnectionOK() = 0;
-        virtual void setInformationPageBitOK() = 0;
-        virtual void setInformationPageBitFalse() = 0;
+        virtual void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits) = 0;
+
     };
 }
 

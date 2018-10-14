@@ -25,9 +25,7 @@ namespace gui
     signals:
         void signalWelcomePage();
         void signalEstablishingConnection();
-        void signalInfoBitsOK();
-        void signalInfoBitsFalse();
-        void signalInfoConnectionOk();
+        void signalInformationPage(uint8_t, uint8_t, uint8_t);
 
     private:
         void initializeWindowsContainer();
@@ -35,9 +33,6 @@ namespace gui
 
         void launchStartPage();
         void launchCommunicationEstablished();
-        void launchInfoBitsOK();
-        void launchInfoBitsFalse();
-        void launchInfoConnectionOK();
         void launchActiveConnectionWindow();
         void launchChoosingPlaneWindow();
         void launchCalibrationWindow();

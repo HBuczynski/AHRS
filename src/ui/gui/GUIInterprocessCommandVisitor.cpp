@@ -20,9 +20,6 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 {
     windoowsContainer_[WindowType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
     windoowsContainer_[WindowType::CONNECTION_ESTABLISHING] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
-    windoowsContainer_[WindowType::INFO_CONNECTION_OK] = bind(&GUIInterprocessCommandVisitor::launchInfoConnectionOK, this);
-    windoowsContainer_[WindowType::INFO_BITS_OK] = bind(&GUIInterprocessCommandVisitor::launchInfoBitsOK, this);
-    windoowsContainer_[WindowType::INFO_BITS_FALSE] = bind(&GUIInterprocessCommandVisitor::launchInfoBitsFalse, this);
     windoowsContainer_[WindowType::CHOOSING_PLANE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
     windoowsContainer_[WindowType::CALIBRATION] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
     windoowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
@@ -32,11 +29,11 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 
 void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
 {
+    qRegisterMetaType<uint8_t>("uint8_t");
+
     QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
     QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
-    QObject::connect(this, SIGNAL(signalInfoBitsOK()), mainWindow_.get(), SLOT(setInformationPageBITOk()));
-    QObject::connect(this, SIGNAL(signalInfoBitsFalse()), mainWindow_.get(), SLOT(setInformationPageBITFalse()));
-    QObject::connect(this, SIGNAL(signalInfoConnectionOk()), mainWindow_.get(), SLOT(setInformationPage()));
+    QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t)));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
@@ -64,9 +61,9 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
     }
 }
 
-void GUIInterprocessCommandVisitor::visit(communication::GUIInformationWindowCommand &command)
+void GUIInterprocessCommandVisitor::visit(GUIInformationWindowCommand &command)
 {
-
+    emit signalInformationPage(command.getMasterConnection(), command.getRedundantConnection(), command.getBitsPerformance());
 }
 
 void GUIInterprocessCommandVisitor::launchStartPage()
@@ -77,21 +74,6 @@ void GUIInterprocessCommandVisitor::launchStartPage()
 void GUIInterprocessCommandVisitor::launchCommunicationEstablished()
 {
     emit signalEstablishingConnection();
-}
-
-void GUIInterprocessCommandVisitor::launchInfoBitsOK()
-{
-    emit signalInfoBitsOK();
-}
-
-void GUIInterprocessCommandVisitor::launchInfoBitsFalse()
-{
-    emit signalInfoBitsFalse();
-}
-
-void GUIInterprocessCommandVisitor::launchInfoConnectionOK()
-{
-    emit signalInfoConnectionOk();
 }
 
 void GUIInterprocessCommandVisitor::launchActiveConnectionWindow()

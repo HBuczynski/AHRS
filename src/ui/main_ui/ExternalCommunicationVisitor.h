@@ -1,6 +1,9 @@
 #ifndef AHRS_EXTERNALCOMMUNICATIONVISITOR_H
 #define AHRS_EXTERNALCOMMUNICATIONVISITOR_H
 
+#include <utility>
+#include <tuple>
+
 #include <interfaces/communication_process_ui/UINotificationVisitor.h>
 
 namespace main_process
@@ -17,6 +20,8 @@ namespace main_process
         virtual void visit(communication::CommunicationStatusNotification& command);
 
     private:
+        std::tuple<uint8_t , uint8_t , uint8_t > informationParameters_;
+
         UIApplicationManager* uiApplicationManager_;
     };
 }

@@ -64,17 +64,7 @@ void MainWindow::setConnectingPage()
     storyboardsHandler_->setConnectingPage();
 }
 
-void MainWindow::setInformationPage()
+void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
 {
-    storyboardsHandler_->setInformationPageConnectionOK();
-}
-
-void MainWindow::setInformationPageBITOk()
-{
-    storyboardsHandler_->setInformationPageBitOK();
-}
-
-void MainWindow::setInformationPageBITFalse()
-{
-    storyboardsHandler_->setInformationPageBitFalse();
+    storyboardsHandler_->setInformationPage(master, redundant, bits);
 }
