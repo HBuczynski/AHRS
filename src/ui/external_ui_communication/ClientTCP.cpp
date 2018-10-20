@@ -135,7 +135,6 @@ void ClientTCP::executeCommands()
                     unique_ptr<Response> response = responseFactory_.createCommand(responseFrame);
                     response->accept(responseHandler_);
 
-                    //insertToResponseQueue(move(response));
                     isSuccess = true;
                 }
             }

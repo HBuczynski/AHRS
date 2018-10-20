@@ -165,7 +165,24 @@ bool ProcessManager::initializeWirelessCommunication()
 
 void ProcessManager::connectToFeeder()
 {
-    connectionEstablishingInterrupt_.startPeriodic(1000, this);
+    //connectionEstablishingInterrupt_.startPeriodic(1000, this);
+    if(!connectionEstablished_)
+    {
+        //if ( connectionEstablishingInterrupt_.getTimerID() == timerID )
+        {
+            if ( communicationManagerUI_->connectToFeeder())
+            {
+                auto notification = CommunicationStatusNotification(communicationManagerUI_->getCurrentState(), communicationManagerUI_->getProcessNumber());
+                sendMessageToMainProcess(notification.getFrameBytes());
+
+                connectionEstablished_ = true;
+            }
+        }
+    }
+    else
+    {
+        connectionEstablishingInterrupt_.stop();
+    }
 }
 
 void ProcessManager::interruptNotification(timer_t timerID)

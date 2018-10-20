@@ -14,7 +14,11 @@ SendStreamTCP::SendStreamTCP(int sock, struct sockaddr_in sockAddress)
     : sock_(sock),
       sockAddress_(sockAddress)
 {
-
+//    tv.tv_sec = 10; /* seconds */
+//    tv.tv_usec = 0;
+//
+//    if(setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) < 0)
+//        printf("Cannot Set SO_SNDTIMEO for socket\n");
 }
 
 SendStreamTCP::SendStreamTCP(uint16_t port, std::string address)
@@ -72,3 +76,4 @@ void SendStreamTCP::sendData(vector<uint8_t> message)
         throw logic_error("Cannot send packet.");
     }
 }
+
