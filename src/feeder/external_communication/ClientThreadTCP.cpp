@@ -74,6 +74,19 @@ void ClientThreadTCP::runListen()
         {
             const auto frame = socket_->receivePacket();
 
+            string temp = "";
+
+            for(auto a : frame)
+            {
+                temp += to_string((int)a);
+            }
+
+            if(logger_.isErrorEnable() && runListenThread_)
+            {
+                const string message = string("ClientThreadTCP (runListenThread) ::") + temp;
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+
             const auto command = commandFactory_.createCommand(frame);
             command->accept(commandHandler_);
 
@@ -85,7 +98,7 @@ void ClientThreadTCP::runListen()
             // Factory can't create a command
             if(logger_.isErrorEnable() && runListenThread_)
             {
-                const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
+                const string message = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
                                  string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }

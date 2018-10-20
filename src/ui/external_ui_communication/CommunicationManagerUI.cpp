@@ -86,6 +86,20 @@ bool CommunicationManagerUI::connectToFeeder()
     if(client_->connectToServer())
     {
         client_->startCommandSending();
+
+        string temp = "";
+
+        for(auto a : command->getFrameBytes())
+        {
+            temp += to_string((int)a);
+        }
+
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("ClientThreadTCP (runListenThread) ::") + temp;
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
         sendCommands(move(command));
     }
     else
