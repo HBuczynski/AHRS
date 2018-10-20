@@ -13,6 +13,8 @@ InformationPage::InformationPage(gui::PageController *controller, QWidget *paren
 {
     ui_->setupUi(this);
     pageSetup();
+
+    qRegisterMetaType<std::vector<uint8_t>>("std::vector<uint8_t>");
 }
 
 InformationPage::~InformationPage()
@@ -124,7 +126,7 @@ void InformationPage::initializeContinue()
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
-    QObject::connect(this, SIGNAL(signalStartAcquisition(vector<uint8_t>)), controller_, SLOT(sendToMainProcess(std::vector<uint8_t>)));
+    QObject::connect(this, SIGNAL(signalStartAcquisition(std::vector<uint8_t>)), controller_, SLOT(sendToMainProcess(std::vector<uint8_t>)));
 }
 
 void InformationPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)

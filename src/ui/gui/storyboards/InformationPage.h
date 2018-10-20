@@ -5,8 +5,10 @@
 
 #include <QWidget>
 #include <memory>
+#include <vector>
 
 #include "Buttons.h"
+
 
 namespace Ui {
 class InformationPage;
@@ -15,6 +17,7 @@ class InformationPage;
 class InformationPage : public QWidget
 {
     Q_OBJECT
+
 
 public:
     explicit InformationPage(gui::PageController *controller, QWidget *parent = 0);

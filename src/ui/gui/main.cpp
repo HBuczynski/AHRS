@@ -11,6 +11,8 @@ using namespace gui;
 using namespace chrono;
 using namespace utility;
 
+Q_DECLARE_METATYPE(std::vector<uint8_t>)
+
 int main( int argc, char *argv[] )
 {
     Logger &logger = Logger::getInstance("UI_GUI");
@@ -31,6 +33,7 @@ int main( int argc, char *argv[] )
     }
 
     QApplication app( argc, argv );
+
 
     auto mainWindow = make_shared<MainWindow>();
     GUIApplicationManager applicationManager(mainWindow);
