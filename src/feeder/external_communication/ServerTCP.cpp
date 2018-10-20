@@ -85,6 +85,7 @@ void ServerTCP::activateUsers()
             clientList_.push_back(move(client));
             ++clientID;
         }
+        this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 

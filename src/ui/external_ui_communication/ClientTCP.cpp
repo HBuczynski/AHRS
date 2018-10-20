@@ -122,6 +122,7 @@ void ClientTCP::executeCommands()
                 {
                     socket_->sendData(command->getFrameBytes());
 
+
                     if(logger_.isInformationEnable())
                     {
                         const string message = string("ClientTCP :: Client data: ") + address_ + string(" and port: ") +

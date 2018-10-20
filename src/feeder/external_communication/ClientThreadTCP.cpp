@@ -83,16 +83,18 @@ void ClientThreadTCP::runListen()
         catch (exception &e)
         {
             // Factory can't create a command
-            /*if(logger_.isErrorEnable() && runListenThread_)
+            if(logger_.isErrorEnable() && runListenThread_)
             {
                 const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) +
                                  string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
-            runListenThread_ = false;
+            /*runListenThread_ = false;
             socket_.reset();**/
         }
+
+        this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
