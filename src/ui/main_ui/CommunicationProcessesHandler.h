@@ -24,6 +24,8 @@ namespace main_process
 
         bool initialize();
 
+        void sendMessage(const std::vector<uint8_t>& message, config::UICommunicationMode mode);
+
         void resetProcess(uint8_t processNumber);
         void switchProcesses();
 

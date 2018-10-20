@@ -1,15 +1,15 @@
-#ifndef AHRS_BITSFALSESTATE_H
-#define AHRS_BITSFALSESTATE_H
+#ifndef AHRS_COMMUNICATIONOKSTATE_H
+#define AHRS_COMMUNICATIONOKSTATE_H
 
 #include "UIAbstractState.h"
 
 namespace main_process
 {
-    class UIBitsFalseState final : public UIAbstractState
+    class UIAcquisitionState final : public UIAbstractState
     {
     public:
-        UIBitsFalseState();
-        ~UIBitsFalseState();
+        UIAcquisitionState();
+        ~UIAcquisitionState();
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);

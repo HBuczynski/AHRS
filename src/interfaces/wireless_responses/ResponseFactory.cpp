@@ -5,6 +5,7 @@
 #include "CalibratingStatusBuilder.h"
 #include "PlanesDatasetBuilder.h"
 #include "CurrentStateBuilder.h"
+#include "BITsResponseBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -26,6 +27,9 @@ unique_ptr<Response> ResponseFactory::createCommand(const vector<uint8_t> &comma
             return move(builder_->create(commandInBytes));
         case ResponseType::ACK:
             builder_ = make_unique<AckResponseBuilder>();
+            return move(builder_->create(commandInBytes));
+        case ResponseType::BITs_STATUS :
+            builder_ = make_unique<BITsResponseBuilder>();
             return move(builder_->create(commandInBytes));
         case ResponseType::CALIBRATING_STATUS:
             builder_ = make_unique<CalibratingStatusBuilder>();

@@ -30,6 +30,7 @@ namespace communication
         virtual void visit(SetPlaneMagnetometerCommand& command) override;
         virtual void visit(RemovePlaneDataCommand& command) override;
         virtual void visit(CurrentStateCommand& command) override ;
+        virtual void visit(PerformBITsCommand& command) override;
 
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);

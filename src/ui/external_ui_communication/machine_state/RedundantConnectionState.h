@@ -1,17 +1,15 @@
-#ifndef AHRS_CONNECTIONLOSTSTATE_H
-#define AHRS_CONNECTIONLOSTSTATE_H
+#ifndef AHRS_REDUNDANTSTATE_H
+#define AHRS_REDUNDANTSTATE_H
 
 #include "AbstractState.h"
 
-#include <config_reader/UIParameters.h>
-
 namespace communication
 {
-    class ConnectionLostState final : public AbstractState
+    class RedundantConnectionState final : public AbstractState
     {
     public:
-        ConnectionLostState();
-        ~ConnectionLostState();
+        RedundantConnectionState();
+        ~RedundantConnectionState();
 
         virtual void connectedToServer(CommunicationManagerUI &communicationManagerUI) override;
         virtual void redundantProcess(CommunicationManagerUI &communicationManagerUI) override;
@@ -20,6 +18,5 @@ namespace communication
         virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) override;
     };
 }
-
 
 #endif

@@ -5,11 +5,11 @@
 
 namespace main_process
 {
-    class UIEstablishingConnectionState final : public UIAbstractState
+    class UISetupState final : public UIAbstractState
     {
     public:
-        UIEstablishingConnectionState();
-        ~UIEstablishingConnectionState();
+        UISetupState();
+        ~UISetupState();
 
         void setWelcomePage(UIApplicationManager &uiApplicationManager);
         void communicationInProgress(UIApplicationManager &uiApplicationManager);

@@ -10,6 +10,7 @@
 #include "CalibrationStatusCommand.h"
 #include "StartAcquisitionCommand.h"
 #include "CurrentStateCommand.h"
+#include "PerformBITsCommand.h"
 
 namespace communication
 {
@@ -28,6 +29,7 @@ namespace communication
         virtual void visit(CalibrationStatusCommand& command) = 0;
         virtual void visit(StartAcquisitionCommand& command) = 0;
         virtual void visit(CurrentStateCommand& command) = 0;
+        virtual void visit(PerformBITsCommand& command) = 0;
     };
 }
 #endif

@@ -1,9 +1,8 @@
 #include <config_reader/ConfigurationReader.h>
 #include "IdleState.h"
-#include "ConnectedState.h"
 
-#include "MasterState.h"
-#include "RedundantState.h"
+#include "MasterConnectionState.h"
+#include "RedundantConnectionState.h"
 
 #include "CommunicationManagerUI.h"
 
@@ -57,22 +56,22 @@ void IdleState::redundantProcess(CommunicationManagerUI &communicationManagerUI)
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ConnectedState :: Change state on RedundantState");
+        const string message = string("ConnectedState :: Change state on RedundantConnectionState");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    setState(&communicationManagerUI, new RedundantState);
+    setState(&communicationManagerUI, new RedundantConnectionState);
 }
 
 void IdleState::masterProcess(CommunicationManagerUI &communicationManagerUI)
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ConnectedState :: Change state on MasterState");
+        const string message = string("ConnectedState :: Change state on MasterConnectionState");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    setState(&communicationManagerUI, new MasterState);
+    setState(&communicationManagerUI, new MasterConnectionState);
 }
 
 void IdleState::restartProcess(CommunicationManagerUI &communicationManagerUI)

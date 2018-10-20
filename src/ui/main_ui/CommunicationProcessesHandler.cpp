@@ -3,6 +3,7 @@
 
 #include <unistd.h>
 #include <cstring>
+#include <algorithm>
 #include <config_reader/ConfigurationReader.h>
 
 using namespace std;
@@ -249,6 +250,24 @@ void CommunicationProcessesHandler::resetProcess(uint8_t processNumber)
 
 void CommunicationProcessesHandler::switchProcesses()
 {
+
+}
+
+void CommunicationProcessesHandler::sendMessage(const std::vector<uint8_t> &message, config::UICommunicationMode mode)
+{
+    const auto processNumber = std::find_if(externallProcessess_.begin(), externallProcessess_.end(), [&mode](decltype(*externallProcessess_.begin()) &iter)
+    {
+        return iter.second.second == mode;
+    });
+
+    if((*processNumber).first == 1)
+    {
+        firstCommunicationMessageQueue->send(message.data(), message.size(), 0);
+    }
+    else
+    {
+        secondCommunicationMessageQueue->send(message.data(), message.size(), 0);
+    }
 
 }
 

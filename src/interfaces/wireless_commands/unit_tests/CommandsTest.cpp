@@ -9,6 +9,7 @@
 #include "../InitConnectionCommand.h"
 #include "../SetPlaneMagnetometerCommand.h"
 #include "../RemovePlaneDataCommand.h"
+#include "../PerformBITsCommand.h"
 
 #include <string>
 
@@ -105,5 +106,19 @@ BOOST_AUTO_TEST_SUITE( commands )
         BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_MAGNETOMETER_DATA)) == command.getDataSize());
         BOOST_CHECK( "SetPlaneMagnetometerCommand" == command.getName());
     }
+
+    BOOST_AUTO_TEST_CASE( performBITCommand )
+    {
+        PerformBITsCommand command;
+        command.getFrameBytes();
+
+        BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
+        BOOST_CHECK( CommandType::PERFORM_BIT == command.getCommandType());
+        BOOST_CHECK( 1 == command.getSystemVersion());
+        BOOST_CHECK( (sizeof(CommandType::PERFORM_BIT)) == command.getDataSize());
+        BOOST_CHECK( "PerformBITsCommand" == command.getName());
+    }
+
+
 
 BOOST_AUTO_TEST_SUITE_END()

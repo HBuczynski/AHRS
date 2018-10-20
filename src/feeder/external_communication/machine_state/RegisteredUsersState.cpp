@@ -2,7 +2,6 @@
 #include "ClientUDPManager.h"
 
 #include "ResetState.h"
-#include "CalibratingState.h"
 #include "ShutdownState.h"
 
 using namespace std;
@@ -27,15 +26,7 @@ void RegisteredUsersState::acceptedUsers(ClientUDPManager &clientUDPManager)
 
 void RegisteredUsersState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status)
 {
-    setState(&clientUDPManager, new CalibratingState);
 
-    clientUDPManager.startCalibration(planeName, status);
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("RegisteredUsersState :: Change state on CalibratingState");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
 }
 
 void RegisteredUsersState::calibrationPassed(ClientUDPManager &clientUDPManager)

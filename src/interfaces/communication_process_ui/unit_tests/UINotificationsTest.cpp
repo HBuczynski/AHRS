@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE( notification )
 
     BOOST_AUTO_TEST_CASE( communicationStatusNotification )
     {
-            UIExternalStateCode code = UIExternalStateCode::CONNECTION_LOST;
+            UIExternalStateCode code = UIExternalStateCode::ERROR;
             uint8_t processNumber = 1;
 
             CommunicationStatusNotification command(code, processNumber);

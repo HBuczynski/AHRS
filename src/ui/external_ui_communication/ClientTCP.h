@@ -26,15 +26,10 @@ namespace communication
         void startCommandSending();
 
         void sendCommand(std::unique_ptr<Command> command);
-//        bool isResponseQueueEmpty();
-//        std::unique_ptr<Response> getResponse();
-
 
     private:
         bool isCommandQueueEmpty();
         std::unique_ptr<Command> getFromCommandQueue();
-
-        //void insertToResponseQueue(std::unique_ptr<Response> command);
 
         void executeCommands();
         void catchExceptions(std::string exception, bool isEndConnectionSent, uint8_t commandSendingCounter);
@@ -49,9 +44,6 @@ namespace communication
 
         std::mutex commandQueueMutex_;
         std::queue<std::unique_ptr<Command>> commandQueue_;
-
-//        std::mutex responseQueueMutex_;
-//        std::queue<std::unique_ptr<Response> > responseQueue_;
 
         ResponseHandlerVisitor responseHandler_;
         ResponseFactory responseFactory_;

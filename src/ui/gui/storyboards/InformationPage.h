@@ -35,6 +35,7 @@ public:
 signals:
     void signalAHRSPage();
     void signalExitPage();
+    void signalStartAcquisition(std::vector<uint8_t>);
 
 private:
     void pageSetup();
@@ -44,7 +45,8 @@ private:
     void firstButton();
     void secondButton();
     void thirdButton();
-    void fourthButton();
+    void exitButton();
+    void continueButton();
 
     gui::PageController *controller_;
     std::unique_ptr<Buttons> buttons_;

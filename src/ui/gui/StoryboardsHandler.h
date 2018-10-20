@@ -14,6 +14,8 @@
 #include <QtWidgets/QWidget>
 
 #include <memory>
+#include <config_reader/UIParameters.h>
+#include <boost/interprocess/ipc/message_queue.hpp>
 
 #include "MainWindow.h"
 #include "PageController.h"
@@ -38,6 +40,7 @@ public:
     void setupUi(QMainWindow *MainWindow);
 
 public slots:
+    void sendToMainProcess(std::vector<uint8_t> msg);
     void backToPreviousPage() override;
     void setWelcomePage() override;
     void setSystemSetupPage() override;
@@ -51,6 +54,8 @@ public slots:
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits) override;
 
 private:
+
+    void inititalizeMessageQueue();
 
     std::unique_ptr<QWidget> centralWidget;
     std::unique_ptr<QGridLayout> gridLayout_5;
@@ -71,6 +76,11 @@ private:
     ConnectingPage* connectingPage_;
 
     QWidget *previousWidget_;
+
+    config::UIMessageQueues uiMessageQueuesParameters_;
+    std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
+
+    utility::Logger& logger_;
 };
 
 #endif

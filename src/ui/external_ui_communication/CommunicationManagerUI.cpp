@@ -9,6 +9,7 @@
 
 #include <thread>
 #include <chrono>
+#include <interfaces/wireless_commands/PerformBITsCommand.h>
 
 using namespace std;
 using namespace config;
@@ -30,9 +31,11 @@ bool CommunicationManagerUI::initializeServer()
     if(processNumber_ == 1)
     {
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.firstSourcePort);
+        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress);
     }
     else if(processNumber_ == 2)
     {
+        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress);
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.secondSourcePort);
     }
     else
@@ -60,14 +63,13 @@ bool CommunicationManagerUI::initializeServer()
 bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
+
     if(processNumber_ == 1)
     {
-        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress);
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);
     }
     else if(processNumber_ == 2)
     {
-        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress);
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.secondSourcePort, wirelessCommunicationParameters_.secondSourceAddress);
     }
     else

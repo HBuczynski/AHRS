@@ -5,24 +5,26 @@
 #include <tuple>
 
 #include <interfaces/communication_process_ui/UINotificationVisitor.h>
+#include <logger/Logger.h>
 
 namespace main_process
 {
     class UIApplicationManager;
 
-    class ExternalCommunicationVisitor final : public communication::UINotificationVisitor
+    class ExternalCommInterprocessVisitor final : public communication::UINotificationVisitor
     {
     public:
-        ExternalCommunicationVisitor(UIApplicationManager *uiApplicationManager);
-        ~ExternalCommunicationVisitor();
+        ExternalCommInterprocessVisitor(UIApplicationManager *uiApplicationManager);
+        ~ExternalCommInterprocessVisitor();
 
         virtual void visit(communication::ReceivingDataNotification& command);
         virtual void visit(communication::CommunicationStatusNotification& command);
 
     private:
-        std::tuple<uint8_t , uint8_t , uint8_t > informationParameters_;
+        std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> informationParameters_;
 
         UIApplicationManager* uiApplicationManager_;
+        utility::Logger& logger_;
     };
 }
 

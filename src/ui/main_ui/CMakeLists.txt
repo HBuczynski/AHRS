@@ -16,9 +16,12 @@ add_executable(${PROJECT_NAME} ${source_list})
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_process_ui)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC gui_interface)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC switches)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
+
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin OPTIONAL)

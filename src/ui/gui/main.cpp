@@ -47,8 +47,6 @@ int main( int argc, char *argv[] )
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }
-
-    //applicationManager.startGUI();
     
     return app.exec();
 }

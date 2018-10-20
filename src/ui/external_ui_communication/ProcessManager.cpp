@@ -2,6 +2,7 @@
 #include <interfaces/wireless_commands/Command.h>
 
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/wireless_commands/PerformBITsCommand.h>
 #include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
 
 using namespace std;
@@ -16,6 +17,8 @@ ProcessManager::ProcessManager(uint8_t processNumber)
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
+      communicationManagerUI_(make_shared<CommunicationManagerUI>(processNumber_)),
+      mainProcessHandlerVisitor_(make_unique<MainProcessHandlerVisitor>(communicationManagerUI_)),
       connectionEstablished_(false),
       runCommunicationProcess_(true),
       logger_(Logger::getInstance())
@@ -138,8 +141,6 @@ bool ProcessManager::initializeSharedMemory()
 
 bool ProcessManager::initializeWirelessCommunication()
 {
-    communicationManagerUI_ = make_shared<CommunicationManagerUI>(processNumber_);
-
     if(communicationManagerUI_->initializeServer())
     {
         if (logger_.isInformationEnable())
@@ -218,13 +219,18 @@ void ProcessManager::startCommunication()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
+
+        this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
 void ProcessManager::handleMessageQueue(const vector<uint8_t> &data)
 {
-    //TODO: check packet correctness: header, CRC, checksum
+    const auto command = uiCommandFactory_.createCommand(data);
+
+    command->accept(*(mainProcessHandlerVisitor_.get()));
 }
+
 
 void ProcessManager::sendMessageToMainProcess(const vector<uint8_t> &data)
 {

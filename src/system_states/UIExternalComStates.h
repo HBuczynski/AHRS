@@ -4,11 +4,9 @@
 enum class UIExternalStateCode : uint8_t
 {
     IDLE = 0x01,
-    CONNECTED = 0x02,
     REDUNDANT = 0x03,
     MASTER = 0x04,
     ERROR = 0x05,
-    CONNECTION_LOST = 0x06
 };
 
 #endif

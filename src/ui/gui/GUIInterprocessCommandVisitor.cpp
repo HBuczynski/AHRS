@@ -18,13 +18,13 @@ GUIInterprocessCommandVisitor::~GUIInterprocessCommandVisitor()
 
 void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 {
-    windoowsContainer_[WindowType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
-    windoowsContainer_[WindowType::CONNECTION_ESTABLISHING] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
-    windoowsContainer_[WindowType::CHOOSING_PLANE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
-    windoowsContainer_[WindowType::CALIBRATION] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
-    windoowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
-    windoowsContainer_[WindowType::RESTART] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
-    windoowsContainer_[WindowType::SHUTDOWN] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
+    windowsContainer_[WindowType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
+    windowsContainer_[WindowType::CONNECTION_ESTABLISHING] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
+    windowsContainer_[WindowType::CHOOSING_PLANE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
+    windowsContainer_[WindowType::CALIBRATION] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
+    windowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
+    windowsContainer_[WindowType::RESTART] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
+    windowsContainer_[WindowType::SHUTDOWN] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
 }
 
 void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
@@ -39,9 +39,9 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
 {
     const auto windowType = command.getWindowType();
-    const auto windowsIterator = windoowsContainer_.find(windowType);
+    const auto windowsIterator = windowsContainer_.find(windowType);
 
-    if(windowsIterator != windoowsContainer_.end())
+    if(windowsIterator != windowsContainer_.end())
     {
         windowsIterator->second();
 

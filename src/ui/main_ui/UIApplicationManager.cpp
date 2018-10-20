@@ -21,7 +21,7 @@ UIApplicationManager::UIApplicationManager()
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
       currentState_(make_unique<UIIdleState>()),
-      externalCommunicationVisitor_(make_unique<ExternalCommunicationVisitor>(this)),
+      externalCommunicationVisitor_(make_unique<ExternalCommInterprocessVisitor>(this)),
       guiInterprocessVisitor_(make_unique<GUIInterprocessVisitor>(this)),
       runSystem_(true),
       logger_(Logger::getInstance())
@@ -236,6 +236,11 @@ void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant,
         const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void UIApplicationManager::sendToExteranlCommunicationProcess(vector<uint8_t> data, UICommunicationMode mode)
+{
+    communicationProcessesHandler_.sendMessage(data, mode);
 }
 
 void UIApplicationManager::setNewState(UIAbstractState *newState)

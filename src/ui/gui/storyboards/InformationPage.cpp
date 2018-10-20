@@ -1,5 +1,6 @@
 #include "InformationPage.h"
 #include "ui_InformationPage.h"
+#include <interfaces/gui/GUIWindowCommand.h>
 
 using namespace std;
 using namespace utility;
@@ -99,7 +100,7 @@ void InformationPage::initializeExit()
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
     callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&InformationPage::secondButton, this);
     callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&InformationPage::thirdButton, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::fourthButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
@@ -118,11 +119,12 @@ void InformationPage::initializeContinue()
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
     callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&InformationPage::secondButton, this);
     callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&InformationPage::thirdButton, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::fourthButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::continueButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
+    QObject::connect(this, SIGNAL(signalStartAcquisition(vector<uint8_t>)), controller_, SLOT(sendToMainProcess(std::vector<uint8_t>)));
 }
 
 void InformationPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -221,7 +223,16 @@ void InformationPage::thirdButton()
 
 }
 
-void InformationPage::fourthButton()
+void InformationPage::exitButton()
 {
+    emit signalExitPage();
+}
 
+void InformationPage::continueButton()
+{
+    emit signalAHRSPage();
+
+    communication::GUIWindowCommand command(communication::WindowType::AHRS);
+
+    emit signalStartAcquisition(command.getFrameBytes());
 }

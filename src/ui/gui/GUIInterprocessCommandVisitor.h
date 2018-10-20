@@ -40,7 +40,7 @@ namespace gui
         void launchRestartWindow();
         void launchShutdownWindow();
 
-        std::map<communication::WindowType, std::function<void()>> windoowsContainer_;
+        std::map<communication::WindowType, std::function<void()>> windowsContainer_;
 
         std::shared_ptr<MainWindow> mainWindow_;
         utility::Logger& logger_;

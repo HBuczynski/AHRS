@@ -1,12 +1,20 @@
 #include "StoryboardsHandler.h"
 
 #include <iostream>
+#include <config_reader/ConfigurationReader.h>
 
 using namespace std;
+using namespace config;
+using namespace utility;
+using namespace boost::interprocess;
 
 StoryboardsHandler::StoryboardsHandler()
-    : previousWidget_(nullptr)
-{}
+    : previousWidget_(nullptr),
+      uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
+      logger_(Logger::getInstance())
+{
+    inititalizeMessageQueue();
+}
 
 void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
 {
@@ -256,4 +264,37 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 
     gridLayout_2->addWidget(informationPage_);
     previousWidget_ = informationPage_;
+}
+
+void StoryboardsHandler::sendToMainProcess(std::vector<uint8_t> msg)
+{
+    sendingMessageQueue_->send(msg.data(), msg.size(), 0);
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: Send msg to main process.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void StoryboardsHandler::inititalizeMessageQueue()
+{
+    try
+    {
+        sendingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str());
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("StoryboardsHandler:: During openning main queue - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

@@ -311,7 +311,7 @@ void ApplicationManager::runProcessing()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager :: ") + ex.what();
+                const string message = string("ApplicationManager :: ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }

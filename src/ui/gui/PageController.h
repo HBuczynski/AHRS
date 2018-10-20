@@ -2,6 +2,7 @@
 #define AHRS_PAGECONTROLLER_H
 
 #include <QObject>
+#include <vector>
 
 namespace gui
 {
@@ -12,6 +13,7 @@ namespace gui
         virtual ~PageController() {};
 
         virtual void backToPreviousPage() = 0;
+        virtual void sendToMainProcess(std::vector<uint8_t> msg) = 0;
 
         virtual void setWelcomePage() = 0;
         virtual void setAHRSPage() = 0;

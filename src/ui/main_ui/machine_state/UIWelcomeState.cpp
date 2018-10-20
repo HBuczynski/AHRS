@@ -1,5 +1,5 @@
 #include "UIWelcomeState.h"
-#include "UIEstablishingConnectionState.h"
+#include "UISetupState.h"
 
 #include "../UIApplicationManager.h"
 
@@ -27,7 +27,7 @@ void UIWelcomeState::setWelcomePage(UIApplicationManager &uiApplicationManager)
 
     this_thread::sleep_for(4s);
     uiApplicationManager.communicationInProgress();
-    setState(&uiApplicationManager, new UIEstablishingConnectionState());
+    setState(&uiApplicationManager, new UISetupState());
 }
 
 void UIWelcomeState::communicationInProgress(UIApplicationManager &uiApplicationManager)

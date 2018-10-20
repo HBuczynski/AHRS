@@ -6,6 +6,7 @@
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 #include <interfaces/wireless_measurement_commands/ImuData.h>
 #include <interfaces/wireless_responses/CurrentStateResponse.h>
+#include <interfaces/wireless_responses/BITsResponse.h>
 
 #include <config_reader/ConfigurationReader.h>
 #include <feeder/external_communication/ClientThreadTCP.h>
@@ -168,6 +169,18 @@ void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
 void CommandHandlerVisitor::visit(SetPlaneMagnetometerCommand &command)
 {
 
+}
+
+void CommandHandlerVisitor::visit(PerformBITsCommand& command)
+{
+    response_ = std::make_unique<BITsResponse>(1, UICommunicationMode::MASTER);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 std::unique_ptr<Response> CommandHandlerVisitor::getResponse()

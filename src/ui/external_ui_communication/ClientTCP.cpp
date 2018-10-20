@@ -45,11 +45,9 @@ void ClientTCP::startCommandSending()
 {
     executeCommandsFlag_ = true;
     queue<std::unique_ptr<Command>> emptyCommandQueue;
-    queue<std::unique_ptr<Response>> emptyResponseQueue;
 
     // Clear elements in queue.
     commandQueue_.swap(emptyCommandQueue);
-//    responseQueue_.swap(emptyResponseQueue);
 
     // In case if the previous connection was finished and there is no certainty that previous thread was joined.
     if(executeCommandThread_.joinable())
@@ -84,27 +82,11 @@ void ClientTCP::sendCommand(unique_ptr<Command> command)
     commandQueue_.push(move(command));
 }
 
-//unique_ptr<Response> ClientTCP::getResponse()
-//{
-//    lock_guard<mutex> lock(responseQueueMutex_);
-//
-//    auto response = move(responseQueue_.front());
-//    responseQueue_.pop();
-//
-//    return response;
-//}
-
 bool ClientTCP::isCommandQueueEmpty()
 {
     lock_guard<mutex> lock(commandQueueMutex_);
     return commandQueue_.empty();
 }
-
-//bool ClientTCP::isResponseQueueEmpty()
-//{
-//    lock_guard<mutex> lock(responseQueueMutex_);
-//    return responseQueue_.empty();
-//}
 
 unique_ptr<Command> ClientTCP::getFromCommandQueue()
 {
@@ -115,12 +97,6 @@ unique_ptr<Command> ClientTCP::getFromCommandQueue()
 
     return command;
 }
-
-//void ClientTCP::insertToResponseQueue(unique_ptr<Response> response)
-//{
-//    lock_guard<mutex> lock(responseQueueMutex_);
-//    responseQueue_.push(move(response));
-//}
 
 void ClientTCP::executeCommands()
 {
@@ -165,8 +141,10 @@ void ClientTCP::executeCommands()
             }
             catch (exception &e)
             {
+                cout << "In exception" << endl;
                 catchExceptions(e.what(), isEndConnectionSent, commandSendingCounter);
             }
+            this_thread::sleep_for(std::chrono::milliseconds(2));
         }
     }
 }

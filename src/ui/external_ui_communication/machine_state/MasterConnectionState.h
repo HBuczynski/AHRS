@@ -1,15 +1,15 @@
-#ifndef AHRS_REDUNDANTSTATE_H
-#define AHRS_REDUNDANTSTATE_H
+#ifndef AHRS_MASTERSTATE_H
+#define AHRS_MASTERSTATE_H
 
 #include "AbstractState.h"
 
 namespace communication
 {
-    class RedundantState final : public AbstractState
+    class MasterConnectionState final : public AbstractState
     {
     public:
-        RedundantState();
-        ~RedundantState();
+        MasterConnectionState();
+        ~MasterConnectionState();
 
         virtual void connectedToServer(CommunicationManagerUI &communicationManagerUI) override;
         virtual void redundantProcess(CommunicationManagerUI &communicationManagerUI) override;
@@ -18,5 +18,6 @@ namespace communication
         virtual void shutdownProcess(CommunicationManagerUI &communicationManagerUI) override;
     };
 }
+
 
 #endif

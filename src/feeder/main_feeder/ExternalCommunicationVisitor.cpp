@@ -21,7 +21,7 @@ void ExternalCommunicationVisitor::visit(const CalibrationStatusNotification &co
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ExternalCommunicationVisitor :: Rceived - CalibrationStatusNotification");
+        const string message = string("ExternalCommInterprocessVisitor :: Rceived - CalibrationStatusNotification");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

@@ -8,6 +8,7 @@
 #include "StartAcquisitionBuilder.h"
 #include "CalibrationStatusBuilder.h"
 #include "CurrentStateBuilder.h"
+#include "PerformBITsBuilder.h"
 
 #include <stdexcept>
 
@@ -28,6 +29,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
     {
         case CommandType::INIT_CONNECTION :
             builder_ = make_unique<InitConnectionBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::PERFORM_BIT :
+            builder_ = make_unique<PerformBITsBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::CALIBRATE_MAGNETOMETER :
             builder_ = make_unique<CalibrateMagnetometerBuilder>();

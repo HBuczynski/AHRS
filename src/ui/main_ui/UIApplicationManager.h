@@ -14,7 +14,7 @@
 #include "CommunicationProcessesHandler.h"
 #include "GuiProcessHandler.h"
 
-#include "ExternalCommunicationVisitor.h"
+#include "ExternalCommInterprocessVisitor.h"
 #include "GUIInterprocessVisitor.h"
 
 #include "machine_state/UIAbstractState.h"
@@ -36,6 +36,7 @@ namespace main_process
         void setWelcomePage();
         void communicationInProgress();
         void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant);
+        void sendToExteranlCommunicationProcess(std::vector<uint8_t> data, config::UICommunicationMode mode);
 
         void setNewState(UIAbstractState *newState);
         /***** END Machine State *****/
@@ -61,7 +62,7 @@ namespace main_process
         GuiProcessHandler guiProcessHandler_;
         std::unique_ptr<UIAbstractState> currentState_;
 
-        std::unique_ptr<ExternalCommunicationVisitor> externalCommunicationVisitor_;
+        std::unique_ptr<ExternalCommInterprocessVisitor> externalCommunicationVisitor_;
         communication::UINotificationFactory uiNotificationFactory_;
         std::unique_ptr<GUIInterprocessVisitor> guiInterprocessVisitor_;
         communication::GUIResponseFactory guiResponseFactory_;

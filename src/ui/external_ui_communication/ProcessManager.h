@@ -8,6 +8,7 @@
 #include <memory>
 #include <atomic>
 
+#include "MainProcessHandlerVisitor.h"
 #include "CommunicationManagerUI.h"
 #include <interfaces/communication_process_ui/UICommandFactory.h>
 #include <interfaces/communication_process_ui/UICommandVisitor.h>
@@ -50,6 +51,7 @@ namespace communication
 
         communication::UICommandFactory uiCommandFactory_;
         std::shared_ptr<CommunicationManagerUI> communicationManagerUI_;
+        std::unique_ptr<MainProcessHandlerVisitor> mainProcessHandlerVisitor_;
 
         std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
         std::unique_ptr<boost::interprocess::message_queue> receivingMessageQueue_;

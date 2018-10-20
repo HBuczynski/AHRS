@@ -10,6 +10,7 @@
 #include "../InitConnectionCommand.h"
 #include "../SetPlaneMagnetometerCommand.h"
 #include "../RemovePlaneDataCommand.h"
+#include "../PerformBITsCommand.h"
 
 using namespace std;
 using namespace communication;
@@ -105,6 +106,21 @@ BOOST_AUTO_TEST_SUITE( factory )
         auto commandFromVec = static_pointer_cast<SetPlaneMagnetometerCommand, Command>(factory.createCommand(command.getFrameBytes()));
 
         BOOST_CHECK( commandFromVec->getPlaneName() == command.getPlaneName());
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
+        BOOST_CHECK( 1 == commandFromVec->getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
+    }
+
+    BOOST_AUTO_TEST_CASE( performBITCommandBuilder )
+    {
+        CommandFactory factory;
+
+        PerformBITsCommand command;
+
+        auto commandFromVec = static_pointer_cast<PerformBITsCommand, Command>(factory.createCommand(command.getFrameBytes()));
+
         BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
         BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
         BOOST_CHECK( 1 == commandFromVec->getSystemVersion());
