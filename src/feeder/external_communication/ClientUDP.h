@@ -4,9 +4,9 @@
 #include "../../packet/SendDatagramUDP.h"
 #include "../../logger/Logger.h"
 
-#include "../../../../../../../../usr/include/c++/5/cstdint"
-#include "../../../../../../../../usr/include/c++/5/string"
-#include "../../../../../../../../usr/include/c++/5/memory"
+#include <cstdint>
+#include <string>
+#include <memory>
 
 namespace communication
 {
