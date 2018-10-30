@@ -33,7 +33,7 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
 
     QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
     QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
-    QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)));
+    QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
