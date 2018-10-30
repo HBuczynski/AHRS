@@ -8,13 +8,6 @@ namespace communication
     enum class WindowType : uint8_t
     {
         CONNECTION_ESTABLISHING = 0x01,
-//        INFO_MASTER_OK = 0x02,
-//        INFO_MASTER_FALSE = 0x03,
-//        INFO_REDUNDANT_OK = 0x04,
-//        INFO_REDUNDANT_FALSE = 0x05,
-        INFO_CONNECTION_OK,
-        INFO_BITS_OK = 0x06,
-        INFO_BITS_FALSE = 0x07,
         CHOOSING_PLANE = 0x08,
         CALIBRATION = 0x09,
         AHRS = 0x0A,

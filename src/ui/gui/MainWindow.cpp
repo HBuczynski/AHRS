@@ -64,7 +64,7 @@ void MainWindow::setConnectingPage()
     storyboardsHandler_->setConnectingPage();
 }
 
-void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
+void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
 {
-    storyboardsHandler_->setInformationPage(master, redundant, bits);
+    storyboardsHandler_->setInformationPage(master, redundant, masterBITs, redundantBITs);
 }

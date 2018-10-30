@@ -93,7 +93,7 @@ void StoryboardsHandler::backToPreviousPage()
 {
     if(previousPage_ == PagesType::INFORMATION_PAGE)
     {
-        setInformationPage(get<0>(informationsParameters_), get<1>(informationsParameters_), get<2>(informationsParameters_));
+        setInformationPage(get<0>(informationsParameters_), get<1>(informationsParameters_), get<2>(informationsParameters_), get<3>(informationsParameters_));
     }
     else
     {
@@ -272,7 +272,7 @@ void StoryboardsHandler::setConnectingPage()
     previousWidget_ = connectingPage_;
 }
 
-void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits)
+void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
 {
     if(previousWidget_)
     {
@@ -286,7 +286,7 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
     informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
 
-    if(master == 1 && bits == 1 && redundant ==1)
+    if(master == 1 && masterBITs == 1 && redundant ==1 && redundantBITs ==1)
     {
         informationPage_->initializeContinue();
     }
@@ -313,14 +313,25 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
         informationPage_->setSecondaryConnectionFailed();
     }
 
-    if(bits == 1)
+    if(masterBITs == 1)
     {
         informationPage_->setBITSMaster();
     }
-    else if (bits == 0)
+    else if (masterBITs == 0)
     {
         informationPage_->setBITSMasterFailed();
     }
+
+    if(redundantBITs == 1)
+    {
+        informationPage_->setBITSMaster();
+    }
+    else if (redundantBITs == 0)
+    {
+        informationPage_->setBITSMasterFailed();
+    }
+
+    informationsParameters_= make_tuple(master, redundant, masterBITs, redundantBITs);
 
     gridLayout_2->addWidget(informationPage_);
     previousWidget_ = informationPage_;

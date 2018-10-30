@@ -25,7 +25,7 @@ namespace gui
     signals:
         void signalWelcomePage();
         void signalEstablishingConnection();
-        void signalInformationPage(uint8_t, uint8_t, uint8_t);
+        void signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t);
 
     private:
         void initializeWindowsContainer();

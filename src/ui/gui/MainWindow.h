@@ -25,7 +25,7 @@ public slots:
     void setLogsPage();
     void setMenuPage();
     void setConnectingPage();
-    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits);
+    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs);
 
 private:
     StoryboardsHandler *storyboardsHandler_;

@@ -52,7 +52,7 @@ public slots:
     void setLogsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
-    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bits) override;
+    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
 
 private:
 
