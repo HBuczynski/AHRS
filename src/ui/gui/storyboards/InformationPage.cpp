@@ -237,5 +237,5 @@ void InformationPage::continueButton()
 
     communication::GUIWindowCommand command(communication::WindowType::AHRS);
 
-    emit signalStartAcquisition(command.getFrameBytes());
+//    emit signalStartAcquisition(command.getFrameBytes());
 }
