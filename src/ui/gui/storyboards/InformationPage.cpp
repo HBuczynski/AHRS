@@ -126,6 +126,7 @@ void InformationPage::initializeContinue()
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
+    QObject::connect(this, SIGNAL(signalExitPage()), controller_, SLOT(setExitPage()));
     QObject::connect(this, SIGNAL(signalStartAcquisition(std::vector<uint8_t>)), controller_, SLOT(sendToMainProcess(std::vector<uint8_t>)));
 }
 
