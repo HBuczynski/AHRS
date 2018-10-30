@@ -226,7 +226,7 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
     informationPage_ = new InformationPage(this);
     informationPage_->resize(QSize(1024, 600));
 
-    if(master == 1 && bits == 1)
+    if(master == 1 && bits == 1 && redundant ==1)
     {
         informationPage_->initializeContinue();
     }

@@ -14,6 +14,7 @@
 #include <QtWidgets/QWidget>
 
 #include <memory>
+#include <tuple>
 #include <config_reader/UIParameters.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
 
@@ -79,6 +80,8 @@ private:
 
     config::UIMessageQueues uiMessageQueuesParameters_;
     std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
+
+    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informations_;
 
     utility::Logger& logger_;
 };
