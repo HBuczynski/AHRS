@@ -324,11 +324,11 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 
     if(redundantBITs == 1)
     {
-        informationPage_->setBITSMaster();
+        informationPage_->setBITSRedundant();
     }
     else if (redundantBITs == 0)
     {
-        informationPage_->setBITSMasterFailed();
+        informationPage_->setBITRedundantFailed();
     }
 
     informationsParameters_= make_tuple(master, redundant, masterBITs, redundantBITs);

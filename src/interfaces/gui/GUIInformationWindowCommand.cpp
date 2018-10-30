@@ -24,6 +24,7 @@ vector<uint8_t> GUIInformationWindowCommand::getFrameBytes()
     frame.push_back(static_cast<uint8_t>(masterConnection_));
     frame.push_back(static_cast<uint8_t>(redundantConnection_));
     frame.push_back(static_cast<uint8_t>(bitsMaster_));
+    frame.push_back(static_cast<uint8_t>(bitsRedundant_));
 
     return frame;
 }
