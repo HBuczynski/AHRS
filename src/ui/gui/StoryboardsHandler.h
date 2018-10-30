@@ -57,6 +57,7 @@ public slots:
 private:
 
     void inititalizeMessageQueue();
+    void initializeStoryboardsContainer();
 
     std::unique_ptr<QWidget> centralWidget;
     std::unique_ptr<QGridLayout> gridLayout_5;
@@ -81,7 +82,10 @@ private:
     config::UIMessageQueues uiMessageQueuesParameters_;
     std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
 
-    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informations_;
+    gui::PagesType previousPage_;
+    gui::PagesType currentPage_;
+    std::map<gui::PagesType, std::function<void()> > storyboardsContainer_;
+    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationsParameters_;
 
     utility::Logger& logger_;
 };

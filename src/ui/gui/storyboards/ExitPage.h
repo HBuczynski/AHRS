@@ -24,7 +24,7 @@ public:
     void initialize();
 
 signals:
-    void signalAHRSPage();
+    void signalBackToPreviousPage();
 
 private:
     void setupPage();

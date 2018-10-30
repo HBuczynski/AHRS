@@ -74,7 +74,7 @@ void ExitPage::initialize()
 
     initializeButtons(buttonNames, callbackFunctions);
 
-    QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
+    QObject::connect(this, SIGNAL(signalBackToPreviousPage()), controller_, SLOT(backToPreviousPage()));
 }
 
 void ExitPage::highlightCurrentOption(uint8_t newOption)
@@ -114,7 +114,7 @@ void ExitPage::submit()
 {
     if(currentOption_ == 0)
     {
-        emit signalAHRSPage();
+        emit signalBackToPreviousPage();
     }
 }
 

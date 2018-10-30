@@ -6,6 +6,20 @@
 
 namespace gui
 {
+    enum class PagesType : uint8_t
+    {
+        WELCOME_PAGE,
+        SYSTEM_SETUP_PAGE,
+        CALLIBRATION_SETTING_PAGE,
+        RESTART_PAGE,
+        EXIT_PAGE,
+        AHRS_PAGE,
+        LOGS_PAGE,
+        MENU_PAGE,
+        CONNECTING_PAGE,
+        INFORMATION_PAGE
+    };
+
     class PageController : public QObject
     {
     public:

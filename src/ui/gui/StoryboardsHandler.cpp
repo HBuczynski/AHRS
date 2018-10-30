@@ -4,6 +4,7 @@
 #include <config_reader/ConfigurationReader.h>
 
 using namespace std;
+using namespace gui;
 using namespace config;
 using namespace utility;
 using namespace boost::interprocess;
@@ -11,9 +12,14 @@ using namespace boost::interprocess;
 StoryboardsHandler::StoryboardsHandler()
     : previousWidget_(nullptr),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
+      previousPage_(PagesType::WELCOME_PAGE),
+      currentPage_(PagesType::WELCOME_PAGE),
+      informationsParameters_(42,42,42,42),
       logger_(Logger::getInstance())
 {
     inititalizeMessageQueue();
+
+    initializeStoryboardsContainer();
 }
 
 void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
@@ -70,21 +76,48 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     QMetaObject::connectSlotsByName(MainWindow);
 }
 
+void StoryboardsHandler::initializeStoryboardsContainer()
+{
+    storyboardsContainer_[PagesType::WELCOME_PAGE] =  bind(&StoryboardsHandler::setWelcomePage, this);
+    storyboardsContainer_[PagesType::AHRS_PAGE] =  bind(&StoryboardsHandler::setAHRSPage, this);
+    storyboardsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] =  bind(&StoryboardsHandler::setWelcomePage, this);
+    storyboardsContainer_[PagesType::CONNECTING_PAGE] =  bind(&StoryboardsHandler::setCallibrationSettingPage, this);
+    storyboardsContainer_[PagesType::EXIT_PAGE] =  bind(&StoryboardsHandler::setExitPage, this);
+    storyboardsContainer_[PagesType::LOGS_PAGE] =  bind(&StoryboardsHandler::setLogsPage, this);
+    storyboardsContainer_[PagesType::MENU_PAGE] =  bind(&StoryboardsHandler::setMenuPage, this);
+    storyboardsContainer_[PagesType::RESTART_PAGE] =  bind(&StoryboardsHandler::setRestartPage, this);
+    storyboardsContainer_[PagesType::SYSTEM_SETUP_PAGE] =  bind(&StoryboardsHandler::setSystemSetupPage, this);
+}
+
 void StoryboardsHandler::backToPreviousPage()
 {
-
+    if(previousPage_ == PagesType::INFORMATION_PAGE)
+    {
+        setInformationPage(get<0>(informationsParameters_), get<1>(informationsParameters_), get<2>(informationsParameters_));
+    }
+    else
+    {
+        const auto iter = storyboardsContainer_.find(previousPage_);
+        if( iter != storyboardsContainer_.end())
+        {
+            iter->second();
+        }
+    }
 }
 
 void StoryboardsHandler::setWelcomePage()
 {
+    welcomePage_ = new WelcomePage();
+    welcomePage_->resize(QSize(1024, 600));
+
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::WELCOME_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
-
-    welcomePage_ = new WelcomePage();
-    welcomePage_->resize(QSize(1024, 600));
 
     gridLayout_2->addWidget(welcomePage_);
     previousWidget_ = welcomePage_;
@@ -98,6 +131,9 @@ void StoryboardsHandler::setAHRSPage()
 
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::AHRS_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -113,6 +149,9 @@ void StoryboardsHandler::setSystemSetupPage()
 
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::SYSTEM_SETUP_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -129,6 +168,9 @@ void StoryboardsHandler::setCallibrationSettingPage()
 
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::CALLIBRATION_SETTING_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -144,6 +186,9 @@ void StoryboardsHandler::setRestartPage()
 
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::RESTART_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -156,6 +201,9 @@ void StoryboardsHandler::setExitPage()
 {
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::EXIT_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -172,6 +220,9 @@ void StoryboardsHandler::setLogsPage()
 {
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::LOGS_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -188,6 +239,9 @@ void StoryboardsHandler::setMenuPage()
 {
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::MENU_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -204,6 +258,9 @@ void StoryboardsHandler::setConnectingPage()
 {
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::CONNECTING_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
@@ -219,6 +276,9 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 {
     if(previousWidget_)
     {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::INFORMATION_PAGE;
+
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
