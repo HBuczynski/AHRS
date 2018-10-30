@@ -71,20 +71,7 @@ vector<uint8_t> SendStreamTCP::receivePacket()
 
 void SendStreamTCP::sendData(vector<uint8_t> message)
 {
-    string temp = "";
-
-    for(auto a : message)
-    {
-        temp += to_string((int)a);
-    }
-
-    const string lol = string("ClientThreadTCP (runListenThread) ::") + temp;
-
-    cout << lol << endl;
-
-
-    //if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(message) ) <= 0)
-    if(send(sock_, reinterpret_cast<char*>(message.data()), sizeof(message), 0))
+    if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(uint8_t)*message.size() ) <= 0)
     {
         throw logic_error("Cannot send packet.");
     }
