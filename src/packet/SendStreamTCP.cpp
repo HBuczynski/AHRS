@@ -83,7 +83,8 @@ void SendStreamTCP::sendData(vector<uint8_t> message)
     cout << lol << endl;
 
 
-    if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(message) ) <= 0)
+    //if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(message) ) <= 0)
+    if(send(sock_, reinterpret_cast<char*>(message.data()), sizeof(message), 0))
     {
         throw logic_error("Cannot send packet.");
     }
