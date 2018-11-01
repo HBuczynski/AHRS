@@ -31,6 +31,8 @@
 #include "storyboards/InformationPage.h"
 #include "storyboards/ConnectingPage.h"
 
+#include <../../system_states/UIStates.h>
+
 
 class StoryboardsHandler final : public gui::PageController
 {
@@ -82,9 +84,9 @@ private:
     config::UIMessageQueues uiMessageQueuesParameters_;
     std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
 
-    gui::PagesType previousPage_;
-    gui::PagesType currentPage_;
-    std::map<gui::PagesType, std::function<void()> > storyboardsContainer_;
+    PagesType previousPage_;
+    PagesType currentPage_;
+    std::map<PagesType, std::function<void()> > storyboardsContainer_;
     std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationsParameters_;
 
     utility::Logger& logger_;

@@ -160,6 +160,10 @@ void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
             const auto response = guiResponseFactory_.createCommand(packet);
             response->accept(*(guiInterprocessVisitor_.get()));
         }
+        if(frameType == FrameType::COMMAND)
+        {
+
+        }
         else
         {
             if(logger_.isErrorEnable())

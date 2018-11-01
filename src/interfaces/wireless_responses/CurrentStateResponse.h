@@ -2,7 +2,7 @@
 #define AHRS_CURRENTSTATERESPONSE_H
 
 #include "Response.h"
-#include <system_states/FeederExternalComStates.h>
+#include <system_states/FeederStates.h>
 
 namespace communication
 {

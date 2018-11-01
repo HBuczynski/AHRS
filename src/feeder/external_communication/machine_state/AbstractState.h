@@ -4,7 +4,7 @@
 #include <string>
 #include <logger/Logger.h>
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
-#include "../../system_states/FeederExternalComStates.h"
+#include "../../system_states/FeederStates.h"
 
 namespace communication
 {

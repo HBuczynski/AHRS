@@ -3,8 +3,8 @@
   {
     "ExternalWireless" :
     {
-      "firstPort": 8000,
-      "secondPort": 7000,
+      "firstPort": 5500,
+      "secondPort": 6600,
       "userNumber": 2
     },
 

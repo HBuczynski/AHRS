@@ -10,6 +10,7 @@
 #include <config_reader/UIParameters.h>
 #include <interfaces/gui/GUIResponseFactory.h>
 #include <interfaces/communication_process_ui/UINotificationFactory.h>
+#include <interfaces/gui/GUICommandFactory.h>
 
 #include "CommunicationProcessesHandler.h"
 #include "GuiProcessHandler.h"
@@ -65,7 +66,9 @@ namespace main_process
         std::unique_ptr<ExternalCommInterprocessVisitor> externalCommunicationVisitor_;
         communication::UINotificationFactory uiNotificationFactory_;
         std::unique_ptr<GUIInterprocessVisitor> guiInterprocessVisitor_;
+        
         communication::GUIResponseFactory guiResponseFactory_;
+        communication::GUICommandFactory guiCommandFactory_;
 
         std::atomic<bool> runSystem_;
         utility::Logger& logger_;

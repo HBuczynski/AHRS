@@ -2,7 +2,7 @@
 #define AHRS_COMMUNICATIONSTATUSNOTIFICATION_H
 
 #include "UINotification.h"
-#include "../../system_states/UIExternalComStates.h"
+#include "../../system_states/UIStates.h"
 
 namespace communication
 {

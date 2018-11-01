@@ -99,21 +99,13 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
-    switch (clientUDPManager_->getCurrentState())
-    {
-        case FeederExternalStateCode::CALIBRATED_SUCCESS :
-            response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::PASSED);
-            break;
-        case FeederExternalStateCode::CALIBRATED_FAILED :
-            response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::FAILED);
-            break;
-        case FeederExternalStateCode::CALIBRATING :
-            response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::IN_THE_PROCESS);
-            break;
-        default:
-            response_ = std::make_unique<CalibratingStatusResponse>(CalibrationStatus::IS_NOT_CALIBRATING);
-            break;
-    }
+//    switch (clientUDPManager_->getCurrentState())
+//    {
+//
+//
+//    }
+
+    //TODO
 
     if(logger_.isInformationEnable())
     {
