@@ -11,6 +11,8 @@
 #include <config_reader/FeederParameters.h>
 #include <memory>
 
+#include "FlightDataManager.h"
+
 namespace communication
 {
     class ClientThreadTCP;
@@ -50,6 +52,7 @@ namespace communication
 
         ClientThreadTCP *currentClient_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
+        std::shared_ptr<FlightDataManager> flightDataManager_;
 
         std::unique_ptr<Response> response_;
 

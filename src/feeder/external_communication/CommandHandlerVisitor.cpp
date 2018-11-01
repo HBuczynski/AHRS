@@ -13,7 +13,7 @@
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <iostream>
 
-
+using namespace std;
 using namespace config;
 using namespace utility;
 using namespace communication;
@@ -128,6 +128,8 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
         response_ = std::make_unique<AckResponse>(AckType::FAIL);
     }
 
+    flightDataManager_->startFlightDataTransmission();
+
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
@@ -183,6 +185,7 @@ std::unique_ptr<Response> CommandHandlerVisitor::getResponse()
 void CommandHandlerVisitor::initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager)
 {
     clientUDPManager_ = clientUDPManager;
+    flightDataManager_= make_shared<FlightDataManager>(clientUDPManager);
 }
 
 void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
