@@ -65,7 +65,11 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
 void MeasurementHandlerVisitor::visit(FlightData &data)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("MeasurementHandlerVisitor :: Received ") + data.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void MeasurementHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t> &rawData)

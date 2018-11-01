@@ -15,6 +15,11 @@ FlightDataManager::FlightDataManager(shared_ptr<ClientUDPManager> clientUDPManag
 FlightDataManager::~FlightDataManager()
 {
     stopFlightDataTransmission();
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("FlightDataManager :: Destructor.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void FlightDataManager::startFlightDataTransmission()
