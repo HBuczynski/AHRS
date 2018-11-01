@@ -94,7 +94,7 @@ void ClientThreadTCP::runListen()
                 logger_.writeLog(LogType::ERROR_LOG, message2);
 
                 runListenThread_ = false;
-                
+
                 if(socket_.get() != nullptr)
                 {
                     socket_.reset();
