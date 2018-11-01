@@ -74,19 +74,6 @@ void ClientThreadTCP::runListen()
         {
             const auto frame = socket_->receivePacket();
 
-            string temp = "";
-
-            for(auto a : frame)
-            {
-                temp += to_string((int)a);
-            }
-
-            if(logger_.isErrorEnable() && runListenThread_)
-            {
-                const string message = string("ClientThreadTCP (runListenThread) ::") + temp;
-                logger_.writeLog(LogType::ERROR_LOG, message);
-            }
-
             const auto command = commandFactory_.createCommand(frame);
             command->accept(commandHandler_);
 

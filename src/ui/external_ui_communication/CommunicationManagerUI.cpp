@@ -64,6 +64,8 @@ bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
 
+    cout << "[DEBUG] Conect to Feeder." << endl;
+
     if(processNumber_ == 1)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);

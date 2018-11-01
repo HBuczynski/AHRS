@@ -194,7 +194,7 @@ void ProcessManager::interruptNotification(timer_t timerID)
             if ( communicationManagerUI_->connectToFeeder())
             {
                 connectionEstablished_ = true;
-                
+
                 auto notification = CommunicationStatusNotification(communicationManagerUI_->getCurrentState(), communicationManagerUI_->getProcessNumber());
                 sendMessageToMainProcess(notification.getFrameBytes());
             }
