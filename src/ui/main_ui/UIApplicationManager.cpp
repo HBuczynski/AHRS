@@ -238,7 +238,7 @@ void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant,
     }
 }
 
-void UIApplicationManager::sendToExteranlCommunicationProcess(vector<uint8_t> data, UICommunicationMode mode)
+void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> data, UICommunicationMode mode)
 {
     communicationProcessesHandler_.sendMessage(data, mode);
 }

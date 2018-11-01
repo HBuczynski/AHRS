@@ -61,7 +61,7 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
             auto performBIT = PerformBITsCommand();
             auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
 
-            uiApplicationManager_->sendToExteranlCommunicationProcess(wrapCommand.getFrameBytes(),
+            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
                     config::UICommunicationMode::MASTER);
 
             break;
@@ -79,7 +79,7 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
             auto performBIT = PerformBITsCommand();
             auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
 
-            uiApplicationManager_->sendToExteranlCommunicationProcess(wrapCommand.getFrameBytes(),
+            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
                     config::UICommunicationMode::MASTER);
 
             break;

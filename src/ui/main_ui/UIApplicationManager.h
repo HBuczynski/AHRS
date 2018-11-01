@@ -37,7 +37,7 @@ namespace main_process
         void setWelcomePage();
         void communicationInProgress();
         void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant);
-        void sendToExteranlCommunicationProcess(std::vector<uint8_t> data, config::UICommunicationMode mode);
+        void sendToExternalCommunicationProcess(std::vector<uint8_t> data, config::UICommunicationMode mode);
 
         void setNewState(UIAbstractState *newState);
         /***** END Machine State *****/
