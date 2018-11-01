@@ -4,14 +4,14 @@
     "Wireless" :
     {
       "firstSourcePort": 9000,
-      "firstSourceAddress": "192.168.0.59",
+      "firstSourceAddress": "192.168.0.164",
       "secondSourcePort": 6000,
-      "secondSourceAddress": "192.168.0.59",
+      "secondSourceAddress": "192.168.0.164",
 
       "firstDestinationPort": 8000,
-      "firstDestinationAddress": "192.168.0.157",
+      "firstDestinationAddress": "192.168.0.59",
       "secondDestinationPort": 7000,
-      "secondDestinationAddress": "192.168.0.157"
+      "secondDestinationAddress": "192.168.0.59"
     },
 
     "MessageQueues" :

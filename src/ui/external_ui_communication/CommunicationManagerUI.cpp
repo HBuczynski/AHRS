@@ -63,9 +63,7 @@ bool CommunicationManagerUI::initializeServer()
 bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
-
-    cout << "[DEBUG] Conect to Feeder." << endl;
-
+    
     if(processNumber_ == 1)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);
@@ -88,20 +86,6 @@ bool CommunicationManagerUI::connectToFeeder()
     if(client_->connectToServer())
     {
         client_->startCommandSending();
-
-        string temp = "";
-
-        for(auto a : command->getFrameBytes())
-        {
-            temp += to_string((int)a);
-        }
-
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("ClientThreadTCP (runListenThread) ::") + temp;
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-
         sendCommands(move(command));
     }
     else
