@@ -2,6 +2,7 @@
 #define AHRS_GUICOMMUNICATIONVISITOR_H
 
 #include <interfaces/gui/GUIResponseVisitor.h>
+#include <logger/Logger.h>
 
 namespace main_process
 {
@@ -14,9 +15,11 @@ namespace main_process
         ~GUIInterprocessVisitor();
 
         void visit(communication::GUIPlaneResponse& data);
+        void visit(communication::GUIWindowResponse& data);
 
     private:
         UIApplicationManager* uiApplicationManager_;
+        utility::Logger& logger_;
     };
 }
 

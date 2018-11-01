@@ -1,6 +1,6 @@
 #include "InformationPage.h"
 #include "ui_InformationPage.h"
-#include <interfaces/gui/GUIWindowCommand.h>
+#include <interfaces/gui/GUIWindowResponse.h>
 
 using namespace std;
 using namespace utility;
@@ -233,9 +233,8 @@ void InformationPage::exitButton()
 
 void InformationPage::continueButton()
 {
-    communication::GUIWindowCommand command(communication::WindowType::AHRS);
+    communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
     controller_->sendToMainProcess(command.getFrameBytes());
 
     emit signalAHRSPage();
-//    emit signalStartAcquisition(command.getFrameBytes());
 }

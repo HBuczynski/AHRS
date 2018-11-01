@@ -4,7 +4,7 @@
 using namespace std;
 using namespace communication;
 
-GUIWindowCommand::GUIWindowCommand(WindowType windowType)
+GUIWindowCommand::GUIWindowCommand(PagesType windowType)
         : GUICommand(10, GUICommandType::CHANGE_WINDOW),
           windowType_(windowType)
 {}
@@ -28,12 +28,12 @@ string GUIWindowCommand::getName()
     return string("GUIWindowCommand");
 }
 
-WindowType GUIWindowCommand::getWindowType() const
+PagesType GUIWindowCommand::getWindowType() const
 {
     return windowType_;
 }
 
-void GUIWindowCommand::setWindowType(WindowType windowType)
+void GUIWindowCommand::setWindowType(PagesType windowType)
 {
     windowType_ = windowType;
 }

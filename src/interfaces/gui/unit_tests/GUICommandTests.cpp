@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE( command )
 
         BOOST_AUTO_TEST_CASE( windowSet )
         {
-                WindowType type = WindowType::SHUTDOWN;
+                PagesType type = PagesType::AHRS_PAGE;
 
                 GUIWindowCommand command(type);
                 command.getFrameBytes();

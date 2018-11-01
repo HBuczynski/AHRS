@@ -18,13 +18,13 @@ GUIInterprocessCommandVisitor::~GUIInterprocessCommandVisitor()
 
 void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 {
-    windowsContainer_[WindowType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
-    windowsContainer_[WindowType::CONNECTION_ESTABLISHING] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
-    windowsContainer_[WindowType::CHOOSING_PLANE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
-    windowsContainer_[WindowType::CALIBRATION] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
-    windowsContainer_[WindowType::AHRS] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
-    windowsContainer_[WindowType::RESTART] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
-    windowsContainer_[WindowType::SHUTDOWN] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
+    windowsContainer_[PagesType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
+    windowsContainer_[PagesType::CONNECTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
+    //windowsContainer_[PagesType::C] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
+    windowsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
+    windowsContainer_[PagesType::AHRS_PAGE] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
+    windowsContainer_[PagesType::RESTART_PAGE] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
+    windowsContainer_[PagesType::EXIT_PAGE] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
 }
 
 void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()

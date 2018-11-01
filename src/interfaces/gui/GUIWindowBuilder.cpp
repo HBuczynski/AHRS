@@ -12,7 +12,7 @@ GUIWindowBuilder::~GUIWindowBuilder()
 
 unique_ptr<GUICommand> GUIWindowBuilder::create(const vector<uint8_t> &commandInBytes)
 {
-    const auto windowType = static_cast<WindowType>(commandInBytes[Frame::INITIAL_DATA_POSITION]);
+    const auto windowType = static_cast<PagesType>(commandInBytes[Frame::INITIAL_DATA_POSITION]);
     auto command = make_unique<GUIWindowCommand>(windowType);
 
     return move(command);

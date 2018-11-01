@@ -2,6 +2,7 @@
 #define AHRS_GUIRESPONSEVISITOR_H
 
 #include "GUIPlaneResponse.h"
+#include "GUIWindowResponse.h"
 
 namespace communication
 {
@@ -12,6 +13,7 @@ namespace communication
         virtual ~GUIResponseVisitor() {};
 
         virtual void visit(GUIPlaneResponse& data) = 0;
+        virtual void visit(GUIWindowResponse& data) = 0;
     };
 }
 

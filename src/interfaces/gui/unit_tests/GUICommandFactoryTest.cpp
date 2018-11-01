@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
         BOOST_AUTO_TEST_CASE( windowSet )
         {
             GUICommandFactory factory;
-            WindowType type = WindowType::SHUTDOWN;
+            PagesType type = PagesType::CONNECTING_PAGE;
 
             GUIWindowCommand command(type);
 

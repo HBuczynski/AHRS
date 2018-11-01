@@ -160,10 +160,6 @@ void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
             const auto response = guiResponseFactory_.createCommand(packet);
             response->accept(*(guiInterprocessVisitor_.get()));
         }
-        if(frameType == FrameType::COMMAND)
-        {
-
-        }
         else
         {
             if(logger_.isErrorEnable())
@@ -208,7 +204,7 @@ void UIApplicationManager::stopUISystem()
 
 void UIApplicationManager::setWelcomePage()
 {
-    auto command = GUIWindowCommand(WindowType::WELCOME_PAGE);
+    auto command = GUIWindowCommand(PagesType::WELCOME_PAGE);
     guiProcessHandler_.sendMessage(command.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -220,7 +216,7 @@ void UIApplicationManager::setWelcomePage()
 
 void UIApplicationManager::communicationInProgress()
 {
-    auto command = GUIWindowCommand(WindowType::CONNECTION_ESTABLISHING);
+    auto command = GUIWindowCommand(PagesType::CONNECTING_PAGE);
     guiProcessHandler_.sendMessage(command.getFrameBytes());
 
     if(logger_.isInformationEnable())
