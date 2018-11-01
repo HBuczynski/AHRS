@@ -63,7 +63,7 @@ bool CommunicationManagerUI::initializeServer()
 bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
-    
+
     if(processNumber_ == 1)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);

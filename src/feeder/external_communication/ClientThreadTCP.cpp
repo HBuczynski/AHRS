@@ -82,16 +82,27 @@ void ClientThreadTCP::runListen()
         }
         catch (exception &e)
         {
-            // Factory can't create a command
-            if(logger_.isErrorEnable() && runListenThread_)
+
+            if(logger_.isErrorEnable() && runListenThread_ && (e.what()) == string("Cannot receive packet."))
             {
                 const string message = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
                                  string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
+
+                const string message2 = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
+                                       string("-. Connection is terminated.");
+                logger_.writeLog(LogType::ERROR_LOG, message2);
+
+                runListenThread_ = false;
+                socket_.reset();
             }
 
-            /*runListenThread_ = false;
-            socket_.reset();**/
+            if(logger_.isErrorEnable() && runListenThread_ )
+            {
+                const string message = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
+                                       string("-. Received exception: ") + e.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
         }
 
         this_thread::sleep_for(std::chrono::milliseconds(1));
