@@ -149,8 +149,8 @@ public:
 
         lefLabel_2 = new QLabel(verticalFrame);
         lefLabel_2->setObjectName(QStringLiteral("lefLabel_2"));
-        lefLabel_2->setMinimumSize(QSize(290, 0));
-        lefLabel_2->setMaximumSize(QSize(290, 16777215));
+        lefLabel_2->setMinimumSize(QSize(300, 0));
+        lefLabel_2->setMaximumSize(QSize(300, 16777215));
 
         horizontalLayout_5->addWidget(lefLabel_2);
 
