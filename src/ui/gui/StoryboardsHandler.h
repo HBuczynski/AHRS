@@ -31,7 +31,7 @@
 #include "storyboards/InformationPage.h"
 #include "storyboards/ConnectingPage.h"
 
-#include <../../system_states/UIStates.h>
+#include <../../common/UIStates.h>
 
 
 class StoryboardsHandler final : public gui::PageController

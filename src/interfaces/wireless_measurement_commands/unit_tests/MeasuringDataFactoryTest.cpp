@@ -6,6 +6,7 @@
 #include "../MeasuringDataFactory.h"
 #include "../ImuData.h"
 #include "../GpsData.h"
+#include "../FlightData.h"
 
 #include <string>
 
@@ -41,6 +42,34 @@ BOOST_AUTO_TEST_SUITE( data )
         BOOST_CHECK( commandFromVec->getMeasuringType() == data.getMeasuringType());
         BOOST_CHECK( commandFromVec->getFrameBytes() == data.getFrameBytes());
         BOOST_CHECK( commandFromVec->getSystemVersion() == data.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == data.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == data.getName());
+    }
+
+    BOOST_AUTO_TEST_CASE( flightData )
+    {
+        FlightMeasurements measurements = {5.67, 5.67, 5.67, 5.67, 5.67, 5.67, 5.67};
+        FlightData data(measurements);
+        MeasuringDataFactory factory;
+
+        auto commandFromVec = static_pointer_cast<FlightData, MeasuringData>(factory.createCommand(data.getFrameBytes()));
+
+        bool isSuccess = true;
+        const auto measurementsFromCommand = commandFromVec->getMeasurements();
+
+        isSuccess = isSuccess && (measurements.altitude = measurementsFromCommand.altitude);
+        isSuccess = isSuccess && (measurements.groundSpeed = measurementsFromCommand.groundSpeed);
+        isSuccess = isSuccess && (measurements.heading = measurementsFromCommand.heading);
+        isSuccess = isSuccess && (measurements.latitude = measurementsFromCommand.latitude);
+        isSuccess = isSuccess && (measurements.longitude = measurementsFromCommand.longitude);
+        isSuccess = isSuccess && (measurements.turnCoordinator = measurementsFromCommand.turnCoordinator);
+        isSuccess = isSuccess && (measurements.verticalSpeed = measurementsFromCommand.verticalSpeed);
+
+        BOOST_CHECK( commandFromVec->getFrameType() == data.getFrameType());
+        BOOST_CHECK( commandFromVec->getMeasuringType() == data.getMeasuringType());
+        BOOST_CHECK( commandFromVec->getSystemVersion() == data.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getFrameBytes() == data.getFrameBytes());
+        BOOST_CHECK(  isSuccess == true);
         BOOST_CHECK( commandFromVec->getDataSize() == data.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == data.getName());
     }

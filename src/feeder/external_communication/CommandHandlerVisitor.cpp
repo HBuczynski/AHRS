@@ -20,33 +20,33 @@ using namespace communication;
 using namespace boost::interprocess;
 
 CommandHandlerVisitor::CommandHandlerVisitor()
-    :   sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
+    :   //sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
         logger_(Logger::getInstance())
 {
-    initializedSharedMemory();
+//    initializedSharedMemory();
 }
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
 {}
 
-void CommandHandlerVisitor::initializedSharedMemory()
-{
-    try
-    {
-        // Creating shared memory's mutex.
-        sharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.externalMemoryName.c_str());
-        // Creating shared memory.
-        sharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
-        mappedMemoryRegion_ = std::make_unique<mapped_region>(*sharedMemory_, read_write);
-    }
-    catch(interprocess_exception &ex)
-    {
-        if (logger_.isErrorEnable()) {
-            const std::string message = std::string("CommandHandlerVisitor ::") + ex.what();
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-}
+//void CommandHandlerVisitor::initializedSharedMemory()
+//{
+//    try
+//    {
+//        // Creating shared memory's mutex.
+//        sharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.externalMemoryName.c_str());
+//        // Creating shared memory.
+//        sharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
+//        mappedMemoryRegion_ = std::make_unique<mapped_region>(*sharedMemory_, read_write);
+//    }
+//    catch(interprocess_exception &ex)
+//    {
+//        if (logger_.isErrorEnable()) {
+//            const std::string message = std::string("CommandHandlerVisitor ::") + ex.what();
+//            logger_.writeLog(LogType::ERROR_LOG, message);
+//        }
+//    }
+//}
 
 void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {

@@ -10,7 +10,8 @@ namespace communication
     enum MeasuringType : uint8_t
     {
         IMU = 10,
-        GPS = 20
+        GPS = 20,
+        FLIGHT_DATA = 30
     };
 
     class MeasuringData : public Frame

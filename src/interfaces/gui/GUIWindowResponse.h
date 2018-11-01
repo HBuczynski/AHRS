@@ -2,7 +2,7 @@
 #define AHRS_GUIWINDOWRESPONSE_H
 
 #include "GUIResponse.h"
-#include <../../system_states/UIStates.h>
+#include <../../common/UIStates.h>
 
 namespace communication
 {

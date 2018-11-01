@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <../../system_states/UIStates.h>
+#include <../../common/UIStates.h>
 #include <logger/Logger.h>
 
 namespace communication

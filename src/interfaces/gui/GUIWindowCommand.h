@@ -2,7 +2,7 @@
 #define AHRS_GUIWINDOWCOMMAND_H
 
 #include "GUICommand.h"
-#include <../../system_states/UIStates.h>
+#include <../../common/UIStates.h>
 
 namespace communication
 {

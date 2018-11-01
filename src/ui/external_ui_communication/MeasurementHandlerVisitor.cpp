@@ -63,6 +63,11 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
     }
 }
 
+void MeasurementHandlerVisitor::visit(FlightData &data)
+{
+
+}
+
 void MeasurementHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t> &rawData)
 {
     uint8_t *pointerToMemory;
@@ -72,3 +77,5 @@ void MeasurementHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t
         copy(rawData.begin(), rawData.end(), pointerToMemory);
     }
 }
+
+
