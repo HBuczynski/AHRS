@@ -14,12 +14,12 @@ FlightDataManager::FlightDataManager(shared_ptr<ClientUDPManager> clientUDPManag
 
 FlightDataManager::~FlightDataManager()
 {
-    stopFlightDataTransmission();
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("FlightDataManager :: Destructor.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+    stopFlightDataTransmission();
 }
 
 void FlightDataManager::startFlightDataTransmission()
@@ -65,8 +65,24 @@ void FlightDataManager::sendMeasurements()
         measurements.altitude = 5.67;
 
         FlightData command(measurements);
-        clientUDPManager_->broadcast(command.getFrameBytes());
-
+        try
+        {
+            clientUDPManager_->broadcast(command.getFrameBytes());
+        }
+        catch (exception &e)
+        {
+            if(logger_.isErrorEnable() )
+            {
+                const string message = string("FlightDataManager:: In catch function.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
         this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("FlightDataManager :: Outside loop.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
