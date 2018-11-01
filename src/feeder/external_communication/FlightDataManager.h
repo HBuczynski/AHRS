@@ -1,8 +1,7 @@
 #ifndef AHRS_FLIGHTDATAMANAGER_H
 #define AHRS_FLIGHTDATAMANAGER_H
 
-#include "ClientUDPManager.h"
-
+#include <vector>
 #include <memory>
 #include <logger/Logger.h>
 #include <atomic>
@@ -12,7 +11,7 @@ namespace communication
     class FlightDataManager
     {
     public:
-        FlightDataManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
+        FlightDataManager(std::function<void(std::vector<uint8_t> )> broadcastFun);
         ~FlightDataManager();
 
         void startFlightDataTransmission();
@@ -24,7 +23,7 @@ namespace communication
         std::atomic<bool> runAcquisition_;
         std::thread acquisitionThread_;
 
-        std::shared_ptr<ClientUDPManager> clientUDPManager_;
+        std::function<void(std::vector<uint8_t> )> broadcastFunction_;
         utility::Logger& logger_;
     };
 }

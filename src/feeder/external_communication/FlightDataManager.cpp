@@ -6,9 +6,9 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-FlightDataManager::FlightDataManager(shared_ptr<ClientUDPManager> clientUDPManager)
+FlightDataManager::FlightDataManager(function<void(vector<uint8_t> )> broadcastFun)
     : runAcquisition_(false),
-      clientUDPManager_(clientUDPManager),
+      broadcastFunction_(broadcastFun),
       logger_(Logger::getInstance())
 {}
 
@@ -67,7 +67,7 @@ void FlightDataManager::sendMeasurements()
         FlightData command(measurements);
         try
         {
-            clientUDPManager_->broadcast(command.getFrameBytes());
+            broadcastFunction_(command.getFrameBytes());
         }
         catch (exception &e)
         {

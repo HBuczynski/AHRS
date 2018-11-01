@@ -8,6 +8,7 @@ using namespace communication;
 
 ClientUDPManager::ClientUDPManager()
     :   currentState_(make_unique<IdleState>()),
+        flightDataManager_(make_unique<FlightDataManager>(bind(&ClientUDPManager::broadcast, this, std::placeholders::_1))),
         logger_(Logger::getInstance())
 { }
 
@@ -86,6 +87,13 @@ void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus sta
 void ClientUDPManager::startDataSending()
 {
     currentState_->startDataSending(*this);
+
+    flightDataManager_->startFlightDataTransmission();
+}
+
+void ClientUDPManager::stopDataSending()
+{
+    flightDataManager_->stopFlightDataTransmission();
 }
 
 void ClientUDPManager::restartProcess()

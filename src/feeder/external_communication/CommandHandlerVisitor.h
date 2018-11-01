@@ -11,8 +11,6 @@
 #include <config_reader/FeederParameters.h>
 #include <memory>
 
-#include "FlightDataManager.h"
-
 namespace communication
 {
     class ClientThreadTCP;
@@ -41,18 +39,8 @@ namespace communication
         std::unique_ptr<Response> getResponse();
 
     private:
-
-//        void initializedSharedMemory();
-
-//        config::FeederSharedMemory sharedMemoryParameters_;
-//
-//        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
-//        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
-//        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
-
         ClientThreadTCP *currentClient_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
-        std::shared_ptr<FlightDataManager> flightDataManager_;
 
         std::unique_ptr<Response> response_;
 

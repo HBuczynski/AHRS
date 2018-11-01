@@ -5,6 +5,7 @@
 
 #include "machine_state/AbstractState.h"
 #include "ClientUDP.h"
+#include "FlightDataManager.h"
 
 #include <list>
 #include <cstdint>
@@ -32,6 +33,7 @@ namespace communication
         void acceptedUsers();
         void startCalibration(const std::string &planeName, PlaneStatus status);
         void startDataSending();
+        void stopDataSending();
         void restartProcess();
         void shutdownProcess();
         const FeederExternalStateCode& getCurrentState() const;
@@ -40,6 +42,7 @@ namespace communication
 
     private:
         std::unique_ptr<AbstractState> currentState_;
+        std::unique_ptr<FlightDataManager> flightDataManager_;
 
         std::mutex clientListMutex_;
         std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t> > clientList_;

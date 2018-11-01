@@ -20,33 +20,11 @@ using namespace communication;
 using namespace boost::interprocess;
 
 CommandHandlerVisitor::CommandHandlerVisitor()
-    :   //sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
-        logger_(Logger::getInstance())
-{
-//    initializedSharedMemory();
-}
+    :  logger_(Logger::getInstance())
+{}
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
 {}
-
-//void CommandHandlerVisitor::initializedSharedMemory()
-//{
-//    try
-//    {
-//        // Creating shared memory's mutex.
-//        sharedMemoryMutex_ = std::make_unique<named_mutex>(open_only, sharedMemoryParameters_.externalMemoryName.c_str());
-//        // Creating shared memory.
-//        sharedMemory_ = std::make_unique<shared_memory_object>(open_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
-//        mappedMemoryRegion_ = std::make_unique<mapped_region>(*sharedMemory_, read_write);
-//    }
-//    catch(interprocess_exception &ex)
-//    {
-//        if (logger_.isErrorEnable()) {
-//            const std::string message = std::string("CommandHandlerVisitor ::") + ex.what();
-//            logger_.writeLog(LogType::ERROR_LOG, message);
-//        }
-//    }
-//}
 
 void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {
@@ -127,9 +105,7 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
     {
         response_ = std::make_unique<AckResponse>(AckType::FAIL);
     }
-
-    flightDataManager_->startFlightDataTransmission();
-
+    
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
@@ -185,7 +161,6 @@ std::unique_ptr<Response> CommandHandlerVisitor::getResponse()
 void CommandHandlerVisitor::initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager)
 {
     clientUDPManager_ = clientUDPManager;
-    flightDataManager_= make_shared<FlightDataManager>(clientUDPManager);
 }
 
 void CommandHandlerVisitor::initializeCurrentClient(ClientThreadTCP *client)
