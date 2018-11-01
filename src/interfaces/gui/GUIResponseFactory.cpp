@@ -1,7 +1,7 @@
 #include "GUIResponseFactory.h"
 
 #include "GUIPlaneBuilder.h"
-#include "GUIWindowResponseBuilder.h
+#include "GUIWindowResponseBuilder.h"
 
 using namespace std;
 using namespace communication;
