@@ -47,7 +47,7 @@ void ServerUDP::listen()
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("ServerUDP :: Server starts listening.");
+        const string message = string("ServerUDP :: Server starts listening on port: ") + to_string(port_);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
