@@ -48,6 +48,7 @@ signals:
     void signalEXITPage();
     void signalLOGSPage();
     void signalMENUPage();
+    void signalRoll(float);
 
 private:
     void setup();
