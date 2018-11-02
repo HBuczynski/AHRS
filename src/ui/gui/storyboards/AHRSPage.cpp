@@ -277,6 +277,7 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
+    ui_->upSecondAHRS->setText("LOLO");
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
