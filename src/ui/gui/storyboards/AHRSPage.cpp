@@ -25,7 +25,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    m_timer.start(1);
+    m_timer.start(300);
 }
 
 AHRSPage::~AHRSPage()
@@ -242,7 +242,7 @@ void AHRSPage::acquireFlightData()
 
     //while (runAcquisitionThread_)
     {
-        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(2));
         vector<uint8_t> frame;
         frame.resize(mappedMemoryRegion_->get_size());
 
