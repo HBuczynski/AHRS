@@ -18,6 +18,8 @@
 
 #include "Buttons.h"
 
+#include <QTimer>
+
 namespace Ui {
 class AHRSPage;
 }
@@ -44,6 +46,9 @@ public:
     void setTurnRate( float turnRate );
     void setSlipSkid( float slipSkid );
 
+public slots:
+    void acquireFlightData();
+
 signals:
     void signalEXITPage();
     void signalLOGSPage();
@@ -59,11 +64,12 @@ private:
     void logsButton();
     void exitButton();
 
-    void acquireFlightData();
+
     void handleFlightDataCommand(const FlightMeasurements& measurements);
 
     config::UISharedMemory uiSharedMemoryParameters_;
 
+    QTimer m_timer;
     std::atomic<bool> runAcquisitionThread_;
     std::thread acquisistionThread_;
 

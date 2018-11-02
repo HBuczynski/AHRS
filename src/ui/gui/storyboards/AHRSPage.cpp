@@ -23,6 +23,9 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     setup();
 
     initializeSharedMemory();
+
+    connect(&m_timer, SIGNAL(timout()), this, SLOT(acquireFlightData()));
+    m_timer.start(1);
 }
 
 AHRSPage::~AHRSPage()
@@ -32,11 +35,13 @@ AHRSPage::~AHRSPage()
         delete ui_;
     }
 
-    if(acquisistionThread_.joinable())
-    {
-        runAcquisitionThread_ = false;
-        acquisistionThread_.join();
-    }
+    m_timer.stop();
+
+//    if(acquisistionThread_.joinable())
+//    {
+//        runAcquisitionThread_ = false;
+//        acquisistionThread_.join();
+//    }
 }
 
 void AHRSPage::setup()
@@ -127,8 +132,8 @@ void AHRSPage::initializeSharedMemory()
         }
     }
 
-    runAcquisitionThread_ = true;
-    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
+//    runAcquisitionThread_ = true;
+//    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
 }
 
 void AHRSPage::initialize()
@@ -235,7 +240,7 @@ void AHRSPage::acquireFlightData()
 {
     communication::MeasuringDataFactory dataFactory_;
 
-    while (runAcquisitionThread_)
+    //while (runAcquisitionThread_)
     {
         std::this_thread::sleep_for(std::chrono::milliseconds(2));
         vector<uint8_t> frame;
