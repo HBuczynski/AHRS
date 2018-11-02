@@ -25,7 +25,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    m_timer.start(50);
+    m_timer.start(100);
 }
 
 AHRSPage::~AHRSPage()
@@ -125,9 +125,6 @@ void AHRSPage::initializeSharedMemory()
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
-
-//    runAcquisitionThread_ = true;
-//    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
 }
 
 void AHRSPage::initialize()
