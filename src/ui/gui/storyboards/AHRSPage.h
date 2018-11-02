@@ -32,6 +32,7 @@ public:
 
     void initialize();
 
+public slots:
     void setRoll( float roll );
     void setPitch( float pitch );
     void setAltitude( float altitude );
