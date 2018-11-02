@@ -9,6 +9,7 @@
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/UIParameters.h>
+#include "../../../common/Measurements.h"
 
 #include "../PageController.h"
 #include "WidgetPFD.h"
@@ -59,6 +60,7 @@ private:
     void exitButton();
 
     void acquireFlightData();
+    void handleFlightDataCommand(const FlightMeasurements& measurements);
 
     config::UISharedMemory uiSharedMemoryParameters_;
 

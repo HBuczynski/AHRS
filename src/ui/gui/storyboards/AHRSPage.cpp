@@ -1,5 +1,6 @@
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
+#include <interfaces/wireless_measurement_commands/FlightData.h>
 #include "AHRSPage.h"
 #include "ui_AHRSPage.h"
 
@@ -249,13 +250,22 @@ void AHRSPage::acquireFlightData()
 
         if(frame.size() != 0)
         {
-            const auto data = dataFactory_.createCommand(frame);
+            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(dataFactory_.createCommand(frame));
+
+            handleFlightDataCommand(flightData->getMeasurements());
 
             if(logger_.isInformationEnable())
             {
-                const string message = string("AHRSPage :: Getting command - ") + data->getName();
+                const string message = string("AHRSPage :: Getting command - ") + flightData->getName();
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
         }
     }
+}
+
+void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
+{
+    setAltitude(measurements.altitude);
+    setAirspeed(measurements.groundSpeed*10);
+    setRoll(5);
 }
