@@ -24,7 +24,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     initializeSharedMemory();
 
-    connect(&m_timer, SIGNAL(timout()), this, SLOT(acquireFlightData()));
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
     m_timer.start(1);
 }
 
