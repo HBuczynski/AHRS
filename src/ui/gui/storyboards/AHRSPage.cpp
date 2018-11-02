@@ -25,7 +25,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    m_timer.start(300);
+    m_timer.start(50);
 }
 
 AHRSPage::~AHRSPage()
@@ -36,12 +36,6 @@ AHRSPage::~AHRSPage()
     }
 
     m_timer.stop();
-
-//    if(acquisistionThread_.joinable())
-//    {
-//        runAcquisitionThread_ = false;
-//        acquisistionThread_.join();
-//    }
 }
 
 void AHRSPage::setup()
@@ -240,44 +234,35 @@ void AHRSPage::acquireFlightData()
 {
     communication::MeasuringDataFactory dataFactory_;
 
-    //while (runAcquisitionThread_)
+    vector<uint8_t> frame;
+    frame.resize(mappedMemoryRegion_->get_size());
+
+    uint8_t *memory = nullptr;
     {
-        //std::this_thread::sleep_for(std::chrono::milliseconds(2));
-        vector<uint8_t> frame;
-        frame.resize(mappedMemoryRegion_->get_size());
+        scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
+        memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
+        memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
+    }
 
-        uint8_t *memory;
+    if(frame.size() != 0)
+    {
+        auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+                dataFactory_.createCommand(frame));
+
+        handleFlightDataCommand(flightData->getMeasurements());
+
+        if ( logger_.isInformationEnable())
         {
-            scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
-            memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
-            memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
-        }
-
-        if(frame.size() != 0)
-        {
-            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(dataFactory_.createCommand(frame));
-
-            handleFlightDataCommand(flightData->getMeasurements());
-
-            if(logger_.isInformationEnable())
-            {
-                const string message = string("AHRSPage :: Getting command - ") + flightData->getName() + string(" Altitude: ") +
-                        to_string(flightData->getMeasurements().altitude);
-                logger_.writeLog(LogType::INFORMATION_LOG, message);
-            }
+            const string message =
+                    string("AHRSPage :: Getting command - ") + flightData->getName() + string(" Altitude: ") +
+                    to_string(flightData->getMeasurements().altitude);
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
 }
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: HANDLE: ROLL - ") + to_string(measurements.roll);
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    ui_->upSecondAHRS->setText("LOLO");
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
@@ -290,4 +275,6 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setMachNo(measurements.machNo);
 
     widgetPFD_->update();
+    widgetTC_->update();
+    widgetVSI_->update();
 }
