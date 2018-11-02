@@ -1,18 +1,26 @@
+#include <config_reader/ConfigurationReader.h>
 #include "AHRSPage.h"
 #include "ui_AHRSPage.h"
 
 using namespace std;
 using namespace utility;
 using namespace peripherals;
+using namespace config;
+using namespace boost::interprocess;
 
 AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     :   QWidget(parent),
+        uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+        runAcquisitionThread_(false),
         controller_(controller),
         ui_(new Ui::AHRSPage),
         logger_(Logger::getInstance())
 {
     ui_->setupUi(this);
+
     setup();
+
+    initializeSharedMemory();
 }
 
 AHRSPage::~AHRSPage()
@@ -20,6 +28,12 @@ AHRSPage::~AHRSPage()
     if(ui_)
     {
         delete ui_;
+    }
+
+    if(acquisistionThread_.joinable())
+    {
+        runAcquisitionThread_ = false;
+        acquisistionThread_.join();
     }
 }
 
@@ -89,6 +103,30 @@ void AHRSPage::setup()
     ui_->downPowerSupply->setStyleSheet("QLabel {color : rgb(51,255,0); background-color: rgb(75, 75, 75)}");
     ui_->downPowerSupply->setFont(downFont);
     ui_->downPowerSupply->setText("100 %");
+}
+
+void AHRSPage::initializeSharedMemory()
+{
+    try
+    {
+        // Creating shared memory's mutex.
+        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
+        // Creating shared memory.
+        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
+        // Mapped shared memory.
+        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("AHRSPage :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
+    runAcquisitionThread_ = true;
+    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
 }
 
 void AHRSPage::initialize()
@@ -189,4 +227,30 @@ void AHRSPage::setTurnRate( float turnRate )
 void AHRSPage::setSlipSkid( float slipSkid )
 {
     widgetTC_->setSlipSkid( slipSkid );
+}
+
+void AHRSPage::acquireFlightData()
+{
+    while (runAcquisitionThread_)
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        vector<uint8_t> frame;
+        frame.resize(mappedMemoryRegion_->get_size());
+
+        uint8_t *memory;
+        {
+            scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
+            memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
+            memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
+        }
+
+        if(frame.size() != 0)
+        {
+            if(logger_.isInformationEnable())
+            {
+                const string message = string("AHRSPage :: Getting data from memory.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
+        }
+    }
 }

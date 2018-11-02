@@ -3,6 +3,12 @@
 
 #include <QWidget>
 #include <memory>
+#include <thread>
+#include <atomic>
+
+#include <boost/interprocess/ipc/message_queue.hpp>
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <config_reader/UIParameters.h>
 
 #include "../PageController.h"
 #include "WidgetPFD.h"
@@ -44,12 +50,24 @@ signals:
 
 private:
     void setup();
+    void initializeSharedMemory();
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
     void calibrateButton();
     void menuButton();
     void logsButton();
     void exitButton();
+
+    void acquireFlightData();
+
+    config::UISharedMemory uiSharedMemoryParameters_;
+
+    std::atomic<bool> runAcquisitionThread_;
+    std::thread acquisistionThread_;
+
+    std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
+    std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
+    std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
     gui::PageController *controller_;
 

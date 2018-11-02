@@ -65,6 +65,8 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
 void MeasurementHandlerVisitor::visit(FlightData &data)
 {
+    saveDataToSharedMemory(data.getFrameBytes());
+
     if(logger_.isInformationEnable())
     {
         const string message = string("MeasurementHandlerVisitor :: Received ") + data.getName() +
