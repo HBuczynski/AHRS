@@ -224,7 +224,7 @@ void AHRSPage::setClimbRate( float climbRate )
     widgetPFD_->setClimbRate( climbRate );
     widgetPFD_->update();
 
-    widgetVSI_->setClimbRate( climbRate );
+    widgetVSI_->setClimbRate( climbRate * 10000 );
     widgetVSI_->update();
 }
 
@@ -282,8 +282,6 @@ void AHRSPage::acquireFlightData()
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
-    widgetVSI_->setClimbRate(2345.90);
-    widgetVSI_->update();
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
