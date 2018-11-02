@@ -105,7 +105,7 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
     {
         response_ = std::make_unique<AckResponse>(AckType::FAIL);
     }
-    
+
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +

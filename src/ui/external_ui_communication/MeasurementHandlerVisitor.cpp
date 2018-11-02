@@ -67,7 +67,8 @@ void MeasurementHandlerVisitor::visit(FlightData &data)
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("MeasurementHandlerVisitor :: Received ") + data.getName();
+        const string message = string("MeasurementHandlerVisitor :: Received ") + data.getName() +
+                string(". Data: ") + to_string(data.getMeasurements().altitude);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
