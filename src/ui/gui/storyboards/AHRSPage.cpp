@@ -150,7 +150,6 @@ void AHRSPage::initialize()
     QObject::connect(this, SIGNAL(signalEXITPage()), controller_, SLOT(setExitPage()));
     QObject::connect(this, SIGNAL(signalLOGSPage()), controller_, SLOT(setLogsPage()));
     QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
-    QObject::connect(this, SIGNAL(signalRoll(float)), this, SLOT(setRoll(float)));
 }
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
@@ -268,18 +267,20 @@ void AHRSPage::acquireFlightData()
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
-//    setRoll(measurements.roll);
-//    setPitch(measurements.pitch);
-//    setHeading(measurements.heading);
-//    setSlipSkid(measurements.slipSkid);
-//    setTurnRate(measurements.turnCoordinator);
-//    setAirspeed(measurements.groundSpeed);
-//    setAltitude(measurements.altitude);
-//    setPressure(measurements.pressure);
-//    setClimbRate(measurements.verticalSpeed);
-//    setMachNo(measurements.machNo);
-//
-//    ui_->setupUi(this);
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: IN HANDLER: ") + to_string(measurements.roll);
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
-    emit signalRoll(measurements.roll);
+    setRoll(measurements.roll);
+    setPitch(measurements.pitch);
+    setHeading(measurements.heading);
+    setSlipSkid(measurements.slipSkid);
+    setTurnRate(measurements.turnCoordinator);
+    setAirspeed(measurements.groundSpeed);
+    setAltitude(measurements.altitude);
+    setPressure(measurements.pressure);
+    setClimbRate(measurements.verticalSpeed);
+    setMachNo(measurements.machNo);
 }

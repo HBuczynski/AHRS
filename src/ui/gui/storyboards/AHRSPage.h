@@ -32,7 +32,6 @@ public:
 
     void initialize();
 
-public slots:
     void setRoll( float roll );
     void setPitch( float pitch );
     void setAltitude( float altitude );
@@ -49,7 +48,6 @@ signals:
     void signalEXITPage();
     void signalLOGSPage();
     void signalMENUPage();
-    void signalRoll(float);
 
 private:
     void setup();
