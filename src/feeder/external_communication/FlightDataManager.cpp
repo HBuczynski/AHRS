@@ -53,12 +53,12 @@ void FlightDataManager::stopFlightDataTransmission()
 
 void FlightDataManager::sendMeasurements()
 {
-    FlightMeasurements measurements;
     uint64_t counter = 0;
 
     while (runAcquisition_)
     {
         ++counter;
+        FlightMeasurements measurements;
         measurements.roll      =  180.0f * sin( counter /  10.0f );
         measurements.pitch     =   90.0f * sin( counter /  20.0f );
         measurements.heading   =  360.0f * sin( counter /  40.0f );
@@ -69,6 +69,12 @@ void FlightDataManager::sendMeasurements()
         measurements.pressure  =    2.0f * sin( counter /  20.0f ) +   30.0f;
         measurements.verticalSpeed =  650.0f * sin( counter /  20.0f )/100.0f;
         measurements.machNo    = measurements.groundSpeed / 650.0f;
+
+        if(logger_.isInformationEnable() )
+        {
+            const string message = string("FlightDataManager:: data: ") + to_string(measurements.roll);
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
 
         FlightData command(measurements);
         try
@@ -83,7 +89,7 @@ void FlightDataManager::sendMeasurements()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+        this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
     if(logger_.isInformationEnable())
