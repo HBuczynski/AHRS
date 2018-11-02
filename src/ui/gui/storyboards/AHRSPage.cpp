@@ -265,7 +265,14 @@ void AHRSPage::acquireFlightData()
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
+    setRoll(measurements.roll);
+    setPitch(measurements.pitch);
+    setHeading(measurements.heading);
+    setSlipSkid(measurements.slipSkid);
+    setTurnRate(measurements.turnCoordinator);
+    setAirspeed(measurements.groundSpeed);
     setAltitude(measurements.altitude);
-    setAirspeed(measurements.groundSpeed*10);
-    setRoll(5);
+    setPressure(measurements.pressure);
+    setClimbRate(measurements.verticalSpeed);
+    setMachNo(measurements.machNo);
 }
