@@ -288,4 +288,6 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
+
+    widgetPFD_->update();
 }
