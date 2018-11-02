@@ -184,6 +184,7 @@ void AHRSPage::exitButton()
 void AHRSPage::setRoll( float roll )
 {
     widgetPFD_->setRoll( roll );
+    ui_->setupUi(this);
 }
 
 void AHRSPage::setPitch( float pitch )
