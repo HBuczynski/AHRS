@@ -50,6 +50,7 @@ void AHRSPage::setup()
     ui_->devicesLayout->addWidget(widgetTC_.get());
 
     widgetVSI_ = make_unique<WidgetVSI>();
+    widgetVSI_->setClimbRate(10.0);
     ui_->devicesLayout->addWidget(widgetVSI_.get());
 
     // SETUP top labels
@@ -179,52 +180,64 @@ void AHRSPage::exitButton()
 void AHRSPage::setRoll( float roll )
 {
     widgetPFD_->setRoll( roll );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setPitch( float pitch )
 {
     widgetPFD_->setPitch( pitch );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setAltitude( float altitude )
 {
     widgetPFD_->setAltitude( altitude );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setPressure( float pressure )
 {
     widgetPFD_->setPressure( pressure);
+    widgetPFD_->update();
 }
 
 void AHRSPage::setAirspeed( float airspeed )
 {
     widgetPFD_->setAirspeed( airspeed );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setMachNo( float machNo )
 {
     widgetPFD_->setMachNo( machNo );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setHeading( float heading )
 {
     widgetPFD_->setHeading( heading );
+    widgetPFD_->update();
 }
 
 void AHRSPage::setClimbRate( float climbRate )
 {
     widgetPFD_->setClimbRate( climbRate );
+    widgetPFD_->update();
+
     widgetVSI_->setClimbRate( climbRate );
+    widgetVSI_->update();
 }
 
 void AHRSPage::setTurnRate( float turnRate )
 {
     widgetTC_->setTurnRate( turnRate );
+    widgetTC_->update();
 }
 
 void AHRSPage::setSlipSkid( float slipSkid )
 {
     widgetTC_->setSlipSkid( slipSkid );
+    widgetTC_->update();
 }
 
 void AHRSPage::acquireFlightData()
@@ -280,7 +293,7 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
 
-    widgetPFD_->update();
-    widgetTC_->update();
-    widgetVSI_->update();
+//
+//    widgetTC_->update();
+//    widgetVSI_->update();
 }
