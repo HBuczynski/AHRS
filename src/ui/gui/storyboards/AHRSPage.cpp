@@ -251,8 +251,17 @@ void AHRSPage::acquireFlightData()
         if ( logger_.isInformationEnable())
         {
             const string message =
-                    string("AHRSPage :: Getting command - ") + flightData->getName() + string(" Altitude: ") +
-                    to_string(flightData->getMeasurements().altitude);
+                    string("AHRSPage:: ") + flightData->getName() +
+                    string(" Altitude: ") + to_string(flightData->getMeasurements().altitude);
+                    string(" roll: ") + to_string(flightData->getMeasurements().roll);
+                    string(" verticalSpeed: ") + to_string(flightData->getMeasurements().verticalSpeed);
+                    string(" groundSpeed: ") + to_string(flightData->getMeasurements().groundSpeed);
+                    string(" turnCoordinator: ") + to_string(flightData->getMeasurements().turnCoordinator);
+                    string(" heading: ") + to_string(flightData->getMeasurements().heading);
+                    string(" machNo: ") + to_string(flightData->getMeasurements().machNo);
+                    string(" latitude: ") + to_string(flightData->getMeasurements().latitude);
+                    string(" pitch: ") + to_string(flightData->getMeasurements().pitch);
+                    string(" pressure: ") + to_string(flightData->getMeasurements().pressure);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
