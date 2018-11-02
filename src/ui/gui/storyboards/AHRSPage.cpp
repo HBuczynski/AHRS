@@ -256,7 +256,8 @@ void AHRSPage::acquireFlightData()
 
             if(logger_.isInformationEnable())
             {
-                const string message = string("AHRSPage :: Getting command - ") + flightData->getName();
+                const string message = string("AHRSPage :: Getting command - ") + flightData->getName() + string(" Altitude: ") +
+                        to_string(flightData->getMeasurements().altitude);
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
         }
