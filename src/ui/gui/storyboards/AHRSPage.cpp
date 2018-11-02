@@ -282,6 +282,8 @@ void AHRSPage::acquireFlightData()
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
+    widgetVSI_->setClimbRate(2345.90);
+    widgetVSI_->update();
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
@@ -292,8 +294,4 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
-
-//
-//    widgetTC_->update();
-//    widgetVSI_->update();
 }
