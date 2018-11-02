@@ -32,22 +32,24 @@ public:
 
     void initialize();
 
-    inline void setRoll( float roll );
-    inline void setPitch( float pitch );
-    inline void setAltitude( float altitude );
-    inline void setPressure( float pressure );
-    inline void setAirspeed( float airspeed );
-    inline void setMachNo( float machNo );
-    inline void setHeading( float heading );
-    inline void setClimbRate( float climbRate );
+public slots:
+    void setRoll( float roll );
+    void setPitch( float pitch );
+    void setAltitude( float altitude );
+    void setPressure( float pressure );
+    void setAirspeed( float airspeed );
+    void setMachNo( float machNo );
+    void setHeading( float heading );
+    void setClimbRate( float climbRate );
 
-    inline void setTurnRate( float turnRate );
-    inline void setSlipSkid( float slipSkid );
+    void setTurnRate( float turnRate );
+    void setSlipSkid( float slipSkid );
 
 signals:
     void signalEXITPage();
     void signalLOGSPage();
     void signalMENUPage();
+    void signalRoll(float);
 
 private:
     void setup();
