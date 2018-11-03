@@ -443,6 +443,14 @@ void StoryboardsHandler::handleFlightDataCommand(const FlightMeasurements& measu
     ahrsPage_->setClimbRate(measurements.verticalSpeed);
     ahrsPage_->setMachNo(measurements.machNo);
     ahrsPage_->setTimeSinceStart(TimeManager::getTimeSinceStart());
+
+    ahrsPage_->update();
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: Updated AHRS.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void StoryboardsHandler::stopTimer()
