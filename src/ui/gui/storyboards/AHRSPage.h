@@ -49,11 +49,13 @@ public:
 
 public slots:
     void acquireFlightData();
+    void stopTimer();
 
 signals:
     void signalEXITPage();
     void signalLOGSPage();
     void signalMENUPage();
+    void signalStopTimer();
 
 private:
     void setup();

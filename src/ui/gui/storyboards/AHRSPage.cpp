@@ -28,6 +28,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
     acqTimer_.start(20);
 }
 
@@ -170,7 +171,7 @@ void AHRSPage::menuButton()
     while(!dataAcqIsFinished_) {
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    acqTimer_.stop();
+    emit signalStopTimer();
 
     if(logger_.isInformationEnable())
     {
@@ -186,7 +187,7 @@ void AHRSPage::logsButton()
     while(!dataAcqIsFinished_) {
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    acqTimer_.stop();
+    emit signalStopTimer();
 
     if(logger_.isInformationEnable())
     {
@@ -202,7 +203,7 @@ void AHRSPage::exitButton()
     while(!dataAcqIsFinished_) {
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
-    acqTimer_.stop();
+    emit signalStopTimer();
 
     if(logger_.isInformationEnable())
     {
@@ -324,4 +325,9 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     widgetTC_->update();
     widgetPFD_->update();
     widgetVSI_->update();
+}
+
+void AHRSPage::stopTimer()
+{
+    acqTimer_.stop();
 }
