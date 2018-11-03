@@ -13,13 +13,12 @@ using namespace config;
 using namespace boost::interprocess;
 
 AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
-    :   QWidget(parent),
-        uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
-        runAcquisitionThread_(false),
-        dataAcqIsFinished_(false),
-        controller_(controller),
-        ui_(new Ui::AHRSPage),
-        logger_(Logger::getInstance())
+        :   QWidget(parent),
+            uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+            dataAcqIsFinished_(false),
+            controller_(controller),
+            ui_(new Ui::AHRSPage),
+            logger_(Logger::getInstance())
 {
     ui_->setupUi(this);
 
@@ -27,12 +26,9 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     initializeSharedMemory();
 
-    runAcquisitionThread_ = true;
-    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
-
-//    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-//    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
-//    acqTimer_.start(50);
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
+    acqTimer_.start(50);
 }
 
 AHRSPage::~AHRSPage()
@@ -42,14 +38,7 @@ AHRSPage::~AHRSPage()
         delete ui_;
     }
 
-    //acqTimer_.stop();
-
-    runAcquisitionThread_ = false;
-
-    if(acquisistionThread_.joinable())
-    {
-        acquisistionThread_.join();
-    }
+    acqTimer_.stop();
 }
 
 void AHRSPage::setup()
@@ -198,17 +187,10 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-//    acqTimer_.stop();
-//    while(!dataAcqIsFinished_) {
-//        this_thread::sleep_for(std::chrono::milliseconds(1));
-//    };
-
-    runAcquisitionThread_ = false;
-
-    if(acquisistionThread_.joinable())
-    {
-        acquisistionThread_.join();
-    }
+    acqTimer_.stop();
+    while(!dataAcqIsFinished_) {
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    };
 
     emit signalEXITPage();
 }
@@ -270,46 +252,41 @@ void AHRSPage::setSlipSkid( float slipSkid )
 
 void AHRSPage::acquireFlightData()
 {
-    if ( logger_.isInformationEnable())
+    if(logger_.isInformationEnable())
     {
         const string message = string("AHRSPage :: Start acquire.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-//    dataAcqIsFinished_ = false;
-    while (runAcquisitionThread_)
+    dataAcqIsFinished_ = false;
+    communication::MeasuringDataFactory dataFactory_;
+
+    vector<uint8_t> frame;
+    frame.resize(mappedMemoryRegion_->get_size());
+
+    uint8_t *memory = nullptr;
     {
-        communication::MeasuringDataFactory dataFactory_;
+        scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
+        memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
+        memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
+    }
 
-        vector<uint8_t> frame;
-        frame.resize(mappedMemoryRegion_->get_size());
+    if(frame.size() != 0)
+    {
+        auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+                dataFactory_.createCommand(frame));
 
-        uint8_t *memory = nullptr;
-        {
-            scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
-            memory = reinterpret_cast<uint8_t * >(mappedMemoryRegion_->get_address());
-            memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
-        }
+        handleFlightDataCommand(flightData->getMeasurements());
+    }
 
-        if ( frame.size() != 0 )
-        {
-            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
-                    dataFactory_.createCommand(frame));
+    dataAcqIsFinished_ = true;
 
-            handleFlightDataCommand(flightData->getMeasurements());
-        }
-        this_thread::sleep_for(std::chrono::milliseconds(20));
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: STOP acquire.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
-
-//    dataAcqIsFinished_ = true;
-//
-//    if(logger_.isInformationEnable())
-//    {
-//        const string message = string("AHRSPage :: STOP acquire.");
-//        logger_.writeLog(LogType::INFORMATION_LOG, message);
-//    }
-//}
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {

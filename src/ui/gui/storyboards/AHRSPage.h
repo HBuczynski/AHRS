@@ -73,9 +73,6 @@ private:
     config::UISharedMemory uiSharedMemoryParameters_;
 
     QTimer acqTimer_;
-    std::atomic<bool> runAcquisitionThread_;
-    std::thread acquisistionThread_;
-
     std::atomic<bool> dataAcqIsFinished_;
 
     std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
