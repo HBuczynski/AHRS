@@ -34,7 +34,7 @@ bool CommunicationProcessesHandler::initialize()
     isSuccess = isSuccess & initializeFirstProcessMessageQueue();
     isSuccess = isSuccess & initializeSecondProcessMessageQueue();
     isSuccess = isSuccess & launchFirstProcess();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
     isSuccess = isSuccess & launchSecondProcess();
 
     return isSuccess;
@@ -113,9 +113,9 @@ bool CommunicationProcessesHandler::launchFirstProcess()
     // This attribute is responsible for file descriptors.
     posix_spawn_file_actions_t action;
     posix_spawn_file_actions_init(&action);
-    pipe(out);
-    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
-    posix_spawn_file_actions_addclose(&action, out[0]);
+//    pipe(out);
+//    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
+//    posix_spawn_file_actions_addclose(&action, out[0]);
 
     status = posix_spawn(&firstProcess.first, arguments[0], &action, NULL, arguments, environ);
 
@@ -167,9 +167,9 @@ bool CommunicationProcessesHandler::launchSecondProcess()
     // This attribute is responsible for file descriptors.
     posix_spawn_file_actions_t action;
     posix_spawn_file_actions_init(&action);
-    pipe(out);
-    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
-    posix_spawn_file_actions_addclose(&action, out[0]);
+//    pipe(out);
+//    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
+//    posix_spawn_file_actions_addclose(&action, out[0]);
 
     status = posix_spawn(&secondProcess.first, arguments[0], &action, NULL, arguments, environ);
 

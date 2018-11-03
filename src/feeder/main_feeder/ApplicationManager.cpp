@@ -213,9 +213,9 @@ bool ApplicationManager::createExternalCommunicationProcess()
     // This attribute is responsible for file descriptors.
     posix_spawn_file_actions_t action;
     posix_spawn_file_actions_init(&action);
-    pipe(out);
-    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
-    posix_spawn_file_actions_addclose(&action, out[0]);
+//    pipe(out);
+//    posix_spawn_file_actions_adddup2(&action, out[1], STDOUT_FILENO);
+//    posix_spawn_file_actions_addclose(&action, out[0]);
 
     status = posix_spawn(&externalProcess_, arguments[0], &action, NULL, arguments, environ);
 
@@ -294,6 +294,12 @@ void ApplicationManager::runProcessing()
 {
     unsigned int priority;
     message_queue::size_type receivedSize;
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("ApplicationManager :: Run processing.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     while(runFeederSystem_)
     {

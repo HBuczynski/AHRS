@@ -72,7 +72,7 @@ void FlightDataManager::sendMeasurements()
 
         if(logger_.isInformationEnable() )
         {
-            const string message = string("FlightDataManager:: data: ") + to_string(measurements.roll);
+            const string message = string("FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Counter: ") + to_string(counter);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
