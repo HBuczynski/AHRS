@@ -222,7 +222,7 @@ void AHRSPage::setHeading( float heading )
 void AHRSPage::setClimbRate( float climbRate )
 {
     widgetPFD_->setClimbRate( climbRate );
-    widgetVSI_->setClimbRate( climbRate * 10 );
+    widgetVSI_->setClimbRate( climbRate * 100 );
 }
 
 void AHRSPage::setTurnRate( float turnRate )
