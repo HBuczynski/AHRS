@@ -11,7 +11,7 @@ namespace communication
     class FlightDataManager
     {
     public:
-        FlightDataManager(std::function<void(std::vector<uint8_t> )> broadcastFun);
+        FlightDataManager(std::function<bool(std::vector<uint8_t> )> broadcastFun);
         ~FlightDataManager();
 
         void startFlightDataTransmission();
@@ -23,7 +23,7 @@ namespace communication
         std::atomic<bool> runAcquisition_;
         std::thread acquisitionThread_;
 
-        std::function<void(std::vector<uint8_t> )> broadcastFunction_;
+        std::function<bool(std::vector<uint8_t> )> broadcastFunction_;
         utility::Logger& logger_;
     };
 }

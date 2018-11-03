@@ -27,7 +27,7 @@ namespace communication
         void insertNewClient(std::pair<std::shared_ptr<ClientUDP>, uint8_t > newClient);
         void removeClient(uint8_t id);
 
-        void broadcast(std::vector<uint8_t> frame);
+        bool broadcast(std::vector<uint8_t> frame);
 
         // Managing finite machine state
         void acceptedUsers();

@@ -7,7 +7,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-FlightDataManager::FlightDataManager(function<void(vector<uint8_t> )> broadcastFun)
+FlightDataManager::FlightDataManager(function<bool(vector<uint8_t> )> broadcastFun)
     : runAcquisition_(false),
       broadcastFunction_(broadcastFun),
       logger_(Logger::getInstance())
@@ -26,6 +26,11 @@ FlightDataManager::~FlightDataManager()
 void FlightDataManager::startFlightDataTransmission()
 {
     runAcquisition_ = true;
+
+    if(acquisitionThread_.joinable())
+    {
+        acquisitionThread_.join();
+    }
     acquisitionThread_ = thread(&FlightDataManager::sendMeasurements, this);
 
     if(logger_.isInformationEnable())
@@ -79,18 +84,15 @@ void FlightDataManager::sendMeasurements()
         FlightData command(measurements);
         try
         {
-            if(logger_.isInformationEnable())
+            if(!broadcastFunction_(command.getFrameBytes()))
             {
-                const std::string message = std::string("FlightDataManager :: Before broadcastFunction_.");
-                logger_.writeLog(LogType::INFORMATION_LOG, message);
-            }
+                runAcquisition_ = false;
 
-            broadcastFunction_(command.getFrameBytes());
-
-            if(logger_.isInformationEnable())
-            {
-                const std::string message = std::string("FlightDataManager :: After broadcastFunction_.");
-                logger_.writeLog(LogType::INFORMATION_LOG, message);
+                if(logger_.isInformationEnable() )
+                {
+                    const string message = string("FlightDataManager:: Broadcast is stopped, users are unavailable.");
+                    logger_.writeLog(LogType::INFORMATION_LOG, message);
+                }
             }
         }
         catch (exception &e)
@@ -103,11 +105,5 @@ void FlightDataManager::sendMeasurements()
         }
 
         this_thread::sleep_for(std::chrono::milliseconds(2));
-    }
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("FlightDataManager :: Outside loop.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

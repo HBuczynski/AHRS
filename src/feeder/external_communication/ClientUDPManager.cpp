@@ -24,12 +24,6 @@ list<pair<shared_ptr<ClientUDP>, uint8_t>> ClientUDPManager::getClientList()
 void ClientUDPManager::insertNewClient(pair<shared_ptr<ClientUDP>, uint8_t> newClient)
 {
     lock_guard<mutex> lock(clientListMutex_);
-
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("ClientUDPManager ::insertNewClient.");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
     clientList_.push_back(newClient);
 
     if(clientList_.size() == 1)
@@ -41,11 +35,6 @@ void ClientUDPManager::insertNewClient(pair<shared_ptr<ClientUDP>, uint8_t> newC
 void ClientUDPManager::removeClient(uint8_t id)
 {
     lock_guard<mutex> lock(clientListMutex_);
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("ClientUDPManager ::removeClient.");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
     if(!clientList_.empty())
     {
         bool isSuccess = false;
@@ -60,18 +49,21 @@ void ClientUDPManager::removeClient(uint8_t id)
     }
 }
 
-void ClientUDPManager::broadcast(vector<uint8_t> frame)
+bool ClientUDPManager::broadcast(vector<uint8_t> frame)
 {
     lock_guard<mutex> lock(clientListMutex_);
-    if(logger_.isWarningEnable())
+
+    if(clientList_.empty())
     {
-        const string message = string("ClientUDPManager ::broadcast.");
-        logger_.writeLog(LogType::WARNING_LOG, message);
+        return false;
     }
+
     for(const auto& client : clientList_)
     {
         client.first->sendData(frame);
     }
+
+    return true;
 }
 
 void ClientUDPManager::setNewState(AbstractState *newState)
