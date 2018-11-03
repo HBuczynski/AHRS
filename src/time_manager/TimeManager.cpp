@@ -84,23 +84,23 @@ string TimeManager::getTimeSinceStart()
 
     if(hours < 10)
     {
-        ss << "0" << static_cast<int>(hours);
+        ss << "0" << static_cast<int>(hours) << ":";
     }
     else
     {
-        ss << static_cast<int>(hours);
+        ss << static_cast<int>(hours) << ":";
     }
 
-    if(hours < 10)
+    if(minutes < 10)
     {
-        ss << "0" << static_cast<int>(minutes);
+        ss << "0" << static_cast<int>(minutes) << ":";
     }
     else
     {
-        ss << static_cast<int>(minutes);
+        ss << static_cast<int>(minutes) << ":";
     }
 
-    if(hours < 10)
+    if(seconds < 10)
     {
         ss << "0" << static_cast<int>(seconds);
     }

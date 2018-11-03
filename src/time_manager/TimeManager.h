@@ -19,6 +19,7 @@ namespace utility
 		static std::string getTimeAndDate();
 
     private:
+
         static const unsigned int stringLength_ = 100;
         static std::chrono::system_clock::time_point startTime_;
 	};
