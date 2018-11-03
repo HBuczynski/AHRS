@@ -214,6 +214,8 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
+    stopTimer();
+    
     if(previousWidget_)
     {
         previousPage_ = currentPage_.load();
