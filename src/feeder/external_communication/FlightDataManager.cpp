@@ -79,7 +79,19 @@ void FlightDataManager::sendMeasurements()
         FlightData command(measurements);
         try
         {
+            if(logger_.isInformationEnable())
+            {
+                const std::string message = std::string("FlightDataManager :: Before broadcastFunction_.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
+
             broadcastFunction_(command.getFrameBytes());
+
+            if(logger_.isInformationEnable())
+            {
+                const std::string message = std::string("FlightDataManager :: After broadcastFunction_.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
         }
         catch (exception &e)
         {
@@ -89,6 +101,7 @@ void FlightDataManager::sendMeasurements()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
+
         this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
