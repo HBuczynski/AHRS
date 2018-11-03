@@ -41,4 +41,10 @@ void ClientUDP::sendData(std::vector<uint8_t> &frame)
         }
     }
 
+    if(logger_.isWarningEnable())
+    {
+        const string message = string("ClientUDP :: After sending data.");
+        logger_.writeLog(LogType::WARNING_LOG, message);
+    }
+
 }
