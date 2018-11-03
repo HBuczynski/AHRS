@@ -24,7 +24,7 @@ StoryboardsHandler::StoryboardsHandler()
     inititalizeMessageQueue();
     initializeSharedMemory();
 
-    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    //connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
 
 
     initializeStoryboardsContainer();
@@ -153,8 +153,8 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
+    timer_.startPeriodic(100, this);
 
-    acqTimer_.start(100);
 }
 
 void StoryboardsHandler::setSystemSetupPage()
@@ -425,7 +425,7 @@ void StoryboardsHandler::initializeSharedMemory()
     }
 }
 
-void StoryboardsHandler::acquireFlightData()
+void StoryboardsHandler::interruptNotification(timer_t timerID)
 {
     if(currentPage_ == PagesType::AHRS_PAGE)
     {
@@ -485,5 +485,5 @@ void StoryboardsHandler::handleFlightDataCommand(const FlightMeasurements& measu
 
 void StoryboardsHandler::stopTimer()
 {
-    acqTimer_.stop();
+    timer_.stop();
 }
