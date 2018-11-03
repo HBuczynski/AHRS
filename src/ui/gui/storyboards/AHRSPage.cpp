@@ -192,6 +192,8 @@ void AHRSPage::setPitch( float pitch )
 
 void AHRSPage::setAltitude( float altitude )
 {
+    string value = to_string(static_cast<uint32_t >(altitude)) + string(" ft");
+    ui_->downAltGps->setText(value.c_str());
     widgetPFD_->setAltitude( altitude );
 }
 
@@ -202,6 +204,8 @@ void AHRSPage::setPressure( float pressure )
 
 void AHRSPage::setAirspeed( float airspeed )
 {
+    string value = to_string(static_cast<uint32_t >(airspeed)) + string(" kts");
+    ui_->downGrdSpeed->setText(value.c_str());
     widgetPFD_->setAirspeed( airspeed );
 }
 
