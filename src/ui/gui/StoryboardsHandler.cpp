@@ -428,6 +428,10 @@ void StoryboardsHandler::acquireFlightData()
             handleFlightDataCommand(flightData->getMeasurements());
         }
     }
+    else
+    {
+        acqTimer_.stop();
+    }
 }
 
 void StoryboardsHandler::handleFlightDataCommand(const FlightMeasurements& measurements)
