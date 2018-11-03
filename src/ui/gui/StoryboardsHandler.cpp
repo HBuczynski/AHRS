@@ -13,18 +13,18 @@ using namespace utility;
 using namespace boost::interprocess;
 
 StoryboardsHandler::StoryboardsHandler()
-    : previousWidget_(nullptr),
-      uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
-      uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
-      previousPage_(PagesType::WELCOME_PAGE),
-      currentPage_(PagesType::WELCOME_PAGE),
-      informationsParameters_(42,42,42,42),
-      logger_(Logger::getInstance())
+        : previousWidget_(nullptr),
+          uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+          uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
+          previousPage_(PagesType::WELCOME_PAGE),
+          currentPage_(PagesType::WELCOME_PAGE),
+          informationsParameters_(42,42,42,42),
+          logger_(Logger::getInstance())
 {
     inititalizeMessageQueue();
     initializeSharedMemory();
 
-    //connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
 
 
     initializeStoryboardsContainer();
@@ -153,8 +153,8 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
-    timer_.startPeriodic(100, this);
 
+    acqTimer_.start(50);
 }
 
 void StoryboardsHandler::setSystemSetupPage()
@@ -214,18 +214,7 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = string("StoryboardsHandler:: Before ExitPage.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
     stopTimer();
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = string("StoryboardsHandler:: After ExitPage.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
 
     if(previousWidget_)
     {
@@ -242,12 +231,6 @@ void StoryboardsHandler::setExitPage()
 
     gridLayout_2->addWidget(exitPage_);
     previousWidget_ = exitPage_;
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = string("StoryboardsHandler:: Settinh ExitPage.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
 }
 
 void StoryboardsHandler::setLogsPage()
@@ -425,7 +408,7 @@ void StoryboardsHandler::initializeSharedMemory()
     }
 }
 
-void StoryboardsHandler::interruptNotification(timer_t timerID)
+void StoryboardsHandler::acquireFlightData()
 {
     if(currentPage_ == PagesType::AHRS_PAGE)
     {
@@ -451,12 +434,7 @@ void StoryboardsHandler::interruptNotification(timer_t timerID)
     }
     else
     {
-        if (logger_.isInformationEnable())
-        {
-            const std::string message = string("StoryboardsHandler:: NOT Updated AHRS.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
-        //acqTimer_.stop();
+        acqTimer_.stop();
     }
 }
 
@@ -485,5 +463,5 @@ void StoryboardsHandler::handleFlightDataCommand(const FlightMeasurements& measu
 
 void StoryboardsHandler::stopTimer()
 {
-    timer_.stop();
+    acqTimer_.stop();
 }

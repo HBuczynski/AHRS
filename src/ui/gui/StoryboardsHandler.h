@@ -33,19 +33,16 @@
 #include "storyboards/ConnectingPage.h"
 
 #include <../../common/UIStates.h>
-#include <time_manager/TimerInterrupt.h>
 
 
-class StoryboardsHandler final : public gui::PageController, public utility::TimerInterruptNotification
+class StoryboardsHandler final : public gui::PageController
 {
-    Q_OBJECT
+Q_OBJECT
 public:
     StoryboardsHandler();
     ~StoryboardsHandler();
 
     void setupUi(QMainWindow *MainWindow);
-
-    void interruptNotification(timer_t timerID) override;
 
 public slots:
     void sendToMainProcess(std::vector<uint8_t> msg);
@@ -61,7 +58,7 @@ public slots:
     void setConnectingPage() override;
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
 
-
+    void acquireFlightData();
 
 private:
     void stopTimer();
@@ -72,7 +69,7 @@ private:
     void handleFlightDataCommand(const FlightMeasurements& measurements);
     config::UISharedMemory uiSharedMemoryParameters_;
 
-    utility::TimerInterrupt timer_;
+    QTimer acqTimer_;
     std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
     std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
     std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
