@@ -154,7 +154,7 @@ void StoryboardsHandler::setAHRSPage()
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
 
-    acqTimer_.start(50);
+    acqTimer_.start(100);
 }
 
 void StoryboardsHandler::setSystemSetupPage()
@@ -215,7 +215,7 @@ void StoryboardsHandler::setRestartPage()
 void StoryboardsHandler::setExitPage()
 {
     stopTimer();
-    
+
     if(previousWidget_)
     {
         previousPage_ = currentPage_.load();
@@ -231,6 +231,12 @@ void StoryboardsHandler::setExitPage()
 
     gridLayout_2->addWidget(exitPage_);
     previousWidget_ = exitPage_;
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: Settinh ExitPage.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void StoryboardsHandler::setLogsPage()
@@ -434,7 +440,12 @@ void StoryboardsHandler::acquireFlightData()
     }
     else
     {
-        acqTimer_.stop();
+        if (logger_.isInformationEnable())
+        {
+            const std::string message = string("StoryboardsHandler:: NOT Updated AHRS.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+        //acqTimer_.stop();
     }
 }
 
