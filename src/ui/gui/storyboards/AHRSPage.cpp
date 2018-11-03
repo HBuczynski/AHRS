@@ -27,9 +27,12 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     initializeSharedMemory();
 
-    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
-    acqTimer_.start(50);
+    runAcquisitionThread_ = true;
+    acquisistionThread_ = std::thread(&AHRSPage::acquireFlightData, this);
+
+//    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+//    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
+//    acqTimer_.start(50);
 }
 
 AHRSPage::~AHRSPage()
@@ -39,7 +42,14 @@ AHRSPage::~AHRSPage()
         delete ui_;
     }
 
-    acqTimer_.stop();
+    //acqTimer_.stop();
+
+    runAcquisitionThread_ = false;
+
+    if(acquisistionThread_.joinable())
+    {
+        acquisistionThread_.join();
+    }
 }
 
 void AHRSPage::setup()
@@ -188,10 +198,17 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-    acqTimer_.stop();
-    while(!dataAcqIsFinished_) {
-        this_thread::sleep_for(std::chrono::milliseconds(1));
-    };
+//    acqTimer_.stop();
+//    while(!dataAcqIsFinished_) {
+//        this_thread::sleep_for(std::chrono::milliseconds(1));
+//    };
+
+    runAcquisitionThread_ = false;
+
+    if(acquisistionThread_.joinable())
+    {
+        acquisistionThread_.join();
+    }
 
     emit signalEXITPage();
 }
@@ -253,41 +270,46 @@ void AHRSPage::setSlipSkid( float slipSkid )
 
 void AHRSPage::acquireFlightData()
 {
-    if(logger_.isInformationEnable())
+    if ( logger_.isInformationEnable())
     {
         const string message = string("AHRSPage :: Start acquire.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    dataAcqIsFinished_ = false;
-    communication::MeasuringDataFactory dataFactory_;
-
-    vector<uint8_t> frame;
-    frame.resize(mappedMemoryRegion_->get_size());
-
-    uint8_t *memory = nullptr;
+//    dataAcqIsFinished_ = false;
+    while (runAcquisitionThread_)
     {
-        scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
-        memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
-        memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
-    }
+        communication::MeasuringDataFactory dataFactory_;
 
-    if(frame.size() != 0)
-    {
-        auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
-                dataFactory_.createCommand(frame));
+        vector<uint8_t> frame;
+        frame.resize(mappedMemoryRegion_->get_size());
 
-        handleFlightDataCommand(flightData->getMeasurements());
-    }
+        uint8_t *memory = nullptr;
+        {
+            scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
+            memory = reinterpret_cast<uint8_t * >(mappedMemoryRegion_->get_address());
+            memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
+        }
 
-    dataAcqIsFinished_ = true;
+        if ( frame.size() != 0 )
+        {
+            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+                    dataFactory_.createCommand(frame));
 
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: STOP acquire.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+            handleFlightDataCommand(flightData->getMeasurements());
+        }
+        this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }
+
+//    dataAcqIsFinished_ = true;
+//
+//    if(logger_.isInformationEnable())
+//    {
+//        const string message = string("AHRSPage :: STOP acquire.");
+//        logger_.writeLog(LogType::INFORMATION_LOG, message);
+//    }
+//}
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
