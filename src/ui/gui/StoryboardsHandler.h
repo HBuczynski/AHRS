@@ -40,6 +40,7 @@ class StoryboardsHandler final : public gui::PageController
     Q_OBJECT
 public:
     StoryboardsHandler();
+    ~StoryboardsHandler();
 
     void setupUi(QMainWindow *MainWindow);
 
@@ -57,10 +58,21 @@ public slots:
     void setConnectingPage() override;
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
 
-private:
+    void acquireFlightData();
 
+private:
+    void stopTimer();
     void inititalizeMessageQueue();
+    void initializeSharedMemory();
     void initializeStoryboardsContainer();
+
+    void handleFlightDataCommand(const FlightMeasurements& measurements);
+    config::UISharedMemory uiSharedMemoryParameters_;
+
+    QTimer acqTimer_;
+    std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
+    std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
+    std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
     std::unique_ptr<QWidget> centralWidget;
     std::unique_ptr<QGridLayout> gridLayout_5;

@@ -2,6 +2,9 @@
 
 #include <iostream>
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/wireless_measurement_commands/MeasuringData.h>
+#include <interfaces/wireless_measurement_commands/FlightData.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 
 using namespace std;
 using namespace gui;
@@ -11,6 +14,7 @@ using namespace boost::interprocess;
 
 StoryboardsHandler::StoryboardsHandler()
     : previousWidget_(nullptr),
+      uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       previousPage_(PagesType::WELCOME_PAGE),
       currentPage_(PagesType::WELCOME_PAGE),
@@ -18,8 +22,17 @@ StoryboardsHandler::StoryboardsHandler()
       logger_(Logger::getInstance())
 {
     inititalizeMessageQueue();
+    initializeSharedMemory();
+
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    acqTimer_.start(50);
 
     initializeStoryboardsContainer();
+}
+
+StoryboardsHandler::~StoryboardsHandler()
+{
+    stopTimer();
 }
 
 void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
@@ -368,4 +381,71 @@ void StoryboardsHandler::inititalizeMessageQueue()
         const std::string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void StoryboardsHandler::initializeSharedMemory()
+{
+    try
+    {
+        // Creating shared memory's mutex.
+        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
+        // Creating shared memory.
+        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
+        // Mapped shared memory.
+        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("AHRSPage :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+}
+
+void StoryboardsHandler::acquireFlightData()
+{
+    if(currentPage_ == PagesType::AHRS_PAGE)
+    {
+        communication::MeasuringDataFactory dataFactory_;
+
+        vector<uint8_t> frame;
+        frame.resize(mappedMemoryRegion_->get_size());
+
+        uint8_t *memory = nullptr;
+        {
+            scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
+            memory = reinterpret_cast<uint8_t * >(mappedMemoryRegion_->get_address());
+            memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
+        }
+
+        if ( frame.size() != 0 )
+        {
+            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+                    dataFactory_.createCommand(frame));
+
+            handleFlightDataCommand(flightData->getMeasurements());
+        }
+    }
+}
+
+void StoryboardsHandler::handleFlightDataCommand(const FlightMeasurements& measurements)
+{
+    ahrsPage_->setRoll(measurements.roll);
+    ahrsPage_->setPitch(measurements.pitch);
+    ahrsPage_->setHeading(measurements.heading);
+    ahrsPage_->setSlipSkid(measurements.slipSkid);
+    ahrsPage_->setTurnRate(measurements.turnCoordinator);
+    ahrsPage_->setAirspeed(measurements.groundSpeed);
+    ahrsPage_->setAltitude(measurements.altitude);
+    ahrsPage_->setPressure(measurements.pressure);
+    ahrsPage_->setClimbRate(measurements.verticalSpeed);
+    ahrsPage_->setMachNo(measurements.machNo);
+    ahrsPage_->setTimeSinceStart(TimeManager::getTimeSinceStart());
+}
+
+void StoryboardsHandler::stopTimer()
+{
+    acqTimer_.stop();
 }
