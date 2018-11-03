@@ -29,7 +29,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
     connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
-    acqTimer_.start(200);
+    acqTimer_.start(100);
 }
 
 AHRSPage::~AHRSPage()
