@@ -70,11 +70,11 @@ private:
 
     config::UISharedMemory uiSharedMemoryParameters_;
 
-    QTimer m_timer;
+    QTimer acqTimer_;
     std::atomic<bool> runAcquisitionThread_;
     std::thread acquisistionThread_;
 
-    std::mutex interruptMutex_;
+    std::atomic<bool> dataAcqIsFinished_;
 
     std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
     std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;

@@ -16,6 +16,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     :   QWidget(parent),
         uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
         runAcquisitionThread_(false),
+        dataAcqIsFinished_(false),
         controller_(controller),
         ui_(new Ui::AHRSPage),
         logger_(Logger::getInstance())
@@ -26,8 +27,8 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     initializeSharedMemory();
 
-    connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    m_timer.start(20);
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    acqTimer_.start(20);
 }
 
 AHRSPage::~AHRSPage()
@@ -37,7 +38,7 @@ AHRSPage::~AHRSPage()
         delete ui_;
     }
 
-    m_timer.stop();
+    acqTimer_.stop();
 }
 
 void AHRSPage::setup()
@@ -166,19 +167,31 @@ void AHRSPage::calibrateButton()
 
 void AHRSPage::menuButton()
 {
-    lock_guard<mutex> lock(interruptMutex_);
+    while(!dataAcqIsFinished_) {
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    acqTimer_.stop();
+
     emit signalMENUPage();
 }
 
 void AHRSPage::logsButton()
 {
-    lock_guard<mutex> lock(interruptMutex_);
+    while(!dataAcqIsFinished_) {
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    acqTimer_.stop();
+
     emit signalLOGSPage();
 }
 
 void AHRSPage::exitButton()
 {
-    lock_guard<mutex> lock(interruptMutex_);
+    while(!dataAcqIsFinished_) {
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+    acqTimer_.stop();
+
     emit signalEXITPage();
 }
 
@@ -239,7 +252,7 @@ void AHRSPage::setSlipSkid( float slipSkid )
 
 void AHRSPage::acquireFlightData()
 {
-    lock_guard<mutex> lock(interruptMutex_);
+    dataAcqIsFinished_ = false;
     communication::MeasuringDataFactory dataFactory_;
 
     vector<uint8_t> frame;
@@ -259,6 +272,8 @@ void AHRSPage::acquireFlightData()
 
         handleFlightDataCommand(flightData->getMeasurements());
     }
+
+    dataAcqIsFinished_ = true;
 }
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
