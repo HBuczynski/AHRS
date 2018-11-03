@@ -222,7 +222,7 @@ void AHRSPage::setHeading( float heading )
 void AHRSPage::setClimbRate( float climbRate )
 {
     widgetPFD_->setClimbRate( climbRate );
-    widgetVSI_->setClimbRate( climbRate * 10000 );
+    widgetVSI_->setClimbRate( climbRate * 10 );
 }
 
 void AHRSPage::setTurnRate( float turnRate )
@@ -256,23 +256,6 @@ void AHRSPage::acquireFlightData()
                 dataFactory_.createCommand(frame));
 
         handleFlightDataCommand(flightData->getMeasurements());
-
-//        if ( logger_.isInformationEnable())
-//        {
-//            const string message =
-//                    string("AHRSPage:: ") + flightData->getName() +
-//                    string(" Altitude: ") + to_string(flightData->getMeasurements().altitude)+
-//                    string(" roll: ") + to_string(flightData->getMeasurements().roll) +
-//                    string(" verticalSpeed: ") + to_string(flightData->getMeasurements().verticalSpeed) +
-//                    string(" groundSpeed: ") + to_string(flightData->getMeasurements().groundSpeed) +
-//                    string(" turnCoordinator: ") + to_string(flightData->getMeasurements().turnCoordinator) +
-//                    string(" heading: ") + to_string(flightData->getMeasurements().heading) +
-//                    string(" machNo: ") + to_string(flightData->getMeasurements().machNo) +
-//                    string(" latitude: ") + to_string(flightData->getMeasurements().latitude) +
-//                    string(" pitch: ") + to_string(flightData->getMeasurements().pitch) +
-//                    string(" pressure: ") + to_string(flightData->getMeasurements().pressure);
-//            logger_.writeLog(LogType::INFORMATION_LOG, message);
-//        }
     }
 }
 
