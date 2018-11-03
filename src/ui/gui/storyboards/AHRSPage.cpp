@@ -25,7 +25,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    m_timer.start(2000);
+    m_timer.start(20);
 }
 
 AHRSPage::~AHRSPage()
@@ -164,84 +164,76 @@ void AHRSPage::calibrateButton()
 
 void AHRSPage::menuButton()
 {
+    lock_guard<mutex> lock(interruptMutex_);
     emit signalMENUPage();
 }
 
 void AHRSPage::logsButton()
 {
+    lock_guard<mutex> lock(interruptMutex_);
     emit signalLOGSPage();
 }
 
 void AHRSPage::exitButton()
 {
+    lock_guard<mutex> lock(interruptMutex_);
     emit signalEXITPage();
 }
 
 void AHRSPage::setRoll( float roll )
 {
     widgetPFD_->setRoll( roll );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setPitch( float pitch )
 {
     widgetPFD_->setPitch( pitch );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setAltitude( float altitude )
 {
     widgetPFD_->setAltitude( altitude );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setPressure( float pressure )
 {
     widgetPFD_->setPressure( pressure);
-    widgetPFD_->update();
 }
 
 void AHRSPage::setAirspeed( float airspeed )
 {
     widgetPFD_->setAirspeed( airspeed );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setMachNo( float machNo )
 {
     widgetPFD_->setMachNo( machNo );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setHeading( float heading )
 {
     widgetPFD_->setHeading( heading );
-    widgetPFD_->update();
 }
 
 void AHRSPage::setClimbRate( float climbRate )
 {
     widgetPFD_->setClimbRate( climbRate );
-    widgetPFD_->update();
-
     widgetVSI_->setClimbRate( climbRate * 10000 );
-    widgetVSI_->update();
 }
 
 void AHRSPage::setTurnRate( float turnRate )
 {
     widgetTC_->setTurnRate( turnRate );
-    widgetTC_->update();
 }
 
 void AHRSPage::setSlipSkid( float slipSkid )
 {
     widgetTC_->setSlipSkid( slipSkid );
-    widgetTC_->update();
 }
 
 void AHRSPage::acquireFlightData()
 {
+    lock_guard<mutex> lock(interruptMutex_);
     communication::MeasuringDataFactory dataFactory_;
 
     vector<uint8_t> frame;
@@ -261,22 +253,22 @@ void AHRSPage::acquireFlightData()
 
         handleFlightDataCommand(flightData->getMeasurements());
 
-        if ( logger_.isInformationEnable())
-        {
-            const string message =
-                    string("AHRSPage:: ") + flightData->getName() +
-                    string(" Altitude: ") + to_string(flightData->getMeasurements().altitude)+
-                    string(" roll: ") + to_string(flightData->getMeasurements().roll) +
-                    string(" verticalSpeed: ") + to_string(flightData->getMeasurements().verticalSpeed) +
-                    string(" groundSpeed: ") + to_string(flightData->getMeasurements().groundSpeed) +
-                    string(" turnCoordinator: ") + to_string(flightData->getMeasurements().turnCoordinator) +
-                    string(" heading: ") + to_string(flightData->getMeasurements().heading) +
-                    string(" machNo: ") + to_string(flightData->getMeasurements().machNo) +
-                    string(" latitude: ") + to_string(flightData->getMeasurements().latitude) +
-                    string(" pitch: ") + to_string(flightData->getMeasurements().pitch) +
-                    string(" pressure: ") + to_string(flightData->getMeasurements().pressure);
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
+//        if ( logger_.isInformationEnable())
+//        {
+//            const string message =
+//                    string("AHRSPage:: ") + flightData->getName() +
+//                    string(" Altitude: ") + to_string(flightData->getMeasurements().altitude)+
+//                    string(" roll: ") + to_string(flightData->getMeasurements().roll) +
+//                    string(" verticalSpeed: ") + to_string(flightData->getMeasurements().verticalSpeed) +
+//                    string(" groundSpeed: ") + to_string(flightData->getMeasurements().groundSpeed) +
+//                    string(" turnCoordinator: ") + to_string(flightData->getMeasurements().turnCoordinator) +
+//                    string(" heading: ") + to_string(flightData->getMeasurements().heading) +
+//                    string(" machNo: ") + to_string(flightData->getMeasurements().machNo) +
+//                    string(" latitude: ") + to_string(flightData->getMeasurements().latitude) +
+//                    string(" pitch: ") + to_string(flightData->getMeasurements().pitch) +
+//                    string(" pressure: ") + to_string(flightData->getMeasurements().pressure);
+//            logger_.writeLog(LogType::INFORMATION_LOG, message);
+//        }
     }
 }
 
@@ -292,4 +284,8 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
+
+    widgetTC_->update();
+    widgetPFD_->update();
+    widgetVSI_->update();
 }

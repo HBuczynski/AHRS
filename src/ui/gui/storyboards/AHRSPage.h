@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>
 #include <atomic>
+#include <mutex>
 
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <boost/interprocess/sync/named_mutex.hpp>
@@ -72,6 +73,8 @@ private:
     QTimer m_timer;
     std::atomic<bool> runAcquisitionThread_;
     std::thread acquisistionThread_;
+
+    std::mutex interruptMutex_;
 
     std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
     std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
