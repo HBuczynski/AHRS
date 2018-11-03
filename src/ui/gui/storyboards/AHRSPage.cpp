@@ -1,6 +1,8 @@
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 #include <interfaces/wireless_measurement_commands/FlightData.h>
+#include <time_manager/TimeManager.h>
+
 #include "AHRSPage.h"
 #include "ui_AHRSPage.h"
 
@@ -271,6 +273,8 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
+
+    ui_->downFltDuration->setText(TimeManager::getTimeSinceStart().c_str());
 
     widgetTC_->update();
     widgetPFD_->update();

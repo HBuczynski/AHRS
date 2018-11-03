@@ -8,6 +8,8 @@ using namespace std;
 using namespace std::chrono;
 using namespace utility;
 
+std::chrono::system_clock::time_point TimeManager::startTime_ = std::chrono::system_clock::now();;
+
 TimeManager::TimeManager()
 {
 }
@@ -66,6 +68,46 @@ string TimeManager::getPreciselyTime()
         << std::setfill('0') << std::setw(2) << localTime.tm_min << ':'
         << std::setfill('0') << std::setw(2) << localTime.tm_sec << '.'
         << std::setfill('0') << std::setw(3) << milliseconds;
+
+    return ss.str();
+}
+
+string TimeManager::getTimeSinceStart()
+{
+    stringstream ss;
+    auto currentTime = std::chrono::high_resolution_clock::now();
+    auto timeSinceStart =  std::chrono::duration_cast<seconds>(currentTime - startTime_).count();
+
+    uint8_t hours = timeSinceStart/3600;
+    uint8_t minutes = (timeSinceStart - hours*3600) / 60;
+    uint8_t seconds = (timeSinceStart - 3600*hours - 60*minutes);
+
+    if(hours < 10)
+    {
+        ss << "0" << static_cast<int>(hours);
+    }
+    else
+    {
+        ss << static_cast<int>(hours);
+    }
+
+    if(hours < 10)
+    {
+        ss << "0" << static_cast<int>(minutes);
+    }
+    else
+    {
+        ss << static_cast<int>(minutes);
+    }
+
+    if(hours < 10)
+    {
+        ss << "0" << static_cast<int>(seconds);
+    }
+    else
+    {
+        ss << static_cast<int>(seconds);
+    }
 
     return ss.str();
 }

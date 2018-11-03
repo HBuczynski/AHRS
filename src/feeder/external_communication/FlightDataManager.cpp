@@ -104,6 +104,6 @@ void FlightDataManager::sendMeasurements()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(2));
+        this_thread::sleep_for(std::chrono::milliseconds(3));
     }
 }
