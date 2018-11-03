@@ -214,7 +214,18 @@ void StoryboardsHandler::setRestartPage()
 
 void StoryboardsHandler::setExitPage()
 {
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: Before ExitPage.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
     stopTimer();
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("StoryboardsHandler:: After ExitPage.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     if(previousWidget_)
     {
