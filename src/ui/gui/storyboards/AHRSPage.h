@@ -46,6 +46,8 @@ public:
 
     void setTurnRate( float turnRate );
     void setSlipSkid( float slipSkid );
+    void setTimeSinceStart( std::string time);
+    void update();
 
 public slots:
     void acquireFlightData();

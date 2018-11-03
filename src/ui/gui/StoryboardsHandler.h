@@ -15,6 +15,7 @@
 
 #include <memory>
 #include <tuple>
+#include <atomic>
 #include <config_reader/UIParameters.h>
 #include <boost/interprocess/ipc/message_queue.hpp>
 
@@ -84,8 +85,8 @@ private:
     config::UIMessageQueues uiMessageQueuesParameters_;
     std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
 
-    PagesType previousPage_;
-    PagesType currentPage_;
+    std::atomic<PagesType> previousPage_;
+    std::atomic<PagesType> currentPage_;
     std::map<PagesType, std::function<void()> > storyboardsContainer_;
     std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationsParameters_;
 

@@ -250,6 +250,18 @@ void AHRSPage::setSlipSkid( float slipSkid )
     widgetTC_->setSlipSkid( slipSkid );
 }
 
+void AHRSPage::setTimeSinceStart( std::string time)
+{
+    ui_->downFltDuration->setText(time.c_str());
+}
+
+void AHRSPage::update()
+{
+    widgetTC_->update();
+    widgetPFD_->update();
+    widgetVSI_->update();
+}
+
 void AHRSPage::acquireFlightData()
 {
     if(logger_.isInformationEnable())
@@ -300,12 +312,7 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
-
-    ui_->downFltDuration->setText(TimeManager::getTimeSinceStart().c_str());
-
-    widgetTC_->update();
-    widgetPFD_->update();
-    widgetVSI_->update();
+    setTimeSinceStart(TimeManager::getTimeSinceStart());
 }
 
 void AHRSPage::stopTimer()

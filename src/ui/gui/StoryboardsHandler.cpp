@@ -97,7 +97,7 @@ void StoryboardsHandler::backToPreviousPage()
     }
     else
     {
-        const auto iter = storyboardsContainer_.find(previousPage_);
+        const auto iter = storyboardsContainer_.find(previousPage_.load());
         if( iter != storyboardsContainer_.end())
         {
             iter->second();
@@ -112,7 +112,7 @@ void StoryboardsHandler::setWelcomePage()
 
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::WELCOME_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -131,7 +131,7 @@ void StoryboardsHandler::setAHRSPage()
 
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::AHRS_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -149,7 +149,7 @@ void StoryboardsHandler::setSystemSetupPage()
 
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::SYSTEM_SETUP_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -168,7 +168,7 @@ void StoryboardsHandler::setCallibrationSettingPage()
 
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::CALLIBRATION_SETTING_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -186,7 +186,7 @@ void StoryboardsHandler::setRestartPage()
 
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::RESTART_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -201,7 +201,7 @@ void StoryboardsHandler::setExitPage()
 {
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::EXIT_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -220,7 +220,7 @@ void StoryboardsHandler::setLogsPage()
 {
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::LOGS_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -239,7 +239,7 @@ void StoryboardsHandler::setMenuPage()
 {
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::MENU_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -258,7 +258,7 @@ void StoryboardsHandler::setConnectingPage()
 {
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::CONNECTING_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
@@ -276,7 +276,7 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 {
     if(previousWidget_)
     {
-        previousPage_ = currentPage_;
+        previousPage_ = currentPage_.load();
         currentPage_ = PagesType::INFORMATION_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
