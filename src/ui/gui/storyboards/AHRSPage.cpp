@@ -172,6 +172,12 @@ void AHRSPage::menuButton()
     }
     acqTimer_.stop();
 
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: Emit.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     emit signalMENUPage();
 }
 
@@ -182,6 +188,12 @@ void AHRSPage::logsButton()
     }
     acqTimer_.stop();
 
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: Emit.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     emit signalLOGSPage();
 }
 
@@ -191,6 +203,12 @@ void AHRSPage::exitButton()
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     acqTimer_.stop();
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: Emit.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     emit signalEXITPage();
 }
@@ -252,6 +270,12 @@ void AHRSPage::setSlipSkid( float slipSkid )
 
 void AHRSPage::acquireFlightData()
 {
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: Start acquire.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     dataAcqIsFinished_ = false;
     communication::MeasuringDataFactory dataFactory_;
 
@@ -274,6 +298,12 @@ void AHRSPage::acquireFlightData()
     }
 
     dataAcqIsFinished_ = true;
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("AHRSPage :: STOP acquire.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
