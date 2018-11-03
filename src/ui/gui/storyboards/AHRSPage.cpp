@@ -29,7 +29,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
     connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
-    acqTimer_.start(100);
+    acqTimer_.start(120);
 }
 
 AHRSPage::~AHRSPage()
@@ -172,13 +172,6 @@ void AHRSPage::menuButton()
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     emit signalStopTimer();
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: Emit.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
     emit signalMENUPage();
 }
 
@@ -188,13 +181,6 @@ void AHRSPage::logsButton()
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
     emit signalStopTimer();
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: Emit.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
     emit signalLOGSPage();
 }
 
