@@ -25,7 +25,7 @@ StoryboardsHandler::StoryboardsHandler()
     initializeSharedMemory();
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    acqTimer_.start(50);
+
 
     initializeStoryboardsContainer();
 }
@@ -153,6 +153,8 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
+
+    acqTimer_.start(50);
 }
 
 void StoryboardsHandler::setSystemSetupPage()
