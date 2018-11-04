@@ -50,7 +50,7 @@ public:
 
 private slots:
     void acquireFlightData();
-    void changePage();
+    void changePage(int code);
 
 
 signals:
