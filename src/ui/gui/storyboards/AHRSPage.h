@@ -50,7 +50,9 @@ public:
 
 private slots:
     void acquireFlightData();
-    void changePage(int code);
+    void changeONExitPage();
+    void changeONLogsPage();
+    void changeONMainPage();
 
 
 signals:

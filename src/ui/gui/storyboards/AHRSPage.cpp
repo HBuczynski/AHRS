@@ -166,19 +166,34 @@ void AHRSPage::calibrateButton()
 void AHRSPage::menuButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(static_cast<int>(SwitchCode::THIRD_SWITCH))));
+    QTimer::singleShot(50, this, SLOT(changeONMainPage()));
+}
+
+void AHRSPage::changeONMainPage()
+{
+    emit signalMENUPage();
 }
 
 void AHRSPage::logsButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(static_cast<int>(SwitchCode::SECOND_SWITCH))));
+    QTimer::singleShot(50, this, SLOT(changeONLogsPage()));
+}
+
+void AHRSPage::changeONLogsPage()
+{
+    emit signalLOGSPage();
 }
 
 void AHRSPage::exitButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(static_cast<int>(SwitchCode::FIRST_SWITCH))));
+    QTimer::singleShot(50, this, SLOT(changeONExitPage()));
+}
+
+void AHRSPage::changeONExitPage()
+{
+    emit signalEXITPage();
 }
 
 void AHRSPage::setRoll( float roll )
@@ -283,22 +298,7 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     update();
 }
 
-void AHRSPage::changePage(int code)
-{
-    auto switchCode = static_cast<peripherals::SwitchCode >(code);
 
-    switch (switchCode)
-    {
-        case SwitchCode::FIRST_SWITCH :emit signalEXITPage();
-            break;
-        case SwitchCode::SECOND_SWITCH :emit signalMENUPage();
-            break;
-        case SwitchCode::THIRD_SWITCH :emit signalLOGSPage();
-            break;
-        case SwitchCode::FOURTH_SWITCH :break;
-    }
-
-}
 
 void AHRSPage::stopAcqTimer()
 {
