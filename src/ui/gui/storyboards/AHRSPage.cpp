@@ -39,6 +39,9 @@ AHRSPage::~AHRSPage()
     }
 
     acqTimer_.stop();
+    while(acqTimer_.isActive()) {
+        acqTimer_.stop();
+    }
 }
 
 void AHRSPage::setup()
@@ -182,18 +185,14 @@ void AHRSPage::logsButton()
         acqTimer_.stop();
     }
 
+    this_thread::sleep_for(std::chrono::milliseconds(200));
+
 //    emit signalLOGSPage();
 }
 
 void AHRSPage::exitButton()
 {
     logsButton();
-
-    while(acqTimer_.isActive()) {
-        acqTimer_.stop();
-        this_thread::sleep_for(std::chrono::milliseconds(200));
-    }
-
 
     emit signalEXITPage();
 }
