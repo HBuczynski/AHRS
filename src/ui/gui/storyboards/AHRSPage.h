@@ -46,6 +46,8 @@ public:
 
     void setTurnRate( float turnRate );
     void setSlipSkid( float slipSkid );
+
+    void setTimeSinceStart(std::string time);
     void update();
 
 private slots:
@@ -70,6 +72,7 @@ private:
     void logsButton();
     void exitButton();
 
+    void startAcqTimer();
     void stopAcqTimer();
     void handleFlightDataCommand(const FlightMeasurements& measurements);
 

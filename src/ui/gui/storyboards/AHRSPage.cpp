@@ -22,11 +22,8 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     ui_->setupUi(this);
 
     setup();
-
     initializeSharedMemory();
-
-    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    acqTimer_.start(20);
+    startAcqTimer();
 }
 
 AHRSPage::~AHRSPage()
@@ -251,6 +248,11 @@ void AHRSPage::setSlipSkid( float slipSkid )
     widgetTC_->setSlipSkid( slipSkid );
 }
 
+void AHRSPage::setTimeSinceStart(std::string time)
+{
+    ui_->downFltDuration->setText(time.c_str());
+}
+
 void AHRSPage::update()
 {
     widgetTC_->update();
@@ -293,17 +295,20 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setPressure(measurements.pressure);
     setClimbRate(measurements.verticalSpeed);
     setMachNo(measurements.machNo);
-
-    ui_->downFltDuration->setText(TimeManager::getTimeSinceStart().c_str());
+    setTimeSinceStart(TimeManager::getTimeSinceStart());
     update();
 }
 
-
+void AHRSPage::startAcqTimer()
+{
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    acqTimer_.start(20);
+}
 
 void AHRSPage::stopAcqTimer()
 {
-    acqTimer_.stop();
-    while(acqTimer_.isActive()) {
+    while(acqTimer_.isActive())
+    {
         acqTimer_.stop();
     }
 }
