@@ -15,7 +15,6 @@ using namespace boost::interprocess;
 AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
         :   QWidget(parent),
             uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
-            dataAcqIsFinished_(false),
             controller_(controller),
             ui_(new Ui::AHRSPage),
             logger_(Logger::getInstance())
@@ -27,8 +26,6 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
-    connect(&lol, SIGNAL(timeout()), this, SLOT(exit()));
-    connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
     acqTimer_.start(20);
 }
 
@@ -39,10 +36,7 @@ AHRSPage::~AHRSPage()
         delete ui_;
     }
 
-    acqTimer_.stop();
-    while(acqTimer_.isActive()) {
-        acqTimer_.stop();
-    }
+    stopAcqTimer();
 }
 
 void AHRSPage::setup()
@@ -171,31 +165,20 @@ void AHRSPage::calibrateButton()
 
 void AHRSPage::menuButton()
 {
-    acqTimer_.stop();
-    while(acqTimer_.isActive()) {
-        acqTimer_.stop();
-    }
-
-    emit signalMENUPage();
+    stopAcqTimer();
+    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::THIRD_SWITCH)));
 }
 
 void AHRSPage::logsButton()
 {
-    acqTimer_.stop();
-    while(acqTimer_.isActive()) {
-        acqTimer_.stop();
-    }
-
-
-//    emit signalLOGSPage();
+    stopAcqTimer();
+    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::SECOND_SWITCH)));
 }
 
 void AHRSPage::exitButton()
 {
-    logsButton();
-
-    QTimer::singleShot(50, this, SLOT(exit()));
-    //emit signalEXITPage();
+    stopAcqTimer();
+    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::FIRST_SWITCH)));
 }
 
 void AHRSPage::setRoll( float roll )
@@ -253,15 +236,15 @@ void AHRSPage::setSlipSkid( float slipSkid )
     widgetTC_->setSlipSkid( slipSkid );
 }
 
+void AHRSPage::update()
+{
+    widgetTC_->update();
+    widgetPFD_->update();
+    widgetVSI_->update();
+}
+
 void AHRSPage::acquireFlightData()
 {
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: Start acquire.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    dataAcqIsFinished_ = false;
     communication::MeasuringDataFactory dataFactory_;
 
     vector<uint8_t> frame;
@@ -281,16 +264,6 @@ void AHRSPage::acquireFlightData()
 
         handleFlightDataCommand(flightData->getMeasurements());
     }
-
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("AHRSPage :: STOP acquire.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
-    dataAcqIsFinished_ = true;
-
 }
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
@@ -307,18 +280,30 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setMachNo(measurements.machNo);
 
     ui_->downFltDuration->setText(TimeManager::getTimeSinceStart().c_str());
-
-    widgetTC_->update();
-    widgetPFD_->update();
-    widgetVSI_->update();
 }
 
-void AHRSPage::stopTimer()
+void AHRSPage::changePage(SwitchCode switchCode)
+{
+    switch (switchCode)
+    {
+        case SwitchCode::FIRST_SWITCH :
+            emit signalEXITPage();
+            break;
+        case SwitchCode::SECOND_SWITCH :
+            emit signalMENUPage();
+            break;
+        case SwitchCode::THIRD_SWITCH :
+            emit signalLOGSPage();
+            break;
+        case SwitchCode::FOURTH_SWITCH :
+            break;
+    }
+}
+
+void AHRSPage::stopAcqTimer()
 {
     acqTimer_.stop();
-}
-
-void AHRSPage::exit()
-{
-    emit signalEXITPage();
+    while(acqTimer_.isActive()) {
+        acqTimer_.stop();
+    }
 }

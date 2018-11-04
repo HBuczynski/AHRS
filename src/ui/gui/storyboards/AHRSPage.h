@@ -46,17 +46,17 @@ public:
 
     void setTurnRate( float turnRate );
     void setSlipSkid( float slipSkid );
+    void update();
 
-public slots:
+private slots:
     void acquireFlightData();
-    void exit();
-    void stopTimer();
+    void changePage(peripherals::SwitchCode switchCode);
+
 
 signals:
     void signalEXITPage();
     void signalLOGSPage();
     void signalMENUPage();
-    void signalStopTimer();
 
 private:
     void setup();
@@ -68,14 +68,12 @@ private:
     void logsButton();
     void exitButton();
 
-
+    void stopAcqTimer();
     void handleFlightDataCommand(const FlightMeasurements& measurements);
 
     config::UISharedMemory uiSharedMemoryParameters_;
 
-    QTimer lol;
     QTimer acqTimer_;
-    std::atomic<bool> dataAcqIsFinished_;
 
     std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
     std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;

@@ -216,7 +216,7 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
             if(logger_.isInformationEnable())
             {
                 const string message = string("MainProcessScheduler :: Process ID: ") + to_string(pid) +
-                                       string(". Child exit status - ") + to_string(WEXITSTATUS(status));
+                                       string(". Child changePage status - ") + to_string(WEXITSTATUS(status));
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
         }
