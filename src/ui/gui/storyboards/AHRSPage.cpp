@@ -280,6 +280,7 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setMachNo(measurements.machNo);
 
     ui_->downFltDuration->setText(TimeManager::getTimeSinceStart().c_str());
+    update();
 }
 
 void AHRSPage::changePage(SwitchCode switchCode)
