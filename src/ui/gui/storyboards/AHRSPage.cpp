@@ -185,7 +185,6 @@ void AHRSPage::logsButton()
         acqTimer_.stop();
     }
 
-    this_thread::sleep_for(std::chrono::milliseconds(200));
 
 //    emit signalLOGSPage();
 }
@@ -193,6 +192,12 @@ void AHRSPage::logsButton()
 void AHRSPage::exitButton()
 {
     logsButton();
+
+    while ( !dataAcqIsFinished_)
+    {
+        this_thread::sleep_for(std::chrono::milliseconds(2));
+
+    }
 
     emit signalEXITPage();
 }
@@ -281,13 +286,15 @@ void AHRSPage::acquireFlightData()
         handleFlightDataCommand(flightData->getMeasurements());
     }
 
-    dataAcqIsFinished_ = true;
 
     if(logger_.isInformationEnable())
     {
         const string message = string("AHRSPage :: STOP acquire.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    dataAcqIsFinished_ = true;
+
 }
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
