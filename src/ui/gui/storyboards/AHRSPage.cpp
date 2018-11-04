@@ -187,10 +187,12 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-//    acqTimer_.stop();
-//    while(!dataAcqIsFinished_) {
-//        this_thread::sleep_for(std::chrono::milliseconds(1));
-//    };
+    acqTimer_.stop();
+    while(!dataAcqIsFinished_) {
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    };
+
+    this_thread::sleep_for(std::chrono::milliseconds(50));
 
     emit signalEXITPage();
 }
