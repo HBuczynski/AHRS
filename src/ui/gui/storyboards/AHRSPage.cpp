@@ -27,6 +27,7 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
     initializeSharedMemory();
 
     connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireFlightData()));
+    connect(&lol, SIGNAL(timeout()), this, SLOT(exit()));
     connect(this, SIGNAL(signalStopTimer()), this, SLOT(stopTimer()));
     acqTimer_.start(50);
 }
@@ -199,7 +200,8 @@ void AHRSPage::exitButton()
 
     }
 
-    emit signalEXITPage();
+    QTimer::singleShot(50, this, SLOT(exit()));
+    //emit signalEXITPage();
 }
 
 void AHRSPage::setRoll( float roll )
@@ -320,4 +322,9 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 void AHRSPage::stopTimer()
 {
     acqTimer_.stop();
+}
+
+void AHRSPage::exit()
+{
+    emit signalEXITPage();
 }

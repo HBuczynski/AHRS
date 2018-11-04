@@ -49,6 +49,7 @@ public:
 
 public slots:
     void acquireFlightData();
+    void exit();
     void stopTimer();
 
 signals:
@@ -72,6 +73,7 @@ private:
 
     config::UISharedMemory uiSharedMemoryParameters_;
 
+    QTimer lol;
     QTimer acqTimer_;
     std::atomic<bool> dataAcqIsFinished_;
 
