@@ -166,19 +166,19 @@ void AHRSPage::calibrateButton()
 void AHRSPage::menuButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::THIRD_SWITCH)));
+    QTimer::singleShot(50, this, SLOT(changePage()));
 }
 
 void AHRSPage::logsButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::SECOND_SWITCH)));
+    QTimer::singleShot(50, this, SLOT(changePage()));
 }
 
 void AHRSPage::exitButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changePage(SwitchCode::FIRST_SWITCH)));
+    QTimer::singleShot(50, this, SLOT(changePage()));
 }
 
 void AHRSPage::setRoll( float roll )
@@ -283,22 +283,23 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     update();
 }
 
-void AHRSPage::changePage(SwitchCode switchCode)
+void AHRSPage::changePage()
 {
-    switch (switchCode)
-    {
-        case SwitchCode::FIRST_SWITCH :
-            emit signalEXITPage();
-            break;
-        case SwitchCode::SECOND_SWITCH :
-            emit signalMENUPage();
-            break;
-        case SwitchCode::THIRD_SWITCH :
-            emit signalLOGSPage();
-            break;
-        case SwitchCode::FOURTH_SWITCH :
-            break;
-    }
+//    switch (switchCode)
+//    {
+//        case SwitchCode::FIRST_SWITCH :
+//
+//            break;
+//        case SwitchCode::SECOND_SWITCH :
+//            emit signalMENUPage();
+//            break;
+//        case SwitchCode::THIRD_SWITCH :
+//            emit signalLOGSPage();
+//            break;
+//        case SwitchCode::FOURTH_SWITCH :
+//            break;
+//    }
+    emit signalEXITPage();
 }
 
 void AHRSPage::stopAcqTimer()

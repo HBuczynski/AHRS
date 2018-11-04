@@ -50,7 +50,7 @@ public:
 
 private slots:
     void acquireFlightData();
-    void changePage(peripherals::SwitchCode switchCode);
+    void changePage();
 
 
 signals:
