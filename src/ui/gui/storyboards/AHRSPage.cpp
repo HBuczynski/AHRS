@@ -168,8 +168,8 @@ void AHRSPage::calibrateButton()
 void AHRSPage::menuButton()
 {
     acqTimer_.stop();
-    while(!dataAcqIsFinished_) {
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+    while(acqTimer_.isActive()) {
+        acqTimer_.stop();
     }
 
     emit signalMENUPage();
@@ -178,8 +178,8 @@ void AHRSPage::menuButton()
 void AHRSPage::logsButton()
 {
     acqTimer_.stop();
-    while(!dataAcqIsFinished_) {
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+    while(acqTimer_.isActive()) {
+        acqTimer_.stop();
     }
 
 //    emit signalLOGSPage();
@@ -187,12 +187,13 @@ void AHRSPage::logsButton()
 
 void AHRSPage::exitButton()
 {
-    emit signalStopTimer();
-    while(!dataAcqIsFinished_) {
-        this_thread::sleep_for(std::chrono::milliseconds(1));
-    };
+    logsButton();
 
-    this_thread::sleep_for(std::chrono::milliseconds(200));
+    while(acqTimer_.isActive()) {
+        acqTimer_.stop();
+        this_thread::sleep_for(std::chrono::milliseconds(200));
+    }
+
 
     emit signalEXITPage();
 }
