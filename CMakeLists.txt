@@ -49,6 +49,7 @@ endif()
 
 add_subdirectory("src/time_manager"                                     time_manager                    )
 add_subdirectory("src/logger"                                           logger                          )
+add_subdirectory("src/checksum"                                         checksum                        )
 add_subdirectory("src/utility"                                          utility                         )
 add_subdirectory("src/config_reader"                                    config_reader                   )
 add_subdirectory("src/packet"                                           packet                          )

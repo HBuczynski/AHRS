@@ -9,7 +9,7 @@ include_directories("../")
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
-add_executable(${PROJECT_NAME} ${source_list})
+add_library(${PROJECT_NAME} ${source_list})
 
 target_include_directories(
         ${PROJECT_NAME} PUBLIC
@@ -23,5 +23,5 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 
 if(BUILD_TESTS)
-    #add_subdirectory(unit_tests)
+    add_subdirectory(unit_tests)
 endif()
