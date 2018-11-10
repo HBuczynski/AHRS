@@ -87,7 +87,6 @@ void FlightDataManager::sendMeasurements()
             if(!broadcastFunction_(command.getFrameBytes()))
             {
                 runAcquisition_ = false;
-
                 if(logger_.isInformationEnable() )
                 {
                     const string message = string("FlightDataManager:: Broadcast is stopped, users are unavailable.");

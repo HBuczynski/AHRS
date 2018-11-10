@@ -59,7 +59,7 @@ bool GUIApplicationManager::initializeGUIMessageQueue()
 {
     try
     {
-        communicationMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.guiProcessQueueName.c_str());
+        communicationMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.guiProcessQueueName, uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -108,19 +108,11 @@ bool GUIApplicationManager::initializeSharedMemory()
 
 void GUIApplicationManager::interprocessCommunication()
 {
-    unsigned int priority;
-    message_queue::size_type receivedSize;
-
     while(runCommunicationThread_)
     {
         try
         {
-            vector<uint8_t> packet(uiMessageQueuesParameters_.messageSize);
-            communicationMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
-
-            packet.resize(receivedSize);
-            packet.shrink_to_fit();
-
+            const auto packet = communicationMessageQueue_->receive();
             handleCommand(packet);
         }
         catch(interprocess_exception &ex)

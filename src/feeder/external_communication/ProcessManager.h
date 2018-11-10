@@ -16,7 +16,7 @@
 
 #include <logger/Logger.h>
 #include <config_reader/FeederParameters.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 
 namespace communication
@@ -47,8 +47,8 @@ namespace communication
         communication::FeederCommandFactory commandFactory_;
         
 
-        std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue_;
-        std::shared_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
+        std::shared_ptr<communication::MessageQueueWrapper> receivingMessageQueue_;
+        std::shared_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
 
         std::atomic<bool> runConfigurationProcess_;
         utility::Logger &logger_;

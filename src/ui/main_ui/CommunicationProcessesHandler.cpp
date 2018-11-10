@@ -10,6 +10,7 @@ using namespace std;
 using namespace config;
 using namespace utility;
 using namespace main_process;
+using namespace communication;
 using namespace boost::interprocess;
 
 extern char **environ;
@@ -44,10 +45,9 @@ bool CommunicationProcessesHandler::initializeFirstProcessMessageQueue()
 {
     try
     {
-        message_queue::remove(uiMessageQueuesParameters_.firstCommunicationQueueName.c_str());
-        firstCommunicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.firstCommunicationQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
+        firstCommunicationMessageQueue = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.firstCommunicationQueueName,
+                                                                        uiMessageQueuesParameters_.messageQueueNumber,
+                                                                        uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -73,10 +73,9 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
 {
     try
     {
-        message_queue::remove(uiMessageQueuesParameters_.secondCommunicationQueueName.c_str());
-        secondCommunicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.secondCommunicationQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
+        secondCommunicationMessageQueue = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.secondCommunicationQueueName,
+                                                                        uiMessageQueuesParameters_.messageQueueNumber,
+                                                                        uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -244,7 +243,7 @@ void CommunicationProcessesHandler::switchProcesses()
 
 }
 
-void CommunicationProcessesHandler::sendMessage(const std::vector<uint8_t> &message, config::UICommunicationMode mode)
+void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, config::UICommunicationMode mode)
 {
     const auto processNumber = std::find_if(externallProcessess_.begin(), externallProcessess_.end(), [&mode](decltype(*externallProcessess_.begin()) &iter)
     {
@@ -253,11 +252,11 @@ void CommunicationProcessesHandler::sendMessage(const std::vector<uint8_t> &mess
 
     if((*processNumber).first == 1)
     {
-        firstCommunicationMessageQueue->send(message.data(), message.size(), 0);
+        firstCommunicationMessageQueue->send(message);
     }
     else
     {
-        secondCommunicationMessageQueue->send(message.data(), message.size(), 0);
+        secondCommunicationMessageQueue->send(message);
     }
 
 }

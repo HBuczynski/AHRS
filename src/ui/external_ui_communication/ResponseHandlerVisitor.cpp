@@ -86,7 +86,7 @@ void ResponseHandlerVisitor::initializeMessageQueue()
 {
     try
     {
-        sendingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str());
+        sendingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -106,7 +106,7 @@ void ResponseHandlerVisitor::initializeMessageQueue()
 
 void ResponseHandlerVisitor::sendMessage(std::vector<uint8_t> msg)
 {
-    sendingMessageQueue_->send(msg.data(), msg.size(), 0);
+    sendingMessageQueue_->send(msg);
 
     if (logger_.isInformationEnable())
     {

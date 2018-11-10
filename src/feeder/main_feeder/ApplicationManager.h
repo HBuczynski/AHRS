@@ -9,7 +9,7 @@
 #include <atomic>
 
 #include <config_reader/FeederParameters.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 #include <interfaces/communication_process_feeder/FeederNotificationFactory.h>
 #include <interfaces/communication_process_feeder/FeederCommandFactory.h>
@@ -49,9 +49,9 @@ namespace main_process
 
         std::thread processingThread_;
 
-        std::shared_ptr<boost::interprocess::message_queue> externalComMessageQueue;
-        std::shared_ptr<boost::interprocess::message_queue> internalComMessageQueue;
-        std::shared_ptr<boost::interprocess::message_queue> mainComMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> externalComMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> internalComMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> mainComMessageQueue;
 
         std::unique_ptr<boost::interprocess::named_mutex> externalSharedMemoryMutex_;
         std::unique_ptr<boost::interprocess::shared_memory_object> externalSharedMemory_;

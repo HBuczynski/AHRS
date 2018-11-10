@@ -11,7 +11,7 @@
 
 #include <logger/Logger.h>
 #include <config_reader/UIParameters.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 namespace main_process
 {
@@ -22,7 +22,7 @@ namespace main_process
         ~GuiProcessHandler();
 
         bool initialize();
-        void sendMessage(const std::vector<uint8_t>& message);
+        void sendMessage(std::vector<uint8_t>& message);
         void resetProcess();
 
     private:
@@ -33,7 +33,7 @@ namespace main_process
         config::UIExecutableFiles uiExecutableFiles_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
-        std::shared_ptr<boost::interprocess::message_queue> communicationMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> communicationMessageQueue;
 
         pid_t pid;
         utility::Logger& logger_;

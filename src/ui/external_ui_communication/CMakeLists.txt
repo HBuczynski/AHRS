@@ -19,11 +19,12 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC message_queue_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC packet)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC message_queue_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_process_ui)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)

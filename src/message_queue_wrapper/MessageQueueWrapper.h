@@ -10,7 +10,7 @@ namespace communication
     class MessageQueueWrapper
     {
     public:
-        MessageQueueWrapper(std::string name);
+        MessageQueueWrapper(std::string name, uint32_t messageQueueSize);
         MessageQueueWrapper(std::string name, uint32_t  messageQueueNumber, uint32_t messageQueueSize);
         ~MessageQueueWrapper();
 
@@ -20,7 +20,11 @@ namespace communication
     private:
         void checksum(std::vector<uint8_t> &msg);
 
-        std::shared_ptr<boost::interprocess::message_queue> receivingMessageQueue_;
+        std::shared_ptr<boost::interprocess::message_queue> messageQueue_;
+
+        std::string name_;
+        uint32_t messageQueueNumber_;
+        uint32_t messageQueueSize_;
 
     };
 }

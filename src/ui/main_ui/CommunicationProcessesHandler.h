@@ -10,7 +10,7 @@
 
 #include <logger/Logger.h>
 #include <config_reader/UIParameters.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 namespace main_process
 {
@@ -24,7 +24,7 @@ namespace main_process
 
         bool initialize();
 
-        void sendMessage(const std::vector<uint8_t>& message, config::UICommunicationMode mode);
+        void sendMessage(std::vector<uint8_t>& message, config::UICommunicationMode mode);
 
         void resetProcess(uint8_t processNumber);
         void switchProcesses();
@@ -42,8 +42,8 @@ namespace main_process
         config::UIExecutableFiles uiExecutableFiles_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
-        std::shared_ptr<boost::interprocess::message_queue> firstCommunicationMessageQueue;
-        std::shared_ptr<boost::interprocess::message_queue> secondCommunicationMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> firstCommunicationMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> secondCommunicationMessageQueue;
 
         utility::Logger& logger_;
         std::map<uint8_t, ProcessID> externallProcessess_;

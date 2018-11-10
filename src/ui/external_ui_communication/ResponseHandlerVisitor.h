@@ -3,7 +3,7 @@
 
 #include <interfaces/wireless_responses/ResponseVisitor.h>
 #include <logger/Logger.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 namespace communication
 {
@@ -26,7 +26,7 @@ namespace communication
         void sendMessage(std::vector<uint8_t> msg);
 
         config::UIMessageQueues uiMessageQueuesParameters_;
-        std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
 
         utility::Logger& logger_;
     };

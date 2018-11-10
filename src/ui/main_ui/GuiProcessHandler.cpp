@@ -10,6 +10,7 @@ using namespace std;
 using namespace config;
 using namespace utility;
 using namespace main_process;
+using namespace communication;
 using namespace boost::interprocess;
 
 GuiProcessHandler::GuiProcessHandler()
@@ -32,9 +33,9 @@ bool GuiProcessHandler::initialize()
     return isSuccess;
 }
 
-void GuiProcessHandler::sendMessage(const std::vector<uint8_t> &message)
+void GuiProcessHandler::sendMessage(std::vector<uint8_t> &message)
 {
-    communicationMessageQueue->send(message.data(), message.size(), 0);
+    communicationMessageQueue->send(message);
 }
 
 void GuiProcessHandler::resetProcess()
@@ -46,10 +47,9 @@ bool GuiProcessHandler::initializeMessageQueue()
 {
     try
     {
-        message_queue::remove(uiMessageQueuesParameters_.guiProcessQueueName.c_str());
-        communicationMessageQueue = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.guiProcessQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
+        communicationMessageQueue = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.guiProcessQueueName,
+                                                                    uiMessageQueuesParameters_.messageQueueNumber,
+                                                                    uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {

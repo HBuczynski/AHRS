@@ -49,10 +49,9 @@ bool ApplicationManager::initializeMainQueue()
 {
     try
     {
-        message_queue::remove(messageQueuesParameters_.mainProcessQueueName.c_str());
-        mainComMessageQueue = make_shared<message_queue>(create_only, messageQueuesParameters_.mainProcessQueueName.c_str(),
-                messageQueuesParameters_.messageQueueNumber,
-                messageQueuesParameters_.messageSize);
+        mainComMessageQueue = make_shared<MessageQueueWrapper>(messageQueuesParameters_.mainProcessQueueName,
+                                                                messageQueuesParameters_.messageQueueNumber,
+                                                                messageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -78,8 +77,7 @@ bool ApplicationManager::initializeExternalQueue()
 {
     try
     {
-        message_queue::remove(messageQueuesParameters_.externalCommunicationQueueName.c_str());
-        externalComMessageQueue = make_shared<message_queue>(create_only, messageQueuesParameters_.externalCommunicationQueueName.c_str(),
+        externalComMessageQueue = make_shared<MessageQueueWrapper>(messageQueuesParameters_.externalCommunicationQueueName,
                                                             messageQueuesParameters_.messageQueueNumber,
                                                             messageQueuesParameters_.messageSize);
     }
@@ -107,10 +105,9 @@ bool ApplicationManager::initializeInternalQueue()
 {
     try
     {
-        message_queue::remove(messageQueuesParameters_.internalCommunicationQueueName.c_str());
-        internalComMessageQueue = make_shared<message_queue>(create_only, messageQueuesParameters_.internalCommunicationQueueName.c_str(),
-                messageQueuesParameters_.messageQueueNumber,
-                messageQueuesParameters_.messageSize);
+        internalComMessageQueue = make_shared<MessageQueueWrapper>(messageQueuesParameters_.internalCommunicationQueueName,
+                                                                    messageQueuesParameters_.messageQueueNumber,
+                                                                    messageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -284,9 +281,6 @@ void ApplicationManager::stopFeederSystem()
 
 void ApplicationManager::runProcessing()
 {
-    unsigned int priority;
-    message_queue::size_type receivedSize;
-
     if(logger_.isInformationEnable())
     {
         const string message = string("ApplicationManager :: Run processing.");
@@ -297,12 +291,7 @@ void ApplicationManager::runProcessing()
     {
         try
         {
-            vector<uint8_t> packet(messageQueuesParameters_.messageSize);
-            mainComMessageQueue->receive(packet.data(), packet.size(), receivedSize, priority);
-
-            packet.resize(receivedSize);
-            packet.shrink_to_fit();
-
+            const auto packet = mainComMessageQueue->receive();
             handleCommand(packet);
         }
         catch(interprocess_exception &ex)

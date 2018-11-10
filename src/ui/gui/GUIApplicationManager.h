@@ -11,7 +11,7 @@
 #include <memory>
 #include <thread>
 
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <config_reader/UIParameters.h>
@@ -45,7 +45,7 @@ namespace gui
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
-        std::unique_ptr<boost::interprocess::message_queue> communicationMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> communicationMessageQueue_;
 
         std::atomic<bool> runCommunicationThread_;
         std::thread interprocessCommunicationThread_;

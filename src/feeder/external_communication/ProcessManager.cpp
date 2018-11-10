@@ -80,8 +80,8 @@ bool ProcessManager::initializeMessageQueueCommunication()
 {
     try
     {
-        receivingMessageQueue_ = make_shared<message_queue>(open_only, messageQueuesParameters_.externalCommunicationQueueName.c_str());
-        sendingMessageQueue_ = make_shared<message_queue>(open_only, messageQueuesParameters_.mainProcessQueueName.c_str());
+        receivingMessageQueue_ = make_shared<MessageQueueWrapper>(messageQueuesParameters_.externalCommunicationQueueName, messageQueuesParameters_.messageSize);
+        sendingMessageQueue_ = make_shared<MessageQueueWrapper>(messageQueuesParameters_.mainProcessQueueName, messageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -99,19 +99,11 @@ bool ProcessManager::initializeMessageQueueCommunication()
 
 void ProcessManager::startConfigurationProcess()
 {
-    unsigned int priority;
-    message_queue::size_type receivedSize;
-
     while(runConfigurationProcess_)
     {
         try
         {
-            vector<uint8_t> packet(messageQueuesParameters_.messageSize);
-            receivingMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
-
-            packet.resize(receivedSize);
-            packet.shrink_to_fit();
-
+            const auto packet = receivingMessageQueue_->receive();
             const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
 
             if(frameType == FrameType::COMMAND)
@@ -133,7 +125,7 @@ void ProcessManager::startConfigurationProcess()
                 }
             }
         }
-        catch(interprocess_exception &ex)
+        catch(exception &ex)
         {
             if(logger_.isErrorEnable())
             {

@@ -9,7 +9,7 @@ include_directories("../")
 file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
-add_executable(${PROJECT_NAME} ${source_list})
+add_library(${PROJECT_NAME} ${source_list})
 
 target_include_directories(
         ${PROJECT_NAME} PUBLIC
@@ -20,6 +20,8 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC checksum)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC utility)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)

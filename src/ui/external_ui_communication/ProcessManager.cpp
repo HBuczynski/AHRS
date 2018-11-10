@@ -43,7 +43,7 @@ bool ProcessManager::initializeMainMessageQueue()
 {
     try
     {
-        sendingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str());
+        sendingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -71,11 +71,11 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
     {
         if(processNumber_ == 1)
         {
-            receivingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.firstCommunicationQueueName.c_str());
+            receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.firstCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
         else if(processNumber_ == 2)
         {
-            receivingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.secondCommunicationQueueName.c_str());
+            receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.secondCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
         else
         {
@@ -179,7 +179,8 @@ void ProcessManager::interruptNotification(timer_t timerID)
                 connectionEstablished_ = true;
 
                 auto notification = CommunicationStatusNotification(communicationManagerUI_->getCurrentState(), communicationManagerUI_->getProcessNumber());
-                sendMessageToMainProcess(notification.getFrameBytes());
+                auto packet = notification.getFrameBytes();
+                sendMessageToMainProcess(packet);
             }
         }
     }
@@ -196,19 +197,11 @@ void ProcessManager::stopCommunication()
 
 void ProcessManager::startCommunication()
 {
-    unsigned int priority;
-    message_queue::size_type receivedSize;
-
     while(runCommunicationProcess_)
     {
         try
         {
-            vector<uint8_t> packet(uiMessageQueuesParameters_.messageSize);
-            receivingMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
-
-            packet.resize(receivedSize);
-            packet.shrink_to_fit();
-
+            const auto packet = receivingMessageQueue_->receive();
             handleMessageQueue(packet);
         }
         catch(interprocess_exception &ex)
@@ -232,9 +225,9 @@ void ProcessManager::handleMessageQueue(const vector<uint8_t> &data)
 }
 
 
-void ProcessManager::sendMessageToMainProcess(const vector<uint8_t> &data)
+void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
 {
-    sendingMessageQueue_->send(data.data(), data.size(), 0);
+    sendingMessageQueue_->send(data);
 
     if (logger_.isInformationEnable())
     {

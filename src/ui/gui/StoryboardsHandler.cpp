@@ -7,6 +7,7 @@ using namespace std;
 using namespace gui;
 using namespace config;
 using namespace utility;
+using namespace communication;
 using namespace boost::interprocess;
 
 StoryboardsHandler::StoryboardsHandler()
@@ -14,7 +15,7 @@ StoryboardsHandler::StoryboardsHandler()
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       previousPage_(PagesType::WELCOME_PAGE),
       currentPage_(PagesType::WELCOME_PAGE),
-      informationsParameters_(42,42,42,42),
+      informationParameters_(42,42,42,42),
       logger_(Logger::getInstance())
 {
     inititalizeMessageQueue();
@@ -93,7 +94,7 @@ void StoryboardsHandler::backToPreviousPage()
 {
     if(previousPage_ == PagesType::INFORMATION_PAGE)
     {
-        setInformationPage(get<0>(informationsParameters_), get<1>(informationsParameters_), get<2>(informationsParameters_), get<3>(informationsParameters_));
+        setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_), get<2>(informationParameters_), get<3>(informationParameters_));
     }
     else
     {
@@ -331,7 +332,7 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
         informationPage_->setBITRedundantFailed();
     }
 
-    informationsParameters_= make_tuple(master, redundant, masterBITs, redundantBITs);
+    informationParameters_= make_tuple(master, redundant, masterBITs, redundantBITs);
 
     gridLayout_2->addWidget(informationPage_);
     previousWidget_ = informationPage_;
@@ -339,7 +340,7 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
 
 void StoryboardsHandler::sendToMainProcess(std::vector<uint8_t> msg)
 {
-    sendingMessageQueue_->send(msg.data(), msg.size(), 0);
+    sendingMessageQueue_->send(msg);
 
     if (logger_.isInformationEnable())
     {
@@ -352,7 +353,7 @@ void StoryboardsHandler::inititalizeMessageQueue()
 {
     try
     {
-        sendingMessageQueue_ = make_unique<message_queue>(open_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str());
+        sendingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {

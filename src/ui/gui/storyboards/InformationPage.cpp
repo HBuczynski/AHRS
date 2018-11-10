@@ -234,7 +234,8 @@ void InformationPage::exitButton()
 void InformationPage::continueButton()
 {
     communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
-    controller_->sendToMainProcess(command.getFrameBytes());
+    auto packet = command.getFrameBytes();
+    controller_->sendToMainProcess(packet);
 
     emit signalAHRSPage();
 }

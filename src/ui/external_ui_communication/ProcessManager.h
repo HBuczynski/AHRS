@@ -1,7 +1,7 @@
 #ifndef AHRS_PROCESSMANAGER_H
 #define AHRS_PROCESSMANAGER_H
 
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <time_manager/TimerInterrupt.h>
 
 #include <thread>
@@ -39,7 +39,7 @@ namespace communication
         void interruptNotification(timer_t timerID);
 
         void handleMessageQueue(const std::vector<uint8_t> &data);
-        void sendMessageToMainProcess(const std::vector<uint8_t > &data);
+        void sendMessageToMainProcess(std::vector<uint8_t > &data);
 
         uint8_t processNumber_;
         utility::TimerInterrupt connectionEstablishingInterrupt_;
@@ -53,8 +53,8 @@ namespace communication
         std::shared_ptr<CommunicationManagerUI> communicationManagerUI_;
         std::unique_ptr<MainProcessHandlerVisitor> mainProcessHandlerVisitor_;
 
-        std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
-        std::unique_ptr<boost::interprocess::message_queue> receivingMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> receivingMessageQueue_;
 
         std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;

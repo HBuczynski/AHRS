@@ -29,11 +29,6 @@ UIApplicationManager::UIApplicationManager()
 
 UIApplicationManager::~UIApplicationManager()
 {
-    // Removing message queues.
-    message_queue::remove(uiMessageQueuesParameters_.firstCommunicationQueueName.c_str());
-    message_queue::remove(uiMessageQueuesParameters_.secondCommunicationQueueName.c_str());
-    message_queue::remove(uiMessageQueuesParameters_.mainProcessQueueName.c_str());
-
     // Removing shared memory.
     named_mutex::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
     shared_memory_object::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
@@ -54,10 +49,9 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
 {
     try
     {
-        message_queue::remove(uiMessageQueuesParameters_.mainProcessQueueName.c_str());
-        mainMessageQueue_ = make_shared<message_queue>(create_only, uiMessageQueuesParameters_.mainProcessQueueName.c_str(),
-                uiMessageQueuesParameters_.messageQueueNumber,
-                uiMessageQueuesParameters_.messageSize);
+        mainMessageQueue_ = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.mainProcessQueueName,
+                                                        uiMessageQueuesParameters_.messageQueueNumber,
+                                                        uiMessageQueuesParameters_.messageSize);
     }
     catch(interprocess_exception &ex)
     {
@@ -120,19 +114,11 @@ void UIApplicationManager::startUISystem()
     setNewState(new UIWelcomeState);
     currentState_->setWelcomePage(*this);
 
-    unsigned int priority;
-    message_queue::size_type receivedSize;
-
     while(runSystem_)
     {
         try
         {
-            vector<uint8_t> packet(uiMessageQueuesParameters_.messageSize);
-            mainMessageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
-
-            packet.resize(receivedSize);
-            packet.shrink_to_fit();
-
+            const auto packet = mainMessageQueue_->receive();
             handleMessage(packet);
         }
         catch(interprocess_exception &ex)
@@ -205,7 +191,8 @@ void UIApplicationManager::stopUISystem()
 void UIApplicationManager::setWelcomePage()
 {
     auto command = GUIWindowCommand(PagesType::WELCOME_PAGE);
-    guiProcessHandler_.sendMessage(command.getFrameBytes());
+    auto packet = command.getFrameBytes();
+    guiProcessHandler_.sendMessage(packet);
 
     if(logger_.isInformationEnable())
     {
@@ -217,7 +204,8 @@ void UIApplicationManager::setWelcomePage()
 void UIApplicationManager::communicationInProgress()
 {
     auto command = GUIWindowCommand(PagesType::CONNECTING_PAGE);
-    guiProcessHandler_.sendMessage(command.getFrameBytes());
+    auto packet = command.getFrameBytes();
+    guiProcessHandler_.sendMessage(packet);
 
     if(logger_.isInformationEnable())
     {
@@ -229,7 +217,8 @@ void UIApplicationManager::communicationInProgress()
 void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant)
 {
     auto command = GUIInformationWindowCommand(master, redundant, bitMaster, bitRedundant);
-    guiProcessHandler_.sendMessage(command.getFrameBytes());
+    auto packet = command.getFrameBytes();
+    guiProcessHandler_.sendMessage(packet);
 
     if(logger_.isInformationEnable())
     {

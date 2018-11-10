@@ -16,7 +16,7 @@
 #include <memory>
 #include <tuple>
 #include <config_reader/UIParameters.h>
-#include <boost/interprocess/ipc/message_queue.hpp>
+#include <message_queue_wrapper/MessageQueueWrapper.h>
 
 #include "MainWindow.h"
 #include "PageController.h"
@@ -82,12 +82,12 @@ private:
     QWidget *previousWidget_;
 
     config::UIMessageQueues uiMessageQueuesParameters_;
-    std::unique_ptr<boost::interprocess::message_queue> sendingMessageQueue_;
+    std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
 
     PagesType previousPage_;
     PagesType currentPage_;
     std::map<PagesType, std::function<void()> > storyboardsContainer_;
-    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationsParameters_;
+    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationParameters_;
 
     utility::Logger& logger_;
 };
