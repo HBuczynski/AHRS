@@ -10,6 +10,7 @@
 
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
 
 #include <interfaces/communication_process_feeder/FeederNotificationFactory.h>
 #include <interfaces/communication_process_feeder/FeederCommandFactory.h>
@@ -53,13 +54,8 @@ namespace main_process
         std::shared_ptr<communication::MessageQueueWrapper> internalComMessageQueue;
         std::shared_ptr<communication::MessageQueueWrapper> mainComMessageQueue;
 
-        std::unique_ptr<boost::interprocess::named_mutex> externalSharedMemoryMutex_;
-        std::unique_ptr<boost::interprocess::shared_memory_object> externalSharedMemory_;
-        std::unique_ptr<boost::interprocess::mapped_region> externalMappedMemoryRegion_;
-
-        std::unique_ptr<boost::interprocess::named_mutex> internalSharedMemoryMutex_;
-        std::unique_ptr<boost::interprocess::shared_memory_object> internalSharedMemory_;
-        std::unique_ptr<boost::interprocess::mapped_region> internalMappedMemoryRegion_;
+        std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;
+        std::unique_ptr<communication::SharedMemoryWrapper> internalSharedMemory_;
 
         config::FeederSharedMemory sharedMemoryParameters_;
         config::FeederMessageQueues messageQueuesParameters_;

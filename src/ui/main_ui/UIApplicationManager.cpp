@@ -77,17 +77,7 @@ bool UIApplicationManager::initializeSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        named_mutex::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
-        sharedMemoryMutex_ = make_unique<named_mutex>(create_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
-
-        // Creating shared memory.
-        shared_memory_object::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
-        sharedMemory_ = make_unique<shared_memory_object>(create_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
-
-        // Resize shared memory.
-        sharedMemory_->truncate(uiSharedMemoryParameters_.sharedMemorySize);
-        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName, uiSharedMemoryParameters_.sharedMemorySize);
     }
     catch(interprocess_exception &ex)
     {

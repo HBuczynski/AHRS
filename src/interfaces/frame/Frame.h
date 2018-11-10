@@ -47,6 +47,7 @@ namespace communication
         const FrameType& getFrameType() const;
         const InterfaceType& getInterfaceType() const;
 
+        static const uint8_t HEADER_SIZE = 6;
         static const uint8_t FRAME_TYPE = 1;
         static const uint8_t INTERFACE_TYPE = 2;
         static const uint8_t DATA_SIZE_UINT16_POSITION = 4;

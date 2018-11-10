@@ -39,6 +39,7 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC message_queue_wrapper)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC shared_memory_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Widgets Qt5::Gui Qt5::Svg)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)

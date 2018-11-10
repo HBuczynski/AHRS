@@ -10,6 +10,7 @@ using namespace std;
 using namespace utility;
 using namespace peripherals;
 using namespace config;
+using namespace communication;
 using namespace boost::interprocess;
 
 AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
@@ -109,12 +110,7 @@ void AHRSPage::initializeSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
-        // Creating shared memory.
-        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
-        // Mapped shared memory.
-        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
     }
     catch(interprocess_exception &ex)
     {
@@ -264,15 +260,7 @@ void AHRSPage::acquireFlightData()
 {
     communication::MeasuringDataFactory dataFactory_;
 
-    vector<uint8_t> frame;
-    frame.resize(mappedMemoryRegion_->get_size());
-
-    uint8_t *memory = nullptr;
-    {
-        scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
-        memory = reinterpret_cast<uint8_t* >(mappedMemoryRegion_->get_address());
-        memcpy(frame.data(), memory, mappedMemoryRegion_->get_size());
-    }
+    const auto  frame = sharedMemory_->read();
 
     if(frame.size() != 0)
     {

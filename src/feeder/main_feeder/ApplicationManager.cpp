@@ -133,17 +133,7 @@ bool ApplicationManager::initializeExternalSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        named_mutex::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        externalSharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, sharedMemoryParameters_.externalMemoryName.c_str());
-
-        // Creating shared memory.
-        shared_memory_object::remove(sharedMemoryParameters_.externalMemoryName.c_str());
-        externalSharedMemory_ = std::make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.externalMemoryName.c_str(), read_write);
-
-        // Resize shared memory.
-        externalSharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
-        externalMappedMemoryRegion_ = std::make_unique<mapped_region>(*externalSharedMemory_, read_write);
+        externalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.externalMemoryName, sharedMemoryParameters_.sharedMemorySize);
     }
     catch(interprocess_exception &ex)
     {
@@ -168,17 +158,7 @@ bool ApplicationManager::initializeInternalSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        named_mutex::remove(sharedMemoryParameters_.internalMemoryName.c_str());
-        internalSharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, sharedMemoryParameters_.internalMemoryName.c_str());
-
-        // Creating shared memory.
-        shared_memory_object::remove(sharedMemoryParameters_.internalMemoryName.c_str());
-        internalSharedMemory_ = std::make_unique<shared_memory_object>(create_only, sharedMemoryParameters_.internalMemoryName.c_str(), read_write);
-
-        // Resize shared memory.
-        internalSharedMemory_->truncate(sharedMemoryParameters_.sharedMemorySize);
-        internalMappedMemoryRegion_ = std::make_unique<mapped_region>(*internalSharedMemory_, read_write);
+        internalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.internalMemoryName, sharedMemoryParameters_.sharedMemorySize);
     }
     catch(interprocess_exception &ex)
     {

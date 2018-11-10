@@ -85,12 +85,7 @@ bool GUIApplicationManager::initializeSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
-        // Creating shared memory.
-        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
-        // Mapped shared memory.
-        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
     }
     catch(interprocess_exception &ex)
     {

@@ -1,8 +1,7 @@
 #ifndef AHRS_DATAHANDLERVISITOR_H
 #define AHRS_DATAHANDLERVISITOR_H
 
-#include <boost/interprocess/ipc/message_queue.hpp>
-#include <boost/interprocess/sync/named_mutex.hpp>
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <config_reader/UIParameters.h>
 #include <interfaces/wireless_measurement_commands/MeasuringDataVisitor.h>
 
@@ -23,13 +22,11 @@ namespace communication
 
     private:
         void initializeSharedMemory();
-        void saveDataToSharedMemory(const std::vector<uint8_t> &rawData);
+        void writeDataToSharedMemory(std::vector<uint8_t> &rawData);
 
         config::UISharedMemory uiSharedMemoryParameters_;
 
-        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
-        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
-        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
+        std::unique_ptr<communication::SharedMemoryWrapper> sharedMemory_;
 
         utility::Logger& logger_;
     };

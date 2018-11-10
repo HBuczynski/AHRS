@@ -3,7 +3,6 @@
 
 #include "MessageQueueWrapper.h"
 
-
 using namespace std;
 using namespace utility;
 using namespace communication;

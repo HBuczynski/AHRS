@@ -7,6 +7,7 @@
 
 #include <logger/Logger.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <config_reader/UIParameters.h>
 #include <interfaces/gui/GUIResponseFactory.h>
 #include <interfaces/communication_process_ui/UINotificationFactory.h>
@@ -54,10 +55,7 @@ namespace main_process
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
         std::shared_ptr<communication::MessageQueueWrapper> mainMessageQueue_;
-
-        std::unique_ptr<boost::interprocess::named_mutex> sharedMemoryMutex_;
-        std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
-        std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
+        std::unique_ptr<communication::SharedMemoryWrapper> sharedMemory_;
 
         CommunicationProcessesHandler communicationProcessesHandler_;
         GuiProcessHandler guiProcessHandler_;

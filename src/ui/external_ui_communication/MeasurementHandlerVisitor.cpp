@@ -24,12 +24,8 @@ void MeasurementHandlerVisitor::initializeSharedMemory()
 {
     try
     {
-        // Creating shared memory's mutex.
-        sharedMemoryMutex_ = make_unique<named_mutex>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str());
         // Creating shared memory.
-        sharedMemory_ = make_unique<shared_memory_object>(open_only, uiSharedMemoryParameters_.sharedMemoryName.c_str(), read_write);
-        // Mapped shared memory.
-        mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
+        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
     }
     catch(interprocess_exception &ex)
     {
@@ -43,7 +39,8 @@ void MeasurementHandlerVisitor::initializeSharedMemory()
 
 void MeasurementHandlerVisitor::visit(ImuData &data)
 {
-    saveDataToSharedMemory(data.getFrameBytes());
+    auto frame = data.getFrameBytes();
+    writeDataToSharedMemory(frame);
 
     if(logger_.isInformationEnable())
     {
@@ -54,7 +51,8 @@ void MeasurementHandlerVisitor::visit(ImuData &data)
 
 void MeasurementHandlerVisitor::visit(GpsData &data)
 {
-    saveDataToSharedMemory(data.getFrameBytes());
+    auto frame = data.getFrameBytes();
+    writeDataToSharedMemory(frame);
 
     if(logger_.isInformationEnable())
     {
@@ -65,7 +63,8 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
 void MeasurementHandlerVisitor::visit(FlightData &data)
 {
-    saveDataToSharedMemory(data.getFrameBytes());
+    auto frame = data.getFrameBytes();
+    writeDataToSharedMemory(frame);
 
     if(logger_.isInformationEnable())
     {
@@ -75,14 +74,9 @@ void MeasurementHandlerVisitor::visit(FlightData &data)
     }
 }
 
-void MeasurementHandlerVisitor::saveDataToSharedMemory(const std::vector<uint8_t> &rawData)
+void MeasurementHandlerVisitor::writeDataToSharedMemory(std::vector<uint8_t> &rawData)
 {
-    uint8_t *pointerToMemory = nullptr;
-    {
-        scoped_lock<named_mutex> lock(*sharedMemoryMutex_.get());
-        pointerToMemory = reinterpret_cast<uint8_t*>(mappedMemoryRegion_->get_address());
-        copy(rawData.begin(), rawData.end(), pointerToMemory);
-    }
+    sharedMemory_->write(rawData);
 }
 
 
