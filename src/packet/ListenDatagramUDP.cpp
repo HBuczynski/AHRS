@@ -1,6 +1,7 @@
 #include "ListenDatagramUDP.h"
 
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 using namespace communication;
@@ -44,10 +45,21 @@ vector<uint8_t> ListenDatagramUDP::receivePacket()
 
     socklen_t slen = sizeof(sockAddress_);
 
-    if ( recvfrom(sock_, reinterpret_cast<char*>(frame.data()), frame.capacity(), 0, (struct sockaddr *) &sockAddress_, &slen) <= 0 )
+    const auto receivedBytesNumber = recvfrom(sock_, reinterpret_cast<char*>(frame.data()), frame.capacity(), 0, (struct sockaddr *) &sockAddress_, &slen);
+
+    if ( receivedBytesNumber <= 0 )
     {
         throw logic_error("Cannot receive packet.");
     }
+
+    frame.resize(receivedBytesNumber);
+    frame.shrink_to_fit();
+
+    cout << "Frame: ";
+    for ( auto a : frame) {
+        cout << a ;
+    }
+    cout << endl;
 
     return frame;
 }

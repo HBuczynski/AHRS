@@ -61,10 +61,21 @@ vector<uint8_t> SendStreamTCP::receivePacket()
     vector<uint8_t > frame(1000);
     fill(frame.begin(), frame.end(), 0);
 
-    if( recv(sock_ , reinterpret_cast<char*>(frame.data()), frame.capacity(), 0) <= 0)
+    const auto receivedBytesNumber = recv(sock_ , reinterpret_cast<char*>(frame.data()), frame.capacity(), 0);
+
+    if( receivedBytesNumber <= 0)
     {
         throw logic_error("Cannot receive packet.");
     }
+
+    frame.resize(receivedBytesNumber);
+    frame.shrink_to_fit();
+
+    cout << "Frame: ";
+    for ( auto a : frame) {
+        cout << a ;
+    }
+    cout << endl;
 
     return frame;
 }

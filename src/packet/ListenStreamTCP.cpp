@@ -66,7 +66,6 @@ unique_ptr<SendStreamTCP> ListenStreamTCP::acceptUsers()
 
 string ListenStreamTCP::getAddress()
 {
-
     string address(inet_ntoa(sockAddress_.sin_addr));
 
     return address;
