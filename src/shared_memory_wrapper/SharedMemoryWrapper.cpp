@@ -88,9 +88,6 @@ void SharedMemoryWrapper::checksum(std::vector<uint8_t> &msg)
     const auto parityBit = Checksum::parityBit(commandFrame);
     const auto crc32 = Checksum::crc32(commandFrame);
 
-    cout << "CRCframe: " << crcFromFrame << "\t CRCCalculated: " << crc32 << endl;
-    cout << "ParityFromFrame: " << parityFromFrame << "\t Parity: " << parityBit << endl;
-
     if(crcFromFrame != crc32 || parityFromFrame != parityBit)
     {
         throw logic_error("Checksum is incorrect.");
