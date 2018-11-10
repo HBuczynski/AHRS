@@ -71,12 +71,6 @@ vector<uint8_t> SendStreamTCP::receivePacket()
     frame.resize(receivedBytesNumber);
     frame.shrink_to_fit();
 
-    cout << "Frame: ";
-    for ( auto a : frame) {
-        cout << static_cast<int>(a) ;
-    }
-    cout << endl;
-
     return frame;
 }
 

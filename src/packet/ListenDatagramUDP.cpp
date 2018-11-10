@@ -55,12 +55,6 @@ vector<uint8_t> ListenDatagramUDP::receivePacket()
     frame.resize(receivedBytesNumber);
     frame.shrink_to_fit();
 
-    cout << "Frame: ";
-    for ( auto a : frame) {
-        cout << static_cast<int>(a) ;
-    }
-    cout << endl;
-
     return frame;
 }
 
