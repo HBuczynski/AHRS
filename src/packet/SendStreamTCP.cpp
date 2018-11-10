@@ -6,8 +6,11 @@
 #include <fcntl.h>
 #include <iostream>
 #include <arpa/inet.h>
+#include <utility/BytesConverter.h>
+#include <checksum/Checksum.h>
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 SendStreamTCP::SendStreamTCP(int sock, struct sockaddr_in sockAddress)
@@ -71,11 +74,34 @@ vector<uint8_t> SendStreamTCP::receivePacket()
     frame.resize(receivedBytesNumber);
     frame.shrink_to_fit();
 
+    checksum(frame);
+
     return frame;
+}
+
+void SendStreamTCP::checksum(const std::vector<uint8_t> msg)
+{
+    const auto crcFromFrame = BytesConverter::fromVectorOfUINT8toUINT32(msg, msg.size() - sizeof(uint32_t));
+    const auto parityFromFrame = msg[msg.size() - sizeof(uint32_t) - sizeof(uint8_t)];
+
+    const auto commandFrame = vector<uint8_t>(msg.begin(), msg.begin() + msg.size() - sizeof(uint8_t) - sizeof(uint32_t));
+    const auto parityBit = Checksum::parityBit(commandFrame);
+    const auto crc32 = Checksum::crc32(commandFrame);
+
+    if(crcFromFrame != crc32 || parityFromFrame != parityBit)
+    {
+        throw logic_error("Checksum is incorrect.");
+    }
 }
 
 void SendStreamTCP::sendData(vector<uint8_t> message)
 {
+    auto parityBit = Checksum::parityBit(message);
+    const auto crc32 = Checksum::crc32(message);
+
+    message.push_back(parityBit);
+    BytesConverter::appendUINT32toVectorOfUINT8(crc32, message);
+
     if(write( sock_, reinterpret_cast<char*>(message.data()), sizeof(uint8_t)*message.size() ) <= 0)
     {
         throw logic_error("Cannot send packet.");

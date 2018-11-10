@@ -19,6 +19,8 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC utility)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC checksum)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

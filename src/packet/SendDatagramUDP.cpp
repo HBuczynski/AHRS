@@ -3,7 +3,11 @@
 #include <stdexcept>
 #include <arpa/inet.h>
 
+#include <utility/BytesConverter.h>
+#include <checksum/Checksum.h>
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 SendDatagramUDP::SendDatagramUDP(uint16_t port, std::string address)
@@ -36,6 +40,12 @@ SendDatagramUDP::~SendDatagramUDP()
 
 void SendDatagramUDP::sendData(vector<uint8_t>& message)
 {
+    auto parityBit = Checksum::parityBit(message);
+    const auto crc32 = Checksum::crc32(message);
+
+    message.push_back(parityBit);
+    BytesConverter::appendUINT32toVectorOfUINT8(crc32, message);
+
     if ( sendto(sock_, reinterpret_cast<char*>(message.data()), sizeof(uint8_t)*message.size(),0, (struct sockaddr *) &sockAddress_, sizeof(sockAddress_)) <=0 )
     {
         throw logic_error("Cannot send packet.");

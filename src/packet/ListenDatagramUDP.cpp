@@ -3,7 +3,11 @@
 #include <stdexcept>
 #include <iostream>
 
+#include <utility/BytesConverter.h>
+#include <checksum/Checksum.h>
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 ListenDatagramUDP::ListenDatagramUDP(uint16_t port)
@@ -55,7 +59,24 @@ vector<uint8_t> ListenDatagramUDP::receivePacket()
     frame.resize(receivedBytesNumber);
     frame.shrink_to_fit();
 
+    checksum(frame);
+
     return frame;
+}
+
+void ListenDatagramUDP::checksum(const std::vector<uint8_t> msg)
+{
+    const auto crcFromFrame = BytesConverter::fromVectorOfUINT8toUINT32(msg, msg.size() - sizeof(uint32_t));
+    const auto parityFromFrame = msg[msg.size() - sizeof(uint32_t) - sizeof(uint8_t)];
+
+    const auto commandFrame = vector<uint8_t>(msg.begin(), msg.begin() + msg.size() - sizeof(uint8_t) - sizeof(uint32_t));
+    const auto parityBit = Checksum::parityBit(commandFrame);
+    const auto crc32 = Checksum::crc32(commandFrame);
+
+    if(crcFromFrame != crc32 || parityFromFrame != parityBit)
+    {
+        throw logic_error("Checksum is incorrect.");
+    }
 }
 
 

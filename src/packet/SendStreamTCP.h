@@ -25,6 +25,7 @@ namespace communication
 
     private:
         void createSocket();
+        void checksum(const std::vector<uint8_t> msg);
 
         int sock_;
         struct sockaddr_in sockAddress_;
