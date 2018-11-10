@@ -73,7 +73,7 @@ vector<uint8_t> SendStreamTCP::receivePacket()
 
     cout << "Frame: ";
     for ( auto a : frame) {
-        cout << a ;
+        cout << static_cast<int>(a) ;
     }
     cout << endl;
 
