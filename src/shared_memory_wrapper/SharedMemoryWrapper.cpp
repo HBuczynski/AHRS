@@ -1,6 +1,7 @@
+#include <iostream>
+
 #include <checksum/Checksum.h>
 #include <utility/BytesConverter.h>
-
 #include <interfaces/frame/Frame.h>
 
 #include "SharedMemoryWrapper.h"
@@ -86,6 +87,9 @@ void SharedMemoryWrapper::checksum(std::vector<uint8_t> &msg)
     const auto commandFrame = vector<uint8_t>(msg.begin(), msg.begin() + totalCommandSize);
     const auto parityBit = Checksum::parityBit(commandFrame);
     const auto crc32 = Checksum::crc32(commandFrame);
+
+    cout << "CRCframe: " << crcFromFrame << "\t CRCCalculated: " << crc32 << endl;
+    cout << "ParityFromFrame: " << parityFromFrame << "\t Parity: " << parityBit << endl;
 
     if(crcFromFrame != crc32 || parityFromFrame != parityBit)
     {
