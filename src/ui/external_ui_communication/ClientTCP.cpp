@@ -25,6 +25,7 @@ bool ClientTCP::connectToServer()
     try
     {
         socket_->connectToServer();
+        socket_->setTimeout();
         return true;
     }
     catch (exception &e)

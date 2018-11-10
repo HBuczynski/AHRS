@@ -22,6 +22,7 @@ namespace communication
         void sendData(std::vector<uint8_t> message);
 
         void connectToServer();
+        void setTimeout();
 
     private:
         void createSocket();
@@ -32,6 +33,8 @@ namespace communication
 
         uint16_t port_;
         std::string address_;
+
+        uint8_t TIMEOUT_IN_SECONDS = 3;
     };
 }
 #endif //AHRS_BLACK_BOX_SENDSTREAMTCP_H

@@ -16,13 +16,7 @@ using namespace communication;
 SendStreamTCP::SendStreamTCP(int sock, struct sockaddr_in sockAddress)
     : sock_(sock),
       sockAddress_(sockAddress)
-{
-//    tv.tv_sec = 10; /* seconds */
-//    tv.tv_usec = 0;
-//
-//    if(setsockopt(socket, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv)) < 0)
-//        printf("Cannot Set SO_SNDTIMEO for socket\n");
-}
+{}
 
 SendStreamTCP::SendStreamTCP(uint16_t port, std::string address)
     : port_(port),
@@ -49,6 +43,15 @@ void SendStreamTCP::createSocket()
     sockAddress_.sin_family = AF_INET;
     sockAddress_.sin_addr.s_addr = inet_addr(address_.c_str());
     sockAddress_.sin_port = htons(port_);
+}
+
+void SendStreamTCP::setTimeout()
+{
+    struct timeval tv;
+    tv.tv_sec = TIMEOUT_IN_SECONDS;
+    tv.tv_usec = 0;
+
+    setsockopt(sock_, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
 }
 
 void SendStreamTCP::connectToServer()
