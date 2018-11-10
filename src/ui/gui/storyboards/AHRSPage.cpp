@@ -260,14 +260,25 @@ void AHRSPage::acquireFlightData()
 {
     communication::MeasuringDataFactory dataFactory_;
 
-    const auto  frame = sharedMemory_->read();
-
-    if(frame.size() != 0)
+    try
     {
-        auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
-                dataFactory_.createCommand(frame));
+        const auto  frame = sharedMemory_->read();
 
-        handleFlightDataCommand(flightData->getMeasurements());
+        if(frame.size() != 0)
+        {
+            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+                    dataFactory_.createCommand(frame));
+
+            handleFlightDataCommand(flightData->getMeasurements());
+        }
+    }
+    catch (exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("AHRSPage :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
     }
 }
 
