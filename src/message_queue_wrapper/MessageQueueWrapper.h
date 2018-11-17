@@ -3,6 +3,7 @@
 
 #include <boost/interprocess/ipc/message_queue.hpp>
 #include <memory>
+#include <vector>
 #include <string>
 
 namespace communication

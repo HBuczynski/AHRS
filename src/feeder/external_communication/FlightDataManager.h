@@ -1,6 +1,7 @@
 #ifndef AHRS_FLIGHTDATAMANAGER_H
 #define AHRS_FLIGHTDATAMANAGER_H
 
+#include <functional>
 #include <vector>
 #include <memory>
 #include <logger/Logger.h>
