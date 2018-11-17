@@ -3,9 +3,9 @@
 #include <wiringPi.h>
 #include <wiringPiI2C.h>
 
-#include "LSM9DS1Driver.h"
-#include "LSM9DS1_Registers.h"
-#include "LSM9DS1_Types.h"
+#include "../include/LSM9DS1Driver.h"
+#include "../include/LSM9DS1_Registers.h"
+#include "../include/LSM9DS1_Types.h"
 
 float magSensitivity[4] = {0.00014, 0.00029, 0.00043, 0.00058};
 
