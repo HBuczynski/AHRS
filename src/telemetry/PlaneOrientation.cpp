@@ -1,5 +1,7 @@
 #include "PlaneOrientation.h"
 
+#include <iostream>
+
 using namespace std;
 using namespace utility;
 using namespace telemetry;
@@ -18,10 +20,19 @@ void PlaneOrientation::initDataAcquisition()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("PlaneOrientation :: lsm9DS1Driver_ cannot  begin acq.");
+            const string message = string("PlaneOrientation :: lsm9DS1Driver cannot  begin acq.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
+    else
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("PlaneOrientation :: lsm9DS1Driver  begin acq.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+
 
     mahony_.begin(200);
 }
