@@ -36,7 +36,8 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
 
             printf("Gyro: %f, %f, %f [deg/s]\n", accelData.x, accelData.y, accelData.z);
             printf("Accel: %f, %f, %f [Gs]\n", gyroData.x, gyroData.y, gyroData.z);
-            printf("Mag: %f, %f, %f [gauss]\n", magnetometerData.x, magnetometerData.y, magnetometerData.z);
+            printf("Mag: %f, %f, %f [gauss]\n\n", magnetometerData.x, magnetometerData.y, magnetometerData.z);
+
             sleep(1.0);
         }
 
