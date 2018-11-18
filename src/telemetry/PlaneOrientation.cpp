@@ -50,9 +50,9 @@ void PlaneOrientation::readData()
     auto gy = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy);
     auto gz = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz);
 
-    auto ax = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax);
-    auto ay = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay);
-    auto az = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az);
+    auto ax = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax)*9.81;
+    auto ay = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay)*9.81;
+    auto az = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az)*9.81;
 
     auto mx = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx);
     auto my = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my);
@@ -63,7 +63,7 @@ void PlaneOrientation::readData()
     cout << "Mag:" << mx << " " << my << " " << mz << " " << "[gaus]" << endl;
     cout << endl;
 
-    madgwick_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
+    madgwick_.update(gx, gy, gz, ax, ay, az, 0.0, 0.0, 0.0);//, mx, my, mz);
 }
 
 float PlaneOrientation::getPitch()
