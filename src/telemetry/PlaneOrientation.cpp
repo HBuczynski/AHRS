@@ -34,7 +34,7 @@ void PlaneOrientation::initDataAcquisition()
     }
 
 
-    nxpMotionSense_.begin(200);
+    madgwick_.begin(200);
 }
 
 void PlaneOrientation::readData()
@@ -63,21 +63,21 @@ void PlaneOrientation::readData()
     cout << "Mag:" << mx << " " << my << " " << mz << " " << "[gaus]" << endl;
     cout << endl;
 
-    nxpMotionSense_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
+    madgwick_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 }
 
 float PlaneOrientation::getPitch()
 {
-    return nxpMotionSense_.getPitch();
+    return madgwick_.getPitch();
 }
 
 float PlaneOrientation::getRoll()
 {
-    return nxpMotionSense_.getRoll();
+    return madgwick_.getRoll();
 }
 
 float PlaneOrientation::getYaw()
 {
-    return nxpMotionSense_.getYaw();
+    return madgwick_.getYaw();
 }
 
