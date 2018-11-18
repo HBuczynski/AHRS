@@ -5,6 +5,7 @@
 #include <hal/include/LSM9DS1.h>
 
 #include "MadgwickAHRS.h"
+#include "MahonyAHRS.h"
 
 namespace telemetry
 {
@@ -25,6 +26,8 @@ namespace telemetry
     private:
 
         Madgwick madgwick_;
+        Mahony mahony_;
+
 
         LSM9DS1 lsm9DS1Driver_;
         utility::Logger& logger_;

@@ -22,6 +22,8 @@ void PlaneOrientation::initDataAcquisition()
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
+
+    mahony_.begin(10);
 }
 
 void PlaneOrientation::readData()
@@ -33,23 +35,23 @@ void PlaneOrientation::readData()
     while(!lsm9DS1Driver_.magAvailable()) ;
     lsm9DS1Driver_.readMag();
 
-    madgwick_.update(lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz),
+    mahony_.update(lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz),
                      lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az),
                      lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz));
 }
 
 float PlaneOrientation::getPitch()
 {
-    return madgwick_.getPitch();
+    return mahony_.getPitch();
 }
 
 float PlaneOrientation::getRoll()
 {
-    return madgwick_.getRoll();
+    return mahony_.getRoll();
 }
 
 float PlaneOrientation::getYaw()
 {
-    return madgwick_.getYaw();
+    return mahony_.getYaw();
 }
 
