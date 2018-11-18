@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
 
     BOOST_AUTO_TEST_CASE( get_position )
     {
-        Logger &logger = Logger::getInstance("SWITCH_TEST");
+        Logger &logger = Logger::getInstance("TELEMETRY_TEST");
 
         InitLogStructure struc;
         struc.debugLog = true;
@@ -29,7 +29,6 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
         logger.initLogger(struc);
 
         PlaneOrientation planeOrientation;
-
         planeOrientation.initDataAcquisition();
 
         while(true)

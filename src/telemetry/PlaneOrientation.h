@@ -6,6 +6,7 @@
 
 #include "MadgwickAHRS.h"
 #include "MahonyAHRS.h"
+#include "NXPMotionSense.h"
 
 namespace telemetry
 {
@@ -27,6 +28,7 @@ namespace telemetry
 
         Madgwick madgwick_;
         Mahony mahony_;
+        NXPSensorFusion nxpMotionSense_;
 
 
         LSM9DS1 lsm9DS1Driver_;
