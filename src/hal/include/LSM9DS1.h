@@ -1,24 +1,70 @@
+/******************************************************************************
+SFE_LSM9DS1.h
+SFE_LSM9DS1 Library Header File
+Jim Lindblom @ SparkFun Electronics
+Original Creation Date: February 27, 2015
+https://github.com/sparkfun/LSM9DS1_Breakout
+
+This file prototypes the LSM9DS1 class, implemented in SFE_LSM9DS1.cpp. In
+addition, it defines every register in the LSM9DS1 (both the Gyro and Accel/
+Magnetometer registers).
+
+Development environment specifics:
+    IDE: Arduino 1.6.0
+    Hardware Platform: Arduino Uno
+    LSM9DS1 Breakout Version: 1.0
+
+This code is beerware; if you see me (or any other SparkFun employee) at the
+local, and you've found our code helpful, please buy us a round!
+
+Distributed as-is; no warranty is given.
+******************************************************************************/
+#ifndef __SparkFunLSM9DS1_H__
+#define __SparkFunLSM9DS1_H__
+
+/*
+#if defined(ARDUINO) && ARDUINO >= 100
+  #include "Arduino.h"
+#else
+  #include "WProgram.h"
+  #include "pins_arduino.h"
+#endif
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include "LSM9DS1_Registers.h"
 #include "LSM9DS1_Types.h"
 
-#define LSM9DS1Driver_AG_ADDR(sa0)    ((sa0) == 0 ? 0x6A : 0x6B)
-#define LSM9DS1Driver_M_ADDR(sa1)        ((sa1) == 0 ? 0x1C : 0x1E)
+#define LSM9DS1_AG_ADDR(sa0)    ((sa0) == 0 ? 0x6A : 0x6B)
+#define LSM9DS1_M_ADDR(sa1)        ((sa1) == 0 ? 0x1C : 0x1E)
 
-enum LSM9DS1Driver_axis {
+enum lsm9ds1_axis {
     X_AXIS,
     Y_AXIS,
     Z_AXIS,
     ALL_AXIS
 };
 
-class LSM9DS1Driver
+class LSM9DS1
 {
 public:
+    IMUSettings settings;
 
-    // LSM9DS1Driver -- LSM9DS1Driver class constructor
+    // We'll store the gyro, accel, and magnetometer readings in a series of
+    // public class variables. Each sensor gets three variables -- one for each
+    // axis. Call readGyro(), readAccel(), and readMag() first, before using
+    // these variables!
+    // These values are the RAW signed 16-bit readings from the sensors.
+    int16_t gx, gy, gz; // x, y, and z axis readings of the gyroscope
+    int16_t ax, ay, az; // x, y, and z axis readings of the accelerometer
+    int16_t mx, my, mz; // x, y, and z axis readings of the magnetometer
+    int16_t temperature; // Chip temperature
+    float gBias[3], aBias[3], mBias[3];
+    int16_t gBiasRaw[3], aBiasRaw[3], mBiasRaw[3];
+    
+    // LSM9DS1 -- LSM9DS1 class constructor
     // The constructor will set up a handful of private variables, and set the
     // communication mode as well.
     // Input:
@@ -28,20 +74,18 @@ public:
     //                 If IMU_MODE_SPI, this is the chip select pin of the gyro (CS_AG)
     //    - mAddr = If IMU_MODE_I2C, this is the I2C address of the magnetometer.
     //                If IMU_MODE_SPI, this is the cs pin of the magnetometer (CS_M)
-    LSM9DS1Driver(interface_mode interface, uint8_t xgAddr, uint8_t mAddr);
-    LSM9DS1Driver();
+    LSM9DS1(interface_mode interface, uint8_t xgAddr, uint8_t mAddr);
+    LSM9DS1();
         
     // begin() -- Initialize the gyro, accelerometer, and magnetometer.
     // This will set up the scale and output rate of each sensor. The values set
     // in the IMUSettings struct will take effect after calling this function.
     uint16_t begin();
-
-    AccelerometersRawData getRawAccelData();
-    GyroscopesRawData getRawGyroData();
-    MagnetometersRawData getRawMagnetometerData();
-    uint16_t getTemperature();
-
-
+    
+    void calibrate(bool autoCalc = true);
+    void calibrateMag(bool loadIn = true);
+    void magOffset(uint8_t axis, int16_t offset);
+    
     // accelAvailable() -- Polls the accelerometer status register to check
     // if new data is available.
     // Output:    1 - New data available
@@ -68,7 +112,7 @@ public:
     //      on all axes.
     // Output:    1 - New data available
     //            0 - No new data available
-    uint8_t magAvailable(LSM9DS1Driver_axis axis = ALL_AXIS);
+    uint8_t magAvailable(lsm9ds1_axis axis = ALL_AXIS);
     
     // readGyro() -- Read the gyroscope output registers.
     // This function will read all six gyroscope output registers.
@@ -82,7 +126,7 @@ public:
     //    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
     // Output:
     //    A 16-bit signed integer with sensor data on requested axis.
-    int16_t readGyro(LSM9DS1Driver_axis axis);
+    int16_t readGyro(lsm9ds1_axis axis);
     
     // readAccel() -- Read the accelerometer output registers.
     // This function will read all six accelerometer output registers.
@@ -96,7 +140,7 @@ public:
     //    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
     // Output:
     //    A 16-bit signed integer with sensor data on requested axis.
-    int16_t readAccel(LSM9DS1Driver_axis axis);
+    int16_t readAccel(lsm9ds1_axis axis);
     
     // readMag() -- Read the magnetometer output registers.
     // This function will read all six magnetometer output registers.
@@ -110,14 +154,35 @@ public:
     //    - axis: can be either X_AXIS, Y_AXIS, or Z_AXIS.
     // Output:
     //    A 16-bit signed integer with sensor data on requested axis.
-    int16_t readMag(LSM9DS1Driver_axis axis);
+    int16_t readMag(lsm9ds1_axis axis);
 
     // readTemp() -- Read the temperature output register.
     // This function will read two temperature output registers.
     // The combined readings are stored in the class' temperature variables. Read
     // those _after_ calling readTemp().
     void readTemp();
-
+    
+    // calcGyro() -- Convert from RAW signed 16-bit value to degrees per second
+    // This function reads in a signed 16-bit value and returns the scaled
+    // DPS. This function relies on gScale and gRes being correct.
+    // Input:
+    //    - gyro = A signed 16-bit raw reading from the gyroscope.
+    float calcGyro(int16_t gyro);
+    
+    // calcAccel() -- Convert from RAW signed 16-bit value to gravity (g's).
+    // This function reads in a signed 16-bit value and returns the scaled
+    // g's. This function relies on aScale and aRes being correct.
+    // Input:
+    //    - accel = A signed 16-bit raw reading from the accelerometer.
+    float calcAccel(int16_t accel);
+    
+    // calcMag() -- Convert from RAW signed 16-bit value to Gauss (Gs)
+    // This function reads in a signed 16-bit value and returns the scaled
+    // Gs. This function relies on mScale and mRes being correct.
+    // Input:
+    //    - mag = A signed 16-bit raw reading from the magnetometer.
+    float calcMag(int16_t mag);
+    
     // setGyroScale() -- Set the full-scale range of the gyroscope.
     // This function can be called to set the scale of the gyroscope to 
     // 245, 500, or 200 degrees per second.
@@ -184,7 +249,7 @@ public:
     //    - wait = Wait function on duration counter
     //      true: Wait for duration samples before exiting interrupt
     //      false: Wait function off
-    void configAccelThs(uint8_t threshold, LSM9DS1Driver_axis axis, uint8_t duration = 0, bool wait = 0);
+    void configAccelThs(uint8_t threshold, lsm9ds1_axis axis, uint8_t duration = 0, bool wait = 0);
     
     // configGyroInt() -- Configure Gyroscope Interrupt Generator
     // Input:
@@ -205,7 +270,7 @@ public:
     //    - wait = Wait function on duration counter
     //      true: Wait for duration samples before exiting interrupt
     //      false: Wait function off
-    void configGyroThs(int16_t threshold, LSM9DS1Driver_axis axis, uint8_t duration, bool wait);
+    void configGyroThs(int16_t threshold, lsm9ds1_axis axis, uint8_t duration, bool wait);
     
     // configInt() -- Configure INT1 or INT2 (Gyro and Accel Interrupts only)
     // Input:
@@ -270,22 +335,10 @@ public:
     uint8_t getFIFOSamples();
         
 
-private :
+protected:
     // File descriptors
     int _fd;
-
-    IMUSettings settings;
-
-    // We'll store the gyro, accel, and magnetometer readings in a series of
-    // public class variables. Each sensor gets three variables -- one for each
-    // axis. Call readGyro(), readAccel(), and readMag() first, before using
-    // these variables!
-    // These values are the RAW signed 16-bit readings from the sensors.
-    AccelerometersRawData accelRawData_;
-    GyroscopesRawData gyroRawData_;
-    MagnetometersRawData magnetometerRawData_;
-    int16_t temperature; // Chip temperature
-
+    
     // x_mAddress and gAddress store the I2C address or SPI chip select pin
     // for each sensor.
     uint8_t _mAddress, _xgAddress;
@@ -294,7 +347,10 @@ private :
     // Units of these values would be DPS (or g's or Gs's) per ADC tick.
     // This value is calculated as (sensor scale) / (2^15).
     float gRes, aRes, mRes;
-
+    
+    // _autoCalc keeps track of whether we're automatically subtracting off
+    // accelerometer and gyroscope bias calculated in calibrate().
+    bool _autoCalc;
     
     // init() -- Sets up gyro, accel, and mag settings to default.
     // - interface - Sets the interface mode (IMU_MODE_I2C or IMU_MODE_SPI)
@@ -472,3 +528,5 @@ private :
     //         all stored in the *dest array given.
     uint8_t I2CreadBytes(uint8_t address, uint8_t subAddress, uint8_t * dest, uint8_t count);
 };
+
+#endif // SFE_LSM9DS1_H //

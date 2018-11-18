@@ -4,7 +4,7 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-#include "../include/LSM9DS1Driver.h"
+#include "../include/LSM9DS1.h"
 
 
 using namespace std;
@@ -14,7 +14,7 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
 
     BOOST_AUTO_TEST_CASE( reading )
     {
-        LSM9DS1Driver imu(IMU_MODE_I2C, 0x6b, 0x1e);
+        LSM9DS1 imu(IMU_MODE_I2C, 0x6b, 0x1e);
         imu.begin();
 
         if (!imu.begin()) {
@@ -30,13 +30,10 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
             while(!imu.magAvailable()) ;
             imu.readMag();
 
-            const auto accelData = imu.getRawAccelData();
-            const auto gyroData = imu.getRawGyroData();
-            const auto magnetometerData = imu.getRawMagnetometerData();
-
-            printf("Gyro: %f, %f, %f [deg/s]\n", accelData.x, accelData.y, accelData.z);
-            printf("Accel: %f, %f, %f [Gs]\n", gyroData.x, gyroData.y, gyroData.z);
-            printf("Mag: %f, %f, %f [gauss]\n\n", magnetometerData.x, magnetometerData.y, magnetometerData.z);
+            printf("Gyro: %f, %f, %f [deg/s]\n", imu.calcGyro(imu.gx), imu.calcGyro(imu.gy), imu.calcGyro(imu.gz));
+            printf("Accel: %f, %f, %f [Gs]\n", imu.calcAccel(imu.ax), imu.calcAccel(imu.ay), imu.calcAccel(imu.az));
+            printf("Mag: %f, %f, %f [gauss]\n", imu.calcMag(imu.mx), imu.calcMag(imu.my), imu.calcMag(imu.mz));
+            sleep(1.0);
 
             sleep(1.0);
         }
