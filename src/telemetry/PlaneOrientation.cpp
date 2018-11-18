@@ -23,7 +23,7 @@ void PlaneOrientation::initDataAcquisition()
         }
     }
 
-    mahony_.begin(10);
+    mahony_.begin(200)
 }
 
 void PlaneOrientation::readData()
@@ -35,11 +35,23 @@ void PlaneOrientation::readData()
     while(!lsm9DS1Driver_.magAvailable()) ;
     lsm9DS1Driver_.readMag();
 
-    float gyroScale = 3.14159f / 180.0f;
+    auto gx = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx);
+    auto gy = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy);
+    auto gz = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz);
 
-    mahony_.update(lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx) *gyroScale, lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy)*gyroScale, lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz)*gyroScale,
-                     lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az),
-                     lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz));
+    auto ax = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax);
+    auto ay = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay);
+    auto az = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az);
+
+    auto mx = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx);
+    auto my = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my);
+    auto mz = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz);
+
+    printf("Gyro: %f, %f, %f [deg/s]\n", gx, gy, gz);
+    printf("Accel: %f, %f, %f [Gs]\n", ax, ay, az);
+    printf("Mag: %f, %f, %f [gauss]\n", mx, my, mz);
+
+    mahony_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 }
 
 float PlaneOrientation::getPitch()
