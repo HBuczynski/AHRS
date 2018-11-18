@@ -23,7 +23,7 @@ void PlaneOrientation::initDataAcquisition()
         }
     }
 
-    mahony_.begin(200)
+    mahony_.begin(200);
 }
 
 void PlaneOrientation::readData()
@@ -49,7 +49,7 @@ void PlaneOrientation::readData()
 
     printf("Gyro: %f, %f, %f [deg/s]\n", gx, gy, gz);
     printf("Accel: %f, %f, %f [Gs]\n", ax, ay, az);
-    printf("Mag: %f, %f, %f [gauss]\n", mx, my, mz);
+    printf("Mag: %f, %f, %f [gauss]\n\n", mx, my, mz);
 
     mahony_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 }
