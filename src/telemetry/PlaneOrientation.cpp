@@ -35,7 +35,9 @@ void PlaneOrientation::readData()
     while(!lsm9DS1Driver_.magAvailable()) ;
     lsm9DS1Driver_.readMag();
 
-    mahony_.update(lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy), lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz),
+    float gyroScale = 3.14159f / 180.0f;
+
+    mahony_.update(lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx) *gyroScale, lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy)*gyroScale, lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz)*gyroScale,
                      lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay), lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az),
                      lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my), lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz));
 }
