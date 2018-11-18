@@ -69,11 +69,12 @@ if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL virtualB
     add_subdirectory("src/feeder/main_feeder"                           main_feeder                     )
     add_subdirectory("src/feeder/external_communication"                external_feeder_communication   )
     add_subdirectory("src/feeder/internal_communication"                internal_feeder_communication   )
+    add_subdirectory("src/telemetry"                                    telemetry                       )
 endif() 
 if((${TARGET_PLATFROM} STREQUAL cockpit_ui) OR (${TARGET_PLATFROM} STREQUAL virtualBoard))
-    add_subdirectory("src/ui/external_ui_communication"                      external_ui_communication        )
-    add_subdirectory("src/ui/main_ui"                                  main_ui                    )
-    add_subdirectory("src/ui/gui"                                   gui                     )
+    add_subdirectory("src/ui/external_ui_communication"                      external_ui_communication  )
+    add_subdirectory("src/ui/main_ui"                                  main_ui                          )
+    add_subdirectory("src/ui/gui"                                   gui                                 )
 endif()
 
 ########################################################################################################
