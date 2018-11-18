@@ -47,9 +47,10 @@ void PlaneOrientation::readData()
     auto my = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my);
     auto mz = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz);
 
-    printf("Gyro: %f, %f, %f [deg/s]\n", gx, gy, gz);
-    printf("Accel: %f, %f, %f [Gs]\n", ax, ay, az);
-    printf("Mag: %f, %f, %f [gauss]\n\n", mx, my, mz);
+    cout << "Gyro: " << gx << " " << gy << " " << gz << " " << "[deg/s]" << endl;
+    cout << "Accel: " << ax << " " << ay << " " << az << " " << "[Gs]" << endl;
+    cout << "Mag:" << mx << " " << my << " " << mz << " " << "[gaus]" << endl;
+    cout << endl;
 
     mahony_.update(gx, gy, gz, ax, ay, az, mx, my, mz);
 }
