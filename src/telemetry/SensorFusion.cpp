@@ -31,8 +31,8 @@
 //
 
 #include "NXPMotionSense.h"
+#include "math.h"
 #include <stdint.h>
-#include <math.h>
 
 // kalman filter noise variances
 #define FQVA_9DOF_GBY_KALMAN 2E-6F              // accelerometer noise g^2 so 1.4mg RMS
@@ -62,6 +62,9 @@
 #define ONEOVER48 0.02083333333F		// 1 / 48
 #define ONEOVER3840 0.0002604166667F	// 1 / 3840
 
+
+#define Quaternion_t NXPSensorFusion::Quaternion_t
+
 // compile time constants that are private to this file
 #define CORRUPTMATRIX 0.001F			// column vector modulus limit for rotation matrix
 
@@ -69,9 +72,6 @@
 #define X 0
 #define Y 1
 #define Z 2
-
-
-#define Quaternion_t NXPSensorFusion::Quaternion_t
 
 static void fqAeq1(Quaternion_t *pqA);
 static void feCompassNED(float fR[][3], float *pfDelta, const float fBc[], const float fGp[]);
@@ -91,17 +91,16 @@ static float fatan_deg(float x);
 static float fatan2_deg(float y, float x);
 static float fatan_15deg(float x);
 
-
 static void f3x3matrixAeqI(float A[][3]);
-void fmatrixAeqI(float *A[], int16_t rc);
+static void fmatrixAeqI(float *A[], int16_t rc);
 static void f3x3matrixAeqScalar(float A[][3], float Scalar);
-void f3x3matrixAeqInvSymB(float A[][3], float B[][3]);
-void f3x3matrixAeqAxScalar(float A[][3], float Scalar);
-void f3x3matrixAeqMinusA(float A[][3]);
-float f3x3matrixDetA(float A[][3]);
-void eigencompute(float A[][10], float eigval[], float eigvec[][10], int8_t n);
+static void f3x3matrixAeqInvSymB(float A[][3], float B[][3]);
+static void f3x3matrixAeqAxScalar(float A[][3], float Scalar);
+static void f3x3matrixAeqMinusA(float A[][3]);
+static float f3x3matrixDetA(float A[][3]);
+static void eigencompute(float A[][10], float eigval[], float eigvec[][10], int8_t n);
 static void fmatrixAeqInvA(float *A[], int8_t iColInd[], int8_t iRowInd[], int8_t iPivot[], int8_t isize);
-void fmatrixAeqRenormRotA(float A[][3]);
+static void fmatrixAeqRenormRotA(float A[][3]);
 
 
 
