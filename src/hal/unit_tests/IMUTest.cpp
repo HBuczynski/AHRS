@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_SUITE( gpio_test )
             imu.readMag();
 
             const auto accelData = imu.getRawAccelData();
-            const auto gyroData = imu.getRawAccelData();
-            const auto magnetometerData = imu.getRawAccelData();
+            const auto gyroData = imu.getRawGyroData();
+            const auto magnetometerData = imu.getRawMagnetometerData();
 
             printf("Gyro: %f, %f, %f [deg/s]\n", accelData.x, accelData.y, accelData.z);
             printf("Accel: %f, %f, %f [Gs]\n", gyroData.x, gyroData.y, gyroData.z);
