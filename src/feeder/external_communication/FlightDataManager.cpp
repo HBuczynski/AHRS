@@ -83,7 +83,7 @@ void FlightDataManager::sendMeasurements()
 
         if(logger_.isInformationEnable() )
         {
-            const string message = string("FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Pitch : ") + to_string((measurements.pitch);
+            const string message = string("FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Pitch : ") + to_string(measurements.pitch);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
