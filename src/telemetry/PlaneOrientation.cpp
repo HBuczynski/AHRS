@@ -83,7 +83,7 @@ void PlaneOrientation::readData()
     while (1) {
         //  poll at the rate recommended by the IMU
 
-        //usleep(imu->IMUGetPollInterval() * 1000);
+        usleep(imu->IMUGetPollInterval() * 1000);
 
         while (imu->IMURead()) {
             RTIMU_DATA imuData = imu->getIMUData();
