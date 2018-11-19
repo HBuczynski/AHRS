@@ -27,7 +27,6 @@ PlaneOrientation::~PlaneOrientation()
 void PlaneOrientation::initDataAcquisition()
 {
 
-
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
         printf("No IMU found\n");
         exit(1);
