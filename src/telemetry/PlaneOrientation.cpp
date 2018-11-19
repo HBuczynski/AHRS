@@ -18,8 +18,8 @@ PlaneOrientation::PlaneOrientation()
 
 PlaneOrientation::~PlaneOrientation()
 {
-    delete imu;
-    delete settings;
+//    delete imu;
+//    delete settings;
 }
 
 void PlaneOrientation::initDataAcquisition()

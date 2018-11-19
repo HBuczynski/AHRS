@@ -30,10 +30,10 @@ namespace telemetry
         uint64_t rateTimer;
         uint64_t displayTimer;
         uint64_t now_;
-
-        RTIMUSettings *settings;
-        RTIMU *imu;
-        RTIMU_DATA imuData;
+//
+//        RTIMUSettings *settings;
+//        RTIMU *imu;
+//        RTIMU_DATA imuData;
 
         utility::Logger& logger_;
     };
