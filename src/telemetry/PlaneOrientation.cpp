@@ -49,6 +49,8 @@ void PlaneOrientation::initDataAcquisition()
 void PlaneOrientation::readData()
 {
     RTIMU_DATA imuData = imu->getIMUData();
+
+    cout << RTMath::displayDegrees("", imuData.fusionPose) << endl;
 }
 
 float PlaneOrientation::getPitch()
