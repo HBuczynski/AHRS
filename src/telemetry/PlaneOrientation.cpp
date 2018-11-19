@@ -59,7 +59,6 @@ void PlaneOrientation::readData()
 
         now_ = RTMath::currentUSecsSinceEpoch();
 
-
         //  display 10 times per second
 
 //        if ((now_ - displayTimer) > 100000) {
