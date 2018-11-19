@@ -9,9 +9,9 @@
       "secondSourceAddress": "192.168.0.164",
 
       "firstDestinationPort": 8000,
-      "firstDestinationAddress": "192.168.0.59",
+      "firstDestinationAddress": "192.168.0.157",
       "secondDestinationPort": 7000,
-      "secondDestinationAddress": "192.168.0.59"
+      "secondDestinationAddress": "192.168.0.157"
     },
 
     "MessageQueues" :
