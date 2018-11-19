@@ -24,13 +24,13 @@ PlaneOrientation::~PlaneOrientation()
 
 void PlaneOrientation::initDataAcquisition()
 {
-    settings = new RTIMUSettings("RTIMULib");
-    imu = RTIMU::createIMU(settings);
-
-    if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
-        printf("No IMU found\n");
-        exit(1);
-    }
+//    settings = new RTIMUSettings("RTIMULib");
+//    imu = RTIMU::createIMU(settings);
+//
+//    if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
+//        printf("No IMU found\n");
+//        exit(1);
+//    }
 
     //  This is an opportunity to manually override any settings before the call IMUInit
 
@@ -52,14 +52,14 @@ void PlaneOrientation::initDataAcquisition()
 void PlaneOrientation::readData()
 {
 
-    /*RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
+    RTIMUSettings *settings = new RTIMUSettings("RTIMULib");
 
     RTIMU *imu = RTIMU::createIMU(settings);
 
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
         printf("No IMU found\n");
         exit(1);
-    }*/
+    }
 
     //  This is an opportunity to manually override any settings before the call IMUInit
 
