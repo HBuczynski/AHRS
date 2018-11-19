@@ -474,7 +474,7 @@ void RTIMUSettings::setDefaults()
     m_SPIBus = 0;
     m_SPISelect = 0;
     m_SPISpeed = 500000;
-    m_fusionType = RTFUSION_TYPE_KALMANSTATE4;
+    m_fusionType = RTFUSION_TYPE_RTQF;
     m_axisRotation = RTIMU_XNORTH_YEAST;
     m_pressureType = RTPRESSURE_TYPE_AUTODISCOVER;
     m_I2CPressureAddress = 0;
@@ -569,16 +569,16 @@ void RTIMUSettings::setDefaults()
 
     //  LSM9DS1 defaults
 
-    m_LSM9DS1GyroSampleRate = LSM9DS1_GYRO_SAMPLERATE_952;
+    m_LSM9DS1GyroSampleRate = LSM9DS1_GYRO_SAMPLERATE_119;
     m_LSM9DS1GyroBW = LSM9DS1_GYRO_BANDWIDTH_1;
     m_LSM9DS1GyroHpf = LSM9DS1_GYRO_HPF_4;
     m_LSM9DS1GyroFsr = LSM9DS1_GYRO_FSR_500;
 
-    m_LSM9DS1AccelSampleRate = LSM9DS1_ACCEL_SAMPLERATE_952;
+    m_LSM9DS1AccelSampleRate = LSM9DS1_ACCEL_SAMPLERATE_119;
     m_LSM9DS1AccelFsr = LSM9DS1_ACCEL_FSR_8;
     m_LSM9DS1AccelLpf = LSM9DS1_ACCEL_LPF_50;
 
-    m_LSM9DS1CompassSampleRate = LSM9DS1_COMPASS_SAMPLERATE_80;
+    m_LSM9DS1CompassSampleRate = LSM9DS1_COMPASS_SAMPLERATE_20;
     m_LSM9DS1CompassFsr = LSM9DS1_COMPASS_FSR_4;
     // BMX055 defaults
 
