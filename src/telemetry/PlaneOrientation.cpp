@@ -35,15 +35,14 @@ void PlaneOrientation::initDataAcquisition()
     //  This is an opportunity to manually override any settings before the call IMUInit
 
     //  set up IMU
-
-    imu->IMUInit();
-
-    //  this is a convenient place to change fusion parameters
-
-    imu->setSlerpPower(0.02);
-    imu->setGyroEnable(true);
-    imu->setAccelEnable(true);
-    imu->setCompassEnable(true);
+//    imu->IMUInit();
+//
+//    //  this is a convenient place to change fusion parameters
+//
+//    imu->setSlerpPower(0.02);
+//    imu->setGyroEnable(true);
+//    imu->setAccelEnable(true);
+//    imu->setCompassEnable(true);
 
     //  set up for rate timer
 
@@ -60,7 +59,7 @@ void PlaneOrientation::readData()
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
         printf("No IMU found\n");
         exit(1);
-    }
+    }*/
 
     //  This is an opportunity to manually override any settings before the call IMUInit
 
@@ -77,16 +76,14 @@ void PlaneOrientation::readData()
 
     //  set up for rate timer
 
-    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();*/
+    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
 
     //  now just process data
-
-    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
 
     while (1) {
         //  poll at the rate recommended by the IMU
 
-        usleep(imu->IMUGetPollInterval() * 1000);
+        //usleep(imu->IMUGetPollInterval() * 1000);
 
         while (imu->IMURead()) {
             RTIMU_DATA imuData = imu->getIMUData();
