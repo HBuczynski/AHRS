@@ -20,6 +20,7 @@ target_include_directories(
         "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC RTIMULib)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)

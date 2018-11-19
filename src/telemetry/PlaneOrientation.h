@@ -2,11 +2,10 @@
 #define AHRS_PLANEORIENTATION_H
 
 #include <logger/Logger.h>
-#include <hal/include/LSM9DS1.h>
 
-#include "MadgwickAHRS.h"
-#include "MahonyAHRS.h"
-#include "NXPMotionSense.h"
+#include "../../3rd_party/RTIMULib/RTIMUSettings.h"
+#include "../../3rd_party/RTIMULib/IMUDrivers/RTIMU.h"
+#include "../../3rd_party/RTIMULib/RTIMULibDefs.h"
 
 namespace telemetry
 {
@@ -26,12 +25,16 @@ namespace telemetry
 
     private:
 
-        Madgwick madgwick_;
-        Mahony mahony_;
-        NXPSensorFusion nxpMotionSense_;
+        int sampleCount;
+        int sampleRate;
+        uint64_t rateTimer;
+        uint64_t displayTimer;
+        uint64_t now_;
 
+        RTIMUSettings *settings;
+        RTIMU *imu;
+        RTIMU_DATA imuData;
 
-        LSM9DS1 lsm9DS1Driver_;
         utility::Logger& logger_;
     };
 }

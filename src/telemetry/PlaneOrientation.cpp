@@ -1,4 +1,5 @@
 #include "PlaneOrientation.h"
+#include "../../3rd_party/RTIMULib/RTIMULibDefs.h"
 
 #include <iostream>
 
@@ -7,77 +8,61 @@ using namespace utility;
 using namespace telemetry;
 
 PlaneOrientation::PlaneOrientation()
-    : lsm9DS1Driver_(IMU_MODE_I2C, 0x6b, 0x1e),
-      logger_(Logger::getInstance())
-{}
+    : logger_(Logger::getInstance())
+{
+    int sampleCount = 0;
+    int sampleRate = 0;
+}
 
 PlaneOrientation::~PlaneOrientation()
 {}
 
 void PlaneOrientation::initDataAcquisition()
 {
-    if (!lsm9DS1Driver_.begin())
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("PlaneOrientation :: lsm9DS1Driver cannot  begin acq.");
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-    }
-    else
-    {
-        if(logger_.isInformationEnable())
-        {
-            const string message = string("PlaneOrientation :: lsm9DS1Driver  begin acq.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
+    settings = new RTIMUSettings("RTIMULib");
+
+    imu = RTIMU::createIMU(settings);
+
+    if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
+        printf("No IMU found\n");
+        exit(1);
     }
 
+    //  This is an opportunity to manually override any settings before the call IMUInit
 
-    madgwick_.begin(200);
+    //  set up IMU
+
+    imu->IMUInit();
+
+    //  this is a convenient place to change fusion parameters
+
+    imu->setSlerpPower(0.02);
+    imu->setGyroEnable(true);
+    imu->setAccelEnable(true);
+    imu->setCompassEnable(true);
+
+    //  set up for rate timer
+
+    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
 }
 
 void PlaneOrientation::readData()
 {
-    while (!lsm9DS1Driver_.gyroAvailable()) ;
-    lsm9DS1Driver_.readGyro();
-    while(!lsm9DS1Driver_.accelAvailable()) ;
-    lsm9DS1Driver_.readAccel();
-    while(!lsm9DS1Driver_.magAvailable()) ;
-    lsm9DS1Driver_.readMag();
-
-    auto gx = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gx);
-    auto gy = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gy);
-    auto gz = lsm9DS1Driver_.calcGyro(lsm9DS1Driver_.gz);
-
-    auto ax = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ax)*9.81;
-    auto ay = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.ay)*9.81;
-    auto az = lsm9DS1Driver_.calcAccel(lsm9DS1Driver_.az)*9.81;
-
-    auto mx = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mx);
-    auto my = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.my);
-    auto mz = lsm9DS1Driver_.calcMag(lsm9DS1Driver_.mz);
-
-    cout << "Gyro: " << gx << " " << gy << " " << gz << " " << "[deg/s]" << endl;
-    cout << "Accel: " << ax << " " << ay << " " << az << " " << "[Gs]" << endl;
-    cout << "Mag:" << mx << " " << my << " " << mz << " " << "[gaus]" << endl;
-    cout << endl;
-
-    madgwick_.update(gx, gy, gz, ax, ay, az, 0.0, 0.0, 0.0);//, mx, my, mz);
+    RTIMU_DATA imuData = imu->getIMUData();
 }
 
 float PlaneOrientation::getPitch()
 {
-    return madgwick_.getPitch();
+    return imuData.fusionPose.x();
 }
 
 float PlaneOrientation::getRoll()
 {
-    return madgwick_.getRoll();
+    return imuData.fusionPose.y();
 }
 
 float PlaneOrientation::getYaw()
 {
-    return madgwick_.getYaw();
+    return imuData.fusionPose.z();
 }
 
