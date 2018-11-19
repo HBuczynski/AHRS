@@ -12,16 +12,21 @@ PlaneOrientation::PlaneOrientation()
 {
     int sampleCount = 0;
     int sampleRate = 0;
-}
 
-PlaneOrientation::~PlaneOrientation()
-{}
-
-void PlaneOrientation::initDataAcquisition()
-{
     settings = new RTIMUSettings("RTIMULib");
 
     imu = RTIMU::createIMU(settings);
+}
+
+PlaneOrientation::~PlaneOrientation()
+{
+    delete imu;
+    delete settings;
+}
+
+void PlaneOrientation::initDataAcquisition()
+{
+
 
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
         printf("No IMU found\n");
