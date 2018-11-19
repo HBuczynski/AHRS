@@ -13,9 +13,6 @@ PlaneOrientation::PlaneOrientation()
     int sampleCount = 0;
     int sampleRate = 0;
 
-    settings = new RTIMUSettings("RTIMULib");
-
-    imu = RTIMU::createIMU(settings);
 }
 
 PlaneOrientation::~PlaneOrientation()
@@ -26,6 +23,8 @@ PlaneOrientation::~PlaneOrientation()
 
 void PlaneOrientation::initDataAcquisition()
 {
+    settings = new RTIMUSettings("RTIMULib");
+    imu = RTIMU::createIMU(settings);
 
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL)) {
         printf("No IMU found\n");
@@ -52,11 +51,32 @@ void PlaneOrientation::initDataAcquisition()
 
 void PlaneOrientation::readData()
 {
-    RTIMU_DATA imuData = imu->getIMUData();
+    usleep(imu->IMUGetPollInterval() * 1000);
 
-    auto now = RTMath::currentUSecsSinceEpoch();
+    while (imu->IMURead()) {
+        imuData = imu->getIMUData();
+        sampleCount++;
 
-    cout << RTMath::displayDegrees("", imuData.fusionPose) << endl;
+        now_ = RTMath::currentUSecsSinceEpoch();
+
+        //  display 10 times per second
+
+        if ((now_ - displayTimer) > 100000) {
+            printf("Sample rate %d: %s\r", sampleRate, RTMath::displayDegrees("", imuData.fusionPose));//cout << RTMath::displayDegrees("", imuData.fusionPose) << endl;
+            fflush(stdout);
+            displayTimer = now_;
+        }
+
+        //  update rate every second
+
+        if ((now_ - rateTimer) > 1000000) {
+            sampleRate = sampleCount;
+            sampleCount = 0;
+            rateTimer = now_;
+        }
+    }
+
+
 }
 
 float PlaneOrientation::getPitch()
