@@ -2,6 +2,7 @@
 
 #include <math.h>
 #include <interfaces/wireless_measurement_commands/FlightData.h>
+#include <telemetry/PlaneOrientation.h>
 
 using namespace std;
 using namespace utility;
@@ -60,13 +61,18 @@ void FlightDataManager::sendMeasurements()
 {
     uint64_t counter = 0;
 
+    telemetry::PlaneOrientation orientation;
+    orientation.initDataAcquisition();
+
     while (runAcquisition_)
     {
         ++counter;
+
+        orientation.readData();
         FlightMeasurements measurements;
-        measurements.roll      =  180.0f * sin( counter / 9000.0f );
-        measurements.pitch     =   90.0f * sin( counter /  20000.0f );
-        measurements.heading   =  360.0f * sin( counter /  4000.0f );
+        measurements.roll      =  orientation.getRoll();//180.0f * sin( counter / 9000.0f );
+        measurements.pitch     =  orientation.getPitch(); //90.0f * sin( counter /  20000.0f );
+        measurements.heading   =  orientation.getYaw(); //360.0f * sin( counter /  4000.0f );
         measurements.slipSkid  =    1.0f * sin( counter /  1000.0f );
         measurements.turnCoordinator  =    7.0f * sin( counter /  1000.0f )/6.0f;
         measurements.groundSpeed  =  125.0f * sin( counter /  4000.0f ) +  125.0f;

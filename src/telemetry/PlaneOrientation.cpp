@@ -55,38 +55,19 @@ void PlaneOrientation::readData()
 
     while (imu->IMURead()) {
         imuData = imu->getIMUData();
-        //sampleCount++;
 
         now_ = RTMath::currentUSecsSinceEpoch();
-
-        //  display 10 times per second
-
-//        if ((now_ - displayTimer) > 100000) {
-//            printf("Sample rate %d: %s\r", sampleRate, RTMath::displayDegrees("", imuData.fusionPose));//cout << RTMath::displayDegrees("", imuData.fusionPose) << endl;
-//            fflush(stdout);
-//            displayTimer = now_;
-//        }
-//
-//        //  update rate every second
-//
-//        if ((now_ - rateTimer) > 1000000) {
-//            sampleRate = sampleCount;
-//            sampleCount = 0;
-//            rateTimer = now_;
-//        }
     }
-
-
 }
 
 float PlaneOrientation::getPitch()
 {
-    return imuData.fusionPose.x()*RTMATH_RAD_TO_DEGREE;
+    return imuData.fusionPose.y()*RTMATH_RAD_TO_DEGREE;
 }
 
 float PlaneOrientation::getRoll()
 {
-    return imuData.fusionPose.y()*RTMATH_RAD_TO_DEGREE;
+    return imuData.fusionPose.x()*RTMATH_RAD_TO_DEGREE;
 }
 
 float PlaneOrientation::getYaw()

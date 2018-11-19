@@ -19,6 +19,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC telemetry)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC shared_memory_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC message_queue_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
