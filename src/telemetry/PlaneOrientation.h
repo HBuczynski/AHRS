@@ -33,7 +33,7 @@ namespace telemetry
 //
 //        RTIMUSettings *settings;
 //        RTIMU *imu;
-//        RTIMU_DATA imuData;
+        RTIMU_DATA imuData2;
 
         utility::Logger& logger_;
     };

@@ -112,16 +112,16 @@ void PlaneOrientation::readData()
 
 float PlaneOrientation::getPitch()
 {
-    return imuData.fusionPose.x();
+    return imuData2.fusionPose.x();
 }
 
 float PlaneOrientation::getRoll()
 {
-    return imuData.fusionPose.y();
+    return imuData2.fusionPose.y();
 }
 
 float PlaneOrientation::getYaw()
 {
-    return imuData.fusionPose.z();
+    return imuData2.fusionPose.z();
 }
 
