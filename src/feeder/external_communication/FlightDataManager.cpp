@@ -62,7 +62,7 @@ void FlightDataManager::sendMeasurements()
     uint64_t counter = 0;
 
     telemetry::PlaneOrientation orientation;
-    orientation.initDataAcquisition();
+    runAcquisition_ = orientation.initDataAcquisition();
 
     while (runAcquisition_)
     {
@@ -109,6 +109,6 @@ void FlightDataManager::sendMeasurements()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(3));
+        this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 }

@@ -3,9 +3,9 @@
 
 #include <logger/Logger.h>
 
-#include "../../3rd_party/RTIMULib/RTIMUSettings.h"
-#include "../../3rd_party/RTIMULib/IMUDrivers/RTIMU.h"
-#include "../../3rd_party/RTIMULib/RTIMULibDefs.h"
+#include "RTIMUSettings.h"
+#include "IMUDrivers/RTIMU.h"
+#include "RTIMULibDefs.h"
 
 namespace telemetry
 {
@@ -15,8 +15,7 @@ namespace telemetry
         PlaneOrientation();
         ~PlaneOrientation();
 
-        void initDataAcquisition();
-
+        bool initDataAcquisition();
         void readData();
 
         float getPitch();
@@ -24,13 +23,6 @@ namespace telemetry
         float getYaw();
 
     private:
-
-        int sampleCount;
-        int sampleRate;
-        uint64_t rateTimer;
-        uint64_t displayTimer;
-        uint64_t now_;
-
         RTIMUSettings *settings;
         RTIMU *imu;
         RTIMU_DATA imuData;
