@@ -55,6 +55,8 @@ void PlaneOrientation::readData()
 {
     RTIMU_DATA imuData = imu->getIMUData();
 
+    auto now = RTMath::currentUSecsSinceEpoch();
+
     cout << RTMath::displayDegrees("", imuData.fusionPose) << endl;
 }
 
