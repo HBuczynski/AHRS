@@ -47,7 +47,7 @@ void PlaneOrientation::initDataAcquisition()
 
     //  set up for rate timer
 
-    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
+
 }
 
 void PlaneOrientation::readData()
@@ -80,6 +80,8 @@ void PlaneOrientation::readData()
     rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();*/
 
     //  now just process data
+
+    rateTimer = displayTimer = RTMath::currentUSecsSinceEpoch();
 
     while (1) {
         //  poll at the rate recommended by the IMU
