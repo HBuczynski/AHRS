@@ -35,10 +35,10 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
         {
             planeOrientation.readData();
 
-//            cout << "Roll: " << planeOrientation.getRoll() << endl;
-//            cout << "Pitch: " << planeOrientation.getPitch() << endl;
-//            cout << "Yaw: " << planeOrientation.getYaw() << endl;
-//            cout << endl;
+            cout << "Roll: " << planeOrientation.getRoll() << endl;
+            cout << "Pitch: " << planeOrientation.getPitch() << endl;
+            cout << "Yaw: " << planeOrientation.getYaw() << endl;
+            cout << endl;
         }
 
     }
