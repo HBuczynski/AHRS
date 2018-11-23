@@ -143,6 +143,26 @@ void RTFusionRTQF::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
+        data.accel = getAccelResiduals();
+
+        if (data.accel.x() >= 0)
+            data.accel.setX(data.accel.x() / settings->m_accelCalMax.x());
+        else
+            data.accel.setX(data.accel.x() / -settings->m_accelCalMin.x());
+
+        if (data.accel.y() >= 0)
+            data.accel.setY(data.accel.y() / settings->m_accelCalMax.y());
+        else
+            data.accel.setY(data.accel.y() / -settings->m_accelCalMin.y());
+
+        if (data.accel.z() >= 0)
+            data.accel.setZ(data.accel.z() / settings->m_accelCalMax.z());
+        else
+            data.accel.setZ(data.accel.z() / -settings->m_accelCalMin.z());
+
+
+        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
+
         predict();
         update();
         m_stateQ.toEuler(m_fusionPose);
