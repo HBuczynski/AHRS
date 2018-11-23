@@ -398,7 +398,7 @@ bool RTIMULSM9DS1::IMURead()
 
     handleGyroBias();
     calibrateAverageCompass();
-    calibrateAccel();
+//    calibrateAccel();
 
     //  now update the filter
 

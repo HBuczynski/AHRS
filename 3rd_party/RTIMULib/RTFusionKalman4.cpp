@@ -182,14 +182,31 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     else
         m_gyro = RTVector3();
 
-    m_accel = getAccelResiduals();
+    //m_accel = getAccelResiduals();
+
+    data.accel = getAccelResiduals();
     m_compass = data.compass;
     m_compassValid = data.compassValid;
+
+    if (data.accel.x() >= 0)
+        data.accel.setX(data.accel.x() / settings->m_accelCalMax.x());
+    else
+        data.accel.setX(data.accel.x() / settings->m_accelCalMin.x());
+
+    if (data.accel.y() >= 0)
+        data.accel.setY(data.accel.y() / settings->m_accelCalMax.y());
+    else
+        data.accel.setY(data.accel.y() / settings->m_accelCalMin.y());
+
+    if (data.accel.z() >= 0)
+        data.accel.setZ(data.accel.z() / settings->m_accelCalMax.z());
+    else
+        data.accel.setZ(data.accel.z() / settings->m_accelCalMin.z());
 
     if (m_firstTime) {
         m_lastFusionTime = data.timestamp;
 
-        calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
+        calculatePose(data.accel, m_compass, settings->m_compassAdjDeclination);
         m_Fk.fill(0);
 
         //  init covariance matrix to something
@@ -220,6 +237,22 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         }
 
         data.accel = getAccelResiduals();
+
+        if (data.accel.x() >= 0)
+            data.accel.setX(data.accel.x() / settings->m_accelCalMax.x());
+        else
+            data.accel.setX(data.accel.x() / settings->m_accelCalMin.x());
+
+        if (data.accel.y() >= 0)
+            data.accel.setY(data.accel.y() / settings->m_accelCalMax.y());
+        else
+            data.accel.setY(data.accel.y() / settings->m_accelCalMin.y());
+
+        if (data.accel.z() >= 0)
+            data.accel.setZ(data.accel.z() / settings->m_accelCalMax.z());
+        else
+            data.accel.setZ(data.accel.z() / settings->m_accelCalMin.z());
+
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
         predict();
