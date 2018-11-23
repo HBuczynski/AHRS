@@ -24,6 +24,7 @@
 
 #include "RTFusionKalman4.h"
 #include "RTIMUSettings.h"
+#include "RTIMULibDefs.h"
 
 //  The QVALUE affects the gyro response.
 
@@ -215,6 +216,8 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
             HAL_INFO("\n------\n");
             HAL_INFO1("IMU update delta time: %f\n", m_timeDelta);
         }
+
+        data.accel = getAccelResiduals();
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 

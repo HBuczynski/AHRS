@@ -532,6 +532,8 @@ bool RTIMULSM9DS0::IMURead()
 
     //  now update the filter
 
+
+
     updateFusion();
 
     return true;
