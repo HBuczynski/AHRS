@@ -220,8 +220,12 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         }
 
         //data.accel = getAccelResiduals();
+
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
+        data.accel = getAccelResiduals();
+        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
+        
         predict();
         update();
         m_stateQ.toEuler(m_fusionPose);
