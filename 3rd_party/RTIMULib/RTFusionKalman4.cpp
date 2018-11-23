@@ -244,6 +244,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;
-    data.fusionPose = gravity;
-    data.fusionQPose = gravityQ;
+    data.fusionPose = m_fusionPose;
+    data.fusionQPose = m_fusionQPose;
 }
