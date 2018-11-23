@@ -22,7 +22,6 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include <RTIMULibDefs.h>
 #include "RTIMU.h"
 #include "RTFusionKalman4.h"
 #include "RTFusionRTQF.h"
@@ -433,16 +432,6 @@ void RTIMU::calibrateAverageCompass()
 
 void RTIMU::calibrateAccel()
 {
-    m_gravity.setScalar(0);
-    m_gravity.setX(0);
-    m_gravity.setY(0);
-    m_gravity.setZ(1);
-
-    RTQuaternion accelQ;
-    RTQuaternion fusedConjugate;
-    RTQuaternion qTemp;
-    RTQuaternion rotatedGravity;
-
     if (!getAccelCalibrationValid())
         return;
 
@@ -460,19 +449,6 @@ void RTIMU::calibrateAccel()
         m_imuData.accel.setZ(m_imuData.accel.z() / m_settings->m_accelCalMax.z());
     else
         m_imuData.accel.setZ(m_imuData.accel.z() / -m_settings->m_accelCalMin.z());
-
-    accelQ.fromEuler(m_imuData.accel);
-
-    fusedConjugate = accelQ.conjugate();
-
-    // now do the rotation - takes two steps with qTemp as the intermediate variable
-
-    qTemp = m_gravity * accelQ;
-    rotatedGravity = fusedConjugate * qTemp;
-
-    m_imuData.accel.setX((rotatedGravity.x()));
-    m_imuData.accel.setY((rotatedGravity.y()));
-    m_imuData.accel.setZ((rotatedGravity.z()));
 }
 
 void RTIMU::updateFusion()
