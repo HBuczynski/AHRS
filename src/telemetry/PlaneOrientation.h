@@ -27,6 +27,16 @@ namespace telemetry
         RTIMU *imu;
         RTIMU_DATA imuData;
 
+        RTQuaternion m_gravity;
+        RTQuaternion rotatedGravity;
+        RTQuaternion fusedConjugate;
+        RTQuaternion qTemp;
+        RTVector3 residuals;
+
+        float prevX;
+        float prevY;
+        float prevZ;
+
         utility::Logger& logger_;
     };
 }
