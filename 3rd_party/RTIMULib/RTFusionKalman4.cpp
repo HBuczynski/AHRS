@@ -244,7 +244,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-        gravityPose = getAccelResiduals();
 
         predict();
         update();

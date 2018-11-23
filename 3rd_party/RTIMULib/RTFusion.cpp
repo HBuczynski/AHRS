@@ -121,11 +121,11 @@ RTVector3 RTFusion::getAccelResiduals()
 
     // create the conjugate of the pose
 
-    fusedConjugate = m_measuredQPose.conjugate();
+    fusedConjugate = m_fusionQPose.conjugate();
 
     // now do the rotation - takes two steps with qTemp as the intermediate variable
 
-    qTemp = m_gravity * m_measuredQPose;
+    qTemp = m_gravity * m_fusionQPose;
     rotatedGravity = fusedConjugate * qTemp;
 
     // now adjust the measured accel and change the signs to make sense
