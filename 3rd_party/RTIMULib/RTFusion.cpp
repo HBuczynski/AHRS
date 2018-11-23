@@ -133,8 +133,8 @@ RTVector3 RTFusion::getAccelResiduals()
 //    residuals.setX(-(m_accel.x() - rotatedGravity.x()));
 //    residuals.setY(-(m_accel.y() - rotatedGravity.y()));
 //    residuals.setZ(-(m_accel.z() - rotatedGravity.z()));
-    residuals.setX(-(rotatedGravity.x()));
-    residuals.setY(-(rotatedGravity.y()));
+    residuals.setX((rotatedGravity.x()));
+    residuals.setY((rotatedGravity.y()));
     residuals.setZ(-(rotatedGravity.z()));
 
     return residuals;
