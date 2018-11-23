@@ -191,7 +191,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     if (m_firstTime) {
         m_lastFusionTime = data.timestamp;
 
-        calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
+        //calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
         calculatePose(getGravity(), data.compass, settings->m_compassAdjDeclination);
 
         m_Fk.fill(0);
@@ -223,7 +223,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
             HAL_INFO1("IMU update delta time: %f\n", m_timeDelta);
         }
 
-        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
+       // calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
         calculatePose(getGravity(), data.compass, settings->m_compassAdjDeclination);
 
         predict();
