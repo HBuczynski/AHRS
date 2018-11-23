@@ -190,6 +190,9 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         m_lastFusionTime = data.timestamp;
 
         calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
+
+        data.accel = getAccelResiduals();
+        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
         m_Fk.fill(0);
 
         //  init covariance matrix to something
@@ -225,7 +228,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
         data.accel = getAccelResiduals();
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-        
+
         predict();
         update();
         m_stateQ.toEuler(m_fusionPose);
