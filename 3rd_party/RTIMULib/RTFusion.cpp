@@ -114,6 +114,7 @@ RTVector3 RTFusion::getGravity()
     RTQuaternion rotatedGravity;
     RTQuaternion fusedConjugate;
     RTQuaternion qTemp;
+    RTVector3 residuals;
 
     fusedConjugate = m_fusionQPose.conjugate();
 
@@ -121,7 +122,11 @@ RTVector3 RTFusion::getGravity()
     qTemp = m_gravity * m_fusionQPose;
     rotatedGravity = fusedConjugate * qTemp;
 
-    return RTVector3();
+    residuals.setX((rotatedGravity.x()));
+    residuals.setY((rotatedGravity.y()));
+    residuals.setZ((rotatedGravity.z()));
+
+    return residuals;
 }
 
 RTVector3 RTFusion::getAccelResiduals()
@@ -135,15 +140,12 @@ RTVector3 RTFusion::getAccelResiduals()
 
     // create the conjugate of the pose
 
-    fusedConjugate = m_measuredQPose.conjugate();
+    fusedConjugate = m_fusionQPose.conjugate();
 
     // now do the rotation - takes two steps with qTemp as the intermediate variable
 
-    qTemp = m_gravity * m_measuredQPose;
+    qTemp = m_gravity * m_fusionQPose;
     rotatedGravity = fusedConjugate * qTemp;
-
-    m_measuredQPose = rotatedGravity;
-    m_measuredQPose.fromEuler(m_measuredPose);
 
     // now adjust the measured accel and change the signs to make sense
 
