@@ -192,7 +192,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         m_lastFusionTime = data.timestamp;
 
         calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
-        getAccelResiduals();
 
         m_Fk.fill(0);
 
@@ -224,7 +223,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         }
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-        getAccelResiduals();
 
         predict();
         update();
@@ -239,8 +237,13 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
             HAL_INFO(RTMath::display("Error quat", m_stateQError));
          }
     }
+
+    auto gravity = getAccelResiduals();
+
+    m_fusionQPose.fromEuler(gravity);
+
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;
-    data.fusionPose = m_fusionPose;
+    data.fusionPose = gravity;
     data.fusionQPose = m_fusionQPose;
 }
