@@ -132,6 +132,9 @@ bool RTIMULSM9DS1::IMUInit()
 
     gyroBiasInit();
 
+
+
+
     HAL_INFO("LSM9DS1 init complete\n");
     return true;
 }

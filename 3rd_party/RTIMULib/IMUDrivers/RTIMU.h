@@ -167,6 +167,9 @@ protected:
     void calibrateAccel();                                  // calibrate the accelerometers
     void updateFusion();                                    // call when new data to update fusion state
 
+
+    RTQuaternion m_gravity;
+
     bool m_compassCalibrationMode;                          // true if cal mode so don't use cal data!
     bool m_accelCalibrationMode;                            // true if cal mode so don't use cal data!
 

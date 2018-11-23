@@ -224,9 +224,8 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
-
         predict();
-
+        update();
         m_stateQ.toEuler(m_fusionPose);
         m_fusionQPose = m_stateQ;
 
@@ -245,6 +244,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;
-    data.fusionPose = gravity;
-    data.fusionQPose = gravityQ;
+    data.fusionPose = m_fusionPose;
+    data.fusionQPose = m_fusionQPose;
 }
