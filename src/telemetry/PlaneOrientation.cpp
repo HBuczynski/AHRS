@@ -81,7 +81,7 @@ float PlaneOrientation::getPitch()
 
 float PlaneOrientation::getRoll()
 {
-    prevX = prevX *0.8 + residuals.z()*0.2*RTMATH_RAD_TO_DEGREE;
+    prevX = prevX *0.8 + residuals.x()*0.2*RTMATH_RAD_TO_DEGREE;
     return prevX;
 }
 
