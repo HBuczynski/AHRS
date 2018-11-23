@@ -192,21 +192,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         m_lastFusionTime = data.timestamp;
 
         calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
-        data.accel = getGravity();
-        if (data.accel.x() >= 0)
-            data.accel.setX(data.accel.x() / settings->m_accelCalMax.x());
-        else
-            data.accel.setX(data.accel.x() / settings->m_accelCalMin.x());
-        if (data.accel.y() >= 0)
-            data.accel.setY(data.accel.y() / settings->m_accelCalMax.y());
-        else
-            data.accel.setY(data.accel.y() / settings->m_accelCalMin.y());
-        if (data.accel.z() >= 0)
-            data.accel.setZ(data.accel.z() / settings->m_accelCalMax.z());
-        else
-            data.accel.setZ(data.accel.z() / settings->m_accelCalMin.z());
-
-        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
         m_Fk.fill(0);
 
@@ -239,22 +224,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
 
-        data.accel = getGravity();
-        if (data.accel.x() >= 0)
-            data.accel.setX(data.accel.x() / settings->m_accelCalMax.x());
-        else
-            data.accel.setX(data.accel.x() / settings->m_accelCalMin.x());
-        if (data.accel.y() >= 0)
-            data.accel.setY(data.accel.y() / settings->m_accelCalMax.y());
-        else
-            data.accel.setY(data.accel.y() / settings->m_accelCalMin.y());
-        if (data.accel.z() >= 0)
-            data.accel.setZ(data.accel.z() / settings->m_accelCalMax.z());
-        else
-            data.accel.setZ(data.accel.z() / settings->m_accelCalMin.z());
-
-        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-
         predict();
         update();
         m_stateQ.toEuler(m_fusionPose);
@@ -275,6 +244,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;
-    data.fusionPose = m_fusionPose;
-    data.fusionQPose = m_fusionQPose;
+    data.fusionPose = gravity;
+    data.fusionQPose = gravityQ;
 }
