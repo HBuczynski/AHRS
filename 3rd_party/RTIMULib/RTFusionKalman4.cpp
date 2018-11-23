@@ -181,14 +181,14 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         m_gyro = data.gyro;
     else
         m_gyro = RTVector3();
-    m_accel = data.accel;
+
+    m_accel = getAccelResiduals();
     m_compass = data.compass;
     m_compassValid = data.compassValid;
 
     if (m_firstTime) {
         m_lastFusionTime = data.timestamp;
 
-        data.accel = getAccelResiduals();
         calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
         m_Fk.fill(0);
 
