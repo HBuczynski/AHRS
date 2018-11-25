@@ -213,7 +213,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         m_fusionPose = m_measuredPose;
         m_firstTime = false;
     } else {
-        m_timeDelta = (RTFLOAT)(data.timestamp - m_lastFusionTime) / (RTFLOAT)1000000;
+        m_timeDelta = 0.1;//(RTFLOAT)(data.timestamp - m_lastFusionTime) / (RTFLOAT)1000000;
         m_lastFusionTime = data.timestamp;
         if (m_timeDelta <= 0)
             return;
