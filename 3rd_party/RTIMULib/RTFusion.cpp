@@ -71,14 +71,14 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
 
         auto extenal = getGravity(a);
 
-        cout << "External: " << extenal.x() << " " << extenal.y() << " " << extenal.z() << endl;
+        cout << "Gravity: " << extenal.x() << " " << extenal.y() << " " << extenal.z() << endl;
 
-        a -= extenal;
-
-        cout << "Wypadkowe: " << a.x() << " " << a.y() << " " << a.z() << endl;
+//        a -= extenal;
+//
+//        cout << "Wypadkowe: " << a.x() << " " << a.y() << " " << a.z() << endl;
         cout << "Total: " << accel.x() << " " << accel.y() << " " << accel.z() << endl;
 
-        a.accelToEuler(m_measuredPose);;
+        accel.accelToEuler(m_measuredPose);;
     } else {
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
@@ -140,9 +140,9 @@ RTVector3 RTFusion::getGravity(RTVector3& accel)
     qTemp = m_gravity * magQ;
     rotatedGravity = fusedConjugate * qTemp;
 
-    residuals.setX(-(accel.x() - rotatedGravity.x()));
-    residuals.setY(-(accel.y() - rotatedGravity.y()));
-    residuals.setZ(-(accel.z() - rotatedGravity.z()));
+    residuals.setX((rotatedGravity.x()));
+    residuals.setY((rotatedGravity.y()));
+    residuals.setZ((rotatedGravity.z()));;
 
     return residuals;
 }
