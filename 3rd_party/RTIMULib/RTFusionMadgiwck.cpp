@@ -28,7 +28,7 @@ void RTFusionMadgiwck::newIMUData(RTIMU_DATA& data, const RTIMUSettings *setting
 {
 
     update(data.gyro.x(), data.gyro.y(), data.gyro.z(), data.accel.x(), data.accel.y(), data.accel.z(), data.compass.x(), data.compass.y(), data.compass.z());
-    computeAngles()
+    computeAngles();
 
     m_fusionPose.setX(roll);
     m_fusionPose.setY(pitch);
