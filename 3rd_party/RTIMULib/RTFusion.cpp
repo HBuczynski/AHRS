@@ -76,6 +76,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
         a -= extenal;
 
         cout << "Wypadkowe: " << a.x() << " " << a.y() << " " << a.z() << endl;
+        cout << "Total: " << accel.x() << " " << accel.y() << " " << accel.z() << endl;
 
         a.accelToEuler(m_measuredPose);;
     } else {
