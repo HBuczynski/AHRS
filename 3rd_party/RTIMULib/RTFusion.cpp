@@ -104,7 +104,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
                 residuals.setX(0.0);
             }
 
- 
+
             fusedConjugate = aQ.conjugate();
 
             qTemp = m_gravity*aQ;
@@ -114,7 +114,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
             residuals.setY((rotatedGravity.y()));
             residuals.setZ((rotatedGravity.z()));
 
-            residuals.accelToEuler(residuals);
+            residuals.accelToEuler(m_measuredPose);
         }
 
 
