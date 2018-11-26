@@ -69,7 +69,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     if (m_enableAccel) {
         auto length = a.length();
         cout << "Length: " << length << endl;
-        if (length < 1.1)
+        if (length < 1.00)
         {
             accel.accelToEuler(m_measuredPose);
         }
