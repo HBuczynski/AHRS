@@ -68,7 +68,7 @@ public:
     //  getAccelResiduals() gets the residual after subtracting gravity
 
     RTVector3 getAccelResiduals();
-    RTVector3 getGravity();
+    RTVector3 getGravity(RTVector3& mag);
 
     void setDebugEnable(bool enable) { m_debug = enable; }
 
