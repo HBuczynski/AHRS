@@ -64,7 +64,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     RTQuaternion m;
     RTQuaternion q;
 
-    RTVector3 a;
+    RTVector3 a = accel;
 
     if (m_enableAccel) {
         auto length = a.length();
