@@ -61,13 +61,15 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     RTQuaternion m;
     RTQuaternion q;
 
-    RTVector3 a = mag;
+    RTVector3 a = accel;
+    RTVector3 tempA;
 
     if (m_enableAccel) {
 
         auto gravity = getGravity(a);
-        gravity.accelToEuler(m_measuredPose);
-        //accel.accelToEuler(m_measuredPose);
+        gravity.accelToEuler(tempA);
+        accel.accelToEuler(m_measuredPose);
+        m_measuredPose -= tempA;
     } else {
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
@@ -114,14 +116,14 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     }
 }
 
-RTVector3 RTFusion::getGravity(RTVector3& mag)
+RTVector3 RTFusion::getGravity(RTVector3& accel)
 {
     RTQuaternion rotatedGravity;
     RTQuaternion fusedConjugate;
     RTQuaternion qTemp;
     RTVector3 residuals;
     RTQuaternion magQ;
-    magQ.fromEuler(mag);
+    magQ.fromEuler(accel);
 
     fusedConjugate = magQ.conjugate();
 
@@ -129,9 +131,9 @@ RTVector3 RTFusion::getGravity(RTVector3& mag)
     qTemp = m_gravity * magQ;
     rotatedGravity = fusedConjugate * qTemp;
 
-    residuals.setX((rotatedGravity.x()));
-    residuals.setY((rotatedGravity.y()));
-    residuals.setZ((rotatedGravity.z()));
+    residuals.setX(-(accel.x() - rotatedGravity.x()));
+    residuals.setY(-(accel.y() - rotatedGravity.y()));
+    residuals.setZ(-(accel.z() - rotatedGravity.z()));
 
     return residuals;
 }
