@@ -65,20 +65,59 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     RTQuaternion q;
 
     RTVector3 a = accel;
+    RTQuaternion aQ;
     RTVector3 tempA;
 
     if (m_enableAccel) {
 
-        auto extenal = getGravity(a);
+        RTQuaternion rotatedGravity;
+        RTQuaternion fusedConjugate;
+        RTQuaternion qTemp;
+        RTQuaternion newGravity;
+        RTVector3 residuals;
 
-        cout << "Gravity: " << extenal.x() << " " << extenal.y() << " " << extenal.z() << endl;
+        aQ.fromEuler(a);
 
-//        a -= extenal;
-//
-//        cout << "Wypadkowe: " << a.x() << " " << a.y() << " " << a.z() << endl;
-        cout << "Total: " << accel.x() << " " << accel.y() << " " << accel.z() << endl;
 
-        accel.accelToEuler(m_measuredPose);;
+        fusedConjugate = m_gravity.conjugate();
+
+        qTemp = aQ * m_gravity;
+        rotatedGravity = fusedConjugate * qTemp;
+
+        residuals.setX((rotatedGravity.x()));
+        residuals.setY((rotatedGravity.y()));
+        residuals.setZ((rotatedGravity.z()));
+
+        if(accel.z() < 1.1 && accel.z() > 0.9 ) {
+            a.setX(0.0);
+            a.setY(0.0);
+
+            a.accelToEuler(m_measuredPose);
+
+        } else {
+
+            if(residuals.x() > 0.1 && residuals.x() < -0.1 ) {
+                residuals.setX(0.0);
+            }
+
+            if(residuals.x() > 0.1 && residuals.x() < -0.1 ) {
+                residuals.setX(0.0);
+            }
+
+ 
+            fusedConjugate = aQ.conjugate();
+
+            qTemp = m_gravity*aQ;
+            rotatedGravity = fusedConjugate * qTemp;
+
+            residuals.setX((rotatedGravity.x()));
+            residuals.setY((rotatedGravity.y()));
+            residuals.setZ((rotatedGravity.z()));
+
+            residuals.accelToEuler(residuals);
+        }
+
+
     } else {
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
