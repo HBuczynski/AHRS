@@ -241,10 +241,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
          }
     }
 
-//    auto gravity = getGravity();
-//    RTQuaternion gravityQ;
-//    gravityQ.fromEuler(gravity);
-
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;
     data.fusionPose = m_fusionPose;

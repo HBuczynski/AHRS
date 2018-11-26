@@ -24,6 +24,7 @@
 
 #include "RTFusion.h"
 #include "RTIMUHal.h"
+#include "RTFusionMadgiwck.h"
 #include <iostream>
 
 //  The slerp power valule controls the influence of the measured state to correct the predicted state
@@ -37,7 +38,8 @@ using namespace std;
 const char *RTFusion::m_fusionNameMap[] = {
     "NULL",
     "Kalman STATE4",
-    "RTQF"};
+    "RTQF",
+    "MADGIWCK"};
 
 RTFusion::RTFusion()
 {

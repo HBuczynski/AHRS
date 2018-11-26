@@ -25,6 +25,7 @@
 #include "RTIMU.h"
 #include "RTFusionKalman4.h"
 #include "RTFusionRTQF.h"
+#include "RTFusionMadgiwck.h"
 
 #include "RTIMUNull.h"
 #include "RTIMUMPU9150.h"
@@ -153,6 +154,10 @@ RTIMU::RTIMU(RTIMUSettings *settings)
 
     case RTFUSION_TYPE_RTQF:
         m_fusion = new RTFusionRTQF();
+        break;
+
+    case RTFUSION_TYPE_MADGWICK:
+        m_fusion = new RTFusionMadgiwck();
         break;
 
     default:

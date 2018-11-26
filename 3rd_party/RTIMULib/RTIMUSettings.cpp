@@ -942,6 +942,7 @@ bool RTIMUSettings::saveSettings()
     setComment("  0 - Null. Use if only sensor data required without fusion");
     setComment("  1 - Kalman STATE4");
     setComment("  2 - RTQF");
+    setComment("  3 - MADGWICK");
     setValue(RTIMULIB_FUSION_TYPE, m_fusionType);
 
     setBlank();
