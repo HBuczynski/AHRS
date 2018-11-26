@@ -160,7 +160,8 @@ void RTFusionKalman4::update()
 
     delta = m_Kk * m_stateQError;
 
-    m_stateQ += delta;
+    m_stateQ = m_stateQ*float(0.7); 
+    m_stateQ += delta*float(0.3);
 
     m_stateQ.normalize();
 
