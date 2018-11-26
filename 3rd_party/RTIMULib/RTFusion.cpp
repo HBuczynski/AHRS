@@ -64,60 +64,20 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
     RTQuaternion m;
     RTQuaternion q;
 
-    RTVector3 a = accel;
-    RTQuaternion aQ;
-    RTVector3 tempA;
+    RTVector3 a;
 
     if (m_enableAccel) {
-
-        RTQuaternion rotatedGravity;
-        RTQuaternion fusedConjugate;
-        RTQuaternion qTemp;
-        RTQuaternion newGravity;
-        RTVector3 residuals;
-
-        aQ.fromEuler(a);
-
-
-        fusedConjugate = m_gravity.conjugate();
-
-        qTemp = aQ * m_gravity;
-        rotatedGravity = fusedConjugate * qTemp;
-
-        residuals.setX((rotatedGravity.x()));
-        residuals.setY((rotatedGravity.y()));
-        residuals.setZ((rotatedGravity.z()));
-
-        if(accel.z() < 1.1 && accel.z() > 0.9 ) {
-            a.setX(0.0);
-            a.setY(0.0);
-
-            a.accelToEuler(m_measuredPose);
-
-        } else {
-
-            if(residuals.x() > 0.1 && residuals.x() < -0.1 ) {
-                residuals.setX(0.0);
-            }
-
-            if(residuals.x() > 0.1 && residuals.x() < -0.1 ) {
-                residuals.setX(0.0);
-            }
-
-
-            fusedConjugate = aQ.conjugate();
-
-            qTemp = m_gravity*aQ;
-            rotatedGravity = fusedConjugate * qTemp;
-
-            residuals.setX((rotatedGravity.x()));
-            residuals.setY((rotatedGravity.y()));
-            residuals.setZ((rotatedGravity.z()));
-
-            residuals.accelToEuler(m_measuredPose);
+        auto length = a.length();
+        cout << "Length: " << length << endl;
+        if (length < 1.1)
+        {
+            accel.accelToEuler(m_measuredPose);
         }
-
-
+        else
+        {
+            m_measuredPose = m_fusionPose;
+            m_measuredPose.setZ(0);
+        }
     } else {
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
