@@ -36,7 +36,6 @@ private:
     float roll;
     float pitch;
     float yaw;
-    char anglesComputed;
 };
 
 #endif //AHRS_RTFUSIONMADGIWCK_H

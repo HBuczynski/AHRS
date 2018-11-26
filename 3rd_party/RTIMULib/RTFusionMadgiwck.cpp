@@ -1,7 +1,7 @@
 #include "RTFusionMadgiwck.h"
 #include "RTIMULibDefs.h"
 
-#define sampleFreqDef   512.0f          // sample frequency in Hz
+#define sampleFreqDef   20.0f          // sample frequency in Hz
 #define betaDef         0.1f            // 2 * proportional gain
 
 RTFusionMadgiwck::RTFusionMadgiwck()
@@ -12,7 +12,6 @@ RTFusionMadgiwck::RTFusionMadgiwck()
     q2 = 0.0f;
     q3 = 0.0f;
     invSampleFreq = 1.0f / sampleFreqDef;
-    anglesComputed = 0;
 }
 
 RTFusionMadgiwck::~RTFusionMadgiwck()
@@ -29,6 +28,7 @@ void RTFusionMadgiwck::newIMUData(RTIMU_DATA& data, const RTIMUSettings *setting
 {
 
     update(data.gyro.x(), data.gyro.y(), data.gyro.z(), data.accel.x(), data.accel.y(), data.accel.z(), data.compass.x(), data.compass.y(), data.compass.z());
+    computeAngles()
 
     m_fusionPose.setX(roll);
     m_fusionPose.setY(pitch);
@@ -136,9 +136,6 @@ void RTFusionMadgiwck::update(float gx, float gy, float gz, float ax, float ay, 
     q1 *= recipNorm;
     q2 *= recipNorm;
     q3 *= recipNorm;
-    anglesComputed = 0;
-
-
 }
 
 float RTFusionMadgiwck::invSqrt(float x)
@@ -158,5 +155,4 @@ void RTFusionMadgiwck::computeAngles()
     roll = atan2f(q0*q1 + q2*q3, 0.5f - q1*q1 - q2*q2);
     pitch = asinf(-2.0f * (q1*q3 - q0*q2));
     yaw = atan2f(q1*q2 + q0*q3, 0.5f - q2*q2 - q3*q3);
-    anglesComputed = 1;
 }
