@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
             cout << "Pitch: " << planeOrientation.getPitch() << "\t";
             cout << "Yaw: " << planeOrientation.getYaw() << "\t";
             cout << endl;
-            std::cout << "\x1B[2J\x1B[H";
+            std::cout << "\x1B[H";
         }
 
     }
