@@ -24,10 +24,13 @@
 
 #include "RTFusion.h"
 #include "RTIMUHal.h"
+#include <iostream>
 
 //  The slerp power valule controls the influence of the measured state to correct the predicted state
 //  0 = measured state ignored (just gyros), 1 = measured state overrides predicted state.
 //  In between 0 and 1 mixes the two conditions
+
+using namespace std;
 
 #define RTQF_SLERP_POWER (RTFLOAT)0.02;
 
@@ -66,10 +69,15 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
 
     if (m_enableAccel) {
 
-        auto gravity = getGravity(a);
-        gravity.accelToEuler(tempA);
-        accel.accelToEuler(m_measuredPose);
-        m_measuredPose -= tempA;
+        auto extenal = getGravity(a);
+
+        cout << "External: " << extenal.x() << " " << extenal.y() << " " << extenal.z() << endl;
+
+        a -= extenal;
+
+        cout << "Wypadkowe: " << a.x() << " " << a.y() << " " << a.z() << endl;
+
+        a.accelToEuler(m_measuredPose);;
     } else {
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
