@@ -39,8 +39,6 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
             cout << "Pitch: " << planeOrientation.getPitch() << "\t";
             cout << "Yaw: " << planeOrientation.getYaw() << "\t";
             cout << endl;
-
-            this_thread::sleep_for(std::chrono::milliseconds(100));
         }
 
     }
