@@ -144,8 +144,6 @@ void RTFusionKalman4::update()
 
     vec.accelToEuler(angles);
 
-    cout << "State: " << RTMath::displayDegrees(" ", angles) << endl;
-
     if (m_enableCompass || m_enableAccel) {
         m_stateQError = m_measuredQPose - m_stateQ;
     } else {
