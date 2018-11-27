@@ -38,6 +38,7 @@ private:
     float pitch;
     float yaw;
 
+    std::ofstream file_;
     utility::Logger& logger_;
 };
 

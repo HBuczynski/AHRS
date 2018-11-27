@@ -19,6 +19,8 @@ RTFusionMadgiwck::RTFusionMadgiwck()
     q2 = 0.0f;
     q3 = 0.0f;
     invSampleFreq = 1.0f / sampleFreqDef;
+
+    file_.open("Madgwick", std::fstream::in | std::fstream::out | std::fstream::app);
 }
 
 RTFusionMadgiwck::~RTFusionMadgiwck()
@@ -43,11 +45,12 @@ void RTFusionMadgiwck::newIMUData(RTIMU_DATA& data, const RTIMUSettings *setting
 
     m_measuredQPose.fromEuler(m_fusionPose);
 
-    if(logger_.isInformationEnable())
-    {
-        const string message = "Madgwick: " + string(RTMath::displayDegrees(" ", m_fusionPose));
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
+    file_.open("Madgwick.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+
+    string msg = to_string(m_fusionPose.x()) +"\t" + to_string(m_fusionPose.y()) + "\t" + to_string(m_fusionPose.z()) + "\n";
+    file_ << msg;
+
+    file_.close();
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;

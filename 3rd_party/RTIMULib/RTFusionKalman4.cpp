@@ -257,9 +257,16 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     data.fusionPose = m_fusionPose;
     data.fusionQPose = m_fusionQPose;
 
-    if(logger_.isInformationEnable())
-    {
-        const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
+//    if(logger_.isInformationEnable())
+//    {
+//        const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
+//        logger_.writeLog(LogType::INFORMATION_LOG, message);
+//    }
+    file_.open("Kalman.txt", std::fstream::in | std::fstream::out | std::fstream::app);
+
+    string msg = to_string(m_fusionPose.x()) +"\t" + to_string(m_fusionPose.y()) + "\t" + to_string(m_fusionPose.z()) + "\n";
+    file_ << msg;
+
+    file_.close();
+
 }

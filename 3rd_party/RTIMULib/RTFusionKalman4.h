@@ -72,6 +72,7 @@ private:
     RTMatrix4x4 m_Rk;                                       // the measurement noise covariance
 
     utility::Logger& logger_;
+    std::ofstream file_;
 
     //  Note: SInce Hk ends up being the identity matrix, these are omitted
 
