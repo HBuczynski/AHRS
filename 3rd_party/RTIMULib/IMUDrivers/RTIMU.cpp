@@ -473,6 +473,7 @@ void RTIMU::updateFusion()
     second_imuData.accelValid = m_imuData.accelValid;
     second_imuData.gyro = m_imuData.gyro;
     second_imuData.gyroValid = m_imuData.gyroValid;
+    second_imuData.timestamp = m_imuData.timestamp;
 
     third_imuData.compass = m_imuData.compass;
     third_imuData.compassValid = m_imuData.compassValid;
@@ -480,6 +481,7 @@ void RTIMU::updateFusion()
     third_imuData.accelValid = m_imuData.accelValid;
     third_imuData.gyro = m_imuData.gyro;
     third_imuData.gyroValid = m_imuData.gyroValid;
+    third_imuData.timestamp = m_imuData.timestamp;
 
     m_fusion->newIMUData(m_imuData, m_settings);
     second_fusion->newIMUData(second_imuData, m_settings);

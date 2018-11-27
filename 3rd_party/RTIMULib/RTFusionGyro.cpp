@@ -204,7 +204,7 @@ void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
     if (m_firstTime) {
         m_lastFusionTime = data.timestamp;
 
-        calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
+        //calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
 
         m_Fk.fill(0);
 
@@ -235,7 +235,7 @@ void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
             HAL_INFO1("IMU update delta time: %f\n", m_timeDelta);
         }
 
-        calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
+        //calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
 
         predict();
         update();
