@@ -1,8 +1,13 @@
 #include "RTFusionMadgiwck.h"
 #include "RTIMULibDefs.h"
 
+
+#include <iostream>
+
 #define sampleFreqDef   20.0f          // sample frequency in Hz
 #define betaDef         0.1f            // 2 * proportional gain
+
+using namespace std;
 
 RTFusionMadgiwck::RTFusionMadgiwck()
 {
@@ -35,6 +40,8 @@ void RTFusionMadgiwck::newIMUData(RTIMU_DATA& data, const RTIMUSettings *setting
     m_fusionPose.setZ(yaw);
 
     m_measuredQPose.fromEuler(m_fusionPose);
+
+    cout << "Madgwick " << RTMath::displayDegrees(" ", m_fusionPose) << endl;
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;

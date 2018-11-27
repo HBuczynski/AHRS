@@ -256,4 +256,6 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     data.fusionQPoseValid = true;
     data.fusionPose = m_fusionPose;
     data.fusionQPose = m_fusionQPose;
+
+    cout << "Kalman " << RTMath::displayDegrees(" ", m_fusionPose) << endl;
 }

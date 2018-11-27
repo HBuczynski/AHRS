@@ -43,7 +43,7 @@ const char *RTFusion::m_fusionNameMap[] = {
 
 RTFusion::RTFusion()
 {
-    m_debug = true;
+    m_debug = false;
     m_firstTime = true;
     m_enableGyro = true;
     m_enableAccel = true;
@@ -83,8 +83,6 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
         m_measuredPose = m_fusionPose;
         m_measuredPose.setZ(0);
     }
-
-    cout << "accels: " << RTMath::displayDegrees(" ", m_measuredPose) << endl;
 
     if (m_enableCompass && m_compassValid) {
         q.fromEuler(m_measuredPose);

@@ -22,6 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
+#include <RTIMULibDefs.h>
 #include "RTIMU.h"
 #include "RTFusionKalman4.h"
 #include "RTFusionRTQF.h"
@@ -150,6 +151,7 @@ RTIMU::RTIMU(RTIMUSettings *settings)
     switch (m_settings->m_fusionType) {
     case RTFUSION_TYPE_KALMANSTATE4:
         m_fusion = new RTFusionKalman4();
+        second_fusion = new RTFusionMadgiwck();
         break;
 
     case RTFUSION_TYPE_RTQF:
@@ -458,7 +460,15 @@ void RTIMU::calibrateAccel()
 
 void RTIMU::updateFusion()
 {
+    second_imuData.compass = m_imuData.compass;
+    second_imuData.compassValid = m_imuData.compassValid;
+    second_imuData.accel = m_imuData.accel;
+    second_imuData.accelValid = m_imuData.accelValid;
+    second_imuData.gyro = m_imuData.gyro;
+    second_imuData.gyroValid = m_imuData.gyroValid;
+
     m_fusion->newIMUData(m_imuData, m_settings);
+    second_fusion->newIMUData(second_imuData, m_settings);
 }
 
 bool RTIMU::IMUGyroBiasValid()
