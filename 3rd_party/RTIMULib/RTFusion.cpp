@@ -43,7 +43,7 @@ const char *RTFusion::m_fusionNameMap[] = {
 
 RTFusion::RTFusion()
 {
-    m_debug = false;
+    m_debug = true;
     m_firstTime = true;
     m_enableGyro = true;
     m_enableAccel = true;
@@ -70,8 +70,7 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
 
     if (m_enableAccel) {
         auto length = a.length();
-        cout << "Length: " << length << endl;
-        if (length < 1.00)
+        if (length < 1.00 && length > 0.89)
         {
             accel.accelToEuler(m_measuredPose);
         }
