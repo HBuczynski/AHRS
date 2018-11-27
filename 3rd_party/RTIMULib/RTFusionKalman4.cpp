@@ -25,6 +25,9 @@
 #include "RTFusionKalman4.h"
 #include "RTIMUSettings.h"
 #include "RTIMULibDefs.h"
+#include <iostream>
+
+using namespace std;
 
 //  The QVALUE affects the gyro response.
 
@@ -134,6 +137,14 @@ void RTFusionKalman4::update()
 {
     RTQuaternion delta;
     RTMatrix4x4 Sk, SkInverse;
+
+    RTVector3 vec;
+    RTVector3 angles;
+    m_stateQ.toEuler(vec);
+
+    vec.accelToEuler(angles);
+
+    cout << "State: " << RTMath::displayDegrees(" ", angles) << endl;
 
     if (m_enableCompass || m_enableAccel) {
         m_stateQError = m_measuredQPose - m_stateQ;

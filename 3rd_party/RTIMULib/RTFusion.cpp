@@ -84,6 +84,8 @@ void RTFusion::calculatePose(const RTVector3& accel, const RTVector3& mag, float
         m_measuredPose.setZ(0);
     }
 
+    cout << "accels: " << RTMath::displayDegrees(" ", m_measuredPose) << endl;
+
     if (m_enableCompass && m_compassValid) {
         q.fromEuler(m_measuredPose);
         m.setScalar(0);
