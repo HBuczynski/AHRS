@@ -8,8 +8,10 @@
 #define betaDef         0.1f            // 2 * proportional gain
 
 using namespace std;
+using namespace utility;
 
 RTFusionMadgiwck::RTFusionMadgiwck()
+    : logger_(Logger::getInstance())
 {
     beta = betaDef;
     q0 = 1.0f;
@@ -41,7 +43,11 @@ void RTFusionMadgiwck::newIMUData(RTIMU_DATA& data, const RTIMUSettings *setting
 
     m_measuredQPose.fromEuler(m_fusionPose);
 
-    cout << "Madgwick " << RTMath::displayDegrees(" ", m_fusionPose) << endl;
+    if(logger_.isInformationEnable())
+    {
+        const string message = "Madgwick: " + string(RTMath::displayDegrees(" ", m_fusionPose));
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 
     data.fusionPoseValid = true;
     data.fusionQPoseValid = true;

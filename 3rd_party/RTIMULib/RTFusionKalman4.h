@@ -26,6 +26,7 @@
 #define	_RTFUSIONKALMAN4_H
 
 #include "RTFusion.h"
+#include <logger/Logger.h>
 
 class RTFusionKalman4 : public RTFusion
 {
@@ -69,6 +70,8 @@ private:
     RTMatrix4x4 m_Fk;                                       // the state transition matrix
     RTMatrix4x4 m_FkTranspose;                              // the state transition matrix transposed
     RTMatrix4x4 m_Rk;                                       // the measurement noise covariance
+
+    utility::Logger& logger_;
 
     //  Note: SInce Hk ends up being the identity matrix, these are omitted
 

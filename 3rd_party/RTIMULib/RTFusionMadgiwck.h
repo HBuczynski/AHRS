@@ -2,6 +2,7 @@
 #define AHRS_RTFUSIONMADGIWCK_H
 
 #include "RTFusion.h"
+#include <logger/Logger.h>
 
 class RTFusionMadgiwck : public RTFusion
 {
@@ -36,6 +37,8 @@ private:
     float roll;
     float pitch;
     float yaw;
+
+    utility::Logger& logger_;
 };
 
 #endif //AHRS_RTFUSIONMADGIWCK_H

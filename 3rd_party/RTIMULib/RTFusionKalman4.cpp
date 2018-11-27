@@ -28,6 +28,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace utility;
 
 //  The QVALUE affects the gyro response.
 
@@ -44,6 +45,7 @@ using namespace std;
 
 
 RTFusionKalman4::RTFusionKalman4()
+    : logger_(Logger::getInstance())
 {
     reset();
 }
@@ -255,5 +257,9 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     data.fusionPose = m_fusionPose;
     data.fusionQPose = m_fusionQPose;
 
-    cout << "Kalman " << RTMath::displayDegrees(" ", m_fusionPose) << endl;
+    if(logger_.isInformationEnable())
+    {
+        const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
