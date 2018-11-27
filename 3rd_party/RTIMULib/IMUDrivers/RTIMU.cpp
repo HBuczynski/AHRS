@@ -176,6 +176,10 @@ RTIMU::~RTIMU()
 {
     delete m_fusion;
     m_fusion = NULL;
+    delete second_fusion;
+    second_fusion = NULL;
+    delete third_fusion;
+    third_fusion = NULL;
 }
 
 void RTIMU::setCalibrationData()
@@ -479,7 +483,7 @@ void RTIMU::updateFusion()
 
     m_fusion->newIMUData(m_imuData, m_settings);
     second_fusion->newIMUData(second_imuData, m_settings);
-    third_fusion->newIMUData(third_imuData, m_settings);
+    //third_fusion->newIMUData(third_imuData, m_settings);
 }
 
 bool RTIMU::IMUGyroBiasValid()
