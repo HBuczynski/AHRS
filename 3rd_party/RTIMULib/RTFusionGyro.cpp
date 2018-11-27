@@ -189,6 +189,7 @@ void RTFusionGyro::update()
 
 void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 {
+    cout << "in gyro" << endl;
     RTVector3 gravityPose;
 
     if (m_enableGyro)

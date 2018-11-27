@@ -189,6 +189,7 @@ void RTFusionAccel::update()
 
 void RTFusionAccel::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 {
+    cout << "in accel" << endl;
     RTVector3 gravityPose;
 
     if (m_enableGyro)

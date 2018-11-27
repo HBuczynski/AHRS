@@ -483,7 +483,7 @@ void RTIMU::updateFusion()
 
     m_fusion->newIMUData(m_imuData, m_settings);
     second_fusion->newIMUData(second_imuData, m_settings);
-    //third_fusion->newIMUData(third_imuData, m_settings);
+    third_fusion->newIMUData(third_imuData, m_settings);
 }
 
 bool RTIMU::IMUGyroBiasValid()
