@@ -22,7 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include "RTFusionKalman4.h"
+#include "RTFusionAccel.h"
 #include "RTIMUSettings.h"
 #include "RTIMULibDefs.h"
 #include <iostream>
@@ -44,17 +44,17 @@ using namespace utility;
 #define	KALMAN_STATE_LENGTH	4								// just the quaternion for the moment
 
 
-RTFusionKalman4::RTFusionKalman4()
+RTFusionAccel::RTFusionAccel()
     : logger_(Logger::getInstance())
 {
     reset();
 }
 
-RTFusionKalman4::~RTFusionKalman4()
+RTFusionAccel::~RTFusionAccel()
 {
 }
 
-void RTFusionKalman4::reset()
+void RTFusionAccel::reset()
 {
     m_firstTime = true;
     m_fusionPose = RTVector3();
@@ -81,7 +81,7 @@ void RTFusionKalman4::reset()
             m_Rk.setVal(i, i, KALMAN_RVALUE);
  }
 
-void RTFusionKalman4::predict()
+void RTFusionAccel::predict()
 {
     RTMatrix4x4 mat;
     RTQuaternion tQuat;
@@ -135,7 +135,7 @@ void RTFusionKalman4::predict()
 }
 
 
-void RTFusionKalman4::update()
+void RTFusionAccel::update()
 {
     RTQuaternion delta;
     RTMatrix4x4 Sk, SkInverse;
@@ -187,7 +187,7 @@ void RTFusionKalman4::update()
         HAL_INFO(RTMath::display("Cov", m_Pkk));
 }
 
-void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
+void RTFusionAccel::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 {
     RTVector3 gravityPose;
 
@@ -236,10 +236,9 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
         }
 
         calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-        //calculatePose(getGravity(), data.compass, settings->m_compassAdjDeclination);
 
-        predict();
-        update();
+//        predict();
+//        update();
         m_stateQ.toEuler(m_fusionPose);
         m_fusionQPose = m_stateQ;
 
@@ -259,7 +258,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
 
     if(logger_.isInformationEnable())
     {
-        const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
+        const string message = "Accel: " + string(RTMath::displayDegrees(" ", m_fusionPose));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 

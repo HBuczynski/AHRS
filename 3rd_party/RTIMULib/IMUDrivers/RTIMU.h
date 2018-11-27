@@ -175,11 +175,13 @@ protected:
 
     RTIMU_DATA m_imuData;                                   // the data from the IMU
     RTIMU_DATA second_imuData;                                   // the data from the IMU
+    RTIMU_DATA third_imuData;                                   // the data from the IMU
 
     RTIMUSettings *m_settings;                              // the settings object pointer
 
     RTFusion *m_fusion;                                     // the fusion algorithm
     RTFusion *second_fusion;                                     // the fusion algorithm
+    RTFusion *third_fusion;                                     // the fusion algorithm
 
     int m_sampleRate;                                       // samples per second
     uint64_t m_sampleInterval;                              // interval between samples in microseonds

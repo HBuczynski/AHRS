@@ -74,6 +74,7 @@ public:
 
 protected:
     void calculatePose(const RTVector3& accel, const RTVector3& mag, float magDeclination); // generates pose from accels and mag
+    void calculatePoseTemp(const RTVector3& accel, const RTVector3& mag, float magDeclination); // generates pose from accels and mag
 
     RTVector3 m_gyro;                                       // current gyro sample
     RTVector3 m_accel;                                      // current accel sample

@@ -22,7 +22,7 @@
 //  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-#include "RTFusionKalman4.h"
+#include "RTFusionGyro.h"
 #include "RTIMUSettings.h"
 #include "RTIMULibDefs.h"
 #include <iostream>
@@ -44,17 +44,17 @@ using namespace utility;
 #define	KALMAN_STATE_LENGTH	4								// just the quaternion for the moment
 
 
-RTFusionKalman4::RTFusionKalman4()
+RTFusionGyro::RTFusionGyro()
     : logger_(Logger::getInstance())
 {
     reset();
 }
 
-RTFusionKalman4::~RTFusionKalman4()
+RTFusionGyro::~RTFusionGyro()
 {
 }
 
-void RTFusionKalman4::reset()
+void RTFusionGyro::reset()
 {
     m_firstTime = true;
     m_fusionPose = RTVector3();
@@ -81,7 +81,7 @@ void RTFusionKalman4::reset()
             m_Rk.setVal(i, i, KALMAN_RVALUE);
  }
 
-void RTFusionKalman4::predict()
+void RTFusionGyro::predict()
 {
     RTMatrix4x4 mat;
     RTQuaternion tQuat;
@@ -135,7 +135,7 @@ void RTFusionKalman4::predict()
 }
 
 
-void RTFusionKalman4::update()
+void RTFusionGyro::update()
 {
     RTQuaternion delta;
     RTMatrix4x4 Sk, SkInverse;
@@ -187,7 +187,7 @@ void RTFusionKalman4::update()
         HAL_INFO(RTMath::display("Cov", m_Pkk));
 }
 
-void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
+void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 {
     RTVector3 gravityPose;
 
@@ -203,8 +203,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     if (m_firstTime) {
         m_lastFusionTime = data.timestamp;
 
-        calculatePose(m_accel, m_compass, settings->m_compassAdjDeclination);
-        //calculatePose(getGravity(), data.compass, settings->m_compassAdjDeclination);
+        calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
 
         m_Fk.fill(0);
 
@@ -235,8 +234,7 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
             HAL_INFO1("IMU update delta time: %f\n", m_timeDelta);
         }
 
-        calculatePose(data.accel, data.compass, settings->m_compassAdjDeclination);
-        //calculatePose(getGravity(), data.compass, settings->m_compassAdjDeclination);
+        calculatePoseTemp(m_accel, m_compass, settings->m_compassAdjDeclination);
 
         predict();
         update();
@@ -257,9 +255,14 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     data.fusionPose = m_fusionPose;
     data.fusionQPose = m_fusionQPose;
 
+    data.fusionPoseValid = true;
+    data.fusionQPoseValid = true;
+    data.fusionPose = m_fusionPose;
+    data.fusionQPose = m_fusionQPose;
+
     if(logger_.isInformationEnable())
     {
-        const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
+        const string message = "Gyro: " + string(RTMath::displayDegrees(" ", m_fusionPose));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 

@@ -27,6 +27,8 @@
 #include "RTFusionKalman4.h"
 #include "RTFusionRTQF.h"
 #include "RTFusionMadgiwck.h"
+#include "RTFusionAccel.h"
+#include "RTFusionGyro.h"
 
 #include "RTIMUNull.h"
 #include "RTIMUMPU9150.h"
@@ -151,7 +153,8 @@ RTIMU::RTIMU(RTIMUSettings *settings)
     switch (m_settings->m_fusionType) {
     case RTFUSION_TYPE_KALMANSTATE4:
         m_fusion = new RTFusionKalman4();
-        second_fusion = new RTFusionMadgiwck();
+        second_fusion = new RTFusionAccel();
+        third_fusion = new RTFusionGyro();
         break;
 
     case RTFUSION_TYPE_RTQF:
@@ -467,8 +470,16 @@ void RTIMU::updateFusion()
     second_imuData.gyro = m_imuData.gyro;
     second_imuData.gyroValid = m_imuData.gyroValid;
 
+    third_imuData.compass = m_imuData.compass;
+    third_imuData.compassValid = m_imuData.compassValid;
+    third_imuData.accel = m_imuData.accel;
+    third_imuData.accelValid = m_imuData.accelValid;
+    third_imuData.gyro = m_imuData.gyro;
+    third_imuData.gyroValid = m_imuData.gyroValid;
+
     m_fusion->newIMUData(m_imuData, m_settings);
     second_fusion->newIMUData(second_imuData, m_settings);
+    third_fusion->newIMUData(third_imuData, m_settings);
 }
 
 bool RTIMU::IMUGyroBiasValid()
