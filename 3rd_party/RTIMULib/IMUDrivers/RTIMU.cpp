@@ -153,8 +153,8 @@ RTIMU::RTIMU(RTIMUSettings *settings)
     switch (m_settings->m_fusionType) {
     case RTFUSION_TYPE_KALMANSTATE4:
         m_fusion = new RTFusionKalman4();
-        second_fusion = new RTFusionAccel();
-        third_fusion = new RTFusionGyro();
+        second_fusion = new RTFusionMadgiwck();
+        //third_fusion = new RTFusionGyro();
         break;
 
     case RTFUSION_TYPE_RTQF:
@@ -475,17 +475,17 @@ void RTIMU::updateFusion()
     second_imuData.gyroValid = m_imuData.gyroValid;
     second_imuData.timestamp = m_imuData.timestamp;
 
-    third_imuData.compass = m_imuData.compass;
-    third_imuData.compassValid = m_imuData.compassValid;
-    third_imuData.accel = m_imuData.accel;
-    third_imuData.accelValid = m_imuData.accelValid;
-    third_imuData.gyro = m_imuData.gyro;
-    third_imuData.gyroValid = m_imuData.gyroValid;
-    third_imuData.timestamp = m_imuData.timestamp;
+//    third_imuData.compass = m_imuData.compass;
+//    third_imuData.compassValid = m_imuData.compassValid;
+//    third_imuData.accel = m_imuData.accel;
+//    third_imuData.accelValid = m_imuData.accelValid;
+//    third_imuData.gyro = m_imuData.gyro;
+//    third_imuData.gyroValid = m_imuData.gyroValid;
+//    third_imuData.timestamp = m_imuData.timestamp;
 
     m_fusion->newIMUData(m_imuData, m_settings);
     second_fusion->newIMUData(second_imuData, m_settings);
-    third_fusion->newIMUData(third_imuData, m_settings);
+    //third_fusion->newIMUData(third_imuData, m_settings);
 }
 
 bool RTIMU::IMUGyroBiasValid()

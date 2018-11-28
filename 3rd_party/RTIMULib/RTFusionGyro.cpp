@@ -189,7 +189,6 @@ void RTFusionGyro::update()
 
 void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 {
-    cout << "in gyro" << endl;
     RTVector3 gravityPose;
 
     if (m_enableGyro)
@@ -217,12 +216,11 @@ void RTFusionGyro::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings)
 
         // initialize the observation model Hk
         // Note: since the model is the state vector, this is an identity matrix so it won't be used
-
         //  initialize the poses
 
-        m_stateQ.fromEuler(m_measuredPose);
-        m_fusionQPose = m_stateQ;
-        m_fusionPose = m_measuredPose;
+        m_stateQ.fromEuler(measuredPose);
+        fusionQPose = m_stateQ;
+        fusionPose = measuredPose;
         m_firstTime = false;
     } else {
         m_timeDelta = (RTFLOAT)(data.timestamp - m_lastFusionTime) / (RTFLOAT)1000000;

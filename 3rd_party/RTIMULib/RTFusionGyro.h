@@ -72,6 +72,11 @@ private:
     RTMatrix4x4 m_FkTranspose;                              // the state transition matrix transposed
     RTMatrix4x4 m_Rk;                                       // the measurement noise covariance
 
+    RTQuaternion measuredQPose;       					// quaternion form of pose from measurement
+    RTVector3 measuredPose;								// vector form of pose from measurement
+    RTQuaternion fusionQPose;                             // quaternion form of pose from fusion
+    RTVector3 fusionPose;                                 // vector form of pose from fusion
+
     utility::Logger& logger_;
     std::ofstream file_;
 
