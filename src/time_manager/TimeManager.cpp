@@ -8,7 +8,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace utility;
 
-std::chrono::system_clock::time_point TimeManager::startTime_ = std::chrono::system_clock::now();;
+std::chrono::system_clock::time_point TimeManager::startTime_ = std::chrono::system_clock::now();
 
 TimeManager::TimeManager()
 {
