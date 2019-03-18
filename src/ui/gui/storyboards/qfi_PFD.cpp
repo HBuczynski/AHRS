@@ -128,7 +128,6 @@ qfi_PFD::~qfi_PFD()
     if ( m_asi ) delete m_asi; m_asi = 0;
     if ( m_hsi ) delete m_hsi; m_hsi = 0;
     if ( m_vsi ) delete m_vsi; m_vsi = 0;
-    //if ( m_ils ) delete m_ils; m_ils = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

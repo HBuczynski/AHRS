@@ -47,8 +47,6 @@ vector<uint8_t> MessageQueueWrapper::receive()
     message_queue::size_type receivedSize;
 
     vector<uint8_t> packet(messageQueueSize_);
-   // fill(packet.begin(), packet.end(), 0);
-
     messageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
 
     packet.resize(receivedSize);

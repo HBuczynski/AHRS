@@ -1,4 +1,4 @@
-#define BOOST_TEST_MODULE GPIOInterfaceTest
+#define BOOST_TEST_MODULE PlaneOrientationTest
 
 #define BOOST_TEST_DYN_LINK
 
