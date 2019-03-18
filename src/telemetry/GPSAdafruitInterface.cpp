@@ -7,7 +7,8 @@ using namespace std;
 using namespace gps;
 
 GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
-    : rs232Interface_(deviceName)
+    :   fixedSwitch_(hardware::GPIO{0}),
+        rs232Interface_(deviceName)
 {}
 
 void GPSAdafruitInterface::initialize()
@@ -19,6 +20,8 @@ void GPSAdafruitInterface::initialize()
     rs232Interface_.writeData(intervalUpdateRaw);
 
     //TODO: activate timer to check Fixed data
+    gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
+
 }
 
 GPSData GPSAdafruitInterface::getData()
@@ -57,5 +60,10 @@ GPSData GPSAdafruitInterface::getData()
 
 GPSStatus GPSAdafruitInterface::getStatus()
 {
-    return status_;
+    return gpsStatus_;
+}
+
+void GPSAdafruitInterface::interruptHandle(int gpio, int level, uint32_t tick, void *userdata)
+{
+
 }

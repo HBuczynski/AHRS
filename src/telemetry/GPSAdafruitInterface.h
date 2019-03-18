@@ -5,6 +5,7 @@
 
 #include "NMEAParser.h"
 #include <hal/include/RS232Interface.h>
+#include <hal/include/Switch.h>
 
 #define PMTK_SET_NMEA_UPDATE_1HZ  "$PMTK220,1000*1F"              ///<  1 Hz
 #define PMTK_SET_NMEA_UPDATE_2HZ  "$PMTK220,500*2B"               ///<  2 Hz
@@ -15,8 +16,8 @@ namespace gps
 {
     enum class GPSStatus : uint8_t
     {
-        SEARCHING_SATELLITES,
         FIXED,
+        SEARCHING_SATELLITES,
         INITIALISED_TIME_EXCEED
     };
 
@@ -31,8 +32,12 @@ namespace gps
         GPSData getData();
 
     private:
+        static void interruptHandle(int gpio, int level, uint32_t tick, void *userdata);
+
+        hardware::Switch fixedSwitch_;
+
         RS232Interface rs232Interface_;
-        std::atomic<GPSStatus> status_;
+        std::atomic<GPSStatus> gpsStatus_;
     };
 }
 

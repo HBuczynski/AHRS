@@ -1,5 +1,6 @@
 #include <cstring>
 #include <iostream>
+#include <iterator>
 #include "NMEAParser.h"
 
 using namespace std;
@@ -51,16 +52,62 @@ SentenceType NMEAParser::getSentenceType(const std::string &nmeaData)
 
 void NMEAParser::parseGPRMCData(const std::string &nmeaData, GPSData &gpsData)
 {
+    string mark{","};
+    const auto words = splitSentence(nmeaData, mark);
 
+    gpsData.receiverWarning = words[2][0];
+    gpsData.groundSpeed = stod(words[7])*KNOTS_TO_KMH;
+    gpsData.course = stod(words[8]);
 }
 
 void NMEAParser::parseGPGGAData(const std::string &nmeaData, GPSData &gpsData)
 {
-    auto time = atoi(nmeaData.substr(NMEA_GPGGA_INIT_TIME_POSITION, NMEA_GPGGA_INIT_TIME_POSITION+6).c_str());
-    gpsData.hour = time/10000;
+    string mark{","};
+    const auto words = splitSentence(nmeaData, mark);
+
+    getTime(words[1], gpsData);
+    getLatitude(words[2], words[3], gpsData);
+    getLongitude(words[4], words[5], gpsData);
+
+    gpsData.fixQuality = atoi(words[6].c_str());
+    gpsData.numberOfSatellites = atoi(words[7].c_str());
+
+    gpsData.altitude = stod(words[9]);
+}
+
+std::vector<std::string> NMEAParser::splitSentence(const std::string &sentence, const std::string &marks)
+{
+    vector<string> words;
+    size_t begin, position = 0;
+
+    while ( (begin = sentence.find_first_not_of(marks, position)) != string::npos)
+    {
+        position = sentence.find_first_of(marks, begin + 1);
+        words.push_back(sentence.substr(begin, position - begin));
+    }
+
+    return words;
+}
+
+void NMEAParser::getTime(const std::string &sentence, GPSData &gpsData)
+{
+    const auto time = atoi(sentence.c_str());
+
+    gpsData.hour = time / 10000;
     gpsData.minutes = (time % 10000) / 100;
     gpsData.seconds = time % 100;
+}
 
-    gpsData.latitude = atof(nmeaData.substr(NMEA_GPGGA_INIT_LATITUDE_POSITION, NMEA_GPGGA_INIT_TIME_POSITION + 9).c_str());
-    gpsData.latitudeDirection = nmeaData[NMEA_GPGGA_INIT_LATITUDE_POSITION+10];
+void NMEAParser::getLatitude(const string &latitude, string direction, GPSData &gpsData)
+{
+    gpsData.latitude = stod(latitude) * 10000;
+    gpsData.latitude /= 1000000;
+    gpsData.latitudeDirection = direction[0];
+}
+
+void NMEAParser::getLongitude(const string &longitude, string direction, GPSData &gpsData)
+{
+    gpsData.longitude = stod(longitude) * 10000;
+    gpsData.longitude /= 1000000;
+    gpsData.longitudeDirection = direction[0];
 }
