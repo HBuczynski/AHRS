@@ -56,6 +56,7 @@ add_subdirectory("src/message_queue_wrapper"                            message_
 add_subdirectory("src/shared_memory_wrapper"                            shared_memory_wrapper           )
 add_subdirectory("src/utility"                                          utility                         )
 add_subdirectory("src/config_reader"                                    config_reader                   )
+add_subdirectory("src/database_manager"                                 database_manager                )
 add_subdirectory("src/packet"                                           packet                          )
 add_subdirectory("src/hal"                                              hal                             )
 add_subdirectory("src/switches"                                         switches                        )
