@@ -46,7 +46,10 @@ BOOST_AUTO_TEST_CASE( test_int )
                 properties.temperature  = 78.09;
                 properties.bandwith = 2.46;
                 properties.mode = "MASTER";
+                properties.processorConsumption = 89.90;
                 feederDb.insertFeederProperties(properties);
+
+                feederDb.insertHASH(127864356);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -11,27 +11,25 @@ namespace database
     class Database
     {
     public:
-        Database();
+        Database(const std::string& name);
         virtual ~Database();
+
+        bool insertHASH(uint32_t hash);
 
     protected:
         bool open(const std::string& name);
         bool executeCommand(const std::string& command);
 
-        const std::string HASH_IDENTIFIER = "CREATE TABLE IDENTIFIER ("
-                                            "HASH INTEGER"
-                                            ");";
+        const std::string HASH_TABLE = "CREATE TABLE IDENTIFIER (HASH INTEGER);";
+        const std::string APOSTROPHE = "'";
+        const std::string SEMICOLON = ",";
 
-        const std::string mark = "'";
-        const std::string semicolon = ",";
-
+        std::string name_;
         utility::Logger& logger_;
 
     private:
         sqlite3 *database_;
         bool isOpened;
-
-
     };
 }
 

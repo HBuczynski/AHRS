@@ -4,8 +4,9 @@ using namespace std;
 using namespace utility;
 using namespace database;
 
-Database::Database()
-    : logger_(Logger::getInstance()),
+Database::Database(const std::string& name)
+    : name_(name),
+      logger_(Logger::getInstance()),
       database_(nullptr),
       isOpened(false)
 {}
@@ -50,4 +51,10 @@ bool Database::executeCommand(const std::string& command)
     }
 
     return true;
+}
+
+bool Database::insertHASH(uint32_t hash)
+{
+    string command = "INSERT INTO IDENTIFIER VALUES(" + to_string(hash) + ");";
+    return executeCommand(command);
 }

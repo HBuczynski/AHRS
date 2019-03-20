@@ -12,7 +12,9 @@ struct FlightMeasurements
     float heading;
     float verticalSpeed;
     float latitude;
+    char latitudeDirection;
     float longitude;
+    char longitudeDirection;
     float turnCoordinator;
     float slipSkid;
 };

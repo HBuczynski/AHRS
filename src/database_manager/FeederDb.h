@@ -29,6 +29,8 @@ namespace database
 
         double temperature;
         double power;
+
+        double processorConsumption;
     };
 
     class FeederDb : public Database
@@ -36,12 +38,14 @@ namespace database
     public:
         FeederDb(const std::string& name);
 
+        bool initialize();
+
         void insertIMU(const IMUData& data);
         void insertGPS(const gps::GPSData& data);
         void insertFeederProperties(const FeederProperties& feederProperties);
 
     private:
-        void createTable();
+        bool createTable();
 
         const std::string GPS_TABLE = "CREATE TABLE GPS ("
                                     "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -85,10 +89,11 @@ namespace database
                                               "MODE               TEXT    NOT NULL, "
                                               "BANDWITH           NUMERIC, "
                                               "RPI_TEMPERATURE    NUMERIC, "
-                                              "POWER              NUMERIC "
+                                              "POWER              NUMERIC, "
+                                              "PROCESSOR          NUMERIC "
                                               ");";
 
-        const std::string INSERT_FEEDER = "INSERT INTO FEEDER_PROPERTIES (TIMESTAMP,MODE,BANDWITH,RPI_TEMPERATURE,POWER) "
+        const std::string INSERT_FEEDER = "INSERT INTO FEEDER_PROPERTIES (TIMESTAMP,MODE,BANDWITH,RPI_TEMPERATURE,POWER,PROCESSOR) "
                                           "VALUES";
     };
 }
