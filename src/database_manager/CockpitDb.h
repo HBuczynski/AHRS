@@ -1,13 +1,15 @@
 #ifndef AHRS_COCKPITDB_H
 #define AHRS_COCKPITDB_H
 
+#include "Database.h"
+
 namespace database
 {
-    class CockpitDb
+    class CockpitDb : public Database
     {
     public:
         CockpitDb();
-        
+
     };
 }
 

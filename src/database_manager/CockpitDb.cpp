@@ -7,4 +7,5 @@ using namespace database;
 
 CockpitDb::CockpitDb()
 {
+
 }

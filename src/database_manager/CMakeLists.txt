@@ -18,6 +18,7 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC SQlite)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC telemetry)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
