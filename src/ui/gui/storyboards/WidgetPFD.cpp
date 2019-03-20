@@ -71,9 +71,17 @@ WidgetPFD::WidgetPFD( QWidget *parent ) :
 
 WidgetPFD::~WidgetPFD()
 {
-    if ( m_layoutSq ) delete m_layoutSq; m_layoutSq = 0;
+    if ( m_layoutSq )
+    {
+        delete m_layoutSq;
+        m_layoutSq = 0;
+    }
 
-    if ( m_ui ) delete m_ui; m_ui = 0;
+    if ( m_ui )
+    {
+        delete m_ui;
+        m_ui = 0;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

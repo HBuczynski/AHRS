@@ -123,11 +123,35 @@ qfi_PFD::~qfi_PFD()
 
     reset();
 
-    if ( m_adi ) delete m_adi; m_adi = 0;
-    if ( m_alt ) delete m_alt; m_alt = 0;
-    if ( m_asi ) delete m_asi; m_asi = 0;
-    if ( m_hsi ) delete m_hsi; m_hsi = 0;
-    if ( m_vsi ) delete m_vsi; m_vsi = 0;
+    if ( m_adi )
+    {
+        delete m_adi;
+        m_adi = 0;
+    }
+
+    if ( m_alt )
+    {
+        delete m_alt;
+        m_alt = 0;
+    }
+
+    if ( m_asi )
+    {
+        delete m_asi;
+        m_asi = 0;
+    }
+
+    if ( m_hsi )
+    {
+        delete m_hsi;
+        m_hsi = 0;
+    }
+
+    if ( m_vsi )
+    {
+        delete m_vsi;
+        m_vsi = 0;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
