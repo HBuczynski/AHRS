@@ -7,8 +7,9 @@ using namespace std;
 using namespace gps;
 
 GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
-    :   fixedSwitch_(hardware::GPIO{0}),
-        rs232Interface_(deviceName)
+    :   fixedSwitch_(hardware::GPIO{23, hardware::GPIOMode::IN, hardware::GPIOPullMode::DOWN}),
+        rs232Interface_(deviceName),
+        gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED)
 {}
 
 void GPSAdafruitInterface::initialize()
@@ -19,9 +20,10 @@ void GPSAdafruitInterface::initialize()
     vector<uint8_t> intervalUpdateRaw(intervalUpdate.begin(), intervalUpdate.end());
     rs232Interface_.writeData(intervalUpdateRaw);
 
-    //TODO: activate timer to check Fixed data
     gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
 
+    start_ = std::chrono::system_clock::now();
+//    fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
 }
 
 GPSData GPSAdafruitInterface::getData()
@@ -58,12 +60,26 @@ GPSData GPSAdafruitInterface::getData()
     return gpsData;
 }
 
+void GPSAdafruitInterface::interruptCallback(int gpio, int level, uint32_t tick, void *userdata)
+{
+    GPSAdafruitInterface* handle = reinterpret_cast<GPSAdafruitInterface*>(userdata);
+    handle->interruptHandle();
+}
+
+void GPSAdafruitInterface::interruptHandle()
+{
+    end_ = std::chrono::system_clock::now();
+    uint32_t duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_ - start_).count();
+
+    if(duration > FIXED_THRESHOLD)
+    {
+        gpsStatus_ = GPSStatus::FIXED;
+    }
+
+    start_ = end_;
+}
+
 GPSStatus GPSAdafruitInterface::getStatus()
 {
     return gpsStatus_;
-}
-
-void GPSAdafruitInterface::interruptHandle(int gpio, int level, uint32_t tick, void *userdata)
-{
-
 }

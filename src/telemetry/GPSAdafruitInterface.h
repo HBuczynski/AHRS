@@ -1,6 +1,7 @@
 #ifndef GPS_TEST_GPSINTERFACE_H
 #define GPS_TEST_GPSINTERFACE_H
 
+#include <chrono>
 #include <atomic>
 
 #include "NMEAParser.h"
@@ -21,6 +22,8 @@ namespace gps
         INITIALISED_TIME_EXCEED
     };
 
+    typedef std::chrono::system_clock::time_point TimePoint;
+
     class GPSAdafruitInterface
     {
     public:
@@ -32,12 +35,19 @@ namespace gps
         GPSData getData();
 
     private:
-        static void interruptHandle(int gpio, int level, uint32_t tick, void *userdata);
+        static void interruptCallback(int gpio, int level, uint32_t tick, void *userdata);
+
+        void interruptHandle();
 
         hardware::Switch fixedSwitch_;
 
+        TimePoint start_;
+        TimePoint end_;
+
         RS232Interface rs232Interface_;
         std::atomic<GPSStatus> gpsStatus_;
+
+        const uint32_t FIXED_THRESHOLD = 3000;
     };
 }
 
