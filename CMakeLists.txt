@@ -47,6 +47,7 @@ endif()
 #                                           ADDING SUBMODULES                                           #
 #########################################################################################################
 add_subdirectory("3rd_party/RTIMULib"                                   RTIMULib                        )
+add_subdirectory("3rd_party/SQlite"                                     SQlite                          )
 
 add_subdirectory("src/time_manager"                                     time_manager                    )
 add_subdirectory("src/logger"                                           logger                          )
