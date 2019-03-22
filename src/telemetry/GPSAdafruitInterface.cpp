@@ -85,6 +85,10 @@ void GPSAdafruitInterface::interruptHandle()
     {
         gpsStatus_ = GPSStatus::FIXED;
     }
+    else
+    {
+        gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
+    }
 
     start_ = end_;
 }
