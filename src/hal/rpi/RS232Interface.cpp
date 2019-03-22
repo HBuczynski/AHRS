@@ -1,4 +1,4 @@
-#include "RS232Interface.h"
+#include "../include/RS232Interface.h"
 
 #include <unistd.h>
 #include <fcntl.h>
@@ -10,8 +10,8 @@
 using namespace std;
 
 RS232Interface::RS232Interface(const string &name)
-    : name_(name),
-      fd_(-2)
+        : name_(name),
+          fd_(-2)
 {}
 
 void RS232Interface::initialize()
