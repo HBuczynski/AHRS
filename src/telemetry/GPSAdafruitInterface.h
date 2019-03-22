@@ -47,7 +47,8 @@ namespace gps
         RS232Interface rs232Interface_;
         std::atomic<GPSStatus> gpsStatus_;
 
-        const uint32_t FIXED_THRESHOLD = 3000;
+        const uint32_t FIXED_THRESHOLD = 6000;
+        const uint8_t SENTENCE_MIN_THRESHOLD = 60;
     };
 }
 

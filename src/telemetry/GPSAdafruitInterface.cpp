@@ -29,34 +29,41 @@ void GPSAdafruitInterface::initialize()
 GPSData GPSAdafruitInterface::getData()
 {
     GPSData gpsData{0};
-    uint8_t status = 0;
 
-    while (status != NMEA_COMPLETED)
+    if(gpsStatus_ == GPSStatus::FIXED)
     {
-        const auto gpsPacket = rs232Interface_.readData();
-        const auto gpsSentence = string(gpsPacket.begin(), gpsPacket.end());
-        const auto sentenceType = NMEAParser::getSentenceType(gpsSentence);
-
-        cout << gpsSentence << endl;
-
-        switch (sentenceType)
+        uint8_t status = 0;
+        while (status != NMEA_COMPLETED)
         {
-            case SentenceType::GPRMC :
+            const auto gpsPacket = rs232Interface_.readData();
+            const auto gpsSentence = string(gpsPacket.begin(), gpsPacket.end());
+
+            if(gpsSentence.size() < SENTENCE_MIN_THRESHOLD)
+                continue;
+
+            const auto sentenceType = NMEAParser::getSentenceType(gpsSentence);
+            cout << gpsSentence << endl;
+
+            switch (sentenceType)
             {
-                NMEAParser::parseGPRMCData(gpsSentence, gpsData);
-                status |= NMEA_GPGGA_STATUS;
-                break;
+                case SentenceType::GPRMC :
+                {
+                    NMEAParser::parseGPRMCData(gpsSentence, gpsData);
+                    status |= NMEA_GPGGA_STATUS;
+                    break;
+                }
+                case SentenceType::GPGGA :
+                {
+                    NMEAParser::parseGPGGAData(gpsSentence, gpsData);
+                    status |= NMEA_GPRMC_STATUS;
+                    break;
+                }
+                default:
+                    break;
             }
-            case SentenceType::GPGGA :
-            {
-                NMEAParser::parseGPGGAData(gpsSentence, gpsData);
-                status |= NMEA_GPRMC_STATUS;
-                break;
-            }
-            default:
-                break;
         }
     }
+
     return gpsData;
 }
 
@@ -68,11 +75,10 @@ void GPSAdafruitInterface::interruptCallback(int gpio, int level, uint32_t tick,
 
 void GPSAdafruitInterface::interruptHandle()
 {
-    cout << "In interrupt handler" << endl;
-
     end_ = std::chrono::system_clock::now();
     uint32_t duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_ - start_).count();
 
+    cout << "In interrupt handler\t";
     cout << "Duration: " << duration << endl;
 
     if(duration > FIXED_THRESHOLD)
