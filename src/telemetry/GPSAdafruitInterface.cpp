@@ -23,7 +23,7 @@ void GPSAdafruitInterface::initialize()
     gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
 
     start_ = std::chrono::system_clock::now();
-//    fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
+    fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
 }
 
 GPSData GPSAdafruitInterface::getData()
@@ -68,8 +68,12 @@ void GPSAdafruitInterface::interruptCallback(int gpio, int level, uint32_t tick,
 
 void GPSAdafruitInterface::interruptHandle()
 {
+    cout << "In interrupt handler" << endl;
+
     end_ = std::chrono::system_clock::now();
     uint32_t duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_ - start_).count();
+
+    cout << "Duration: " << duration << endl;
 
     if(duration > FIXED_THRESHOLD)
     {
