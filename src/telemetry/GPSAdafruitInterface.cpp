@@ -42,7 +42,6 @@ GPSData GPSAdafruitInterface::getData()
                 continue;
 
             const auto sentenceType = NMEAParser::getSentenceType(gpsSentence);
-            cout << gpsSentence << endl;
 
             switch (sentenceType)
             {
@@ -78,9 +77,6 @@ void GPSAdafruitInterface::interruptHandle()
     end_ = std::chrono::system_clock::now();
     uint32_t duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_ - start_).count();
 
-    cout << "In interrupt handler\t";
-    cout << "Duration: " << duration << endl;
-
     if(duration > FIXED_THRESHOLD)
     {
         gpsStatus_ = GPSStatus::FIXED;
@@ -89,7 +85,6 @@ void GPSAdafruitInterface::interruptHandle()
     {
         gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
     }
-
     start_ = end_;
 }
 

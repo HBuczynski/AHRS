@@ -26,7 +26,6 @@ BOOST_AUTO_TEST_SUITE( nmea_telemetry )
 //        NMEAParser::parseGPGGAData(gpgga, data);
 //        NMEAParser::parseGPRMCData(gprmc, data);
         GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
-
         adafruitInterface.initialize();
 
         while (1)
