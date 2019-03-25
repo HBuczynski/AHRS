@@ -38,7 +38,7 @@ void KeyboardHandler::initializeCallbacks(std::function<void()> pressedSwitchCal
 void KeyboardHandler::resetSwitch()
 {}
 
-Qt::Key KeyboardHandler::getKey()
+Qt::Key KeyboardHandler::getKey() const noexcept
 {
     switch(gpio_.pinNumber)
     {

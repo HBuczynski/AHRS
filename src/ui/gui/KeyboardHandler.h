@@ -20,7 +20,7 @@ public:
 private slots:
     void slotShortcut();
 
-    Qt::Key getKey();
+    Qt::Key getKey() const noexcept;
 
 private:
     hardware::GPIO gpio_;
