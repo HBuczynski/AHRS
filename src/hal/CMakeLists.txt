@@ -33,6 +33,7 @@ if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_
     add_library(PIGPIO STATIC ${pigpio_source_list} ${pigpio_header_list})
 
     target_link_libraries(${PROJECT_NAME} LINK_PUBLIC PIGPIO)
+
 endif()
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)

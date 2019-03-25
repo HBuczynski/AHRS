@@ -13,10 +13,20 @@ BOOST_AUTO_TEST_SUITE( switch_test )
 
         BOOST_AUTO_TEST_CASE( reading )
         {
-            GPIO gpio;
-            Switch switchTest(gpio);
+                GPIO gpio;
+                gpio.pinNumber = 97;
 
-            cout << switchTest.a << endl;
+                Switch aSwitch(gpio);
+
+                gpioISRFuncEx_t lol;
+                aSwitch.registerHandler(lol, 0);
+
+                while(1)
+                {
+
+                        cout<<"siema" << endl;
+                        this_thread::sleep_for(chrono::milliseconds(1000));
+                }
         }
 
 BOOST_AUTO_TEST_SUITE_END()
