@@ -86,7 +86,7 @@ void InformationPage::pageSetup()
     ui_->rightLabel_5->setText("\u25FB\u25FB\u25FB");
 
 
-    buttons_ = make_unique<Buttons>();
+    buttons_ = make_unique<Buttons>(this);
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
@@ -132,7 +132,7 @@ void InformationPage::initializeContinue()
 
 void InformationPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>();
+    buttons_ = make_unique<Buttons>(this);
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

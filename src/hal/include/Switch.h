@@ -21,21 +21,6 @@ namespace hardware
 
         bool registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &timeout = 0, void *intData = nullptr);
 
-
-#ifdef VIRTUAL_BOARD
-
-    private:
-        void listenKeys();
-
-        std::atomic<bool> isListening_;
-        std::thread listeningThread_;
-
-        gpioISRFuncEx_t callback_;
-        void* internalData_;
-        int edge_;
-
-        std::map<uint8_t, uint8_t> dictionary_;
-#endif
     };
 }
 

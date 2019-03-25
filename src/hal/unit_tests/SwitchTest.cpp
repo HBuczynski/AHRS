@@ -18,15 +18,6 @@ BOOST_AUTO_TEST_SUITE( switch_test )
 
                 Switch aSwitch(gpio);
 
-                gpioISRFuncEx_t lol;
-                aSwitch.registerHandler(lol, 0);
-
-                while(1)
-                {
-
-                        cout<<"siema" << endl;
-                        this_thread::sleep_for(chrono::milliseconds(1000));
-                }
         }
 
 BOOST_AUTO_TEST_SUITE_END()

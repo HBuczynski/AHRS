@@ -51,7 +51,7 @@ void MainPage::initialize()
 
 void MainPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>();
+    buttons_ = make_unique<Buttons>(this);
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

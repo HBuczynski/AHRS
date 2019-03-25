@@ -3,7 +3,7 @@
 #define BOOST_TEST_DYN_LINK
 
 #include <boost/test/unit_test.hpp>
-#include "switches/SwitchHandle.h"
+#include "switches/RPISwitchHandle.h"
 
 #include <iostream>
 
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
         bool ok = true;
 
         {
-            SwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
+            RPISwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
 
             function<void()> pressedSwitchCallback = [&]() { ok = false; cout << "Pressed Button." << endl; };
             function<void(SwitchCode, SwitchState)> errorCallback = [](SwitchCode code, SwitchState state) {
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_SUITE( test_multiply )
             ok = true;
         }
 
-        SwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
+        RPISwitchHandle handle(gpio, SwitchCode::FOURTH_SWITCH);
 
         function<void()> pressedSwitchCallback = []() { cout << "Pressed Button." << endl; };
         function<void(SwitchCode, SwitchState)> errorCallback = [](SwitchCode code, SwitchState state) {

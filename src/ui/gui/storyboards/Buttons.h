@@ -6,7 +6,7 @@
 #include <functional>
 
 #include <QWidget>
-#include "../../../switches/SwitchHandle.h"
+#include "../../../switches/RPISwitchHandle.h"
 
 
 namespace Ui {
@@ -18,7 +18,7 @@ class Buttons : public QWidget
     Q_OBJECT
 
 public:
-    explicit Buttons(QWidget *parent = 0);
+     Buttons(QWidget *parent);
     ~Buttons();
 
     void initialize(const std::map<peripherals::SwitchCode, std::string> &names, const std::map<peripherals::SwitchCode, std::function<void()> > &callbackFunctions);

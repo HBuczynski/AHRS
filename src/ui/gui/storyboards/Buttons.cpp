@@ -5,6 +5,8 @@
 #include <config_reader/ConfigurationReader.h>
 #include <config_reader/UIParameters.h>
 
+#include "../KeyboardHandler.h"
+
 using namespace std;
 using namespace utility;
 using namespace peripherals;
@@ -74,7 +76,13 @@ void Buttons::initializeSwitches(const map<SwitchCode, function<void()> > &callb
     {
         for (const auto callbackIter : callbackFunctions)
         {
-            switches_[callbackIter.first] = make_unique<SwitchHandle>((*iterSwitchesGPIO), callbackIter.first);
+
+#ifdef VIRTUAL_BOARD
+            switches_[callbackIter.first] = make_unique<KeyboardHandler>(this, (*iterSwitchesGPIO), callbackIter.first);
+#else
+            switches_[callbackIter.first] = make_unique<RPISwitchHandle>((*iterSwitchesGPIO), callbackIter.first);
+#endif
+
             switches_[callbackIter.first]->initializeCallbacks(callbackIter.second, errorCallback);
             ++iterSwitchesGPIO;
         }
