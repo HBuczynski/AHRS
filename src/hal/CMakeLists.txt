@@ -1,5 +1,5 @@
 # Specify the minimum version of cmake.
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.10)
 
 project(hal)
 
@@ -12,6 +12,7 @@ if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_
     file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/rpi/*.cpp")
 elseif(${TARGET_PLATFROM} STREQUAL virtualBoard)
     file(GLOB source_list "${CMAKE_CURRENT_SOURCE_DIR}/virtualBoard/*.cpp")
+
 endif()
 
 

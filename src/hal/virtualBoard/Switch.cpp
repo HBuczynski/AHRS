@@ -14,6 +14,5 @@ Switch::~Switch()
 
 bool Switch::registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &timeout, void *intData)
 {
-
     return true;
 }

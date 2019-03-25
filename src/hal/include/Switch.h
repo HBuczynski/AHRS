@@ -15,6 +15,11 @@ namespace hardware
         ~Switch();
 
         bool registerHandler(gpioISRFuncEx_t fun, const int &edge, const int &timeout = 0, void *intData = nullptr);
+
+
+#ifdef VIRTUAL_BOARD
+        const int a = 65;
+#endif
     };
 }
 
