@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'Buttons.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -80,11 +80,11 @@ public:
 
     void retranslateUi(QWidget *Buttons)
     {
-        Buttons->setWindowTitle(QApplication::translate("Buttons", "Form", Q_NULLPTR));
-        firstButton->setText(QApplication::translate("Buttons", "TextLabel", Q_NULLPTR));
-        secondButton->setText(QApplication::translate("Buttons", "TextLabel", Q_NULLPTR));
-        thirdButton->setText(QApplication::translate("Buttons", "TextLabel", Q_NULLPTR));
-        fourthButton->setText(QApplication::translate("Buttons", "TextLabel", Q_NULLPTR));
+        Buttons->setWindowTitle(QApplication::translate("Buttons", "Form", 0));
+        firstButton->setText(QApplication::translate("Buttons", "TextLabel", 0));
+        secondButton->setText(QApplication::translate("Buttons", "TextLabel", 0));
+        thirdButton->setText(QApplication::translate("Buttons", "TextLabel", 0));
+        fourthButton->setText(QApplication::translate("Buttons", "TextLabel", 0));
     } // retranslateUi
 
 };

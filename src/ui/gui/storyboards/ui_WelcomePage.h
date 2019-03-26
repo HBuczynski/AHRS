@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WelcomePage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -101,11 +101,11 @@ public:
 
     void retranslateUi(QWidget *WelcomePage)
     {
-        WelcomePage->setWindowTitle(QApplication::translate("WelcomePage", "Form", Q_NULLPTR));
-        ahrsLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
-        acronymDescription->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
-        descriptionLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
-        authorLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", Q_NULLPTR));
+        WelcomePage->setWindowTitle(QApplication::translate("WelcomePage", "Form", 0));
+        ahrsLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
+        acronymDescription->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
+        descriptionLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
+        authorLabel_->setText(QApplication::translate("WelcomePage", "TextLabel", 0));
     } // retranslateUi
 
 };

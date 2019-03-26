@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'CallibrationSettings.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -32,7 +32,6 @@ class Ui_CallibrationSettings
 public:
     QFrame *verticalFrame;
     QVBoxLayout *verticalLayout;
-    QPushButton *exitButton;
     QSpacerItem *verticalSpacer_2;
     QLabel *titleLabel;
     QSpacerItem *verticalSpacer_5;
@@ -67,6 +66,10 @@ public:
     QPushButton *leftButton;
     QSpacerItem *horizontalSpacer_7;
     QPushButton *rightButton;
+    QSpacerItem *verticalSpacer_8;
+    QFrame *buttonFrame;
+    QHBoxLayout *horizontalButtons;
+    QGridLayout *buttonLayout;
 
     void setupUi(QWidget *CallibrationSettings)
     {
@@ -79,16 +82,7 @@ public:
         verticalLayout = new QVBoxLayout(verticalFrame);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(70, 10, 70, 30);
-        exitButton = new QPushButton(verticalFrame);
-        exitButton->setObjectName(QStringLiteral("exitButton"));
-        exitButton->setMinimumSize(QSize(100, 30));
-        exitButton->setMaximumSize(QSize(100, 16777215));
-        exitButton->setLayoutDirection(Qt::LeftToRight);
-        exitButton->setCheckable(false);
-
-        verticalLayout->addWidget(exitButton, 0, Qt::AlignRight);
-
-        verticalSpacer_2 = new QSpacerItem(20, 5, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_2 = new QSpacerItem(20, 4, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_2);
 
@@ -97,7 +91,7 @@ public:
 
         verticalLayout->addWidget(titleLabel);
 
-        verticalSpacer_5 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+        verticalSpacer_5 = new QSpacerItem(20, 17, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_5);
 
@@ -163,7 +157,7 @@ public:
 
         fromDatabaseComboBox = new QComboBox(verticalFrame);
         fromDatabaseComboBox->setObjectName(QStringLiteral("fromDatabaseComboBox"));
-        fromDatabaseComboBox->setMinimumSize(QSize(160, 0));
+        fromDatabaseComboBox->setMinimumSize(QSize(160, 26));
         fromDatabaseComboBox->setMaximumSize(QSize(160, 16777215));
 
         horizontalLayout->addWidget(fromDatabaseComboBox);
@@ -207,7 +201,7 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_4);
 
-        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_4 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_4);
 
@@ -231,6 +225,7 @@ public:
 
         dotsLabel = new QLabel(verticalFrame);
         dotsLabel->setObjectName(QStringLiteral("dotsLabel"));
+        dotsLabel->setMaximumSize(QSize(16777215, 10));
 
         verticalLayout->addWidget(dotsLabel);
 
@@ -242,24 +237,44 @@ public:
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         leftButton = new QPushButton(verticalFrame);
         leftButton->setObjectName(QStringLiteral("leftButton"));
-        leftButton->setMinimumSize(QSize(200, 35));
-        leftButton->setMaximumSize(QSize(16777211, 16777215));
+        leftButton->setMinimumSize(QSize(100, 25));
+        leftButton->setMaximumSize(QSize(100, 25));
         leftButton->setBaseSize(QSize(200, 0));
 
         horizontalLayout_5->addWidget(leftButton);
 
-        horizontalSpacer_7 = new QSpacerItem(210, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+        horizontalSpacer_7 = new QSpacerItem(650, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_5->addItem(horizontalSpacer_7);
 
         rightButton = new QPushButton(verticalFrame);
         rightButton->setObjectName(QStringLiteral("rightButton"));
-        rightButton->setMinimumSize(QSize(200, 35));
+        rightButton->setMinimumSize(QSize(100, 25));
+        rightButton->setMaximumSize(QSize(100, 25));
 
         horizontalLayout_5->addWidget(rightButton);
 
 
         verticalLayout->addLayout(horizontalLayout_5);
+
+        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_8);
+
+        buttonFrame = new QFrame(CallibrationSettings);
+        buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
+        buttonFrame->setGeometry(QRect(512, 559, 512, 40));
+        buttonFrame->setStyleSheet(QStringLiteral(""));
+        buttonFrame->setLineWidth(0);
+        horizontalButtons = new QHBoxLayout(buttonFrame);
+        horizontalButtons->setSpacing(0);
+        horizontalButtons->setObjectName(QStringLiteral("horizontalButtons"));
+        horizontalButtons->setContentsMargins(0, 0, 0, 0);
+        buttonLayout = new QGridLayout();
+        buttonLayout->setSpacing(0);
+        buttonLayout->setObjectName(QStringLiteral("buttonLayout"));
+
+        horizontalButtons->addLayout(buttonLayout);
 
 
         retranslateUi(CallibrationSettings);
@@ -269,19 +284,18 @@ public:
 
     void retranslateUi(QWidget *CallibrationSettings)
     {
-        CallibrationSettings->setWindowTitle(QApplication::translate("CallibrationSettings", "Form", Q_NULLPTR));
-        exitButton->setText(QApplication::translate("CallibrationSettings", "AHRS", Q_NULLPTR));
-        titleLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
-        planeLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
+        CallibrationSettings->setWindowTitle(QApplication::translate("CallibrationSettings", "Form", 0));
+        titleLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        planeLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
         planeDotsLabel->setText(QString());
-        planeValueLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
-        fromDatabaseLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
+        planeValueLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        fromDatabaseLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
         fromDatabaseDotsLabel->setText(QString());
-        newPlaneLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
-        newPlaneDotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
-        dotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", Q_NULLPTR));
-        leftButton->setText(QApplication::translate("CallibrationSettings", "CANCEL", Q_NULLPTR));
-        rightButton->setText(QApplication::translate("CallibrationSettings", "CONFIRM", Q_NULLPTR));
+        newPlaneLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        newPlaneDotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        dotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        leftButton->setText(QApplication::translate("CallibrationSettings", "MAIN", 0));
+        rightButton->setText(QApplication::translate("CallibrationSettings", "NEXT", 0));
     } // retranslateUi
 
 };

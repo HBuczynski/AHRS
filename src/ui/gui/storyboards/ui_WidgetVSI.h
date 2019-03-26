@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WidgetVSI.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -47,7 +47,7 @@ public:
 
     void retranslateUi(QWidget *WidgetVSI)
     {
-        WidgetVSI->setWindowTitle(QApplication::translate("WidgetVSI", "Form", Q_NULLPTR));
+        WidgetVSI->setWindowTitle(QApplication::translate("WidgetVSI", "Form", 0));
     } // retranslateUi
 
 };

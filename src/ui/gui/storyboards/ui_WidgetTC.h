@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WidgetTC.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -47,7 +47,7 @@ public:
 
     void retranslateUi(QWidget *WidgetTC)
     {
-        WidgetTC->setWindowTitle(QApplication::translate("WidgetTC", "Form", Q_NULLPTR));
+        WidgetTC->setWindowTitle(QApplication::translate("WidgetTC", "Form", 0));
     } // retranslateUi
 
 };

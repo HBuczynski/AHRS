@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'LogsPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -82,8 +82,8 @@ public:
 
     void retranslateUi(QWidget *LogsPage)
     {
-        LogsPage->setWindowTitle(QApplication::translate("LogsPage", "Form", Q_NULLPTR));
-        titleLabel->setText(QApplication::translate("LogsPage", "TextLabel", Q_NULLPTR));
+        LogsPage->setWindowTitle(QApplication::translate("LogsPage", "Form", 0));
+        titleLabel->setText(QApplication::translate("LogsPage", "TextLabel", 0));
     } // retranslateUi
 
 };

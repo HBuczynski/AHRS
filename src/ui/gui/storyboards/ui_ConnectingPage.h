@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ConnectingPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -84,9 +84,9 @@ public:
 
     void retranslateUi(QWidget *ConnectingPage)
     {
-        ConnectingPage->setWindowTitle(QApplication::translate("ConnectingPage", "Form", Q_NULLPTR));
-        connectingLabel->setText(QApplication::translate("ConnectingPage", "TextLabel", Q_NULLPTR));
-        subTextLabel->setText(QApplication::translate("ConnectingPage", "TextLabel", Q_NULLPTR));
+        ConnectingPage->setWindowTitle(QApplication::translate("ConnectingPage", "Form", 0));
+        connectingLabel->setText(QApplication::translate("ConnectingPage", "TextLabel", 0));
+        subTextLabel->setText(QApplication::translate("ConnectingPage", "TextLabel", 0));
     } // retranslateUi
 
 };

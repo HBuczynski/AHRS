@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'WidgetPFD.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -67,7 +67,7 @@ public:
 
     void retranslateUi(QWidget *WidgetPFD)
     {
-        WidgetPFD->setWindowTitle(QApplication::translate("WidgetPFD", "Form", Q_NULLPTR));
+        WidgetPFD->setWindowTitle(QApplication::translate("WidgetPFD", "Form", 0));
     } // retranslateUi
 
 };

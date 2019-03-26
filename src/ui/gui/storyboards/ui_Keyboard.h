@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'Keyboard.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -648,48 +648,48 @@ public:
 
     void retranslateUi(QWidget *Keyboard)
     {
-        Keyboard->setWindowTitle(QApplication::translate("Keyboard", "Form", Q_NULLPTR));
-        qButton->setText(QApplication::translate("Keyboard", "q", Q_NULLPTR));
-        wButton->setText(QApplication::translate("Keyboard", "w", Q_NULLPTR));
-        eButton->setText(QApplication::translate("Keyboard", "e", Q_NULLPTR));
-        rButton->setText(QApplication::translate("Keyboard", "r", Q_NULLPTR));
-        tButton->setText(QApplication::translate("Keyboard", "t", Q_NULLPTR));
-        yButton->setText(QApplication::translate("Keyboard", "y", Q_NULLPTR));
-        uButton->setText(QApplication::translate("Keyboard", "u", Q_NULLPTR));
-        iButton->setText(QApplication::translate("Keyboard", "i", Q_NULLPTR));
-        oButton->setText(QApplication::translate("Keyboard", "o", Q_NULLPTR));
-        pButton->setText(QApplication::translate("Keyboard", "p", Q_NULLPTR));
+        Keyboard->setWindowTitle(QApplication::translate("Keyboard", "Form", 0));
+        qButton->setText(QApplication::translate("Keyboard", "q", 0));
+        wButton->setText(QApplication::translate("Keyboard", "w", 0));
+        eButton->setText(QApplication::translate("Keyboard", "e", 0));
+        rButton->setText(QApplication::translate("Keyboard", "r", 0));
+        tButton->setText(QApplication::translate("Keyboard", "t", 0));
+        yButton->setText(QApplication::translate("Keyboard", "y", 0));
+        uButton->setText(QApplication::translate("Keyboard", "u", 0));
+        iButton->setText(QApplication::translate("Keyboard", "i", 0));
+        oButton->setText(QApplication::translate("Keyboard", "o", 0));
+        pButton->setText(QApplication::translate("Keyboard", "p", 0));
         bpButton->setText(QString());
-        aButton->setText(QApplication::translate("Keyboard", "a", Q_NULLPTR));
-        sButton->setText(QApplication::translate("Keyboard", "s", Q_NULLPTR));
-        dButton->setText(QApplication::translate("Keyboard", "d", Q_NULLPTR));
-        fButton->setText(QApplication::translate("Keyboard", "f", Q_NULLPTR));
-        gButton->setText(QApplication::translate("Keyboard", "g", Q_NULLPTR));
-        hButton->setText(QApplication::translate("Keyboard", "h", Q_NULLPTR));
-        jButton->setText(QApplication::translate("Keyboard", "j", Q_NULLPTR));
-        kButton->setText(QApplication::translate("Keyboard", "k", Q_NULLPTR));
-        lButton->setText(QApplication::translate("Keyboard", "l", Q_NULLPTR));
-        apostropheButton->setText(QApplication::translate("Keyboard", "'", Q_NULLPTR));
-        enterButton->setText(QApplication::translate("Keyboard", "Enter", Q_NULLPTR));
-        numButton_1->setText(QApplication::translate("Keyboard", "!", Q_NULLPTR));
-        zButton->setText(QApplication::translate("Keyboard", "z", Q_NULLPTR));
-        xButton->setText(QApplication::translate("Keyboard", "x", Q_NULLPTR));
-        cButton->setText(QApplication::translate("Keyboard", "c", Q_NULLPTR));
-        vButton->setText(QApplication::translate("Keyboard", "v", Q_NULLPTR));
-        bButton->setText(QApplication::translate("Keyboard", "b", Q_NULLPTR));
-        nButton->setText(QApplication::translate("Keyboard", "n", Q_NULLPTR));
-        mButton->setText(QApplication::translate("Keyboard", "m", Q_NULLPTR));
-        commaButton->setText(QApplication::translate("Keyboard", ",", Q_NULLPTR));
-        dotButton->setText(QApplication::translate("Keyboard", ".", Q_NULLPTR));
-        questionButton->setText(QApplication::translate("Keyboard", "?", Q_NULLPTR));
-        numButton_5->setText(QApplication::translate("Keyboard", "!", Q_NULLPTR));
-        numButton_2->setText(QApplication::translate("Keyboard", "?123", Q_NULLPTR));
+        aButton->setText(QApplication::translate("Keyboard", "a", 0));
+        sButton->setText(QApplication::translate("Keyboard", "s", 0));
+        dButton->setText(QApplication::translate("Keyboard", "d", 0));
+        fButton->setText(QApplication::translate("Keyboard", "f", 0));
+        gButton->setText(QApplication::translate("Keyboard", "g", 0));
+        hButton->setText(QApplication::translate("Keyboard", "h", 0));
+        jButton->setText(QApplication::translate("Keyboard", "j", 0));
+        kButton->setText(QApplication::translate("Keyboard", "k", 0));
+        lButton->setText(QApplication::translate("Keyboard", "l", 0));
+        apostropheButton->setText(QApplication::translate("Keyboard", "'", 0));
+        enterButton->setText(QApplication::translate("Keyboard", "Enter", 0));
+        numButton_1->setText(QApplication::translate("Keyboard", "!", 0));
+        zButton->setText(QApplication::translate("Keyboard", "z", 0));
+        xButton->setText(QApplication::translate("Keyboard", "x", 0));
+        cButton->setText(QApplication::translate("Keyboard", "c", 0));
+        vButton->setText(QApplication::translate("Keyboard", "v", 0));
+        bButton->setText(QApplication::translate("Keyboard", "b", 0));
+        nButton->setText(QApplication::translate("Keyboard", "n", 0));
+        mButton->setText(QApplication::translate("Keyboard", "m", 0));
+        commaButton->setText(QApplication::translate("Keyboard", ",", 0));
+        dotButton->setText(QApplication::translate("Keyboard", ".", 0));
+        questionButton->setText(QApplication::translate("Keyboard", "?", 0));
+        numButton_5->setText(QApplication::translate("Keyboard", "!", 0));
+        numButton_2->setText(QApplication::translate("Keyboard", "?123", 0));
         numButton_3->setText(QString());
         numButton_4->setText(QString());
         spaceButton->setText(QString());
         numButton_8->setText(QString());
-        numButton_7->setText(QApplication::translate("Keyboard", "?123", Q_NULLPTR));
-        numButton_6->setText(QApplication::translate("Keyboard", "kl", Q_NULLPTR));
+        numButton_7->setText(QApplication::translate("Keyboard", "?123", 0));
+        numButton_6->setText(QApplication::translate("Keyboard", "kl", 0));
     } // retranslateUi
 
 };

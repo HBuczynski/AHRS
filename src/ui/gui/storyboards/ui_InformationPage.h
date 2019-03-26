@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'InformationPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -103,8 +103,8 @@ public:
 
         lefLabel = new QLabel(verticalFrame);
         lefLabel->setObjectName(QStringLiteral("lefLabel"));
-        lefLabel->setMinimumSize(QSize(250, 0));
-        lefLabel->setMaximumSize(QSize(250, 16777215));
+        lefLabel->setMinimumSize(QSize(230, 0));
+        lefLabel->setMaximumSize(QSize(230, 16777215));
 
         horizontalLayout_3->addWidget(lefLabel);
 
@@ -149,8 +149,8 @@ public:
 
         lefLabel_2 = new QLabel(verticalFrame);
         lefLabel_2->setObjectName(QStringLiteral("lefLabel_2"));
-        lefLabel_2->setMinimumSize(QSize(300, 0));
-        lefLabel_2->setMaximumSize(QSize(300, 16777215));
+        lefLabel_2->setMinimumSize(QSize(267, 0));
+        lefLabel_2->setMaximumSize(QSize(267, 16777215));
 
         horizontalLayout_5->addWidget(lefLabel_2);
 
@@ -195,8 +195,8 @@ public:
 
         lefLabel_3 = new QLabel(verticalFrame);
         lefLabel_3->setObjectName(QStringLiteral("lefLabel_3"));
-        lefLabel_3->setMinimumSize(QSize(160, 0));
-        lefLabel_3->setMaximumSize(QSize(160, 16777215));
+        lefLabel_3->setMinimumSize(QSize(140, 0));
+        lefLabel_3->setMaximumSize(QSize(140, 16777215));
 
         horizontalLayout_6->addWidget(lefLabel_3);
 
@@ -241,8 +241,8 @@ public:
 
         lefLabel_5 = new QLabel(verticalFrame);
         lefLabel_5->setObjectName(QStringLiteral("lefLabel_5"));
-        lefLabel_5->setMinimumSize(QSize(200, 0));
-        lefLabel_5->setMaximumSize(QSize(200, 16777215));
+        lefLabel_5->setMinimumSize(QSize(180, 0));
+        lefLabel_5->setMaximumSize(QSize(180, 16777215));
 
         horizontalLayout_8->addWidget(lefLabel_5);
 
@@ -281,7 +281,7 @@ public:
 
         buttonFrame = new QFrame(InformationPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
-        buttonFrame->setGeometry(QRect(512, 555, 512, 40));
+        buttonFrame->setGeometry(QRect(512, 560, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
         buttonFrame->setLineWidth(0);
         horizontalButtons = new QHBoxLayout(buttonFrame);
@@ -302,20 +302,20 @@ public:
 
     void retranslateUi(QWidget *InformationPage)
     {
-        InformationPage->setWindowTitle(QApplication::translate("InformationPage", "Form", Q_NULLPTR));
-        titleLabel->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
-        lefLabel->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        InformationPage->setWindowTitle(QApplication::translate("InformationPage", "Form", 0));
+        titleLabel->setText(QApplication::translate("InformationPage", "TextLabel", 0));
+        lefLabel->setText(QApplication::translate("InformationPage", "TextLabel", 0));
         dotsLabel->setText(QString());
-        rightLabel->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
-        lefLabel_2->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        rightLabel->setText(QApplication::translate("InformationPage", "TextLabel", 0));
+        lefLabel_2->setText(QApplication::translate("InformationPage", "TextLabel", 0));
         dotsLabel_2->setText(QString());
-        rightLabel_2->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
-        lefLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        rightLabel_2->setText(QApplication::translate("InformationPage", "TextLabel", 0));
+        lefLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", 0));
         dotsLabel_3->setText(QString());
-        rightLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
-        lefLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        rightLabel_3->setText(QApplication::translate("InformationPage", "TextLabel", 0));
+        lefLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", 0));
         dotsLabel_5->setText(QString());
-        rightLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", Q_NULLPTR));
+        rightLabel_5->setText(QApplication::translate("InformationPage", "TextLabel", 0));
     } // retranslateUi
 
 };

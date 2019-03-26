@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'AHRSPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -105,7 +105,7 @@ public:
 
         buttonFrame = new QFrame(AHRSPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
-        buttonFrame->setGeometry(QRect(512, 556, 512, 40));
+        buttonFrame->setGeometry(QRect(512, 562, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
         buttonFrame->setLineWidth(0);
         horizontalButtons = new QHBoxLayout(buttonFrame);
@@ -242,21 +242,21 @@ public:
 
     void retranslateUi(QWidget *AHRSPage)
     {
-        AHRSPage->setWindowTitle(QApplication::translate("AHRSPage", "Form", Q_NULLPTR));
-        downFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downBoxPower->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        downPowerSupply->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upBoxPower->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
-        upPowerSupply->setText(QApplication::translate("AHRSPage", "TextLabel", Q_NULLPTR));
+        AHRSPage->setWindowTitle(QApplication::translate("AHRSPage", "Form", 0));
+        downFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downBoxPower->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        downPowerSupply->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upFirstAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upSecondAHRS->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upGrdSpeed->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upAltGps->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upFltDuration->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upBoxPower->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
+        upPowerSupply->setText(QApplication::translate("AHRSPage", "TextLabel", 0));
     } // retranslateUi
 
 };

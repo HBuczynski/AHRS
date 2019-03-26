@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ExitPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -149,12 +149,12 @@ public:
 
     void retranslateUi(QWidget *ExitPage)
     {
-        ExitPage->setWindowTitle(QApplication::translate("ExitPage", "Form", Q_NULLPTR));
-        titleLabel->setText(QApplication::translate("ExitPage", "TextLabel", Q_NULLPTR));
-        optionLabel->setText(QApplication::translate("ExitPage", "TextLabel", Q_NULLPTR));
-        cancelLabel->setText(QApplication::translate("ExitPage", "TextLabel", Q_NULLPTR));
-        restartLabel->setText(QApplication::translate("ExitPage", "TextLabel", Q_NULLPTR));
-        exitLabel->setText(QApplication::translate("ExitPage", "TextLabel", Q_NULLPTR));
+        ExitPage->setWindowTitle(QApplication::translate("ExitPage", "Form", 0));
+        titleLabel->setText(QApplication::translate("ExitPage", "TextLabel", 0));
+        optionLabel->setText(QApplication::translate("ExitPage", "TextLabel", 0));
+        cancelLabel->setText(QApplication::translate("ExitPage", "TextLabel", 0));
+        restartLabel->setText(QApplication::translate("ExitPage", "TextLabel", 0));
+        exitLabel->setText(QApplication::translate("ExitPage", "TextLabel", 0));
     } // retranslateUi
 
 };

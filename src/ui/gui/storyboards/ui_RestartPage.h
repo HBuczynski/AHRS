@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'RestartPage.ui'
 **
-** Created by: Qt User Interface Compiler version 5.8.0
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -74,9 +74,9 @@ public:
 
     void retranslateUi(QWidget *RestartPage)
     {
-        RestartPage->setWindowTitle(QApplication::translate("RestartPage", "Form", Q_NULLPTR));
-        restartLabel->setText(QApplication::translate("RestartPage", "TextLabel", Q_NULLPTR));
-        description->setText(QApplication::translate("RestartPage", "TextLabel", Q_NULLPTR));
+        RestartPage->setWindowTitle(QApplication::translate("RestartPage", "Form", 0));
+        restartLabel->setText(QApplication::translate("RestartPage", "TextLabel", 0));
+        description->setText(QApplication::translate("RestartPage", "TextLabel", 0));
     } // retranslateUi
 
 };

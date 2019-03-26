@@ -166,6 +166,7 @@ void StoryboardsHandler::setCallibrationSettingPage()
 {
     calibrationSettings_ = new CallibrationSettings();
     calibrationSettings_->resize(QSize(1024, 600));
+    calibrationSettings_->initialize();
 
     if(previousWidget_)
     {
