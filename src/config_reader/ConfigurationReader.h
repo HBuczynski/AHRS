@@ -4,7 +4,7 @@
 #include "JSONParser.h"
 #include "FeederParameters.h"
 #include "UIParameters.h"
-#include "AircraftParameters.h"
+
 
 #include <hal/include/GPIOInterface.h>
 #include <memory>
@@ -31,7 +31,7 @@ namespace config
 
         /**** Feeder Commands ****/
         // Getters
-        static std::vector<config::AircraftParameters> getAircraftDatabase(const std::string &filePath);
+        //static std::vector<config::AircraftParameters> getAircraftDatabase(const std::string &filePath);
         static FeederExecutableFiles getFeederExecutableFiles(const std::string &filePath);
         static FeederExternalWireless getFeederExternalWireless(const std::string &filePath);
         static FeederInternalWireless getFeederInternalWireless(const std::string &filePath);
@@ -40,7 +40,7 @@ namespace config
         static FeederType getFeederType(const std::string &filePath);
         // Setters
         static void setFeederSystemValue(const std::string &filePath, FeederMode mode);
-        static void addAircraftToDatabase(const std::string &filePath, AircraftParameters plane);
+        //static void addAircraftToDatabase(const std::string &filePath, AircraftParameters plane);
 
     private:
         static hardware::GPIOMode getGPIOMode(std::string mode);

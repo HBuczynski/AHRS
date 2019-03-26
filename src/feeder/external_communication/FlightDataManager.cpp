@@ -62,7 +62,7 @@ void FlightDataManager::sendMeasurements()
     uint64_t counter = 0;
 
     telemetry::PlaneOrientation orientation;
-    runAcquisition_ = orientation.initDataAcquisition();
+    runAcquisition_ = orientation.initDataAcquisition("lol");
 
     while (runAcquisition_)
     {

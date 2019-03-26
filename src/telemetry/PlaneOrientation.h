@@ -2,9 +2,10 @@
 #define AHRS_PLANEORIENTATION_H
 
 #include <logger/Logger.h>
+#include <memory>
 
-#include "RTIMUSettings.h"
 #include "IMUDrivers/RTIMU.h"
+#include "RTIMUSettings.h"
 #include "RTIMULibDefs.h"
 
 namespace telemetry
@@ -15,7 +16,7 @@ namespace telemetry
         PlaneOrientation();
         ~PlaneOrientation();
 
-        bool initDataAcquisition();
+        bool initDataAcquisition(const std::string& planeName);
         void readData();
 
         float getPitch();
@@ -23,19 +24,9 @@ namespace telemetry
         float getYaw();
 
     private:
-        RTIMUSettings *settings;
-        RTIMU *imu;
-        RTIMU_DATA imuData;
-
-        RTQuaternion m_gravity;
-        RTQuaternion rotatedGravity;
-        RTQuaternion fusedConjugate;
-        RTQuaternion qTemp;
-        RTVector3 residuals;
-
-        float prevX;
-        float prevY;
-        float prevZ;
+        RTIMUSettings* settings_;
+        RTIMU* imu_;
+        RTIMU_DATA imuData_;
 
         utility::Logger& logger_;
     };

@@ -37,24 +37,6 @@ bool GUIApplicationManager::initialize()
     return isSuccess;
 }
 
-void GUIApplicationManager::startGUI()
-{
-    runCommunicationThread_ = true;
-    interprocessCommunicationThread_ = thread(&GUIApplicationManager::interprocessCommunication, this);
-
-    mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    mainWindow_->show();
-}
-
-void GUIApplicationManager::stopGUI()
-{
-    if(interprocessCommunicationThread_.joinable())
-    {
-        runCommunicationThread_ = false;
-        interprocessCommunicationThread_.join();
-    }
-}
-
 bool GUIApplicationManager::initializeGUIMessageQueue()
 {
     try
@@ -99,6 +81,24 @@ bool GUIApplicationManager::initializeSharedMemory()
     }
 
     return true;
+}
+
+void GUIApplicationManager::startGUI()
+{
+    runCommunicationThread_ = true;
+    interprocessCommunicationThread_ = thread(&GUIApplicationManager::interprocessCommunication, this);
+
+    mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    mainWindow_->show();
+}
+
+void GUIApplicationManager::stopGUI()
+{
+    if(interprocessCommunicationThread_.joinable())
+    {
+        runCommunicationThread_ = false;
+        interprocessCommunicationThread_.join();
+    }
 }
 
 void GUIApplicationManager::interprocessCommunication()

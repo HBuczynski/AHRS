@@ -8,6 +8,7 @@ namespace config
     const std::string FEEDER_PARAMETERS_FILE_PATH = "../../configuration_files/feeder_parameters.json";
     const std::string FEEDER_TYPE_FILE_PATH = "../../configuration_files/feeder_system.json";
     const std::string FEEDER_AIRCRAFTS_DATABASE_FILE_PATH = "../../configuration_files/aircrafts_database.json";
+    const std::string FEEDER_AIRCRAFTS_DATABASE_PATH = "../../aircrafts_database/";
 
     enum class FeederMode : uint8_t
     {

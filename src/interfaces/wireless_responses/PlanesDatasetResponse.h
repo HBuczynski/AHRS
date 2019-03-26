@@ -2,7 +2,6 @@
 #define AHRS_PLANESDATASETRESPONSE_H
 
 #include "Response.h"
-#include <config_reader/AircraftParameters.h>
 
 #include <string>
 #include <vector>
@@ -12,21 +11,21 @@ namespace communication
     class PlanesDatasetResponse final : public Response
     {
     public:
-        PlanesDatasetResponse(const std::vector<config::AircraftParameters> &dataset);
+        PlanesDatasetResponse(const std::vector<std::string> &dataset);
         ~PlanesDatasetResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(ResponseVisitor& visitor) override;
 
-        void setDataset(const std::vector<config::AircraftParameters> &dataset);
+        void setDataset(const std::vector<std::string> &dataset);
 
-        const std::vector<config::AircraftParameters>& getDataset() const;
+        const std::vector<std::string>& getDataset() const;
 
     private:
         virtual void initializeDataSize() override;
 
-        std::vector<config::AircraftParameters> dataset_;
+        std::vector<std::string> dataset_;
     };
 }
 

@@ -30,7 +30,8 @@ BOOST_AUTO_TEST_SUITE( test_telemetry )
         logger.initLogger(struc);
 
         PlaneOrientation planeOrientation;
-        planeOrientation.initDataAcquisition();
+        std::string temp = "temp";
+        planeOrientation.initDataAcquisition(temp);
 
         while(true)
         { 

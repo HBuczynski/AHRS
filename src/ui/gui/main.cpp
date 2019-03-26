@@ -34,7 +34,6 @@ int main( int argc, char *argv[] )
 
     QApplication app( argc, argv );
 
-
     auto mainWindow = make_shared<MainWindow>();
     GUIApplicationManager applicationManager(mainWindow);
 

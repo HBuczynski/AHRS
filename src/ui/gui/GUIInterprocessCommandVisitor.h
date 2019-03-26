@@ -17,7 +17,6 @@ namespace gui
         Q_OBJECT
     public:
         GUIInterprocessCommandVisitor(std::shared_ptr<MainWindow> mainWindow);
-        ~GUIInterprocessCommandVisitor();
 
         void visit(communication::GUIWindowCommand& command) override;
         void visit(communication::GUIInformationWindowCommand& command) override;

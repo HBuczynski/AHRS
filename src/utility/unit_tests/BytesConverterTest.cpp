@@ -2,7 +2,6 @@
 
 #define BOOST_TEST_DYN_LINK
 #include <boost/test/unit_test.hpp>
-#include <config_reader/AircraftParameters.h>
 
 #include "../BytesConverter.h"
 
@@ -64,25 +63,7 @@ BOOST_AUTO_TEST_SUITE(Conversions)
 
     BOOST_AUTO_TEST_CASE(ConvertStructToVectorAndReverse)
     {
-        config::AircraftParameters aircraftParameters;
-        const char *temp = "Boeing";
 
-        strcpy(aircraftParameters.name, temp);
-
-        uint16_t pos = 0;
-        std::vector<uint8_t> vec = utility::BytesConverter::appendStructToVectorOfUINT8(aircraftParameters);
-
-        config::AircraftParameters aircraftParameters2;
-        utility::BytesConverter::fromVectorOfUINT8toStruct<config::AircraftParameters>(vec, pos, aircraftParameters2);
-
-        bool isSuccess = true;
-
-        for(uint8_t i = 0; i < 32; ++i)
-        {
-            isSuccess = isSuccess & (aircraftParameters.name[i] == aircraftParameters2.name[i]);
-        }
-
-        BOOST_CHECK_EQUAL(isSuccess, true);
     }
 
 

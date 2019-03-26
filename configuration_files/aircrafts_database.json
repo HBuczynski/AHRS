@@ -1,0 +1,18 @@
+{
+  "Aircrafts" :
+  {
+    "Bombardier" :
+    {
+      "calibrationX" : 172.87,
+      "calibrationY" : 12.87,
+      "calibrationZ" : 1.87
+    },
+
+    "Boeing" :
+    {
+      "calibrationX" : 172.87,
+      "calibrationY" : 12.87,
+      "calibrationZ" : 1.87
+    }
+  }
+}

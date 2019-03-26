@@ -7,7 +7,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-PlanesDatasetResponse::PlanesDatasetResponse(const vector<config::AircraftParameters> &dataset)
+PlanesDatasetResponse::PlanesDatasetResponse(const vector<std::string> &dataset)
     : Response(10, ResponseType::PLANES_DATASET),
       dataset_(dataset)
 { }
@@ -46,12 +46,12 @@ string PlanesDatasetResponse::getName()
     return string("PlanesDatasetResponse");
 }
 
-void PlanesDatasetResponse::setDataset(const vector<config::AircraftParameters> &dataset)
+void PlanesDatasetResponse::setDataset(const vector<std::string> &dataset)
 {
     dataset_ = dataset;
 }
 
-const vector<config::AircraftParameters> &PlanesDatasetResponse::getDataset() const
+const vector<std::string> &PlanesDatasetResponse::getDataset() const
 {
     return dataset_;
 }
