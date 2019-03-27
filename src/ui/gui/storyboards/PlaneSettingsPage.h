@@ -36,6 +36,7 @@ private slots:
 
 signals:
     void signalMENUPage();
+    void signalCallibrationPage();
 
 private:
     void setupPage();

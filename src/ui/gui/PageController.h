@@ -18,12 +18,13 @@ namespace gui
         virtual void setWelcomePage() = 0;
         virtual void setAHRSPage() = 0;
         virtual void setSystemSetupPage() = 0;
-        virtual void setCallibrationSettingPage() = 0;
+        virtual void setPlaneSettingPage() = 0;
         virtual void setRestartPage() = 0;
         virtual void setExitPage() = 0;
         virtual void setLogsPage() = 0;
         virtual void setMenuPage() = 0;
         virtual void setConnectingPage() = 0;
+        virtual void setCallibrationPage() = 0;
         virtual void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) = 0;
 
     };

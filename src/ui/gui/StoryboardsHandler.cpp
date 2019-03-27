@@ -81,7 +81,7 @@ void StoryboardsHandler::initializeStoryboardsContainer()
 {
     storyboardsContainer_[PagesType::WELCOME_PAGE] =  bind(&StoryboardsHandler::setWelcomePage, this);
     storyboardsContainer_[PagesType::AHRS_PAGE] =  bind(&StoryboardsHandler::setAHRSPage, this);
-    storyboardsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] =  bind(&StoryboardsHandler::setCallibrationSettingPage, this);
+    storyboardsContainer_[PagesType::PLANE_SETTING_PAGE] =  bind(&StoryboardsHandler::setPlaneSettingPage, this);
     storyboardsContainer_[PagesType::CONNECTING_PAGE] =  bind(&StoryboardsHandler::setConnectingPage, this);
     storyboardsContainer_[PagesType::EXIT_PAGE] =  bind(&StoryboardsHandler::setExitPage, this);
     storyboardsContainer_[PagesType::LOGS_PAGE] =  bind(&StoryboardsHandler::setLogsPage, this);
@@ -162,23 +162,42 @@ void StoryboardsHandler::setSystemSetupPage()
 
 }
 
-void StoryboardsHandler::setCallibrationSettingPage()
+void StoryboardsHandler::setPlaneSettingPage()
 {
-    calibrationSettings_ = new PlaneSettingsPage(this);
-    calibrationSettings_->resize(QSize(1024, 600));
-    calibrationSettings_->initialize();
+    planeSettings_ = new PlaneSettingsPage(this);
+    planeSettings_->resize(QSize(1024, 600));
+    planeSettings_->initialize();
 
     if(previousWidget_)
     {
         previousPage_ = currentPage_;
-        currentPage_ = PagesType::CALLIBRATION_SETTING_PAGE;
+        currentPage_ = PagesType::PLANE_SETTING_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
 
-    gridLayout_2->addWidget(calibrationSettings_);
-    previousWidget_ = calibrationSettings_;
+    gridLayout_2->addWidget(planeSettings_);
+    previousWidget_ = planeSettings_;
+}
+
+void StoryboardsHandler::setCallibrationPage()
+{
+    callibrationPage_ = new CallibrationPage(this);
+    callibrationPage_->resize(QSize(1024, 600));
+    callibrationPage_->initialize();
+
+    if(previousWidget_)
+    {
+        previousPage_ = currentPage_;
+        currentPage_ = PagesType::CALLIBRATION_PAGE;
+
+        gridLayout_2->removeWidget(previousWidget_);
+        delete previousWidget_;
+    }
+
+    gridLayout_2->addWidget(callibrationPage_);
+    previousWidget_ = callibrationPage_;
 }
 
 void StoryboardsHandler::setRestartPage()

@@ -18,7 +18,7 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
     windowsContainer_[PagesType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
     windowsContainer_[PagesType::CONNECTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
     //windowsContainer_[PagesType::C] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
-    windowsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
+    windowsContainer_[PagesType::PLANE_SETTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
     windowsContainer_[PagesType::AHRS_PAGE] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
     windowsContainer_[PagesType::RESTART_PAGE] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
     windowsContainer_[PagesType::EXIT_PAGE] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);

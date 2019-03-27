@@ -128,6 +128,7 @@ void PlaneSettingsPage::initialize()
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&PlaneSettingsPage::selectButton, this);
 
     QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
+    QObject::connect(this, SIGNAL(signalCallibrationPage()), controller_, SLOT(setCallibrationPage()));
 
     initializeButtons(buttonNames, callbackFunctions);
 }
@@ -197,6 +198,7 @@ void PlaneSettingsPage::selectButton()
         }
         case FieldType::NEXT_LABEL :
         {
+            emit signalCallibrationPage();
             break;
         }
         default:

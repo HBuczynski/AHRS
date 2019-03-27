@@ -30,6 +30,7 @@
 #include "storyboards/RestartPage.h"
 #include "storyboards/InformationPage.h"
 #include "storyboards/ConnectingPage.h"
+#include "storyboards/CallibrationPage.h"
 
 #include <../../common/UIStates.h>
 
@@ -47,13 +48,14 @@ public slots:
     void backToPreviousPage() override;
     void setWelcomePage() override;
     void setSystemSetupPage() override;
-    void setCallibrationSettingPage() override;
+    void setPlaneSettingPage() override;
     void setRestartPage() override;
     void setExitPage() override;
     void setAHRSPage() override;
     void setLogsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
+    void setCallibrationPage() override;
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
 
 private:
@@ -75,9 +77,10 @@ private:
     RestartPage* restartPage_;
     WelcomePage* welcomePage_;
     SystemSetupPage* systemSetupPage_;
-    PlaneSettingsPage* calibrationSettings_;
+    PlaneSettingsPage* planeSettings_;
     InformationPage* informationPage_;
     ConnectingPage* connectingPage_;
+    CallibrationPage* callibrationPage_;
 
     QWidget *previousWidget_;
 
