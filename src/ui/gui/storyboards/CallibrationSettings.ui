@@ -438,11 +438,11 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QPushButton" name="leftButton">
+       <widget class="QLabel" name="menuLabel">
         <property name="minimumSize">
          <size>
           <width>100</width>
-          <height>27</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -451,14 +451,8 @@
           <height>16777215</height>
          </size>
         </property>
-        <property name="baseSize">
-         <size>
-          <width>200</width>
-          <height>0</height>
-         </size>
-        </property>
         <property name="text">
-         <string>MAIN</string>
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>
@@ -479,11 +473,11 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="rightButton">
+       <widget class="QLabel" name="nextLabel">
         <property name="minimumSize">
          <size>
           <width>100</width>
-          <height>27</height>
+          <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -493,7 +487,7 @@
          </size>
         </property>
         <property name="text">
-         <string>NEXT</string>
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>

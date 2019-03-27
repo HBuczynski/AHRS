@@ -6,13 +6,17 @@
 using namespace std;
 using namespace peripherals;
 
-CallibrationSettings::CallibrationSettings(QWidget *parent) :
+CallibrationSettings::CallibrationSettings(gui::PageController *controller, QWidget *parent) :
     QWidget(parent),
-    ui_(new Ui::CallibrationSettings)
+    controller_(controller),
+    ui_(new Ui::CallibrationSettings),
+    currentOption_(0),
+    MAX_OPTIONS_NUMBER(4)
 {
     ui_->setupUi(this);
 
     setupPage();
+    highlightCurrentOption(currentOption_);
 }
 
 CallibrationSettings::~CallibrationSettings()
@@ -55,7 +59,10 @@ void CallibrationSettings::setupPage()
     ui_->fromDatabaseDotsLabel->setFont(labelFont);
     ui_->fromDatabaseDotsLabel->setText("................................................................................................");
 
-    ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
+    ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+    ui_->fromDatabaseComboBox->addItem("Test1");
+    ui_->fromDatabaseComboBox->addItem("Test2");
+    ui_->fromDatabaseComboBox->addItem("Test3");
 
     // New plane line
     ui_->newPlaneLabel->setStyleSheet("QLabel { color : white}");
@@ -79,16 +86,21 @@ void CallibrationSettings::setupPage()
     keyboard_ = make_shared<Keyboard>();
     ui_->gridLayout->addWidget(keyboard_.get());
 
-    // Left button
     QFont buttonFont("Arial", 15, QFont::Bold);
-    ui_->leftButton->setStyleSheet("QPushButton { background-color: white; }\n"
-                                  "QPushButton:pressed { background-color: grey; }\n");
-    ui_->leftButton->setFont(buttonFont);
+    ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+    ui_->nextLabel->setFont(buttonFont);
+    ui_->nextLabel->setAlignment(Qt::AlignCenter);
+    ui_->nextLabel->setText("NEXT");
 
-    // Right button
-    ui_->rightButton->setStyleSheet("QPushButton { background-color: white; }\n"
-                                   "QPushButton:pressed { background-color: grey; }\n");
-    ui_->rightButton->setFont(buttonFont);
+    ui_->menuLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+    ui_->menuLabel->setFont(buttonFont);
+    ui_->menuLabel->setAlignment(Qt::AlignCenter);
+    ui_->menuLabel->setText("MENU");
+
+    labels_[FieldType::COMBO_BOX] = ui_->fromDatabaseComboBox;
+    labels_[FieldType::TEXT_FIELD] = ui_->newPlaneLineEdit;
+    labels_[FieldType::MENU_LABEL] = ui_->menuLabel;
+    labels_[FieldType::NEXT_LABEL] = ui_->nextLabel;
 }
 
 void CallibrationSettings::setupSlots()
@@ -105,15 +117,17 @@ void CallibrationSettings::initialize()
 {
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "CANCEL";
-    buttonNames[SwitchCode::SECOND_SWITCH] = "\u2B9B DOWN";//"\u21E6";
-    buttonNames[SwitchCode::THIRD_SWITCH] = "\u2B99 UP";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "SELECT";//"\u21E8";
+    buttonNames[SwitchCode::SECOND_SWITCH] = "DOWN";
+    buttonNames[SwitchCode::THIRD_SWITCH] = "UP";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "SELECT";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&CallibrationSettings::cancelButton, this);
     callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&CallibrationSettings::upButton, this);
     callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&CallibrationSettings::downButton, this);
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&CallibrationSettings::selectButton, this);
+
+    QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
 
     initializeButtons(buttonNames, callbackFunctions);
 }
@@ -126,6 +140,13 @@ void CallibrationSettings::initializeButtons(map<SwitchCode, string> name, map<S
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
+void CallibrationSettings::highlightCurrentOption(uint8_t newOption)
+{
+    labels_[static_cast<FieldType>(currentOption_)]->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+    labels_[static_cast<FieldType>(newOption)]->setStyleSheet("background-color: rgb(169,169,169);border: none;");
+    currentOption_ = newOption;
+}
+
 void CallibrationSettings::cancelButton()
 {
 
@@ -133,16 +154,52 @@ void CallibrationSettings::cancelButton()
 
 void CallibrationSettings::upButton()
 {
+    int8_t tempNumber = currentOption_ + 1;
 
+    if(tempNumber >= MAX_OPTIONS_NUMBER)
+    {
+        tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
+    }
+
+    highlightCurrentOption(tempNumber);
 }
 
 void CallibrationSettings::downButton()
 {
+    int8_t tempNumber = currentOption_ - 1;
 
+    if(tempNumber<0)
+    {
+        tempNumber += MAX_OPTIONS_NUMBER;
+    }
 
+    highlightCurrentOption(tempNumber);
 }
 
 void CallibrationSettings::selectButton()
 {
+    const auto type = static_cast<FieldType>(currentOption_);
 
+    switch (type)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            break;
+        }
+        case FieldType::TEXT_FIELD :
+        {
+            break;
+        }
+        case FieldType::MENU_LABEL :
+        {
+            emit signalMENUPage();
+            break;
+        }
+        case FieldType::NEXT_LABEL :
+        {
+            break;
+        }
+        default:
+            break;
+    }
 }

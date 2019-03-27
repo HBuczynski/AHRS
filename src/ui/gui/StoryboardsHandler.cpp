@@ -81,8 +81,8 @@ void StoryboardsHandler::initializeStoryboardsContainer()
 {
     storyboardsContainer_[PagesType::WELCOME_PAGE] =  bind(&StoryboardsHandler::setWelcomePage, this);
     storyboardsContainer_[PagesType::AHRS_PAGE] =  bind(&StoryboardsHandler::setAHRSPage, this);
-    storyboardsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] =  bind(&StoryboardsHandler::setWelcomePage, this);
-    storyboardsContainer_[PagesType::CONNECTING_PAGE] =  bind(&StoryboardsHandler::setCallibrationSettingPage, this);
+    storyboardsContainer_[PagesType::CALLIBRATION_SETTING_PAGE] =  bind(&StoryboardsHandler::setCallibrationSettingPage, this);
+    storyboardsContainer_[PagesType::CONNECTING_PAGE] =  bind(&StoryboardsHandler::setConnectingPage, this);
     storyboardsContainer_[PagesType::EXIT_PAGE] =  bind(&StoryboardsHandler::setExitPage, this);
     storyboardsContainer_[PagesType::LOGS_PAGE] =  bind(&StoryboardsHandler::setLogsPage, this);
     storyboardsContainer_[PagesType::MENU_PAGE] =  bind(&StoryboardsHandler::setMenuPage, this);
@@ -164,7 +164,7 @@ void StoryboardsHandler::setSystemSetupPage()
 
 void StoryboardsHandler::setCallibrationSettingPage()
 {
-    calibrationSettings_ = new CallibrationSettings();
+    calibrationSettings_ = new CallibrationSettings(this);
     calibrationSettings_->resize(QSize(1024, 600));
     calibrationSettings_->initialize();
 

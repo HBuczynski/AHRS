@@ -20,7 +20,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -63,9 +62,9 @@ public:
     QLabel *dotsLabel;
     QSpacerItem *verticalSpacer_7;
     QHBoxLayout *horizontalLayout_5;
-    QPushButton *leftButton;
+    QLabel *menuLabel;
     QSpacerItem *horizontalSpacer_7;
-    QPushButton *rightButton;
+    QLabel *nextLabel;
     QSpacerItem *verticalSpacer_8;
     QFrame *buttonFrame;
     QHBoxLayout *horizontalButtons;
@@ -235,29 +234,28 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        leftButton = new QPushButton(verticalFrame);
-        leftButton->setObjectName(QStringLiteral("leftButton"));
-        leftButton->setMinimumSize(QSize(100, 25));
-        leftButton->setMaximumSize(QSize(100, 25));
-        leftButton->setBaseSize(QSize(200, 0));
+        menuLabel = new QLabel(verticalFrame);
+        menuLabel->setObjectName(QStringLiteral("menuLabel"));
+        menuLabel->setMinimumSize(QSize(100, 0));
+        menuLabel->setMaximumSize(QSize(100, 16777215));
 
-        horizontalLayout_5->addWidget(leftButton);
+        horizontalLayout_5->addWidget(menuLabel);
 
         horizontalSpacer_7 = new QSpacerItem(650, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_5->addItem(horizontalSpacer_7);
 
-        rightButton = new QPushButton(verticalFrame);
-        rightButton->setObjectName(QStringLiteral("rightButton"));
-        rightButton->setMinimumSize(QSize(100, 25));
-        rightButton->setMaximumSize(QSize(100, 25));
+        nextLabel = new QLabel(verticalFrame);
+        nextLabel->setObjectName(QStringLiteral("nextLabel"));
+        nextLabel->setMinimumSize(QSize(100, 0));
+        nextLabel->setMaximumSize(QSize(100, 16777215));
 
-        horizontalLayout_5->addWidget(rightButton);
+        horizontalLayout_5->addWidget(nextLabel);
 
 
         verticalLayout->addLayout(horizontalLayout_5);
 
-        verticalSpacer_8 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_8 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_8);
 
@@ -294,8 +292,8 @@ public:
         newPlaneLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
         newPlaneDotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
         dotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        leftButton->setText(QApplication::translate("CallibrationSettings", "MAIN", 0));
-        rightButton->setText(QApplication::translate("CallibrationSettings", "NEXT", 0));
+        menuLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        nextLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
     } // retranslateUi
 
 };
