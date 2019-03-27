@@ -1,15 +1,15 @@
-#include "CallibrationSettings.h"
-#include "ui_CallibrationSettings.h"
+#include "PlaneSettingsPage.h"
+#include "ui_PlaneSettingsPage.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace peripherals;
 
-CallibrationSettings::CallibrationSettings(gui::PageController *controller, QWidget *parent) :
+PlaneSettingsPage::PlaneSettingsPage(gui::PageController *controller, QWidget *parent) :
     QWidget(parent),
     controller_(controller),
-    ui_(new Ui::CallibrationSettings),
+    ui_(new Ui::PlaneSettingsPage),
     currentOption_(0),
     MAX_OPTIONS_NUMBER(4)
 {
@@ -19,12 +19,12 @@ CallibrationSettings::CallibrationSettings(gui::PageController *controller, QWid
     highlightCurrentOption(currentOption_);
 }
 
-CallibrationSettings::~CallibrationSettings()
+PlaneSettingsPage::~PlaneSettingsPage()
 {
     delete ui_;
 }
 
-void CallibrationSettings::setupPage()
+void PlaneSettingsPage::setupPage()
 {
     this->setStyleSheet("background-color:black;");
 
@@ -103,17 +103,17 @@ void CallibrationSettings::setupPage()
     labels_[FieldType::NEXT_LABEL] = ui_->nextLabel;
 }
 
-void CallibrationSettings::setupSlots()
+void PlaneSettingsPage::setupSlots()
 {
     connect( ui_->newPlaneLineEdit, SIGNAL(textEdited()), this, SLOT(lineEditClicked()));
 }
 
-void CallibrationSettings::lineEditClicked()
+void PlaneSettingsPage::lineEditClicked()
 {
     cout << "Lolo" << endl;
 }
 
-void CallibrationSettings::initialize()
+void PlaneSettingsPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "CANCEL";
@@ -122,17 +122,17 @@ void CallibrationSettings::initialize()
     buttonNames[SwitchCode::FOURTH_SWITCH] = "SELECT";
 
     map<SwitchCode, function<void()> > callbackFunctions;
-    callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&CallibrationSettings::cancelButton, this);
-    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&CallibrationSettings::upButton, this);
-    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&CallibrationSettings::downButton, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&CallibrationSettings::selectButton, this);
+    callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&PlaneSettingsPage::cancelButton, this);
+    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&PlaneSettingsPage::upButton, this);
+    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&PlaneSettingsPage::downButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&PlaneSettingsPage::selectButton, this);
 
     QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
 
     initializeButtons(buttonNames, callbackFunctions);
 }
 
-void CallibrationSettings::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
+void PlaneSettingsPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
     buttons_ = make_unique<Buttons>(this);
     buttons_->initialize(name, callbackFunctions);
@@ -140,19 +140,19 @@ void CallibrationSettings::initializeButtons(map<SwitchCode, string> name, map<S
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
-void CallibrationSettings::highlightCurrentOption(uint8_t newOption)
+void PlaneSettingsPage::highlightCurrentOption(uint8_t newOption)
 {
     labels_[static_cast<FieldType>(currentOption_)]->setStyleSheet("background-color: rgb(255,255,255);border: none;");
     labels_[static_cast<FieldType>(newOption)]->setStyleSheet("background-color: rgb(169,169,169);border: none;");
     currentOption_ = newOption;
 }
 
-void CallibrationSettings::cancelButton()
+void PlaneSettingsPage::cancelButton()
 {
 
 }
 
-void CallibrationSettings::upButton()
+void PlaneSettingsPage::upButton()
 {
     int8_t tempNumber = currentOption_ + 1;
 
@@ -164,7 +164,7 @@ void CallibrationSettings::upButton()
     highlightCurrentOption(tempNumber);
 }
 
-void CallibrationSettings::downButton()
+void PlaneSettingsPage::downButton()
 {
     int8_t tempNumber = currentOption_ - 1;
 
@@ -176,7 +176,7 @@ void CallibrationSettings::downButton()
     highlightCurrentOption(tempNumber);
 }
 
-void CallibrationSettings::selectButton()
+void PlaneSettingsPage::selectButton()
 {
     const auto type = static_cast<FieldType>(currentOption_);
 

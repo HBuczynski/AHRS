@@ -26,7 +26,7 @@
 #include "storyboards/MainPage.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
-#include "storyboards/CallibrationSettings.h"
+#include "storyboards/PlaneSettingsPage.h"
 #include "storyboards/RestartPage.h"
 #include "storyboards/InformationPage.h"
 #include "storyboards/ConnectingPage.h"
@@ -75,7 +75,7 @@ private:
     RestartPage* restartPage_;
     WelcomePage* welcomePage_;
     SystemSetupPage* systemSetupPage_;
-    CallibrationSettings* calibrationSettings_;
+    PlaneSettingsPage* calibrationSettings_;
     InformationPage* informationPage_;
     ConnectingPage* connectingPage_;
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CallibrationSettings</class>
- <widget class="QWidget" name="CallibrationSettings">
+ <class>PlaneSettingsPage</class>
+ <widget class="QWidget" name="PlaneSettingsPage">
   <property name="geometry">
    <rect>
     <x>0</x>

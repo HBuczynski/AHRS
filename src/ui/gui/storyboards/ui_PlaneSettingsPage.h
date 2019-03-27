@@ -1,13 +1,13 @@
 /********************************************************************************
-** Form generated from reading UI file 'CallibrationSettings.ui'
+** Form generated from reading UI file 'PlaneSettingsPage.ui'
 **
 ** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_CALLIBRATIONSETTINGS_H
-#define UI_CALLIBRATIONSETTINGS_H
+#ifndef UI_PlaneSettingsPage_H
+#define UI_PlaneSettingsPage_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -26,7 +26,7 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_CallibrationSettings
+class Ui_PlaneSettingsPage
 {
 public:
     QFrame *verticalFrame;
@@ -70,12 +70,12 @@ public:
     QHBoxLayout *horizontalButtons;
     QGridLayout *buttonLayout;
 
-    void setupUi(QWidget *CallibrationSettings)
+    void setupUi(QWidget *PlaneSettingsPage)
     {
-        if (CallibrationSettings->objectName().isEmpty())
-            CallibrationSettings->setObjectName(QStringLiteral("CallibrationSettings"));
-        CallibrationSettings->resize(1024, 600);
-        verticalFrame = new QFrame(CallibrationSettings);
+        if (PlaneSettingsPage->objectName().isEmpty())
+            PlaneSettingsPage->setObjectName(QStringLiteral("PlaneSettingsPage"));
+        PlaneSettingsPage->resize(1024, 600);
+        verticalFrame = new QFrame(PlaneSettingsPage);
         verticalFrame->setObjectName(QStringLiteral("verticalFrame"));
         verticalFrame->setGeometry(QRect(0, 0, 1024, 600));
         verticalLayout = new QVBoxLayout(verticalFrame);
@@ -259,7 +259,7 @@ public:
 
         verticalLayout->addItem(verticalSpacer_8);
 
-        buttonFrame = new QFrame(CallibrationSettings);
+        buttonFrame = new QFrame(PlaneSettingsPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
         buttonFrame->setGeometry(QRect(512, 559, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
@@ -275,33 +275,33 @@ public:
         horizontalButtons->addLayout(buttonLayout);
 
 
-        retranslateUi(CallibrationSettings);
+        retranslateUi(PlaneSettingsPage);
 
-        QMetaObject::connectSlotsByName(CallibrationSettings);
+        QMetaObject::connectSlotsByName(PlaneSettingsPage);
     } // setupUi
 
-    void retranslateUi(QWidget *CallibrationSettings)
+    void retranslateUi(QWidget *PlaneSettingsPage)
     {
-        CallibrationSettings->setWindowTitle(QApplication::translate("CallibrationSettings", "Form", 0));
-        titleLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        planeLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        PlaneSettingsPage->setWindowTitle(QApplication::translate("PlaneSettingsPage", "Form", 0));
+        titleLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        planeLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         planeDotsLabel->setText(QString());
-        planeValueLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        fromDatabaseLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        planeValueLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        fromDatabaseLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         fromDatabaseDotsLabel->setText(QString());
-        newPlaneLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        newPlaneDotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        dotsLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        menuLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
-        nextLabel->setText(QApplication::translate("CallibrationSettings", "TextLabel", 0));
+        newPlaneLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        newPlaneDotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        dotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        menuLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        nextLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
     } // retranslateUi
 
 };
 
 namespace Ui {
-    class CallibrationSettings: public Ui_CallibrationSettings {};
+    class PlaneSettingsPage: public Ui_PlaneSettingsPage {};
 } // namespace Ui
 
 QT_END_NAMESPACE
 
-#endif // UI_CALLIBRATIONSETTINGS_H
+#endif // UI_PlaneSettingsPage_H

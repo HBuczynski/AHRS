@@ -10,10 +10,10 @@
 #include "Buttons.h"
 
 namespace Ui {
-class CallibrationSettings;
+class PlaneSettingsPage;
 }
 
-class CallibrationSettings : public QWidget
+class PlaneSettingsPage : public QWidget
 {
     Q_OBJECT
 
@@ -26,8 +26,8 @@ class CallibrationSettings : public QWidget
     };
 
 public:
-    explicit CallibrationSettings(gui::PageController *controller, QWidget *parent = 0);
-    ~CallibrationSettings();
+    explicit PlaneSettingsPage(gui::PageController *controller, QWidget *parent = 0);
+    ~PlaneSettingsPage();
 
     void initialize();
 
@@ -51,7 +51,7 @@ private:
 
     std::shared_ptr<Keyboard> keyboard_;
     gui::PageController *controller_;
-    Ui::CallibrationSettings *ui_;
+    Ui::PlaneSettingsPage *ui_;
     uint8_t currentOption_;
     const uint8_t MAX_OPTIONS_NUMBER;
 
