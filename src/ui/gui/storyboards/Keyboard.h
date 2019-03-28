@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <string>
 #include <functional>
+#include <ctime>
+#include <chrono>
 
 namespace Ui {
 class Keyboard;
@@ -31,6 +33,8 @@ private:
     void initializeSlots();
 
     Ui::Keyboard *ui;
+
+    std::chrono::system_clock::time_point previousTime_;
     std::function<void(std::string)> charCallback_;
 };
 

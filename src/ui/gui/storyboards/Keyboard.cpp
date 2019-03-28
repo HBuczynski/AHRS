@@ -4,6 +4,7 @@
 Keyboard::Keyboard(std::function<void(std::string)> callback, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Keyboard),
+    previousTime_(std::chrono::system_clock::now()),
     charCallback_(callback)
 {
     ui->setupUi(this);
@@ -116,9 +117,15 @@ void lineEditHandler()
 
 void Keyboard::keypadHandler()
 {
-    QPushButton* button = qobject_cast<QPushButton*>(sender());
-    std::string name = button->text().toStdString();
-    charCallback_(name);
+    const auto currentTime = std::chrono::system_clock::now();
+    const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime_).count();
+
+    if(duration > 50 )
+    {
+        QPushButton* button = qobject_cast<QPushButton*>(sender());
+        std::string name = button->text().toStdString();
+        charCallback_(name);
+    }
 }
 
 void Keyboard::symbolChange()

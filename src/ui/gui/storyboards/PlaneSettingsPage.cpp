@@ -95,7 +95,6 @@ void PlaneSettingsPage::setupPage()
     keyboard_ = make_shared<Keyboard>(callback);
     ui_->gridLayout->addWidget(keyboard_.get());
 
-
     QFont buttonFont("Arial", 15, QFont::Bold);
     ui_->nextLabel->setFont(buttonFont);
     ui_->nextLabel->setAlignment(Qt::AlignCenter);
@@ -121,7 +120,6 @@ void PlaneSettingsPage::setupPage()
         ui_->planeValueLabel->setText(planeName.c_str());
         ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
     }
-
 
     labels_[FieldType::COMBO_BOX] = ui_->fromDatabaseComboBox;
     labels_[FieldType::TEXT_FIELD] = ui_->newPlaneLineEdit;
