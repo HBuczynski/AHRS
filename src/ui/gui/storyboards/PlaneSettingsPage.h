@@ -21,6 +21,7 @@ class PlaneSettingsPage : public QWidget
     {
         COMBO_BOX = 0x00,
         TEXT_FIELD,
+        CONFIRM_LABEL,
         MENU_LABEL,
         NEXT_LABEL
     };
@@ -50,11 +51,18 @@ private:
     void downButton();
     void selectButton();
 
+    void setKeyClicked(std::string name);
+
+
+    static std::string planeNameTextField;
+    static std::string planeName;
     std::shared_ptr<Keyboard> keyboard_;
     gui::PageController *controller_;
     Ui::PlaneSettingsPage *ui_;
+
+    bool selectIsPresssed;
     uint8_t currentOption_;
-    const uint8_t MAX_OPTIONS_NUMBER;
+    uint8_t maxOptionsNumber_;
 
     std::map<FieldType, QWidget*> labels_;
     std::unique_ptr<Buttons> buttons_;

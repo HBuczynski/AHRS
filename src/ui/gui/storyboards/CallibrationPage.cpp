@@ -76,3 +76,4 @@ void CallibrationPage::fourthButton()
 {
     emit signalBackPage();
 }
+

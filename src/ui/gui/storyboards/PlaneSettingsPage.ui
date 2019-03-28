@@ -438,11 +438,59 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
+       <spacer name="horizontalSpacer_9">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="confirmLabel">
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>25</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_8">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="menuLabel">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>0</height>
+          <width>120</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -462,11 +510,11 @@
          <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Expanding</enum>
+         <enum>QSizePolicy::Fixed</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>650</width>
+          <width>40</width>
           <height>20</height>
          </size>
         </property>
@@ -476,8 +524,8 @@
        <widget class="QLabel" name="nextLabel">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>0</height>
+          <width>120</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -490,6 +538,19 @@
          <string>TextLabel</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_10">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </item>

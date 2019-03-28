@@ -2,6 +2,8 @@
 #define KEYBOARD_H
 
 #include <QWidget>
+#include <string>
+#include <functional>
 
 namespace Ui {
 class Keyboard;
@@ -12,7 +14,7 @@ class Keyboard : public QWidget
     Q_OBJECT
 
 public:
-    explicit Keyboard(QWidget *parent = 0);
+    explicit Keyboard(std::function<void(std::string)> callback, QWidget *parent = 0);
     ~Keyboard();
 
 private slots:
@@ -29,6 +31,7 @@ private:
     void initializeSlots();
 
     Ui::Keyboard *ui;
+    std::function<void(std::string)> charCallback_;
 };
 
 #endif // KEYBOARD_H

@@ -6,8 +6,8 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_CallibrationPage_H
-#define UI_CallibrationPage_H
+#ifndef UI_CALLIBRATIONPAGE_H
+#define UI_CALLIBRATIONPAGE_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -94,4 +94,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_CallibrationPage_H
+#endif // UI_CALLIBRATIONPAGE_H

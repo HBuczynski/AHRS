@@ -6,8 +6,8 @@
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
 
-#ifndef UI_PlaneSettingsPage_H
-#define UI_PlaneSettingsPage_H
+#ifndef UI_PLANESETTINGSPAGE_H
+#define UI_PLANESETTINGSPAGE_H
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
@@ -62,9 +62,13 @@ public:
     QLabel *dotsLabel;
     QSpacerItem *verticalSpacer_7;
     QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_9;
+    QLabel *confirmLabel;
+    QSpacerItem *horizontalSpacer_8;
     QLabel *menuLabel;
     QSpacerItem *horizontalSpacer_7;
     QLabel *nextLabel;
+    QSpacerItem *horizontalSpacer_10;
     QSpacerItem *verticalSpacer_8;
     QFrame *buttonFrame;
     QHBoxLayout *horizontalButtons;
@@ -234,23 +238,42 @@ public:
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_9);
+
+        confirmLabel = new QLabel(verticalFrame);
+        confirmLabel->setObjectName(QStringLiteral("confirmLabel"));
+        confirmLabel->setMinimumSize(QSize(120, 25));
+        confirmLabel->setMaximumSize(QSize(100, 16777215));
+
+        horizontalLayout_5->addWidget(confirmLabel);
+
+        horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_8);
+
         menuLabel = new QLabel(verticalFrame);
         menuLabel->setObjectName(QStringLiteral("menuLabel"));
-        menuLabel->setMinimumSize(QSize(100, 0));
+        menuLabel->setMinimumSize(QSize(120, 25));
         menuLabel->setMaximumSize(QSize(100, 16777215));
 
         horizontalLayout_5->addWidget(menuLabel);
 
-        horizontalSpacer_7 = new QSpacerItem(650, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_7 = new QSpacerItem(40, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
 
         horizontalLayout_5->addItem(horizontalSpacer_7);
 
         nextLabel = new QLabel(verticalFrame);
         nextLabel->setObjectName(QStringLiteral("nextLabel"));
-        nextLabel->setMinimumSize(QSize(100, 0));
+        nextLabel->setMinimumSize(QSize(120, 25));
         nextLabel->setMaximumSize(QSize(100, 16777215));
 
         horizontalLayout_5->addWidget(nextLabel);
+
+        horizontalSpacer_10 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_10);
 
 
         verticalLayout->addLayout(horizontalLayout_5);
@@ -292,6 +315,7 @@ public:
         newPlaneLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         newPlaneDotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         dotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        confirmLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         menuLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         nextLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
     } // retranslateUi
@@ -304,4 +328,4 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-#endif // UI_PlaneSettingsPage_H
+#endif // UI_PLANESETTINGSPAGE_H

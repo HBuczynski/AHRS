@@ -1,10 +1,10 @@
 #include "Keyboard.h"
-
 #include "ui_Keyboard.h"
 
-Keyboard::Keyboard(QWidget *parent) :
+Keyboard::Keyboard(std::function<void(std::string)> callback, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Keyboard)
+    ui(new Ui::Keyboard),
+    charCallback_(callback)
 {
     ui->setupUi(this);
 
@@ -116,7 +116,9 @@ void lineEditHandler()
 
 void Keyboard::keypadHandler()
 {
-
+    QPushButton* button = qobject_cast<QPushButton*>(sender());
+    std::string name = button->text().toStdString();
+    charCallback_(name);
 }
 
 void Keyboard::symbolChange()

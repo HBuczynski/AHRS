@@ -1,17 +1,23 @@
 #include "PlaneSettingsPage.h"
 #include "ui_PlaneSettingsPage.h"
 
+#include <functional>
 #include <iostream>
+#include <locale>
 
 using namespace std;
 using namespace peripherals;
+
+std::string PlaneSettingsPage::planeNameTextField = "";
+std::string PlaneSettingsPage::planeName = "";
 
 PlaneSettingsPage::PlaneSettingsPage(gui::PageController *controller, QWidget *parent) :
     QWidget(parent),
     controller_(controller),
     ui_(new Ui::PlaneSettingsPage),
+    selectIsPresssed(false),
     currentOption_(0),
-    MAX_OPTIONS_NUMBER(4)
+    maxOptionsNumber_(4)
 {
     ui_->setupUi(this);
 
@@ -48,7 +54,8 @@ void PlaneSettingsPage::setupPage()
     QFont sqareFont("Arial", 22, QFont::Bold);
     ui_->planeValueLabel->setStyleSheet("QLabel { color : white}");
     ui_->planeValueLabel->setFont(sqareFont);
-    ui_->planeValueLabel->setText("\u25FB\u25FB\u25FB\u25FB\u25FB\u25FB");
+
+
 
     // Plane from database line
     ui_->fromDatabaseLabel->setStyleSheet("QLabel { color : white}");
@@ -76,6 +83,7 @@ void PlaneSettingsPage::setupPage()
     QFont newPlaneFont("Arial", 15, QFont::Bold);
     ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
     ui_->newPlaneLineEdit->setFont(newPlaneFont);
+    ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());
 
     // Line Under buttons_
     ui_->dotsLabel->setStyleSheet("QLabel { color : white}");
@@ -83,23 +91,42 @@ void PlaneSettingsPage::setupPage()
     ui_->dotsLabel->setText("................................................................................................"
                            "................................................................................................");
 
-    keyboard_ = make_shared<Keyboard>();
+    function< void(string) > callback = bind(&PlaneSettingsPage::setKeyClicked, this, placeholders::_1);
+    keyboard_ = make_shared<Keyboard>(callback);
     ui_->gridLayout->addWidget(keyboard_.get());
 
+
     QFont buttonFont("Arial", 15, QFont::Bold);
-    ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
     ui_->nextLabel->setFont(buttonFont);
     ui_->nextLabel->setAlignment(Qt::AlignCenter);
     ui_->nextLabel->setText("NEXT");
+
+    ui_->confirmLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+    ui_->confirmLabel->setFont(buttonFont);
+    ui_->confirmLabel->setAlignment(Qt::AlignCenter);
+    ui_->confirmLabel->setText("CONFIRM");
 
     ui_->menuLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
     ui_->menuLabel->setFont(buttonFont);
     ui_->menuLabel->setAlignment(Qt::AlignCenter);
     ui_->menuLabel->setText("MENU");
 
+    if(planeName.empty())
+    {
+        ui_->planeValueLabel->setText("\u25FB\u25FB\u25FB\u25FB\u25FB\u25FB");
+        ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(128,128,128);}");
+    }
+    else
+    {
+        ui_->planeValueLabel->setText(planeName.c_str());
+        ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+    }
+
+
     labels_[FieldType::COMBO_BOX] = ui_->fromDatabaseComboBox;
     labels_[FieldType::TEXT_FIELD] = ui_->newPlaneLineEdit;
     labels_[FieldType::MENU_LABEL] = ui_->menuLabel;
+    labels_[FieldType::CONFIRM_LABEL] = ui_->confirmLabel;
     labels_[FieldType::NEXT_LABEL] = ui_->nextLabel;
 }
 
@@ -144,22 +171,50 @@ void PlaneSettingsPage::initializeButtons(map<SwitchCode, string> name, map<Swit
 void PlaneSettingsPage::highlightCurrentOption(uint8_t newOption)
 {
     labels_[static_cast<FieldType>(currentOption_)]->setStyleSheet("background-color: rgb(255,255,255);border: none;");
-    labels_[static_cast<FieldType>(newOption)]->setStyleSheet("background-color: rgb(169,169,169);border: none;");
+    labels_[static_cast<FieldType>(newOption)]->setStyleSheet("background-color: rgb(50,205,50);border: none;");
     currentOption_ = newOption;
 }
 
 void PlaneSettingsPage::cancelButton()
 {
-
+    const auto type = static_cast<FieldType>(currentOption_);
+    switch (type)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            ui_->fromDatabaseComboBox->hidePopup();
+            selectIsPresssed = true;
+            break;
+        }
+        case FieldType::TEXT_FIELD :
+        {
+            ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(50,205,50);border: none; ");
+            selectIsPresssed = false;
+            break;
+        }
+        case FieldType::MENU_LABEL :
+        {
+            break;
+        }
+        case FieldType::NEXT_LABEL :
+        {
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 void PlaneSettingsPage::upButton()
 {
+    if(selectIsPresssed)
+        return;
+
     int8_t tempNumber = currentOption_ + 1;
 
-    if(tempNumber >= MAX_OPTIONS_NUMBER)
+    if(tempNumber >= maxOptionsNumber_)
     {
-        tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
+        tempNumber = tempNumber % maxOptionsNumber_;
     }
 
     highlightCurrentOption(tempNumber);
@@ -167,11 +222,14 @@ void PlaneSettingsPage::upButton()
 
 void PlaneSettingsPage::downButton()
 {
+    if(selectIsPresssed)
+        return;
+
     int8_t tempNumber = currentOption_ - 1;
 
     if(tempNumber<0)
     {
-        tempNumber += MAX_OPTIONS_NUMBER;
+        tempNumber += maxOptionsNumber_;
     }
 
     highlightCurrentOption(tempNumber);
@@ -185,10 +243,14 @@ void PlaneSettingsPage::selectButton()
     {
         case FieldType::COMBO_BOX :
         {
+            ui_->fromDatabaseComboBox->showPopup();
+            selectIsPresssed = true;
             break;
         }
         case FieldType::TEXT_FIELD :
         {
+            ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(144,238,144);border: none; ");
+            selectIsPresssed = true;
             break;
         }
         case FieldType::MENU_LABEL :
@@ -201,7 +263,32 @@ void PlaneSettingsPage::selectButton()
             emit signalCallibrationPage();
             break;
         }
+        case FieldType::CONFIRM_LABEL :
+        {
+            if(!planeNameTextField.empty())
+            {
+                planeName = planeNameTextField;
+                planeNameTextField = "";
+                ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());
+                ui_->planeValueLabel->setText(planeName.c_str());
+
+                ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+                maxOptionsNumber_ = 5;
+            }
+            break;
+        }
         default:
             break;
+    }
+}
+
+void PlaneSettingsPage::setKeyClicked(string name)
+{
+    const auto type = static_cast<FieldType>(currentOption_);
+
+    if(selectIsPresssed && type == FieldType::TEXT_FIELD)
+    {
+        planeNameTextField += name.c_str();
+        ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());
     }
 }
