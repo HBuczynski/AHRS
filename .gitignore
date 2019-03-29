@@ -36,6 +36,7 @@ target/*
 .gitignore.save
 .idea
 
+CMakeLists.txt.user
 CMakeDoxyfile.in
 CMakeDoxygenDefaults.cmake
 README.md.save
