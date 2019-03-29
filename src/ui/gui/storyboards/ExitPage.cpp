@@ -50,7 +50,7 @@ void ExitPage::setupPage()
 
     ui_->exitLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
     ui_->exitLabel->setFont(options);
-    ui_->exitLabel->setText("QUIT");
+    ui_->exitLabel->setText("SHUT DOWN");
     ui_->exitLabel->setAlignment(Qt::AlignCenter);
 
     labels_.push_back(ui_->cancelLabel);
@@ -61,20 +61,21 @@ void ExitPage::setupPage()
 void ExitPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
-    buttonNames[SwitchCode::FIRST_SWITCH] = "";
+    buttonNames[SwitchCode::FIRST_SWITCH] = "BACK";
     buttonNames[SwitchCode::SECOND_SWITCH] = "< LEFT";//"\u21E6";
-    buttonNames[SwitchCode::THIRD_SWITCH] = "SUBMIT";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "RIGHT >";//"\u21E8";
+    buttonNames[SwitchCode::THIRD_SWITCH] = "RIGHT >";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "SUBMIT";//"\u21E8";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&ExitPage::firstButton, this);
     callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&ExitPage::leftArrow, this);
-    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&ExitPage::submit, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&ExitPage::rightArrow, this);
+    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&ExitPage::rightArrow, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&ExitPage::submit, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalBackToPreviousPage()), controller_, SLOT(backToPreviousPage()));
+    QObject::connect(this, SIGNAL(signalRestartPage()), controller_, SLOT(setRestartPage()));
 }
 
 void ExitPage::highlightCurrentOption(uint8_t newOption)
@@ -95,7 +96,7 @@ void ExitPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, f
 
 void ExitPage::firstButton()
 {
-    ///TBD
+    emit signalBackToPreviousPage();
 }
 
 void ExitPage::leftArrow()
@@ -115,6 +116,10 @@ void ExitPage::submit()
     if(currentOption_ == 0)
     {
         emit signalBackToPreviousPage();
+    }
+    else if(currentOption_ == 1)
+    {
+        emit signalRestartPage();
     }
 }
 

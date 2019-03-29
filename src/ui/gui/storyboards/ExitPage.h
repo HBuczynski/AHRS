@@ -25,6 +25,7 @@ public:
 
 signals:
     void signalBackToPreviousPage();
+    void signalRestartPage();
 
 private:
     void setupPage();

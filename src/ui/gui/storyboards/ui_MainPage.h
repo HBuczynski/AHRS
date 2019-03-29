@@ -44,11 +44,11 @@ public:
     QLabel *planeLabel;
     QSpacerItem *horizontalSpacer_4;
     QSpacerItem *verticalSpacer_5;
-    QHBoxLayout *horizontalLayout_4;
-    QSpacerItem *horizontalSpacer_5;
-    QLabel *restartLabel;
-    QSpacerItem *horizontalSpacer_6;
-    QSpacerItem *verticalSpacer_6;
+    QHBoxLayout *horizontalLayout_6;
+    QSpacerItem *horizontalSpacer_9;
+    QLabel *bitLabel;
+    QSpacerItem *horizontalSpacer_10;
+    QSpacerItem *verticalSpacer_8;
     QHBoxLayout *horizontalLayout_5;
     QSpacerItem *horizontalSpacer_8;
     QLabel *exitLabel;
@@ -137,30 +137,30 @@ public:
 
         verticalLayout_2->addItem(verticalSpacer_5);
 
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_5);
+        horizontalLayout_6->addItem(horizontalSpacer_9);
 
-        restartLabel = new QLabel(verticalFrame_2);
-        restartLabel->setObjectName(QStringLiteral("restartLabel"));
-        restartLabel->setMinimumSize(QSize(400, 0));
-        restartLabel->setMaximumSize(QSize(400, 16777215));
-        restartLabel->setAlignment(Qt::AlignCenter);
+        bitLabel = new QLabel(verticalFrame_2);
+        bitLabel->setObjectName(QStringLiteral("bitLabel"));
+        bitLabel->setMinimumSize(QSize(400, 0));
+        bitLabel->setMaximumSize(QSize(400, 16777215));
+        bitLabel->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_4->addWidget(restartLabel);
+        horizontalLayout_6->addWidget(bitLabel);
 
-        horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_10 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_6);
+        horizontalLayout_6->addItem(horizontalSpacer_10);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_4);
+        verticalLayout_2->addLayout(horizontalLayout_6);
 
-        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_8 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_2->addItem(verticalSpacer_6);
+        verticalLayout_2->addItem(verticalSpacer_8);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
@@ -226,7 +226,7 @@ public:
         titleLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
         ahrsLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
         planeLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
-        restartLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
+        bitLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
         exitLabel->setText(QApplication::translate("MainPage", "TextLabel", 0));
         notesLabel->setText(QString());
     } // retranslateUi

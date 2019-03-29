@@ -88,8 +88,8 @@ public:
 
         cancelLabel = new QLabel(verticalLayoutWidget);
         cancelLabel->setObjectName(QStringLiteral("cancelLabel"));
-        cancelLabel->setMinimumSize(QSize(150, 0));
-        cancelLabel->setMaximumSize(QSize(100, 16777215));
+        cancelLabel->setMinimumSize(QSize(190, 0));
+        cancelLabel->setMaximumSize(QSize(190, 16777215));
 
         horizontalLayout->addWidget(cancelLabel);
 
@@ -99,8 +99,8 @@ public:
 
         restartLabel = new QLabel(verticalLayoutWidget);
         restartLabel->setObjectName(QStringLiteral("restartLabel"));
-        restartLabel->setMinimumSize(QSize(150, 0));
-        restartLabel->setMaximumSize(QSize(150, 16777215));
+        restartLabel->setMinimumSize(QSize(190, 0));
+        restartLabel->setMaximumSize(QSize(190, 16777215));
 
         horizontalLayout->addWidget(restartLabel);
 
@@ -110,8 +110,8 @@ public:
 
         exitLabel = new QLabel(verticalLayoutWidget);
         exitLabel->setObjectName(QStringLiteral("exitLabel"));
-        exitLabel->setMinimumSize(QSize(150, 0));
-        exitLabel->setMaximumSize(QSize(150, 16777215));
+        exitLabel->setMinimumSize(QSize(190, 0));
+        exitLabel->setMaximumSize(QSize(190, 16777215));
 
         horizontalLayout->addWidget(exitLabel);
 

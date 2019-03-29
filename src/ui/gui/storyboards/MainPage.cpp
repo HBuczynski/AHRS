@@ -4,15 +4,21 @@
 using namespace std;
 using namespace peripherals;
 
+bool MainPage::plainIsSet_=false;
+
 MainPage::MainPage(gui::PageController* controller, QWidget *parent) :
     QWidget(parent),
     ui_(new Ui::MainPage),
     controller_(controller),
-    currentOption_(0),
     MAX_OPTIONS_NUMBER(4)
 {
     ui_->setupUi(this);
     setupPage();
+
+    if(plainIsSet_)
+        currentOption_= 0;
+    else
+        currentOption_ = 1;
 
     highlightCurrentOption(currentOption_);
 }
@@ -34,35 +40,56 @@ void MainPage::setupPage()
     ui_->titleLabel->setAlignment(Qt::AlignCenter);
 
     QFont font2("Arial", 20, QFont::Bold);
-    ui_->ahrsLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
-    ui_->ahrsLabel->setFont(font2);
-    ui_->ahrsLabel->setText("AHRS");
-    ui_->ahrsLabel->setAlignment(Qt::AlignCenter);
+    QFont font3("Arial", 15, QFont::Bold);
 
+    if(plainIsSet_)
+    {
+        ui_->ahrsLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
+        ui_->ahrsLabel->setFont(font2);
+        ui_->ahrsLabel->setText("AHRS");
+        ui_->ahrsLabel->setAlignment(Qt::AlignCenter);
+
+        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
+        ui_->bitLabel->setFont(font2);
+        ui_->bitLabel->setText("BITS INFO");
+        ui_->bitLabel->setAlignment(Qt::AlignCenter);
+
+        ui_->notesLabel->setStyleSheet("QLabel { color: rgb(255,0, 0)}");
+        ui_->notesLabel->setFont(font3);
+        ui_->notesLabel->setText("");
+        ui_->notesLabel->setAlignment(Qt::AlignLeft);
+    }
+    else
+    {
+        ui_->ahrsLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");
+        ui_->ahrsLabel->setFont(font2);
+        ui_->ahrsLabel->setText("AHRS");
+        ui_->ahrsLabel->setAlignment(Qt::AlignCenter);
+
+        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");
+        ui_->bitLabel->setFont(font2);
+        ui_->bitLabel->setText("BITS INFO");
+        ui_->bitLabel->setAlignment(Qt::AlignCenter);
+
+        ui_->notesLabel->setStyleSheet("QLabel { color: rgb(255,0, 0)}");
+        ui_->notesLabel->setFont(font3);
+        ui_->notesLabel->setText("NOTE: Set appropriate plane settings !!");
+        ui_->notesLabel->setAlignment(Qt::AlignLeft);
+    }
 
     ui_->planeLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
     ui_->planeLabel->setFont(font2);
     ui_->planeLabel->setText("PLANE SETTINGS");
     ui_->planeLabel->setAlignment(Qt::AlignCenter);
 
-    ui_->restartLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
-    ui_->restartLabel->setFont(font2);
-    ui_->restartLabel->setText("RESTART SYSTEM");
-    ui_->restartLabel->setAlignment(Qt::AlignCenter);
-
     ui_->exitLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
     ui_->exitLabel->setFont(font2);
-    ui_->exitLabel->setText("SHUTDOWN");
+    ui_->exitLabel->setText("QUIT");
     ui_->exitLabel->setAlignment(Qt::AlignCenter);
-
-    ui_->notesLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
-    ui_->notesLabel->setFont(font2);
-    ui_->notesLabel->setText("");
-    ui_->notesLabel->setAlignment(Qt::AlignLeft);
 
     labels_.push_back(ui_->ahrsLabel);
     labels_.push_back(ui_->planeLabel);
-    labels_.push_back(ui_->restartLabel);
+    labels_.push_back(ui_->bitLabel);
     labels_.push_back(ui_->exitLabel);
 }
 
@@ -83,6 +110,10 @@ void MainPage::initialize()
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalBackPage()), controller_, SLOT(backToPreviousPage()));
+    QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
+    QObject::connect(this, SIGNAL(signalPlaneSettingsPage()), controller_, SLOT(setPlaneSettingPage()));
+    QObject::connect(this, SIGNAL(signalBitsInfoPage()), controller_, SLOT(setPlaneSettingPage()));
+    QObject::connect(this, SIGNAL(signalExitPage()), controller_, SLOT(setExitPage()));
 }
 
 void MainPage::highlightCurrentOption(uint8_t newOption)
@@ -111,8 +142,15 @@ void MainPage::secondButton()
     int8_t tempNumber = currentOption_ + 1;
 
     if(tempNumber >= MAX_OPTIONS_NUMBER)
-    {
         tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
+
+    const auto type = static_cast<MainPageOptions>(tempNumber);
+    if(!plainIsSet_ && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    {
+        tempNumber += 1;
+
+        if(tempNumber >= MAX_OPTIONS_NUMBER)
+            tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
     }
 
     highlightCurrentOption(tempNumber);
@@ -123,8 +161,16 @@ void MainPage::thirdButton()
     int8_t tempNumber = currentOption_ - 1;
 
     if(tempNumber<0)
-    {
         tempNumber += MAX_OPTIONS_NUMBER;
+
+    const auto type = static_cast<MainPageOptions>(tempNumber);
+
+    if(!plainIsSet_ && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    {
+        tempNumber -= 1;
+
+        if(tempNumber<0)
+            tempNumber += MAX_OPTIONS_NUMBER;
     }
 
     highlightCurrentOption(tempNumber);
@@ -132,5 +178,31 @@ void MainPage::thirdButton()
 
 void MainPage::fourthButton()
 {
+    const auto type =static_cast<MainPageOptions>(currentOption_);
 
+    switch (type)
+    {
+        case MainPageOptions::AHRS :
+        {
+            emit signalAHRSPage();
+            break;
+        }
+        case MainPageOptions::PLANE_SETTINGS :
+        {
+            emit signalPlaneSettingsPage();
+            break;
+        }
+        case MainPageOptions::BITS_INFO :
+        {
+            emit signalBitsInfoPage();
+            break;
+        }
+        case MainPageOptions::EXIT :
+        {
+            emit signalExitPage();
+            break;
+        }
+        default:
+            break;
+    }
 }

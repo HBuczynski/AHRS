@@ -14,6 +14,14 @@ class MainPage;
 
 class MainPage : public QWidget
 {
+    enum MainPageOptions
+    {
+        AHRS,
+        PLANE_SETTINGS,
+        BITS_INFO,
+        EXIT
+    };
+
     Q_OBJECT
 
 public:
@@ -24,6 +32,10 @@ public:
 
 signals:
     void signalBackPage();
+    void signalAHRSPage();
+    void signalPlaneSettingsPage();
+    void signalBitsInfoPage();
+    void signalExitPage();
 
 private:
     void setupPage();
@@ -36,6 +48,8 @@ private:
     void thirdButton();
     void fourthButton();
 
+
+    static bool plainIsSet_;
     Ui::MainPage *ui_;
     gui::PageController* controller_;
     std::unique_ptr<Buttons> buttons_;
