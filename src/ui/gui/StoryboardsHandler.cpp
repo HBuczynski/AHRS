@@ -358,13 +358,13 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
     previousWidget_ = informationPage_;
 }
 
-void StoryboardsHandler::sendToMainProcess(std::vector<uint8_t> msg)
+void StoryboardsHandler::sendToMainProcess(vector<uint8_t> msg)
 {
     sendingMessageQueue_->send(msg);
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("StoryboardsHandler:: Send msg to main process.");
+        const string message = string("StoryboardsHandler:: Send msg to main process.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -386,7 +386,41 @@ void StoryboardsHandler::inititalizeMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
+        const string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void StoryboardsHandler::setPlaneName(const string& name)
+{
+    guiDataManager_.setPlaneName(name);
+}
+
+const string& StoryboardsHandler::getPlaneName()
+{
+    return guiDataManager_.getPlaneName();
+}
+
+void StoryboardsHandler::setPlaneDataset(const vector<string>& name)
+{
+    guiDataManager_.setPlaneDataset(name);
+}
+
+const vector<string>& StoryboardsHandler::getPlaneDataset()
+{
+    return guiDataManager_.getPlaneDataset();
+}
+
+void StoryboardsHandler::setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
+{
+    gui::BitsInformation bitsInformation = {master, redundant, masterBITs, redundantBITs};
+
+    guiDataManager_.setBitsInformation(bitsInformation);
+}
+
+tuple<uint8_t , uint8_t , uint8_t, uint8_t> StoryboardsHandler::getBitsInformation()
+{
+    const auto bitsInformation = guiDataManager_.getBitsInformation();
+
+    return make_tuple(bitsInformation.master, bitsInformation.redundant, bitsInformation.masterBITS, bitsInformation.redundantBITS);
 }
