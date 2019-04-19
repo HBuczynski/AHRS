@@ -1,9 +1,8 @@
 #include "ProcessManager.h"
 #include <interfaces/wireless_commands/Command.h>
+#include <interfaces/wireless_commands/PerformBITsCommand.h>
 
 #include <config_reader/ConfigurationReader.h>
-#include <interfaces/wireless_commands/PerformBITsCommand.h>
-#include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
 
 using namespace std;
 using namespace config;
@@ -11,30 +10,30 @@ using namespace utility;
 using namespace communication;
 using namespace boost::interprocess;
 
-ProcessManager::ProcessManager(uint8_t processNumber)
+ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     : processNumber_(processNumber),
-      uiWirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH.c_str())),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
-      communicationManagerUI_(make_shared<CommunicationManagerUI>(processNumber_)),
+      communicationManagerUI_(make_shared<CommunicationManagerUI>(processNumber_, name, transitionTable, rootState)),
       mainProcessHandlerVisitor_(make_unique<MainProcessHandlerVisitor>(communicationManagerUI_)),
-      connectionEstablished_(false),
       runCommunicationProcess_(true),
       logger_(Logger::getInstance())
-{ }
+{}
 
 ProcessManager::~ProcessManager()
 { }
 
 bool ProcessManager::initialize()
 {
+    function<void(std::vector<uint8_t>&)> mainProcCallback = bind(&ProcessManager::sendMessageToMainProcess, this, std::placeholders::_1);
+    communicationManagerUI_->registerCallbackToMainProc(mainProcCallback);
+
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainMessageQueue();
     isSuccess = isSuccess & initializeCommunicationProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & initializeWirelessCommunication();
-    connectToFeeder();
 
     return isSuccess;
 }
@@ -163,33 +162,6 @@ bool ProcessManager::initializeWirelessCommunication()
     }
 }
 
-void ProcessManager::connectToFeeder()
-{
-    connectionEstablishingInterrupt_.startPeriodic(5000, this);
-}
-
-void ProcessManager::interruptNotification(timer_t timerID)
-{
-    if(!connectionEstablished_)
-    {
-        if ( connectionEstablishingInterrupt_.getTimerID() == timerID )
-        {
-            if ( communicationManagerUI_->connectToFeeder())
-            {
-                connectionEstablished_ = true;
-
-                auto notification = CommunicationStatusNotification(communicationManagerUI_->getCurrentState(), communicationManagerUI_->getProcessNumber());
-                auto packet = notification.getFrameBytes();
-                sendMessageToMainProcess(packet);
-            }
-        }
-    }
-    else
-    {
-        connectionEstablishingInterrupt_.stop();
-    }
-}
-
 void ProcessManager::stopCommunication()
 {
     runCommunicationProcess_ = false;
@@ -197,6 +169,8 @@ void ProcessManager::stopCommunication()
 
 void ProcessManager::startCommunication()
 {
+    communicationManagerUI_->startHSM();
+
     while(runCommunicationProcess_)
     {
         try

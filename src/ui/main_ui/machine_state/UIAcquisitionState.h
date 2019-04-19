@@ -1,20 +1,16 @@
-#ifndef AHRS_COMMUNICATIONOKSTATE_H
-#define AHRS_COMMUNICATIONOKSTATE_H
+#ifndef UIACQUISITIONSTATE_H
+#define UIACQUISITIONSTATE_H
 
-#include "UIAbstractState.h"
+#include <hsm/State.h>
 
-namespace main_process
+class UIAcquisitionState : public hsm::State
 {
-    class UIAcquisitionState final : public UIAbstractState
-    {
-    public:
-        UIAcquisitionState();
-        ~UIAcquisitionState();
+public:
+    UIAcquisitionState(const std::string &name, std::shared_ptr<State> parent = nullptr);
 
-        void setWelcomePage(UIApplicationManager &uiApplicationManager);
-        void communicationInProgress(UIApplicationManager &uiApplicationManager);
-        void setInformationPage(UIApplicationManager &uiApplicationManager);
-    };
-}
+    void runEntryEvent() override;
+    void runExitEvent() override;
+    void runInitEvent() override;
+};
 
-#endif
+#endif // UIACQUISITIONSTATE_H

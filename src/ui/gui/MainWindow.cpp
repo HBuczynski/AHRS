@@ -34,7 +34,7 @@ void MainWindow::setSystemSetupPage()
     storyboardsHandler_->setSystemSetupPage();
 }
 
-void MainWindow::setCallibrationSettingPage()
+void MainWindow::setSettingPage()
 {
     storyboardsHandler_->setPlaneSettingPage();
 }

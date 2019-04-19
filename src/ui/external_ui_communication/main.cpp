@@ -3,7 +3,7 @@
 #include <chrono>
 #include <fstream>
 
-#include "ProcessManager.h"
+#include "CommScheduler.h"
 
 using namespace std;
 using namespace chrono;
@@ -38,11 +38,12 @@ int main(int argc , char *argv[])
     }
 
     uint8_t mode = static_cast<uint8_t >(atoi(argv[1]));
-    ProcessManager processManager(mode);
 
-    if(processManager.initialize())
+    CommScheduler commScheduler(mode);
+
+    if(commScheduler.initialize())
     {
-        processManager.startCommunication();
+        commScheduler.run();
     }
     else
     {

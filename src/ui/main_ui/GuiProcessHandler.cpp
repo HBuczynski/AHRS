@@ -39,9 +39,7 @@ void GuiProcessHandler::sendMessage(std::vector<uint8_t> &message)
 }
 
 void GuiProcessHandler::resetProcess()
-{
-
-}
+{}
 
 bool GuiProcessHandler::initializeMessageQueue()
 {

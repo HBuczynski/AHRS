@@ -18,7 +18,7 @@ public:
 public slots:
     void setWelcomePage();
     void setAHRSPage();
-    void setCallibrationSettingPage();
+    void setSettingPage();
     void setSystemSetupPage();
     void setRestartPage();
     void setExitPage();

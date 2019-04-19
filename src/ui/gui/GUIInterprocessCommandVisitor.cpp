@@ -17,8 +17,7 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
 {
     windowsContainer_[PagesType::WELCOME_PAGE] = bind(&GUIInterprocessCommandVisitor::launchStartPage, this);
     windowsContainer_[PagesType::CONNECTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCommunicationEstablished, this);
-    //windowsContainer_[PagesType::C] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
-    windowsContainer_[PagesType::PLANE_SETTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchCalibrationWindow, this);
+    windowsContainer_[PagesType::PLANE_SETTING_PAGE] = bind(&GUIInterprocessCommandVisitor::launchChoosingPlaneWindow, this);
     windowsContainer_[PagesType::AHRS_PAGE] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
     windowsContainer_[PagesType::RESTART_PAGE] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
     windowsContainer_[PagesType::EXIT_PAGE] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
@@ -29,7 +28,8 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
     qRegisterMetaType<uint8_t>("uint8_t");
 
     QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
-    QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setMenuPage()));
+    QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
+    QObject::connect(this, SIGNAL(signalSettingPage()), mainWindow_.get(), SLOT(setSettingPage()));
     QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)));
 }
 
@@ -80,7 +80,7 @@ void GUIInterprocessCommandVisitor::launchActiveConnectionWindow()
 
 void GUIInterprocessCommandVisitor::launchChoosingPlaneWindow()
 {
-
+    emit signalSettingPage();
 }
 
 void GUIInterprocessCommandVisitor::launchCalibrationWindow()

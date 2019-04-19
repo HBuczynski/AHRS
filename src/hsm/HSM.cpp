@@ -25,7 +25,7 @@ HSM::HSM(const string& name, const TransitionTable &transitionTable, shared_ptr<
     rootState_->initializeHSMCallbacks(handleEvent, registerInternalState);
 }
 
-void HSM::start()
+void HSM::startHSM()
 {
     // Initialize current state as root.
     currentState_ = rootState_;

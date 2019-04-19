@@ -1,7 +1,8 @@
 #include "GUIInterprocessVisitor.h"
+
+#include <config_reader/UIParameters.h>
 #include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/communication_process_ui/SendingDataCommand.h>
-#include <config_reader/UIParameters.h>
 
 #include "UIApplicationManager.h"
 
@@ -19,9 +20,7 @@ GUIInterprocessVisitor::~GUIInterprocessVisitor()
 {}
 
 void GUIInterprocessVisitor::visit(GUIPlaneResponse &data)
-{
-
-}
+{}
 
 void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)
 {

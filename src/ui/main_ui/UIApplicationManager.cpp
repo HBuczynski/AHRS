@@ -1,26 +1,23 @@
-#include <unistd.h>
 #include "UIApplicationManager.h"
-#include <interfaces/gui/GUIWindowCommand.h>
+
 #include <interfaces/gui/GUIInformationWindowCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
-
-#include "machine_state/UIIdleState.h"
-#include "ui/main_ui/machine_state/UIWelcomeState.h"
+#include <interfaces/gui/GUIWindowCommand.h>
 
 using namespace std;
-using namespace utility;
 using namespace config;
+using namespace utility;
 using namespace main_process;
 using namespace communication;
 using namespace boost::interprocess;
 
-UIApplicationManager::UIApplicationManager()
-    : uiWirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH.c_str())),
+UIApplicationManager::UIApplicationManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    : HSM(name, transitionTable, rootState),
+      uiWirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH.c_str())),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
-      currentState_(make_unique<UIIdleState>()),
       externalCommunicationVisitor_(make_unique<ExternalCommInterprocessVisitor>(this)),
       guiInterprocessVisitor_(make_unique<GUIInterprocessVisitor>(this)),
       runSystem_(true),
@@ -29,7 +26,6 @@ UIApplicationManager::UIApplicationManager()
 
 UIApplicationManager::~UIApplicationManager()
 {
-    // Removing shared memory.
     named_mutex::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
     shared_memory_object::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
 }
@@ -101,9 +97,6 @@ bool UIApplicationManager::initializeSharedMemory()
 
 void UIApplicationManager::startUISystem()
 {
-    setNewState(new UIWelcomeState);
-    currentState_->setWelcomePage(*this);
-
     while(runSystem_)
     {
         try
@@ -119,7 +112,6 @@ void UIApplicationManager::startUISystem()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
-
     }
 }
 
@@ -178,43 +170,48 @@ void UIApplicationManager::stopUISystem()
     runSystem_ = false;
 }
 
-void UIApplicationManager::setWelcomePage()
+//void UIApplicationManager::setWelcomePage()
+//{
+//    auto command = GUIWindowCommand(PagesType::WELCOME_PAGE);
+//    auto packet = command.getFrameBytes();
+//    guiProcessHandler_.sendMessage(packet);
+
+//    if(logger_.isInformationEnable())
+//    {
+//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+//        logger_.writeLog(LogType::INFORMATION_LOG, message);
+//    }
+//}
+
+//void UIApplicationManager::communicationInProgress()
+//{
+//    auto command = GUIWindowCommand(PagesType::CONNECTING_PAGE);
+//    auto packet = command.getFrameBytes();
+//    guiProcessHandler_.sendMessage(packet);
+
+//    if(logger_.isInformationEnable())
+//    {
+//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+//        logger_.writeLog(LogType::INFORMATION_LOG, message);
+//    }
+//}
+
+//void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant)
+//{
+//    auto command = GUIInformationWindowCommand(master, redundant, bitMaster, bitRedundant);
+//    auto packet = command.getFrameBytes();
+//    guiProcessHandler_.sendMessage(packet);
+
+//    if(logger_.isInformationEnable())
+//    {
+//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
+//        logger_.writeLog(LogType::INFORMATION_LOG, message);
+//    }
+//}
+
+void UIApplicationManager::sendToGUIProcess(vector<uint8_t> data)
 {
-    auto command = GUIWindowCommand(PagesType::WELCOME_PAGE);
-    auto packet = command.getFrameBytes();
-    guiProcessHandler_.sendMessage(packet);
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void UIApplicationManager::communicationInProgress()
-{
-    auto command = GUIWindowCommand(PagesType::CONNECTING_PAGE);
-    auto packet = command.getFrameBytes();
-    guiProcessHandler_.sendMessage(packet);
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant)
-{
-    auto command = GUIInformationWindowCommand(master, redundant, bitMaster, bitRedundant);
-    auto packet = command.getFrameBytes();
-    guiProcessHandler_.sendMessage(packet);
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
+    guiProcessHandler_.sendMessage(data);
 }
 
 void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> data, UICommunicationMode mode)
@@ -222,25 +219,25 @@ void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> da
     communicationProcessesHandler_.sendMessage(data, mode);
 }
 
-void UIApplicationManager::setNewState(UIAbstractState *newState)
-{
-    if(newState != nullptr)
-    {
-        currentState_.reset(newState);
+//void UIApplicationManager::setNewState(UIAbstractState *newState)
+//{
+//    if(newState != nullptr)
+//    {
+//        currentState_.reset(newState);
 
-        if(logger_.isInformationEnable())
-        {
-            const string message = string("UIApplicationManager :: Change state: " + newState->getName());
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
-    }
-    else
-    {
-        if(logger_.isWarningEnable())
-        {
-            const string message = string("UIApplicationManager :: Empty state has been forwarded to the state machine.");
-            logger_.writeLog(LogType::WARNING_LOG, message);
-        }
-    }
-}
+//        if(logger_.isInformationEnable())
+//        {
+//            const string message = string("UIApplicationManager :: Change state: " + newState->getName());
+//            logger_.writeLog(LogType::INFORMATION_LOG, message);
+//        }
+//    }
+//    else
+//    {
+//        if(logger_.isWarningEnable())
+//        {
+//            const string message = string("UIApplicationManager :: Empty state has been forwarded to the state machine.");
+//            logger_.writeLog(LogType::WARNING_LOG, message);
+//        }
+//    }
+//}
 

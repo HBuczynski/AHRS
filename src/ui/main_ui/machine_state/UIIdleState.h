@@ -1,20 +1,16 @@
-#ifndef AHRS_UIIDLESTATE_H
-#define AHRS_UIIDLESTATE_H
+#ifndef UIIDLESTATE_H
+#define UIIDLESTATE_H
 
-#include "UIAbstractState.h"
+#include <hsm/State.h>
 
-namespace main_process
+class UIIdleState : public hsm::State
 {
-    class UIIdleState final : public UIAbstractState
-    {
-    public:
-        UIIdleState();
-        ~UIIdleState();
+public:
+    UIIdleState(const std::string &name, std::shared_ptr<State> parent = nullptr);
 
-        void setWelcomePage(UIApplicationManager &uiApplicationManager);
-        void communicationInProgress(UIApplicationManager &uiApplicationManager);
-        void setInformationPage(UIApplicationManager &uiApplicationManager);
-    };
-}
+    void runEntryEvent() override;
+    void runExitEvent() override;
+    void runInitEvent() override;
+};
 
-#endif
+#endif // UIIDLESTATE_H

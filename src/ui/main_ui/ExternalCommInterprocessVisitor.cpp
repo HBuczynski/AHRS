@@ -1,8 +1,6 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "UIApplicationManager.h"
 
-#include "ui/main_ui/machine_state/UIAcquisitionState.h"
-
 #include <interfaces/wireless_commands/PerformBITsCommand.h>
 #include <interfaces/wireless_responses/ResponseFactory.h>
 #include <interfaces/communication_process_ui/SendingDataCommand.h>
@@ -40,8 +38,8 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
         {
             get<2>(informationParameters_) = 1;
 
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
+//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
+//                    get<2>(informationParameters_), get<3>(informationParameters_));
         }
     }
 }
@@ -52,11 +50,12 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
 
     switch(status)
     {
-        case UIExternalStateCode::MASTER :
+        //TODO: info about connection
+        case UIExternalComCode::MASTER :
         {
             get<0>(informationParameters_) = 1;
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
+//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
+//                    get<2>(informationParameters_), get<3>(informationParameters_));
 
             auto performBIT = PerformBITsCommand();
             auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
@@ -66,15 +65,11 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
 
             break;
         }
-        case UIExternalStateCode::IDLE :
-        {
-            break;
-        }
-        case UIExternalStateCode::REDUNDANT :
+        case UIExternalComCode::REDUNDANT :
         {
             get<1>(informationParameters_) = 1;
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
+//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
+//                    get<2>(informationParameters_), get<3>(informationParameters_));
 
             auto performBIT = PerformBITsCommand();
             auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
@@ -84,7 +79,7 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
 
             break;
         }
-        case UIExternalStateCode::ERROR :
+        case UIExternalComCode::ERROR :
         {
 
             break;

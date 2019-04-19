@@ -11,7 +11,7 @@ namespace hsm
         HSM(const std::string& name, const TransitionTable &transitionTable, std::shared_ptr<State> rootState);
         virtual ~HSM() = default;
 
-        void start();
+        void startHSM();
         void handleEvent(const std::string &eventName) noexcept;
 
     private:
