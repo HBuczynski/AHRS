@@ -27,7 +27,7 @@ class PlaneSettingsPage : public QWidget
     };
 
 public:
-    explicit PlaneSettingsPage(gui::PageController *controller, QWidget *parent = 0);
+    explicit PlaneSettingsPage(gui::PageController *controller,const std::string &planes, QWidget *parent = 0);
     ~PlaneSettingsPage();
 
     void initialize();
@@ -52,10 +52,12 @@ private:
     void selectButton();
 
     void setKeyClicked(std::string name);
+    std::vector<std::string> splitPlanes(const std::string& name) const noexcept;
 
-
+    std::vector<std::string> planes_;
     static std::string planeNameTextField;
     static std::string planeName;
+
     std::shared_ptr<Keyboard> keyboard_;
     gui::PageController *controller_;
     Ui::PlaneSettingsPage *ui_;

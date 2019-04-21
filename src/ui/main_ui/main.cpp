@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("Main UI :: Initialization failed !!");
+            const string message = string("-MAIN- :: Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

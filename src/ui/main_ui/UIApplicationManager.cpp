@@ -53,7 +53,7 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("UIApplicationManager:: Main message queue has not been initialized correctly - ") + ex.what();
+            const string message = string("-MAIN- UIApplicationManager:: Main message queue has not been initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -62,7 +62,7 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("UIApplicationManager:: Main message queue has been initialized correctly.");
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -79,7 +79,7 @@ bool UIApplicationManager::initializeSharedMemory()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("UIApplicationManager:: Shared Memory has not initialized correctly - ") + ex.what();
+            const string message = string("-MAIN- UIApplicationManager:: Shared Memory has not initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -88,7 +88,7 @@ bool UIApplicationManager::initializeSharedMemory()
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("UIApplicationManager:: Shared Memory has initialized correctly.");
+        const string message = string("-MAIN- UIApplicationManager:: Shared Memory has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -170,45 +170,6 @@ void UIApplicationManager::stopUISystem()
     runSystem_ = false;
 }
 
-//void UIApplicationManager::setWelcomePage()
-//{
-//    auto command = GUIWindowCommand(PagesType::WELCOME_PAGE);
-//    auto packet = command.getFrameBytes();
-//    guiProcessHandler_.sendMessage(packet);
-
-//    if(logger_.isInformationEnable())
-//    {
-//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-//        logger_.writeLog(LogType::INFORMATION_LOG, message);
-//    }
-//}
-
-//void UIApplicationManager::communicationInProgress()
-//{
-//    auto command = GUIWindowCommand(PagesType::CONNECTING_PAGE);
-//    auto packet = command.getFrameBytes();
-//    guiProcessHandler_.sendMessage(packet);
-
-//    if(logger_.isInformationEnable())
-//    {
-//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-//        logger_.writeLog(LogType::INFORMATION_LOG, message);
-//    }
-//}
-
-//void UIApplicationManager::setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant)
-//{
-//    auto command = GUIInformationWindowCommand(master, redundant, bitMaster, bitRedundant);
-//    auto packet = command.getFrameBytes();
-//    guiProcessHandler_.sendMessage(packet);
-
-//    if(logger_.isInformationEnable())
-//    {
-//        const std::string message = std::string("UIApplicationManager :: Send") + command.getName();
-//        logger_.writeLog(LogType::INFORMATION_LOG, message);
-//    }
-//}
-
 void UIApplicationManager::sendToGUIProcess(vector<uint8_t> data)
 {
     guiProcessHandler_.sendMessage(data);
@@ -218,26 +179,3 @@ void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> da
 {
     communicationProcessesHandler_.sendMessage(data, mode);
 }
-
-//void UIApplicationManager::setNewState(UIAbstractState *newState)
-//{
-//    if(newState != nullptr)
-//    {
-//        currentState_.reset(newState);
-
-//        if(logger_.isInformationEnable())
-//        {
-//            const string message = string("UIApplicationManager :: Change state: " + newState->getName());
-//            logger_.writeLog(LogType::INFORMATION_LOG, message);
-//        }
-//    }
-//    else
-//    {
-//        if(logger_.isWarningEnable())
-//        {
-//            const string message = string("UIApplicationManager :: Empty state has been forwarded to the state machine.");
-//            logger_.writeLog(LogType::WARNING_LOG, message);
-//        }
-//    }
-//}
-

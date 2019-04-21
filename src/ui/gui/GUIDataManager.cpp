@@ -28,12 +28,12 @@ const string& GUIDataManager::getPlaneName() const noexcept
     return planeName_;
 }
 
-void GUIDataManager::setPlaneDataset(const vector<string> planeDataset) noexcept
+void GUIDataManager::setPlaneDataset(const string& planeDataset) noexcept
 {
     planeDataset_ = planeDataset;
 }
 
-const vector<string>& GUIDataManager::getPlaneDataset() const noexcept
+const string &GUIDataManager::getPlaneDataset() const noexcept
 {
     return planeDataset_;
 }

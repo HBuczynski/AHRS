@@ -11,8 +11,9 @@ using namespace peripherals;
 std::string PlaneSettingsPage::planeNameTextField = "";
 std::string PlaneSettingsPage::planeName = "";
 
-PlaneSettingsPage::PlaneSettingsPage(gui::PageController *controller, QWidget *parent) :
+PlaneSettingsPage::PlaneSettingsPage(gui::PageController *controller, const string& planes, QWidget *parent) :
     QWidget(parent),
+    planes_(splitPlanes(planes)),
     controller_(controller),
     ui_(new Ui::PlaneSettingsPage),
     selectIsPresssed(false),
@@ -67,9 +68,11 @@ void PlaneSettingsPage::setupPage()
     ui_->fromDatabaseDotsLabel->setText("................................................................................................");
 
     ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none;");
-    ui_->fromDatabaseComboBox->addItem("Test1");
-    ui_->fromDatabaseComboBox->addItem("Test2");
-    ui_->fromDatabaseComboBox->addItem("Test3");
+
+    for(const auto& plane : planes_)
+    {
+        ui_->fromDatabaseComboBox->addItem(plane.c_str());
+    }
 
     // New plane line
     ui_->newPlaneLabel->setStyleSheet("QLabel { color : white}");
@@ -289,4 +292,20 @@ void PlaneSettingsPage::setKeyClicked(string name)
         planeNameTextField += name.c_str();
         ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());
     }
+}
+
+vector<string> PlaneSettingsPage::splitPlanes(const string& name) const noexcept
+{
+    vector<string> planes;
+    size_t begin, position = 0;
+
+    const string MARKS{","};
+
+    while( (begin = name.find_first_not_of(MARKS, position)) != string::npos)
+    {
+        position = name.find_first_of(MARKS, begin +1);
+        planes.push_back(name.substr(begin, position - begin));
+    }
+
+    return planes;
 }

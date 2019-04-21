@@ -21,6 +21,7 @@ void GUIInterprocessCommandVisitor::initializeWindowsContainer()
     windowsContainer_[PagesType::AHRS_PAGE] = bind(&GUIInterprocessCommandVisitor::launchAHRSWindow, this);
     windowsContainer_[PagesType::RESTART_PAGE] = bind(&GUIInterprocessCommandVisitor::launchRestartWindow, this);
     windowsContainer_[PagesType::EXIT_PAGE] = bind(&GUIInterprocessCommandVisitor::launchShutdownWindow, this);
+    windowsContainer_[PagesType::MENU_PAGE] = bind(&GUIInterprocessCommandVisitor::launchMainPage, this);
 }
 
 void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
@@ -28,9 +29,11 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
     qRegisterMetaType<uint8_t>("uint8_t");
 
     QObject::connect(this, SIGNAL(signalWelcomePage()), mainWindow_.get(), SLOT(setWelcomePage()));
+    QObject::connect(this, SIGNAL(signalMenuPage()), mainWindow_.get(), SLOT(setMenuPage()));
     QObject::connect(this, SIGNAL(signalEstablishingConnection()), mainWindow_.get(), SLOT(setConnectingPage()));
     QObject::connect(this, SIGNAL(signalSettingPage()), mainWindow_.get(), SLOT(setSettingPage()));
     QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)));
+    QObject::connect(this, SIGNAL(signalPlanesDataset(QString)), mainWindow_.get(), SLOT(setPlanesDataset(QString)));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
@@ -44,7 +47,7 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
 
         if(logger_.isInformationEnable())
         {
-            const std::string message = std::string("GUIInterprocessCommandVisitor :: Received") + command.getName();
+            const std::string message = std::string("-GUI- InterprocessCommandVisitor :: Received") + command.getName() + " " + to_string(static_cast<int>(command.getWindowType()));
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -52,7 +55,8 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
     {
         if(logger_.isErrorEnable())
         {
-            const std::string message = std::string("GUIInterprocessCommandVisitor :: Received") + command.getName() + " with wrong window type.";
+            const std::string message = std::string("-GUI- InterprocessCommandVisitor :: Received") + command.getName() +  " " + to_string(static_cast<int>(command.getWindowType()))+
+                    " with wrong window type.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
@@ -61,6 +65,13 @@ void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
 void GUIInterprocessCommandVisitor::visit(GUIInformationWindowCommand &command)
 {
     emit signalInformationPage(command.getMasterConnection(), command.getRedundantConnection(), command.getBitsMaster(), command.getBitsRedundant());
+}
+
+void GUIInterprocessCommandVisitor::visit(communication::GUIPlanesSetCommand& command)
+{
+    QString planes(command.getDataset().c_str());
+
+    emit signalPlanesDataset(planes);
 }
 
 void GUIInterprocessCommandVisitor::launchStartPage()
@@ -86,6 +97,11 @@ void GUIInterprocessCommandVisitor::launchChoosingPlaneWindow()
 void GUIInterprocessCommandVisitor::launchCalibrationWindow()
 {
 
+}
+
+void GUIInterprocessCommandVisitor::launchMainPage()
+{
+    emit signalMenuPage();
 }
 
 void GUIInterprocessCommandVisitor::launchAHRSWindow()

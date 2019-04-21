@@ -12,6 +12,7 @@
 #include <interfaces/communication_process_ui/UICommandFactory.h>
 #include <interfaces/communication_process_ui/UICommandVisitor.h>
 
+#include <common/UIStates.h>
 #include <logger/Logger.h>
 
 namespace communication
@@ -27,7 +28,9 @@ namespace communication
         void startCommunication();
         void stopCommunication();
 
-    private:
+        void setState(UIExternalComCode code);
+
+     private:
 
         bool initializeMainMessageQueue();
         bool initializeCommunicationProcessMessageQueue();
@@ -39,6 +42,7 @@ namespace communication
 
         uint8_t processNumber_;
 
+        UIExternalComCode communicationState_;
         config::UIMessageQueues uiMessageQueuesParameters_;
         config::UISharedMemory uiSharedMemoryParameters_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;

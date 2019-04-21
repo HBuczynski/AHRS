@@ -92,9 +92,9 @@ void StoryboardsHandler::initializeStoryboardsContainer()
 
 void StoryboardsHandler::backToPreviousPage()
 {
-    if(previousPage_ == PagesType::INFORMATION_PAGE)
+    if(previousPage_ == PagesType::CONNECTING_PAGE)
     {
-        setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_), get<2>(informationParameters_), get<3>(informationParameters_));
+        //DO NOTHING
     }
     else
     {
@@ -164,7 +164,7 @@ void StoryboardsHandler::setSystemSetupPage()
 
 void StoryboardsHandler::setPlaneSettingPage()
 {
-    planeSettings_ = new PlaneSettingsPage(this);
+    planeSettings_ = new PlaneSettingsPage(this, guiDataManager_.getPlaneDataset());
     planeSettings_->resize(QSize(1024, 600));
     planeSettings_->initialize();
 
@@ -364,7 +364,7 @@ void StoryboardsHandler::sendToMainProcess(vector<uint8_t> msg)
 
     if (logger_.isInformationEnable())
     {
-        const string message = string("StoryboardsHandler:: Send msg to main process.");
+        const string message = string("-GUI- StoryboardsHandler:: Send msg to main process.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -379,14 +379,14 @@ void StoryboardsHandler::inititalizeMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("StoryboardsHandler:: During openning main queue - ") + ex.what();
+            const string message = string("-GUI- StoryboardsHandler:: During openning main queue - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 
     if (logger_.isInformationEnable())
     {
-        const string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
+        const string message = string("-GUI- StoryboardsHandler:: Main massage queue initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -401,12 +401,19 @@ const string& StoryboardsHandler::getPlaneName()
     return guiDataManager_.getPlaneName();
 }
 
-void StoryboardsHandler::setPlaneDataset(const vector<string>& name)
+void StoryboardsHandler::setPlaneDataset(const string& name)
 {
     guiDataManager_.setPlaneDataset(name);
+
+    if(currentPage_ == PagesType::PLANE_SETTING_PAGE)
+    {
+        const auto temp = previousPage_;
+        setPlaneSettingPage();
+        previousPage_ = temp;
+    }
 }
 
-const vector<string>& StoryboardsHandler::getPlaneDataset()
+const string &StoryboardsHandler::getPlaneDataset()
 {
     return guiDataManager_.getPlaneDataset();
 }

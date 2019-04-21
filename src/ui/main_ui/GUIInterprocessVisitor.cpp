@@ -31,7 +31,7 @@ void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("GUIInterprocessVisitor:: Received - ") + data.getName();
+        const string message = string("-MAIN-GUIInterprocessVisitor:: Received - ") + data.getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

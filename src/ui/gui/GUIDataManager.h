@@ -25,14 +25,14 @@ namespace gui
         void setPlaneName(const std::string& name) noexcept;
         const std::string& getPlaneName() const noexcept;
 
-        void setPlaneDataset(const std::vector<std::string> planeDataset) noexcept;
-        const std::vector<std::string>& getPlaneDataset() const noexcept;
+        void setPlaneDataset(const std::string& planeDataset) noexcept;
+        const std::string& getPlaneDataset() const noexcept;
 
     private:
         BitsInformation bitsInformation_;
 
         std::string planeName_;
-        std::vector<std::string> planeDataset_;
+        std::string planeDataset_;
     };
 }
 

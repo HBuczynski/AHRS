@@ -1,6 +1,7 @@
 #include "GUICommandFactory.h"
 
 #include "GUIWindowBuilder.h"
+#include "GUIPlanesSetBuilder.h"
 #include "GUIInformationWindowBuilder.h"
 
 using namespace std;
@@ -20,6 +21,9 @@ unique_ptr<GUICommand> GUICommandFactory::createCommand(const vector<uint8_t> &c
     {
         case GUICommandType::CHANGE_WINDOW :
             builder_ = make_unique<GUIWindowBuilder>();
+            return move(builder_->create(commandInBytes));
+        case GUICommandType::PLANE_DATASET :
+            builder_ = make_unique<GUIPlanesSetBuilder>();
             return move(builder_->create(commandInBytes));
         case GUICommandType::INFORMATION_WINDOW :
             builder_ = make_unique<GUIInformationWindowBuilder>();

@@ -82,49 +82,19 @@ BOOST_AUTO_TEST_SUITE( test )
 
     BOOST_AUTO_TEST_CASE( planesDatasetBuilder )
     {
-//        vector<AircraftParameters> dataset;
-//
-//        AircraftParameters plane_1;
-//        const char *temp = "Boeing";
-//        strcpy(plane_1.name, temp);
-//        dataset.push_back(plane_1);
-//
-//        AircraftParameters plane_2;
-//        const char *temp_2 = "bombardier4";
-//        strcpy(plane_1.name, temp_2);
-//        dataset.push_back(plane_2);
-//
-//        AircraftParameters plane_3;
-//        const char *temp_3 = "boeing_kk5";
-//        strcpy(plane_1.name, temp_3);
-//        dataset.push_back(plane_3);
-//
-//        AircraftParameters plane_4;
-//        const char *temp_4 = "airbus_11";
-//        strcpy(plane_1.name, temp_4);
-//        dataset.push_back(plane_4);
-//
-//        PlanesDatasetResponse response(dataset);
-//
-//        ResponseFactory factory;
-//
-//        auto responseFromVec = static_pointer_cast<PlanesDatasetResponse, Response>(factory.createCommand(response.getFrameBytes()));
-//
-//        bool isSuccess = true;
-//        const auto dataset2 = response.getDataset();
-//
-//        for(uint8_t i = 0; i < dataset.size(); ++i)
-//        {
-//            isSuccess = isSuccess & compareNames(dataset[i].name, dataset2[i].name, 32);
-//        }
-//
-//        BOOST_CHECK( responseFromVec->getFrameType() == response.getFrameType());
-//        BOOST_CHECK( isSuccess == true);
-//        BOOST_CHECK( responseFromVec->getResponseType() == response.getResponseType());
-//        BOOST_CHECK( responseFromVec->getFrameBytes() == response.getFrameBytes());
-//        BOOST_CHECK( responseFromVec->getSystemVersion() == response.getSystemVersion());
-//        BOOST_CHECK( responseFromVec->getDataSize() == response.getDataSize());
-//        BOOST_CHECK( responseFromVec->getName() == response.getName());
+        ResponseFactory factory;
+        string planes = "Boeing,Trolo";
+
+        PlanesDatasetResponse command(planes);
+        auto commandFromVec = static_pointer_cast<PlanesDatasetResponse, Response>(factory.createCommand(command.getFrameBytes()));
+
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getFrameType() == command.getFrameType());
+        BOOST_CHECK( commandFromVec->getResponseType() == command.getResponseType());
+        BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
+        BOOST_CHECK(commandFromVec->getDataset() == command.getDataset());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -68,3 +68,8 @@ void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t m
 {
     storyboardsHandler_->setInformationPage(master, redundant, masterBITs, redundantBITs);
 }
+
+void MainWindow::setPlanesDataset(QString planes)
+{
+    storyboardsHandler_->setPlaneDataset(planes.toStdString());
+}

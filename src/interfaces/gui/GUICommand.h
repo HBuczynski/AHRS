@@ -11,6 +11,7 @@ namespace communication
     {
         CHANGE_WINDOW = 0x01,
         INFORMATION_WINDOW = 0x02,
+        PLANE_DATASET = 0x03
     };
 
     class GUICommand : public Frame

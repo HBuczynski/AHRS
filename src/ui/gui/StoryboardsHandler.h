@@ -62,8 +62,8 @@ public slots:
     void setPlaneName(const std::string& name) override;
     const std::string& getPlaneName() override;
 
-    void setPlaneDataset(const std::vector<std::string>& name) override;
-    const std::vector<std::string>& getPlaneDataset() override;
+    void setPlaneDataset(const std::string& name) override;
+    const std::string& getPlaneDataset() override;
 
     void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
     std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() override;

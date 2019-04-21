@@ -42,7 +42,7 @@ bool CommunicationManagerUI::initializeServer()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -54,7 +54,7 @@ bool CommunicationManagerUI::initializeServer()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) + ". Server initialized correctly.";
+        const std::string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) + ". Server initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -83,6 +83,14 @@ void CommunicationManagerUI::interruptNotification(timer_t timerID)
 
                 auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getProcessNumber());
                 auto packet = notification.getFrameBytes();
+
+                if(logger_.isErrorEnable())
+                {
+                    const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Send to main: "
+                            + notification.getName();
+                    logger_.writeLog(LogType::ERROR_LOG, message);
+                }
+
                 mainProcCallback_(packet);
             }
         }
@@ -109,7 +117,7 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -125,13 +133,18 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
         return false;
     }
 
+    return true;
+}
+
+bool CommunicationManagerUI::reconnect()
+{
     return true;
 }
 

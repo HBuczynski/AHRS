@@ -47,7 +47,7 @@ void ServerUDP::listen()
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("ServerUDP :: Server starts listening on port: ") + to_string(port_);
+        const string message = string("-ExtCOMM- ServerUDP :: Server starts listening on port: ") + to_string(port_);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -65,7 +65,7 @@ void ServerUDP::listen()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ServerUDP :: Received exception: ") + e.what();
+                const string message = string("-ExtCOMM- ServerUDP :: Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }

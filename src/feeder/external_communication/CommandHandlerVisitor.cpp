@@ -41,7 +41,9 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
     }
     clientUDPManager_->insertNewClient(make_pair((newClient), currentClient_->getID()));
 
-    response_ = std::make_unique<PlanesDatasetResponse>(Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH));
+    //TODO
+    string temp = "Boeing,Airbus,Tupolew,Mig";
+    response_ = std::make_unique<PlanesDatasetResponse>(temp);
 }
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)

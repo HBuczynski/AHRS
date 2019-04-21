@@ -12,6 +12,7 @@ using namespace boost::interprocess;
 
 ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     : processNumber_(processNumber),
+      communicationState_(UIExternalComCode::IDLE),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
@@ -48,7 +49,7 @@ bool ProcessManager::initializeMainMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager:: Process - ") + to_string(processNumber_) +". During openning main queue - " + ex.what();
+            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) +". During openning main queue - " + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -57,7 +58,7 @@ bool ProcessManager::initializeMainMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Main massage queue initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Main massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -80,7 +81,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". False process number.";
+                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". False process number.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -92,7 +93,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager:: Process - ") + to_string(processNumber_) +". During openning communication queue ::" + ex.what();
+            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) +". During openning communication queue ::" + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -101,7 +102,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication massage queue initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -122,7 +123,7 @@ bool ProcessManager::initializeSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has not been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has not been initialized correctly.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -131,7 +132,7 @@ bool ProcessManager::initializeSharedMemory()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has been initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has been initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -144,7 +145,7 @@ bool ProcessManager::initializeWirelessCommunication()
     {
         if (logger_.isInformationEnable())
         {
-            const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has been initialized correctly.";
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
@@ -154,7 +155,7 @@ bool ProcessManager::initializeWirelessCommunication()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has not been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has not been initialized correctly.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -182,7 +183,7 @@ void ProcessManager::startCommunication()
         {
             if ( logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Receiving data ::" + ex.what();
+                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Receiving data ::" + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -205,7 +206,12 @@ void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("ProcessManager:: Process - ") + to_string(processNumber_) + ". Send msg to main process.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Send msg to main process.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void ProcessManager::setState(UIExternalComCode code)
+{
+    communicationState_ = code;
 }

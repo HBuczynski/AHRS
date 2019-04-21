@@ -1,9 +1,12 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "UIApplicationManager.h"
 
+#include <interfaces/communication_process_ui/SendingDataCommand.h>
+#include <interfaces/gui/GUIWindowCommand.h>
+#include <interfaces/gui/GUIPlanesSetCommand.h>
+#include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_commands/PerformBITsCommand.h>
 #include <interfaces/wireless_responses/ResponseFactory.h>
-#include <interfaces/communication_process_ui/SendingDataCommand.h>
 
 using namespace std;
 using namespace utility;
@@ -24,11 +27,11 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
 {
     ResponseFactory responseFactory;
 
-    const auto response = responseFactory.createCommand(command.getData());
+    auto response = responseFactory.createCommand(command.getData());
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("ExternalCommInterprocessVisitor:: Received - ") + response->getName();
+        const string message = string("-MAIN- ExternalCommInterprocessVisitor:: Received - ") + response->getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -36,11 +39,19 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
     {
         case ResponseType::BITs_STATUS :
         {
-            get<2>(informationParameters_) = 1;
-
-//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-//                    get<2>(informationParameters_), get<3>(informationParameters_));
+            break;
         }
+        case ResponseType::PLANES_DATASET :
+        {
+            const auto planeDataSet = static_pointer_cast<PlanesDatasetResponse, Response>(responseFactory.createCommand(command.getData()));
+            const auto planes = planeDataSet->getDataset();
+
+            GUIPlanesSetCommand guiCommand(planes);
+            uiApplicationManager_->sendToGUIProcess(guiCommand.getFrameBytes());
+            break;
+        }
+        default :
+            break;
     }
 }
 
@@ -50,42 +61,17 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
 
     switch(status)
     {
-        //TODO: info about connection
-        case UIExternalComCode::MASTER :
+        case UIExternalComCode::INIT_CONNECTION :
         {
-            get<0>(informationParameters_) = 1;
-//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-//                    get<2>(informationParameters_), get<3>(informationParameters_));
-
-            auto performBIT = PerformBITsCommand();
-            auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
-
-            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
-                    config::UICommunicationMode::MASTER);
-
+            uiApplicationManager_->handleEvent("SET_SETTINGS");
             break;
         }
+        case UIExternalComCode::RECONNECTED :
         case UIExternalComCode::REDUNDANT :
-        {
-            get<1>(informationParameters_) = 1;
-//            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-//                    get<2>(informationParameters_), get<3>(informationParameters_));
-
-            auto performBIT = PerformBITsCommand();
-            auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
-
-            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
-                    config::UICommunicationMode::MASTER);
-
-            break;
-        }
+        case UIExternalComCode::MASTER :
         case UIExternalComCode::ERROR :
-        {
-
-            break;
-        }
+        case UIExternalComCode::IDLE :
         default:
-
             break;
     }
 }

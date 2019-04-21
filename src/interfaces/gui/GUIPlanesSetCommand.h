@@ -1,22 +1,22 @@
-#ifndef AHRS_PLANESDATASETRESPONSE_H
-#define AHRS_PLANESDATASETRESPONSE_H
+#ifndef AHRS_GUIPLANESETCommand_H
+#define AHRS_GUIPLANESETCommand_H
 
-#include "Response.h"
+#include "GUICommand.h"
 
 #include <string>
 #include <vector>
 
 namespace communication
 {
-    class PlanesDatasetResponse final : public Response
+    class GUIPlanesSetCommand final : public GUICommand
     {
     public:
-        PlanesDatasetResponse(const std::string& dataset);
-        ~PlanesDatasetResponse();
+        GUIPlanesSetCommand(const std::string& dataset);
+        ~GUIPlanesSetCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
-        virtual void accept(ResponseVisitor& visitor) override;
+        virtual void accept(GUICommandVisitor& visitor) override;
 
         void setDataset(const std::string& dataset);
 

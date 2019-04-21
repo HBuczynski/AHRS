@@ -27,7 +27,8 @@ void UILaunchState::runInitEvent()
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("UILaunchState :: Send info master -> gui:") + command.getName();
+        const std::string message = std::string("-MAIN- UILaunchState :: Send info master -> gui:") + command.getName()
+                +  " " + to_string(static_cast<int>(command.getWindowType()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 

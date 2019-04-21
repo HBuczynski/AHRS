@@ -20,6 +20,7 @@ namespace communication
 
         bool initializeServer();
         bool connectToFeeder();
+        bool reconnect();
 
         void registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback);
 
@@ -32,7 +33,6 @@ namespace communication
 
         uint8_t processNumber_;
         config::UIWirelessCommunication wirelessCommunicationParameters_;
-
         utility::TimerInterrupt connectionEstablishingInterrupt_;
 
         std::unique_ptr<ServerUDP> server_;

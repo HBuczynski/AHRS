@@ -23,7 +23,7 @@ namespace communication
     private:
         void initializeMessageQueue();
 
-        void sendMessage(std::vector<uint8_t> msg);
+        void sendMessageToMain(std::vector<uint8_t> msg);
 
         config::UIMessageQueues uiMessageQueuesParameters_;
         std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;

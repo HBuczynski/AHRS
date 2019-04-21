@@ -8,9 +8,10 @@ enum class UIExternalComCode : uint8_t
     REDUNDANT = 0x03,
     MASTER = 0x04,
     ERROR = 0x05,
+    IDLE = 0x06
 };
 
-enum class PagesType : uint8_t
+enum PagesType : uint8_t
 {
     WELCOME_PAGE,
     SYSTEM_SETUP_PAGE,

@@ -24,7 +24,8 @@ void UIConnectionState::runInitEvent()
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("UIConnectionState :: Send") + command.getName();
+        const std::string message = std::string("-MAIN- UIConnectionState :: Send ") + command.getName()
+                 +  " " + to_string(static_cast<int>(command.getWindowType()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

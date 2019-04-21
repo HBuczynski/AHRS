@@ -66,6 +66,7 @@ bool UIScheduler::initialize()
 
     static_pointer_cast<UILaunchState, hsm::State>(states_["LaunchState"])->registerCallbackToGUI(sendToGUI);
     static_pointer_cast<UIConnectionState, hsm::State>(states_["ConnectionState"])->registerCallbackToGUI(sendToGUI);
+    static_pointer_cast<UIConnectionState, hsm::State>(states_["SettingState"])->registerCallbackToGUI(sendToGUI);
 
     return uiApplicationManager_->initialize();
 }

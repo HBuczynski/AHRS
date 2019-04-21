@@ -27,6 +27,8 @@ public slots:
     void setConnectingPage();
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs);
 
+    void setPlanesDataset(QString planes);
+
 private:
     StoryboardsHandler *storyboardsHandler_;
 };

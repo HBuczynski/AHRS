@@ -5,6 +5,7 @@
 
 #include "../GUIWindowCommand.h"
 #include "../GUIInformationWindowCommand.h"
+#include "../GUIPlanesSetCommand.h"
 #include "../GUICommandFactory.h"
 
 #include <iostream>
@@ -51,6 +52,23 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
         BOOST_CHECK(commandFromVec->getBitsMaster() == command.getBitsMaster());
         BOOST_CHECK( commandFromVec->getMasterConnection() == command.getMasterConnection());
         BOOST_CHECK( commandFromVec->getRedundantConnection() == command.getRedundantConnection());
+    }
+
+    BOOST_AUTO_TEST_CASE( planesSet )
+    {
+        GUICommandFactory factory;
+        string planes = "Boeing, Trolo";
+
+        GUIPlanesSetCommand command(planes);
+        auto commandFromVec = static_pointer_cast<GUIPlanesSetCommand, GUICommand>(factory.createCommand(command.getFrameBytes()));
+
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getFrameType() == command.getFrameType());
+        BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
+        BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
+        BOOST_CHECK(commandFromVec->getDataset() == command.getDataset());
     }
 
 
