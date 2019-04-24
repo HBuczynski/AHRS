@@ -7,7 +7,7 @@
 #include "../CollectDataCommand.h"
 #include "../EndConnectionCommand.h"
 #include "../InitConnectionCommand.h"
-#include "../SetPlaneMagnetometerCommand.h"
+#include "../SetPlaneCommand.h"
 #include "../RemovePlaneDataCommand.h"
 #include "../PerformBITsCommand.h"
 
@@ -96,14 +96,14 @@ BOOST_AUTO_TEST_SUITE( commands )
     {
         string planeName = "temp";
 
-        SetPlaneMagnetometerCommand command(planeName);
+        SetPlaneCommand command(planeName);
         command.getFrameBytes();
 
         BOOST_CHECK( planeName == command.getPlaneName());
         BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
-        BOOST_CHECK( CommandType::SET_PLANE_MAGNETOMETER_DATA == command.getCommandType());
+        BOOST_CHECK( CommandType::SET_PLANE_NAME == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
-        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_MAGNETOMETER_DATA)) == command.getDataSize());
+        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_NAME)) == command.getDataSize());
         BOOST_CHECK( "SetPlaneMagnetometerCommand" == command.getName());
     }
 

@@ -431,3 +431,13 @@ tuple<uint8_t , uint8_t , uint8_t, uint8_t> StoryboardsHandler::getBitsInformati
 
     return make_tuple(bitsInformation.master, bitsInformation.redundant, bitsInformation.masterBITS, bitsInformation.redundantBITS);
 }
+
+bool StoryboardsHandler::isSystemActive()
+{
+    return guiDataManager_.isSystemAcitve();
+}
+
+void StoryboardsHandler::setSystemActivation()
+{
+    guiDataManager_.setSystemActivation();
+}

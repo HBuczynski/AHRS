@@ -11,31 +11,24 @@ using namespace config;
 using namespace communication;
 using namespace boost::interprocess;
 
-ProcessManager::ProcessManager()
-    :   feederExternalWirelessParameters_(ConfigurationReader::getFeederExternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
+ProcessManager::ProcessManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    :   hsm::HSM(name, transitionTable, rootState),
+        feederExternalWirelessParameters_(ConfigurationReader::getFeederExternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
         runConfigurationProcess_(true),
         logger_(Logger::getInstance())
+{}
+
+bool ProcessManager::initialize()
 {
     bool isSuccess = true;
 
     isSuccess = isSuccess & initializeMessageQueueCommunication();
     isSuccess = isSuccess & initializeExternalCommunication();
 
-    if(isSuccess)
-    {
-        //TODO: send info about appropriate init
-//        CalibrationStatusNotification notification(CalibrationStatus::PASSED);
-//
-//        const auto commandFrame = notification.getFrameBytes();
-//        sendingMessageQueue_->send(commandFrame.data(), commandFrame.size(), 0);
-    }
-    messageVisitor_.initializeClientUDPManager(clientUDPManager_);
+    return isSuccess;
 }
-
-ProcessManager::~ProcessManager()
-{ }
 
 bool ProcessManager::initializeExternalCommunication()
 {
@@ -59,7 +52,7 @@ bool ProcessManager::initializeExternalCommunication()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = "ProcessManager: Inappropriate process communication type.";
+                const string message = "-MAIN- ProcessManager: Inappropriate process communication type.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -69,7 +62,7 @@ bool ProcessManager::initializeExternalCommunication()
 
     if(logger_.isInformationEnable())
     {
-        const string message = "ProcessManager: Initialized external communication process. Process type: " + to_string(static_cast<int>(feederType_.mode));
+        const string message = "-MAIN- ProcessManager: Initialized external communication process. Process type: " + to_string(static_cast<int>(feederType_.mode));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -87,7 +80,7 @@ bool ProcessManager::initializeMessageQueueCommunication()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager :: ") + ex.what();
+            const string message = string("-MAIN- ProcessManager :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -97,7 +90,7 @@ bool ProcessManager::initializeMessageQueueCommunication()
     return true;
 }
 
-void ProcessManager::startConfigurationProcess()
+void ProcessManager::start()
 {
     while(runConfigurationProcess_)
     {
@@ -120,7 +113,7 @@ void ProcessManager::startConfigurationProcess()
             {
                 if(logger_.isErrorEnable())
                 {
-                    const string message = string("ProcessManager :: Rceived wrong type of message");
+                    const string message = string("-MAIN- ProcessManager :: Rceived wrong type of message");
                     logger_.writeLog(LogType::ERROR_LOG, message);
                 }
             }
@@ -129,7 +122,7 @@ void ProcessManager::startConfigurationProcess()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager :: ") + ex.what();
+                const string message = string("-MAIN- ProcessManager :: ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -138,7 +131,7 @@ void ProcessManager::startConfigurationProcess()
     }
 }
 
-void ProcessManager::stopConfigurationProcess()
+void ProcessManager::stop()
 {
     runConfigurationProcess_ = false;
 }

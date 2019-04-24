@@ -1,6 +1,9 @@
 #include "PlaneSettingsPage.h"
 #include "ui_PlaneSettingsPage.h"
 
+#include <interfaces/gui/GUIPlaneResponse.h>
+
+
 #include <functional>
 #include <iostream>
 #include <locale>
@@ -198,7 +201,7 @@ void PlaneSettingsPage::cancelButton()
             break;
         }
         case FieldType::NEXT_LABEL :
-        {
+        {            
             break;
         }
         default:
@@ -261,6 +264,9 @@ void PlaneSettingsPage::selectButton()
         }
         case FieldType::NEXT_LABEL :
         {
+            communication::GUIPlaneResponse planeResponse(planeName);
+            controller_->sendToMainProcess(planeResponse.getFrameBytes());
+
             emit signalCallibrationPage();
             break;
         }

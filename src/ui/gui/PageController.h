@@ -35,6 +35,9 @@ namespace gui
 
         virtual void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) = 0;
         virtual std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() = 0;
+
+        virtual bool isSystemActive() = 0;
+        virtual void setSystemActivation() = 0;
     };
 }
 

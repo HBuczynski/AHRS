@@ -4,8 +4,6 @@
 using namespace std;
 using namespace peripherals;
 
-bool MainPage::plainIsSet_=false;
-
 MainPage::MainPage(gui::PageController* controller, QWidget *parent) :
     QWidget(parent),
     ui_(new Ui::MainPage),
@@ -15,7 +13,7 @@ MainPage::MainPage(gui::PageController* controller, QWidget *parent) :
     ui_->setupUi(this);
     setupPage();
 
-    if(plainIsSet_)
+    if(controller_->isSystemActive())
         currentOption_= 0;
     else
         currentOption_ = 1;
@@ -42,7 +40,7 @@ void MainPage::setupPage()
     QFont font2("Arial", 20, QFont::Bold);
     QFont font3("Arial", 15, QFont::Bold);
 
-    if(plainIsSet_)
+    if(controller_->isSystemActive())
     {
         ui_->ahrsLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
         ui_->ahrsLabel->setFont(font2);
@@ -145,7 +143,7 @@ void MainPage::secondButton()
         tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
 
     const auto type = static_cast<MainPageOptions>(tempNumber);
-    if(!plainIsSet_ && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
     {
         tempNumber += 1;
 
@@ -165,7 +163,7 @@ void MainPage::thirdButton()
 
     const auto type = static_cast<MainPageOptions>(tempNumber);
 
-    if(!plainIsSet_ && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
     {
         tempNumber -= 1;
 

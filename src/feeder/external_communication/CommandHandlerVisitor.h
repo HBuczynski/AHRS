@@ -27,7 +27,7 @@ namespace communication
         virtual void visit(CalibrationStatusCommand& command) override;
         virtual void visit(StartAcquisitionCommand& command) override;
         virtual void visit(CollectDataCommand& command) override;
-        virtual void visit(SetPlaneMagnetometerCommand& command) override;
+        virtual void visit(SetPlaneCommand& command) override;
         virtual void visit(RemovePlaneDataCommand& command) override;
         virtual void visit(CurrentStateCommand& command) override ;
         virtual void visit(PerformBITsCommand& command) override;

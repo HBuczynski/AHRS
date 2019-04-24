@@ -48,8 +48,6 @@ private:
     void thirdButton();
     void fourthButton();
 
-
-    static bool plainIsSet_;
     Ui::MainPage *ui_;
     gui::PageController* controller_;
     std::unique_ptr<Buttons> buttons_;

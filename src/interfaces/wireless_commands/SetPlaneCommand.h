@@ -1,16 +1,16 @@
-#ifndef AHRS_SETPLANEMAGNETOMETERDATACOMMAND_H
-#define AHRS_SETPLANEMAGNETOMETERDATACOMMAND_H
+#ifndef AHRS_SETPLANECOMMAND_H
+#define AHRS_SETPLANECOMMAND_H
 
 #include "Command.h"
 #include <string>
 
 namespace communication
 {
-    class SetPlaneMagnetometerCommand : public Command
+    class SetPlaneCommand : public Command
     {
     public:
-        SetPlaneMagnetometerCommand(const std::string &name);
-        ~SetPlaneMagnetometerCommand();
+        SetPlaneCommand(const std::string &name);
+        ~SetPlaneCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;

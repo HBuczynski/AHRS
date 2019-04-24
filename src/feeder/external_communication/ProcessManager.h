@@ -14,6 +14,7 @@
 #include <mutex>
 #include <atomic>
 
+#include <hsm/HSM.h>
 #include <logger/Logger.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
@@ -21,14 +22,14 @@
 
 namespace communication
 {
-    class ProcessManager
+    class ProcessManager : public hsm::HSM
     {
     public:
-        ProcessManager();
-        ~ProcessManager();
+        ProcessManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
 
-        void startConfigurationProcess();
-        void stopConfigurationProcess();
+        bool initialize();
+        void start();
+        void stop();
 
     private:
         bool initializeExternalCommunication();

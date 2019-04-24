@@ -68,6 +68,9 @@ public slots:
     void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
     std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() override;
 
+    bool isSystemActive() override;
+    void setSystemActivation() override;
+
 private:
 
     void inititalizeMessageQueue();

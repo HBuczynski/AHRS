@@ -12,7 +12,7 @@ namespace communication
         INIT_CONNECTION = 10,
         CALIBRATE_MAGNETOMETER = 20,
         REMOVE_PLANE_DATA = 25,
-        SET_PLANE_MAGNETOMETER_DATA = 30,
+        SET_PLANE_NAME = 30,
         COLLECT_DATA = 40,
         END_CONNECTION = 50,
         CALIBRATION_STATUS = 60,

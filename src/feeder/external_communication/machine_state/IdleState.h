@@ -1,23 +1,18 @@
 #ifndef AHRS_IDLESTATE_H
 #define AHRS_IDLESTATE_H
 
-#include "AbstractState.h"
+#include <hsm/State.h>
 
 namespace communication
 {
-    class IdleState : public AbstractState
+    class IdleState : public hsm::State
     {
     public:
-        IdleState();
-        ~IdleState();
+        IdleState(const std::string &name, std::shared_ptr<State> parent = nullptr);
 
-        void acceptedUsers(ClientUDPManager &clientUDPManager);
-        void startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status);
-        void calibrationPassed(ClientUDPManager &clientUDPManager);
-        void calibrationFailed(ClientUDPManager &clientUDPManager);
-        void startDataSending(ClientUDPManager &clientUDPManager);
-        void restartProcess(ClientUDPManager &clientUDPManager);
-        void shutdownProcess(ClientUDPManager &clientUDPManager);
+        void runEntryEvent() override;
+        void runExitEvent() override;
+        void runInitEvent() override;
     };
 }
 

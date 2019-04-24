@@ -1,23 +1,18 @@
 #ifndef AHRS_ERRORSTATE_H
 #define AHRS_ERRORSTATE_H
 
-#include "AbstractState.h"
+#include <hsm/State.h>
 
 namespace communication
 {
-    class ErrorState : public AbstractState
+    class ErrorState : public hsm::State
     {
     public:
-        ErrorState();
-        ~ErrorState();
+        ErrorState(const std::string &name, std::shared_ptr<State> parent = nullptr);
 
-        void acceptedUsers(ClientUDPManager &clientUDPManager);
-        void startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status);
-        void calibrationPassed(ClientUDPManager &clientUDPManager);
-        void calibrationFailed(ClientUDPManager &clientUDPManager);
-        void startDataSending(ClientUDPManager &clientUDPManager);
-        void restartProcess(ClientUDPManager &clientUDPManager);
-        void shutdownProcess(ClientUDPManager &clientUDPManager);
+        void runEntryEvent() override;
+        void runExitEvent() override;
+        void runInitEvent() override;
     };
 }
 

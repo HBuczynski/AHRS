@@ -5,6 +5,7 @@ using namespace std;
 
 GUIDataManager::GUIDataManager()
     : bitsInformation_({0}),
+      isAHRSActive_(false),
       planeName_("")
 {}
 
@@ -36,4 +37,14 @@ void GUIDataManager::setPlaneDataset(const string& planeDataset) noexcept
 const string &GUIDataManager::getPlaneDataset() const noexcept
 {
     return planeDataset_;
+}
+
+void GUIDataManager::setSystemActivation()
+{
+    isAHRSActive_ = true;
+}
+
+bool GUIDataManager::isSystemAcitve()
+{
+    return isAHRSActive_;
 }

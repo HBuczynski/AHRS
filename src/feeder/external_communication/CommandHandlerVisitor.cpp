@@ -66,7 +66,7 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
     const auto planeName = command.getPlaneName();
     const auto planeStatus = command.getPlaneStatus();
 
-    clientUDPManager_->startCalibration(planeName, planeStatus);
+    //clientUDPManager_->startCalibration(planeName, planeStatus);
     response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
@@ -97,16 +97,16 @@ void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 
 void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
 {
-    clientUDPManager_->startDataSending();
+//    clientUDPManager_->startDataSending();
 
-    if(clientUDPManager_->getCurrentState() == FeederExternalStateCode::MASTER_SENDING)
-    {
-        response_ = std::make_unique<AckResponse>(AckType::OK);
-    }
-    else
-    {
-        response_ = std::make_unique<AckResponse>(AckType::FAIL);
-    }
+//    if(clientUDPManager_->getCurrentState() == FeederExternalStateCode::MASTER_SENDING)
+//    {
+//        response_ = std::make_unique<AckResponse>(AckType::OK);
+//    }
+//    else
+//    {
+//        response_ = std::make_unique<AckResponse>(AckType::FAIL);
+//    }
 
     if(logger_.isInformationEnable())
     {
@@ -118,7 +118,7 @@ void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
 
 void CommandHandlerVisitor::visit(CurrentStateCommand &command)
 {
-    response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
+    //response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
 
     if(logger_.isInformationEnable())
     {
@@ -138,9 +138,14 @@ void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
 
 }
 
-void CommandHandlerVisitor::visit(SetPlaneMagnetometerCommand &command)
+void CommandHandlerVisitor::visit(SetPlaneCommand &command)
 {
-
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void CommandHandlerVisitor::visit(PerformBITsCommand& command)

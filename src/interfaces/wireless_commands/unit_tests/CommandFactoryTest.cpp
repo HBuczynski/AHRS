@@ -8,7 +8,7 @@
 #include "../CollectDataCommand.h"
 #include "../EndConnectionCommand.h"
 #include "../InitConnectionCommand.h"
-#include "../SetPlaneMagnetometerCommand.h"
+#include "../SetPlaneCommand.h"
 #include "../RemovePlaneDataCommand.h"
 #include "../PerformBITsCommand.h"
 
@@ -101,9 +101,9 @@ BOOST_AUTO_TEST_SUITE( factory )
     {
         CommandFactory factory;
         string planeName = "temp";
-        SetPlaneMagnetometerCommand command(planeName);
+        SetPlaneCommand command(planeName);
 
-        auto commandFromVec = static_pointer_cast<SetPlaneMagnetometerCommand, Command>(factory.createCommand(command.getFrameBytes()));
+        auto commandFromVec = static_pointer_cast<SetPlaneCommand, Command>(factory.createCommand(command.getFrameBytes()));
 
         BOOST_CHECK( commandFromVec->getPlaneName() == command.getPlaneName());
         BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());

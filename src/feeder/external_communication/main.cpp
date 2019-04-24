@@ -2,7 +2,7 @@
 #include <chrono>
 #include <logger/Logger.h>
 
-#include "ProcessManager.h"
+#include "Scheduler.h"
 
 using namespace std;
 using namespace utility;
@@ -21,14 +21,20 @@ int main(int argc , char *argv[])
     struc.writeOnConsole = true;
     logger.initLogger(struc);
 
-    if(logger.isInformationEnable())
+    Scheduler scheduler;
+
+    if(scheduler.initialize())
     {
-        const string message = "Main External Process: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
-        logger.writeLog(LogType::INFORMATION_LOG, message);
+        scheduler.run();
+    }
+    else
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("-MAIN- :: Initialization failed !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
     }
 
-    ProcessManager manager;
-    manager.startConfigurationProcess();
-    
     return 0;
 }

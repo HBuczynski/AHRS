@@ -28,8 +28,13 @@ namespace gui
         void setPlaneDataset(const std::string& planeDataset) noexcept;
         const std::string& getPlaneDataset() const noexcept;
 
+        void setSystemActivation();
+        bool isSystemAcitve();
+
     private:
         BitsInformation bitsInformation_;
+
+        bool isAHRSActive_;
 
         std::string planeName_;
         std::string planeDataset_;

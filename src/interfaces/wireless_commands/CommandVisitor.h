@@ -5,7 +5,7 @@
 #include "EndConnectionCommand.h"
 #include "CallibrateMagnetometerCommand.h"
 #include "CollectDataCommand.h"
-#include "SetPlaneMagnetometerCommand.h"
+#include "SetPlaneCommand.h"
 #include "RemovePlaneDataCommand.h"
 #include "CalibrationStatusCommand.h"
 #include "StartAcquisitionCommand.h"
@@ -24,7 +24,7 @@ namespace communication
         virtual void visit(EndConnectionCommand& command) = 0;
         virtual void visit(CallibrateMagnetometerCommand& command) = 0;
         virtual void visit(CollectDataCommand& command) = 0;
-        virtual void visit(SetPlaneMagnetometerCommand& command) = 0;
+        virtual void visit(SetPlaneCommand& command) = 0;
         virtual void visit(RemovePlaneDataCommand& command) = 0;
         virtual void visit(CalibrationStatusCommand& command) = 0;
         virtual void visit(StartAcquisitionCommand& command) = 0;

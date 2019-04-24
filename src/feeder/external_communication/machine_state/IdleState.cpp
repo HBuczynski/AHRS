@@ -1,86 +1,25 @@
 #include "IdleState.h"
-#include "ShutdownState.h"
-#include "ResetState.h"
-#include "RegisteredUsersState.h"
 
-#include "ClientUDPManager.h"
-
-using namespace std;
 using namespace utility;
+using namespace std;
 using namespace communication;
 
-IdleState::IdleState()
-    : AbstractState("IdleState", FeederExternalStateCode::IDLE)
-{ }
+IdleState::IdleState(const std::string &name, std::shared_ptr<State> parent)
+    : State(name, parent)
+{}
 
-IdleState::~IdleState()
-{ }
+void IdleState::runEntryEvent()
+{}
 
-void IdleState::acceptedUsers(ClientUDPManager &clientUDPManager)
+void IdleState::runExitEvent()
+{}
+
+void IdleState::runInitEvent()
 {
-    setState(&clientUDPManager, new RegisteredUsersState);
-
-    if(logger_.isInformationEnable())
+    if (logger_.isInformationEnable())
     {
-        const string message = string("IdleState :: Change state on RegisteredUsersState");
+        const string message = string("-MAIN- UIIdleState:: Invoke procedure for - ") + getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
-}
-
-void IdleState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status)
-{
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("IdleState :: Cannot start calibration");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
-}
-
-void IdleState::calibrationPassed(ClientUDPManager &clientUDPManager)
-{
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("IdleState :: Cannot change state on calibration passed");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
-}
-
-void IdleState::calibrationFailed(ClientUDPManager &clientUDPManager)
-{
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("IdleState :: Cannot change state on calibration failed");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
-}
-
-void IdleState::startDataSending(ClientUDPManager &clientUDPManager)
-{
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("IdleState :: Cannot start calibration");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
-}
-
-void IdleState::restartProcess(ClientUDPManager &clientUDPManager)
-{
-    setState(&clientUDPManager, new ResetState);
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("IdleState :: Change state on ResetState");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void IdleState::shutdownProcess(ClientUDPManager &clientUDPManager)
-{
-    setState(&clientUDPManager, new ShutdownState);
-
-    if(logger_.isInformationEnable())
-    {
-        const string message = string("IdleState :: Change state on ShutdownState");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
+    registerInternalState_("ConnectionState");
 }

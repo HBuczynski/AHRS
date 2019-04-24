@@ -1,11 +1,9 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "UIApplicationManager.h"
 
-#include <interfaces/communication_process_ui/SendingDataCommand.h>
-#include <interfaces/gui/GUIWindowCommand.h>
 #include <interfaces/gui/GUIPlanesSetCommand.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
-#include <interfaces/wireless_commands/PerformBITsCommand.h>
+
 #include <interfaces/wireless_responses/ResponseFactory.h>
 
 using namespace std;

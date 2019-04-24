@@ -3,7 +3,6 @@
 
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
 
-#include "machine_state/AbstractState.h"
 #include "ClientUDP.h"
 #include "FlightDataManager.h"
 
@@ -29,19 +28,7 @@ namespace communication
 
         bool broadcast(std::vector<uint8_t> frame);
 
-        // Managing finite machine state
-        void acceptedUsers();
-        void startCalibration(const std::string &planeName, PlaneStatus status);
-        void startDataSending();
-        void stopDataSending();
-        void restartProcess();
-        void shutdownProcess();
-        const FeederExternalStateCode& getCurrentState() const;
-
-        void setNewState(AbstractState *newState);
-
     private:
-        std::unique_ptr<AbstractState> currentState_;
         std::unique_ptr<FlightDataManager> flightDataManager_;
 
         std::mutex clientListMutex_;
