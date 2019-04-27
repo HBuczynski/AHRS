@@ -125,6 +125,7 @@ void PlaneSettingsPage::setupPage()
     {
         ui_->planeValueLabel->setText(planeName.c_str());
         ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+        maxOptionsNumber_ = 5;
     }
 
     labels_[FieldType::COMBO_BOX] = ui_->fromDatabaseComboBox;
