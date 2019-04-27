@@ -39,12 +39,32 @@ const string &GUIDataManager::getPlaneDataset() const noexcept
     return planeDataset_;
 }
 
-void GUIDataManager::setSystemActivation()
+void GUIDataManager::setSystemActivation() noexcept
 {
     isAHRSActive_ = true;
 }
 
-bool GUIDataManager::isSystemAcitve()
+bool GUIDataManager::isSystemAcitve() noexcept
 {
     return isAHRSActive_;
+}
+
+void GUIDataManager::setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept
+{
+    masterCallibrationConfiguration_ = paramteres;
+}
+
+void GUIDataManager::setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept
+{
+    redundantCallibrationConfiguration_ = paramteres;
+}
+
+const communication::CallibrationConfiguration& GUIDataManager::getMainCallibrationParameters() const noexcept
+{
+    return masterCallibrationConfiguration_;
+}
+
+const communication::CallibrationConfiguration& GUIDataManager::getRedundantCallibrationParameters() const noexcept
+{
+    return redundantCallibrationConfiguration_;
 }

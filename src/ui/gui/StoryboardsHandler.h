@@ -65,6 +65,12 @@ public slots:
     void setPlaneDataset(const std::string& name) override;
     const std::string& getPlaneDataset() override;
 
+    void setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) override;
+    void setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) override;
+
+    const communication::CallibrationConfiguration& getMainCallibrationParameters() override;
+    const communication::CallibrationConfiguration& getRedundantCallibrationParameters() override;
+
     void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
     std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() override;
 

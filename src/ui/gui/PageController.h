@@ -4,6 +4,8 @@
 #include <QObject>
 #include <vector>
 
+#include <interfaces/wireless_responses/CalibratingStatusResponse.h>
+
 namespace gui
 {
     class PageController : public QObject
@@ -32,6 +34,12 @@ namespace gui
 
         virtual void setPlaneDataset(const std::string& name) = 0;
         virtual const std::string& getPlaneDataset() = 0;
+
+        virtual void setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) = 0;
+        virtual void setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) = 0;
+
+        virtual const communication::CallibrationConfiguration& getMainCallibrationParameters() = 0;
+        virtual const communication::CallibrationConfiguration& getRedundantCallibrationParameters() = 0;
 
         virtual void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) = 0;
         virtual std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() = 0;

@@ -26,12 +26,19 @@ signals:
 
 private:
     void setupPage();
+
+    void setAccelerometerParameters();
+    void setMagnetometerParameters();
+    void setEllipsoidParameters();
+
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
     void firstButton();
     void secondButton();
     void thirdButton();
     void fourthButton();
+
+    std::string getCallibrationStatus(int status);
 
     Ui::CallibrationPage *ui_;
     gui::PageController* controller_;

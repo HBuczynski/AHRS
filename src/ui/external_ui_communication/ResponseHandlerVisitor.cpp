@@ -45,6 +45,9 @@ void ResponseHandlerVisitor::visit(DataResponse &data)
 
 void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
 {
+    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    sendMessageToMain(dataNotification.getFrameBytes());
+
     if(logger_.isInformationEnable())
     {
         const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received CalibratingStatusResponse.");

@@ -18,7 +18,7 @@ FlightDataManager::~FlightDataManager()
 {
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("FlightDataManager :: Destructor.");
+        const std::string message = std::string("-EXTCOM- FlightDataManager :: Destructor.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
     stopFlightDataTransmission();
@@ -36,7 +36,7 @@ void FlightDataManager::startFlightDataTransmission()
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("FlightDataManager :: Start sending measurements to cockpit.");
+        const std::string message = std::string("-EXTCOM- FlightDataManager :: Start sending measurements to cockpit.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -52,7 +52,7 @@ void FlightDataManager::stopFlightDataTransmission()
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("FlightDataManager :: Stop sending measurements to cockpit.");
+        const std::string message = std::string("-EXTCOM- FlightDataManager :: Stop sending measurements to cockpit.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -83,7 +83,7 @@ void FlightDataManager::sendMeasurements()
 
         if(logger_.isInformationEnable() )
         {
-            const string message = string("FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Pitch : ") + to_string(measurements.pitch);
+            const string message = string("-EXTCOM- FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Pitch : ") + to_string(measurements.pitch);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
@@ -95,7 +95,7 @@ void FlightDataManager::sendMeasurements()
                 runAcquisition_ = false;
                 if(logger_.isInformationEnable() )
                 {
-                    const string message = string("FlightDataManager:: Broadcast is stopped, users are unavailable.");
+                    const string message = string("-EXTCOM- FlightDataManager:: Broadcast is stopped, users are unavailable.");
                     logger_.writeLog(LogType::INFORMATION_LOG, message);
                 }
             }
@@ -104,7 +104,7 @@ void FlightDataManager::sendMeasurements()
         {
             if(logger_.isErrorEnable() )
             {
-                const string message = string("FlightDataManager:: In catch function.");
+                const string message = string("-EXTCOM- FlightDataManager:: In catch function.");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }

@@ -18,7 +18,7 @@ void IdleState::runInitEvent()
 {
     if (logger_.isInformationEnable())
     {
-        const string message = string("-MAIN- UIIdleState:: Invoke procedure for - ") + getName();
+        const string message = string("-EXTCOM- IdleState:: Invoke procedure for - ") + getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
     registerInternalState_("ConnectionState");

@@ -1,5 +1,6 @@
 #include "FeederNotificationFactory.h"
 #include "CalibrationStatusNotificationBuilder.h"
+#include "StateBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -18,6 +19,9 @@ unique_ptr<FeederNotification> FeederNotificationFactory::createNotification(con
     {
         case FeederNotificationType::CALIBRATION_STATUS_NOTIFY:
             builder_ = make_unique<CalibrationStatusNotificationBuilder>();
+            return move(builder_->create(notificationInBytes));
+        case FeederNotificationType::STATE:
+            builder_ = make_unique<StateBuilder>();
             return move(builder_->create(notificationInBytes));
         default:
             throw invalid_argument("Received Notification does not register in factory.");

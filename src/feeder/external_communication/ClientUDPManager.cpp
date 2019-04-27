@@ -4,8 +4,9 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-ClientUDPManager::ClientUDPManager()
-    :   flightDataManager_(make_unique<FlightDataManager>(bind(&ClientUDPManager::broadcast, this, std::placeholders::_1))),
+ClientUDPManager::ClientUDPManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    :   hsm::HSM(name, transitionTable, rootState),
+        flightDataManager_(make_unique<FlightDataManager>(bind(&ClientUDPManager::broadcast, this, std::placeholders::_1))),
         logger_(Logger::getInstance())
 { }
 
@@ -62,6 +63,19 @@ bool ClientUDPManager::broadcast(vector<uint8_t> frame)
     }
 
     return true;
+}
+
+void ClientUDPManager::sendToMainProcess(std::vector<uint8_t>& data)
+{
+    if(mainProcCallback_)
+    {
+        mainProcCallback_(data);
+    }
+}
+
+void ClientUDPManager::registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback)
+{
+     mainProcCallback_ = callback;
 }
 
 //void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus status)

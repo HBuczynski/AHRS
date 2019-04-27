@@ -30,7 +30,7 @@ int main()
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("main :: Initialization failed !!");
+            const string message = string("-MAIN- Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

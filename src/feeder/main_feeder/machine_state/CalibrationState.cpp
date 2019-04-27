@@ -15,5 +15,9 @@ void CalibrationState::runExitEvent()
 
 void CalibrationState::runInitEvent()
 {
-
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- CalibrationState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

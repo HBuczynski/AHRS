@@ -2,7 +2,9 @@
 #include "UIApplicationManager.h"
 
 #include <interfaces/gui/GUIPlanesSetCommand.h>
+#include <interfaces/gui/GUICallibrationCommand.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
+#include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 
 #include <interfaces/wireless_responses/ResponseFactory.h>
 
@@ -35,8 +37,12 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
 
     switch (response->getResponseType())
     {
-        case ResponseType::BITs_STATUS :
+        case ResponseType::CALIBRATING_STATUS :
         {
+            const auto calibratingStatus = static_pointer_cast<CalibratingStatusResponse, Response>(responseFactory.createCommand(command.getData()));
+
+            GUICallibrationCommand command(calibratingStatus->getCalibrationConfiguration(), calibratingStatus->getMode());
+            uiApplicationManager_->sendToGUIProcess(command.getFrameBytes());
             break;
         }
         case ResponseType::PLANES_DATASET :

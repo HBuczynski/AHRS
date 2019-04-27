@@ -63,7 +63,7 @@ void ClientThreadTCP::runListen()
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("- starts listening.");
+        const string message = string("-EXTCOM- ClientThreadTCP :: ClientdID -") + to_string(getID()) + string("- starts listening.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -85,11 +85,11 @@ void ClientThreadTCP::runListen()
 
             if(logger_.isErrorEnable() && runListenThread_ && (e.what()) == string("Cannot receive packet."))
             {
-                const string message = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
+                const string message = string("-EXTCOM- ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
                                  string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
 
-                const string message2 = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
+                const string message2 = string("-EXTCOM- ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
                                        string("-. Connection is terminated.");
                 logger_.writeLog(LogType::ERROR_LOG, message2);
 
@@ -103,7 +103,7 @@ void ClientThreadTCP::runListen()
 
             if(logger_.isErrorEnable() && runListenThread_ )
             {
-                const string message = string("ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
+                const string message = string("-EXTCOM- ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
                                        string("-. Received exception: ") + e.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }

@@ -19,7 +19,9 @@ ApplicationManager::ApplicationManager(const string &name, const hsm::Transition
         executableFilesNames_(ConfigurationReader::getFeederExecutableFiles(FEEDER_PARAMETERS_FILE_PATH)),
         runFeederSystem_(true),
         logger_(Logger::getInstance())
-{}
+{
+    externalVisitor_.registerApplicationManager(this);
+}
 
 ApplicationManager::~ApplicationManager()
 {
@@ -58,7 +60,7 @@ bool ApplicationManager::initializeMainQueue()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("ApplicationManager ::") + ex.what();
+            const std::string message = std::string("-MAIN- ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -67,7 +69,7 @@ bool ApplicationManager::initializeMainQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Main queue has been initialized correctly.");
+        const std::string message = std::string("-MAIN- ApplicationManager :: Main queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -86,7 +88,7 @@ bool ApplicationManager::initializeExternalQueue()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("ApplicationManager ::") + ex.what();
+            const std::string message = std::string("-MAIN- ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -95,7 +97,7 @@ bool ApplicationManager::initializeExternalQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: External queue has been initialized correctly.");
+        const std::string message = std::string("-MAIN- ApplicationManager :: External queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -114,7 +116,7 @@ bool ApplicationManager::initializeInternalQueue()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("ApplicationManager ::") + ex.what();
+            const std::string message = std::string("-MAIN- ApplicationManager ::") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -123,7 +125,7 @@ bool ApplicationManager::initializeInternalQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Internal queue has been initialized correctly.");
+        const std::string message = std::string("-MAIN- ApplicationManager :: Internal queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -140,7 +142,7 @@ bool ApplicationManager::initializeExternalSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("ApplicationManager:: External SharedMemory: ") + ex.what();
+            const std::string message = std::string("-MAIN- ApplicationManager:: External SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
         return false;
@@ -148,7 +150,7 @@ bool ApplicationManager::initializeExternalSharedMemory()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: External shared memory has been initialized correctly.");
+        const std::string message = std::string("-MAIN- ApplicationManager :: External shared memory has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -164,7 +166,7 @@ bool ApplicationManager::initializeInternalSharedMemory()
     catch(interprocess_exception &ex)
     {
         if (logger_.isErrorEnable()) {
-            const std::string message = std::string("ApplicationManager:: Internal SharedMemory: ") + ex.what();
+            const std::string message = std::string("-MAIN- ApplicationManager:: Internal SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -173,7 +175,7 @@ bool ApplicationManager::initializeInternalSharedMemory()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("ApplicationManager :: Internal shared memory has been initialized correctly.");
+        const std::string message = std::string("-MAIN- ApplicationManager :: Internal shared memory has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -197,7 +199,7 @@ bool ApplicationManager::createExternalCommunicationProcess()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("ApplicationManager :: External process was initialized, process ID: ") + to_string(externalProcess_);
+            const string message = string("-MAIN- ApplicationManager :: External process was initialized, process ID: ") + to_string(externalProcess_);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
@@ -207,7 +209,7 @@ bool ApplicationManager::createExternalCommunicationProcess()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ApplicationManager :: External process was not initialized correctly, process ID: ") + to_string(externalProcess_);
+            const string message = string("-MAIN- ApplicationManager :: External process was not initialized correctly, process ID: ") + to_string(externalProcess_);
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -232,7 +234,7 @@ bool ApplicationManager::createInternalCommunicationProcess()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("ApplicationManager :: Internal process was initialized, process ID: ") + to_string(internalProcess_);
+            const string message = string("-MAIN- ApplicationManager :: Internal process was initialized, process ID: ") + to_string(internalProcess_);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
@@ -242,7 +244,7 @@ bool ApplicationManager::createInternalCommunicationProcess()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ApplicationManager :: Internal process was not initialized correctly, process ID: ") + to_string(internalProcess_);
+            const string message = string("-MAIN- ApplicationManager :: Internal process was not initialized correctly, process ID: ") + to_string(internalProcess_);
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -264,7 +266,7 @@ void ApplicationManager::runProcessing()
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ApplicationManager :: Run processing.");
+        const string message = string("-MAIN- ApplicationManager :: Run processing.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -279,7 +281,7 @@ void ApplicationManager::runProcessing()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ApplicationManager :: ") + ex.what();
+                const string message = string("-MAIN- ApplicationManager :: ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -310,7 +312,7 @@ void ApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager :: Rceived wrong type of message");
+                const string message = string("-MAIN- ProcessManager :: Rceived wrong type of message");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -323,7 +325,7 @@ void ApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager :: Rceived wrong type of message");
+            const string message = string("-MAIN- ProcessManager :: Rceived wrong type of message");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

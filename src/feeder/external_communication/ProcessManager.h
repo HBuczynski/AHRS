@@ -14,7 +14,6 @@
 #include <mutex>
 #include <atomic>
 
-#include <hsm/HSM.h>
 #include <logger/Logger.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
@@ -22,7 +21,7 @@
 
 namespace communication
 {
-    class ProcessManager : public hsm::HSM
+    class ProcessManager
     {
     public:
         ProcessManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
@@ -32,8 +31,10 @@ namespace communication
         void stop();
 
     private:
-        bool initializeExternalCommunication();
+        bool initializeWirelesslCommunication();
         bool initializeMessageQueueCommunication();
+
+        void sendMessageToMainProcess(std::vector<uint8_t> &data);
 
         config::FeederExternalWireless feederExternalWirelessParameters_;
         config::FeederMessageQueues messageQueuesParameters_;

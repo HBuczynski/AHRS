@@ -1,7 +1,10 @@
 #include "CalibratingStatusBuilder.h"
 #include "CalibratingStatusResponse.h"
 
+#include <utility/BytesConverter.h>
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
 CalibratingStatusBuilder::CalibratingStatusBuilder()
@@ -12,8 +15,14 @@ CalibratingStatusBuilder::~CalibratingStatusBuilder()
 
 unique_ptr<Response> CalibratingStatusBuilder::create(const vector<uint8_t> &dataInBytes)
 {
-    const auto ackType = static_cast<CalibrationStatus >(dataInBytes[Frame::INITIAL_DATA_POSITION]);
-    auto command = make_unique<CalibratingStatusResponse>(ackType);
+    int16_t position = Frame::INITIAL_DATA_POSITION;
+    const auto mode = dataInBytes[position];
+
+    position += sizeof(mode);
+    CallibrationConfiguration callibrationConfiguration;
+    BytesConverter::fromVectorOfUINT8toStruct(dataInBytes, position, callibrationConfiguration);
+
+    auto command = make_unique<CalibratingStatusResponse>(callibrationConfiguration, mode);
 
     return move(command);
 }

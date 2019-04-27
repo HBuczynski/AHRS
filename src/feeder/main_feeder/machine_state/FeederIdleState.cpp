@@ -15,6 +15,11 @@ void FeederIdleState::runExitEvent()
 
 void FeederIdleState::runInitEvent()
 {
-
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- IdleState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+    registerInternalState_("ConnectionState");
 }
 

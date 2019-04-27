@@ -39,6 +39,8 @@ namespace communication
         std::unique_ptr<Response> getResponse();
 
     private:
+        std::string getPlanesDataset();
+
         ClientThreadTCP *currentClient_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
 

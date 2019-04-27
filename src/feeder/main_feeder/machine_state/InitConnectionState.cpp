@@ -15,5 +15,9 @@ void InitConnectionState::runExitEvent()
 
 void InitConnectionState::runInitEvent()
 {
-
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- ConnectionState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

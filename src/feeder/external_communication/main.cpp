@@ -31,7 +31,7 @@ int main(int argc , char *argv[])
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("-MAIN- :: Initialization failed !!");
+            const string message = string("-EXTCOM-  Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

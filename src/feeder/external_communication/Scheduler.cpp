@@ -40,7 +40,6 @@ bool Scheduler::initialize()
 
 void Scheduler::run()
 {
-    processManager_->startHSM();
     processManager_->start();
 }
 

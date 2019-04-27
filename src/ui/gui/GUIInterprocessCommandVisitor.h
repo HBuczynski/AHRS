@@ -22,6 +22,7 @@ namespace gui
         void visit(communication::GUIWindowCommand& command) override;
         void visit(communication::GUIInformationWindowCommand& command) override;
         void visit(communication::GUIPlanesSetCommand& command) override;
+        void visit(communication::GUICallibrationCommand& command) override;
 
     signals:
         void signalWelcomePage();
@@ -30,6 +31,7 @@ namespace gui
         void signalMenuPage();
         void signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t);
         void signalPlanesDataset(QString);
+        void signalCallibrationMode(uint8_t, communication::CallibrationConfiguration);
 
     private:
         void initializeWindowsContainer();

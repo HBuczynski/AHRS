@@ -20,7 +20,7 @@ void ClientUDP::sendData(std::vector<uint8_t> &frame)
 {
     if(logger_.isInformationEnable())
     {
-        const string message = string("ClientUDP :: Client send data to address: ") + address_ + string(" and port: ") +
+        const string message = string("-EXTCOM- ClientUDP :: Client send data to address: ") + address_ + string(" and port: ") +
                          to_string(port_) + string(".");
 
         logger_.writeLog(LogType::INFORMATION_LOG, message);
@@ -34,7 +34,7 @@ void ClientUDP::sendData(std::vector<uint8_t> &frame)
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ClientUDP :: Client cannot send data to address: ") + address_ + string(" and port: ") +
+            const string message = string("-EXTCOM- ClientUDP :: Client cannot send data to address: ") + address_ + string(" and port: ") +
                                    to_string(port_) + string(".");
 
             logger_.writeLog(LogType::ERROR_LOG, message);

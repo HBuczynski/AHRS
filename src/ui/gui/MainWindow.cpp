@@ -11,6 +11,7 @@ MainWindow::MainWindow( QWidget *parent ) :
     QMainWindow( parent ),
     storyboardsHandler_( new StoryboardsHandler )
 {
+    qRegisterMetaType<communication::CallibrationConfiguration>();
     storyboardsHandler_->setupUi( this );
 }
 
@@ -72,4 +73,16 @@ void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t m
 void MainWindow::setPlanesDataset(QString planes)
 {
     storyboardsHandler_->setPlaneDataset(planes.toStdString());
+}
+
+void MainWindow::setCallibrationMode(uint8_t mode, communication::CallibrationConfiguration parameters)
+{
+    if(mode)
+    {
+        storyboardsHandler_->setMainCallibrationParameters(parameters);
+    }
+    else
+    {
+        storyboardsHandler_->setRedundantCallibrationParameters(parameters);
+    }
 }

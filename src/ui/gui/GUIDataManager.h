@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <vector>
+#include <atomic>
+
+#include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 
 namespace gui
 {
@@ -28,13 +31,23 @@ namespace gui
         void setPlaneDataset(const std::string& planeDataset) noexcept;
         const std::string& getPlaneDataset() const noexcept;
 
-        void setSystemActivation();
-        bool isSystemAcitve();
+        void setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept;
+        void setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept;
+
+        const communication::CallibrationConfiguration& getMainCallibrationParameters() const noexcept;
+        const communication::CallibrationConfiguration& getRedundantCallibrationParameters() const noexcept;
+
+        void setSystemActivation() noexcept;
+        bool isSystemAcitve() noexcept;
+
 
     private:
         BitsInformation bitsInformation_;
 
-        bool isAHRSActive_;
+        std::atomic<bool> isAHRSActive_;
+
+        communication::CallibrationConfiguration masterCallibrationConfiguration_;
+        communication::CallibrationConfiguration redundantCallibrationConfiguration_;
 
         std::string planeName_;
         std::string planeDataset_;

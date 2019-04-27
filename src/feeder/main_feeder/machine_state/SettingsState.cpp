@@ -15,5 +15,9 @@ void SettingsState::runExitEvent()
 
 void SettingsState::runInitEvent()
 {
-
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- SettingsState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }

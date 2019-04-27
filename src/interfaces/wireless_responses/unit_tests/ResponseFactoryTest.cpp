@@ -64,15 +64,34 @@ BOOST_AUTO_TEST_SUITE( test )
 
     BOOST_AUTO_TEST_CASE( calibratingStatusBuilder )
     {
-        const auto status = CalibrationStatus::IN_THE_PROCESS;
-        CalibratingStatusResponse response(status);
+        uint8_t mode = 0;
+        CallibrationConfiguration calibration;
+        calibration.progress = 23;
+        calibration.accelerometer.maxX = 76.34;
+        calibration.accelerometer.minX = 126.34;
+        calibration.magnetometer.maxX = 76.34;
+        calibration.magnetometer.minX = 126.34;
+        calibration.accelerometer.maxZ = 769.34;
+        calibration.accelerometer.minZ = 3426.34;
+        calibration.ellipsoid.quadrant_8 = 3426;
+
+        CalibratingStatusResponse response(calibration, mode);
 
         ResponseFactory factory;
 
         auto responseFromVec = static_pointer_cast<CalibratingStatusResponse, Response>(factory.createCommand(response.getFrameBytes()));
 
+        const auto newCallibration = response.getCalibrationConfiguration();
+
         BOOST_CHECK( responseFromVec->getFrameType() == response.getFrameType());
-        BOOST_CHECK( responseFromVec->getCalibrationStatus() == response.getCalibrationStatus());
+        BOOST_CHECK( calibration.progress == newCallibration.progress);
+        BOOST_CHECK( calibration.accelerometer.maxX == newCallibration.accelerometer.maxX);
+        BOOST_CHECK( calibration.accelerometer.minX == newCallibration.accelerometer.minX);
+        BOOST_CHECK( calibration.magnetometer.maxX == newCallibration.magnetometer.maxX);
+        BOOST_CHECK( calibration.magnetometer.minX == newCallibration.magnetometer.minX);
+        BOOST_CHECK( calibration.accelerometer.maxZ == newCallibration.accelerometer.maxZ);
+        BOOST_CHECK( calibration.accelerometer.minZ == newCallibration.accelerometer.minZ);
+        BOOST_CHECK( calibration.ellipsoid.quadrant_8 == newCallibration.ellipsoid.quadrant_8);
         BOOST_CHECK( responseFromVec->getResponseType() == response.getResponseType());
         BOOST_CHECK( responseFromVec->getFrameBytes() == response.getFrameBytes());
         BOOST_CHECK( responseFromVec->getSystemVersion() == response.getSystemVersion());

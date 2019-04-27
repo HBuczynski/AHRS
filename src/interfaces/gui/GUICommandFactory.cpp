@@ -3,6 +3,7 @@
 #include "GUIWindowBuilder.h"
 #include "GUIPlanesSetBuilder.h"
 #include "GUIInformationWindowBuilder.h"
+#include "GUICallibrationBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -27,6 +28,9 @@ unique_ptr<GUICommand> GUICommandFactory::createCommand(const vector<uint8_t> &c
             return move(builder_->create(commandInBytes));
         case GUICommandType::INFORMATION_WINDOW :
             builder_ = make_unique<GUIInformationWindowBuilder>();
+            return move(builder_->create(commandInBytes));
+        case GUICommandType::CALIBRATION :
+            builder_ = make_unique<GUICallibrationBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");
