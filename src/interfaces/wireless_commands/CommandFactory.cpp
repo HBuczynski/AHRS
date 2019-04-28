@@ -1,7 +1,7 @@
 #include "CommandFactory.h"
 #include "InitConnectionBuilder.h"
 #include "CalibrateMagnetometerBuilder.h"
-#include "SetPlaneMagnetometerBuilder.h"
+#include "SetPlaneBuilder.h"
 #include "CollectDataBuilder.h"
 #include "EndConnectionBuilder.h"
 #include "RemovePlaneDataBuilder.h"
@@ -9,6 +9,7 @@
 #include "CalibrationStatusBuilder.h"
 #include "CurrentStateBuilder.h"
 #include "PerformBITsBuilder.h"
+#include "CalibrateAccelerometerBuilder.h"
 
 #include <stdexcept>
 
@@ -36,11 +37,14 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
         case CommandType::CALIBRATE_MAGNETOMETER :
             builder_ = make_unique<CalibrateMagnetometerBuilder>();
             return move(builder_->create(commandInBytes));
+        case CommandType::CALIBRATE_ACCELEROMETER :
+            builder_ = make_unique<CalibrateAccelerometerBuilder>();
+            return move(builder_->create(commandInBytes));
         case CommandType::REMOVE_PLANE_DATA :
             builder_ = make_unique<RemovePlaneDataBuilder>();
             return move(builder_->create(commandInBytes));
-        case CommandType::SET_PLANE_MAGNETOMETER_DATA :
-            builder_ = make_unique<SetPlaneMagnetometerBuilder>();
+        case CommandType::SET_PLANE_NAME :
+            builder_ = make_unique<SetPlaneBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::COLLECT_DATA :
             builder_ = make_unique<CollectDataBuilder>();

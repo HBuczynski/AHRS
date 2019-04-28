@@ -53,7 +53,7 @@ bool CommunicationProcessesHandler::initializeFirstProcessMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("UIApplicationManager:: First communication message queue has not initialized correctly - ") + ex.what();
+            const string message = string("-MAIN- UIApplicationManager:: First communication message queue has not initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -62,7 +62,7 @@ bool CommunicationProcessesHandler::initializeFirstProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("UIApplicationManager:: First communication message queue has initialized correctly.");
+        const std::string message = std::string("-MAIN- UIApplicationManager:: First communication message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -81,7 +81,7 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("UIApplicationManager:: Second communication message queue has not initialized correctly - ") + ex.what();
+            const string message = string("-MAIN- UIApplicationManager:: Second communication message queue has not initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -90,7 +90,7 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("UIApplicationManager:: Second communication message queue has initialized correctly.");
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Second communication message queue has initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -117,7 +117,7 @@ bool CommunicationProcessesHandler::launchFirstProcess()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("CommunicationProcessesHandler :: First process was initialized, process ID: ") + to_string(firstProcess.first);
+            const string message = string("-MAIN- CommunicationProcessesHandler :: First process was initialized, process ID: ") + to_string(firstProcess.first);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -167,7 +167,7 @@ bool CommunicationProcessesHandler::launchSecondProcess()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("CommunicationProcessesHandler:: Second process was initialized, process ID: ") + to_string(secondProcess.first);
+            const string message = string("-MAIN- CommunicationProcessesHandler:: Second process was initialized, process ID: ") + to_string(secondProcess.first);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -175,7 +175,7 @@ bool CommunicationProcessesHandler::launchSecondProcess()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationProcessesHandler:: Second process was not initialized correctly, process ID: ") + to_string(secondProcess.first);
+            const string message = string("-MAIN- CommunicationProcessesHandler:: Second process was not initialized correctly, process ID: ") + to_string(secondProcess.first);
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -203,7 +203,7 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("MainProcessScheduler :: Process ID: ") + to_string(pid) +
+            const string message = string("-MAIN- CommunicationProcessesHandler :: Process ID: ") + to_string(pid) +
                                    string(". Error - ") +  strerror(errno);
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
@@ -214,7 +214,7 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
         {
             if(logger_.isInformationEnable())
             {
-                const string message = string("MainProcessScheduler :: Process ID: ") + to_string(pid) +
+                const string message = string("-MAIN- CommunicationProcessesHandler :: Process ID: ") + to_string(pid) +
                                        string(". Child changePage status - ") + to_string(WEXITSTATUS(status));
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
@@ -223,7 +223,7 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
         {
             if(logger_.isInformationEnable())
             {
-                const string message = string("MainProcessScheduler :: Process ID: ") + to_string(pid) +
+                const string message = string("-MAIN- CommunicationProcessesHandler :: Process ID: ") + to_string(pid) +
                                        string(". Child process had been finished before waitpid was launched.");
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }

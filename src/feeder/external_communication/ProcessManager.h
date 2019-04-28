@@ -24,15 +24,17 @@ namespace communication
     class ProcessManager
     {
     public:
-        ProcessManager();
-        ~ProcessManager();
+        ProcessManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
 
-        void startConfigurationProcess();
-        void stopConfigurationProcess();
+        bool initialize();
+        void start();
+        void stop();
 
     private:
-        bool initializeExternalCommunication();
+        bool initializeWirelesslCommunication();
         bool initializeMessageQueueCommunication();
+
+        void sendMessageToMainProcess(std::vector<uint8_t> &data);
 
         config::FeederExternalWireless feederExternalWirelessParameters_;
         config::FeederMessageQueues messageQueuesParameters_;

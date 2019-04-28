@@ -3,7 +3,7 @@
 #include <chrono>
 #include <fstream>
 
-#include "ProcessManager.h"
+#include "CommScheduler.h"
 
 using namespace std;
 using namespace chrono;
@@ -25,7 +25,7 @@ int main(int argc , char *argv[])
 
     if(logger.isInformationEnable())
     {
-        const string message = "Main External Process: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
+        const string message = "-ExtCOMM- Main Process: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
         logger.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -38,17 +38,18 @@ int main(int argc , char *argv[])
     }
 
     uint8_t mode = static_cast<uint8_t >(atoi(argv[1]));
-    ProcessManager processManager(mode);
 
-    if(processManager.initialize())
+    CommScheduler commScheduler(mode);
+
+    if(commScheduler.initialize())
     {
-        processManager.startCommunication();
+        commScheduler.run();
     }
     else
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("Main External Communication:: Initialization failed !!");
+            const string message = string("-ExtCOMM-Main Process:: Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

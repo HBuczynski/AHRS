@@ -92,9 +92,9 @@ void StoryboardsHandler::initializeStoryboardsContainer()
 
 void StoryboardsHandler::backToPreviousPage()
 {
-    if(previousPage_ == PagesType::INFORMATION_PAGE)
+    if(previousPage_ == PagesType::CONNECTING_PAGE)
     {
-        setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_), get<2>(informationParameters_), get<3>(informationParameters_));
+        //DO NOTHING
     }
     else
     {
@@ -164,7 +164,7 @@ void StoryboardsHandler::setSystemSetupPage()
 
 void StoryboardsHandler::setPlaneSettingPage()
 {
-    planeSettings_ = new PlaneSettingsPage(this);
+    planeSettings_ = new PlaneSettingsPage(this, guiDataManager_.getPlaneDataset());
     planeSettings_->resize(QSize(1024, 600));
     planeSettings_->initialize();
 
@@ -358,13 +358,13 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
     previousWidget_ = informationPage_;
 }
 
-void StoryboardsHandler::sendToMainProcess(std::vector<uint8_t> msg)
+void StoryboardsHandler::sendToMainProcess(vector<uint8_t> msg)
 {
     sendingMessageQueue_->send(msg);
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("StoryboardsHandler:: Send msg to main process.");
+        const string message = string("-GUI- StoryboardsHandler:: Send msg to main process.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -379,14 +379,95 @@ void StoryboardsHandler::inititalizeMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("StoryboardsHandler:: During openning main queue - ") + ex.what();
+            const string message = string("-GUI- StoryboardsHandler:: During openning main queue - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("StoryboardsHandler:: Main massage queue initialized correctly.");
+        const string message = string("-GUI- StoryboardsHandler:: Main massage queue initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void StoryboardsHandler::setPlaneName(const string& name)
+{
+    guiDataManager_.setPlaneName(name);
+}
+
+const string& StoryboardsHandler::getPlaneName()
+{
+    return guiDataManager_.getPlaneName();
+}
+
+void StoryboardsHandler::setPlaneDataset(const string& name)
+{
+    guiDataManager_.setPlaneDataset(name);
+
+    if(currentPage_ == PagesType::PLANE_SETTING_PAGE)
+    {
+        const auto temp = previousPage_;
+        setPlaneSettingPage();
+        previousPage_ = temp;
+    }
+}
+
+const string &StoryboardsHandler::getPlaneDataset()
+{
+    return guiDataManager_.getPlaneDataset();
+}
+
+void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfiguration& paramteres)
+{
+    guiDataManager_.setMainCallibrationParameters(paramteres);
+
+    if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
+    {
+        callibrationPage_->setupPage(1);
+    }
+}
+
+void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationConfiguration& paramteres)
+{
+    guiDataManager_.setRedundantCallibrationParameters(paramteres);
+
+    if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
+    {
+        callibrationPage_->setupPage(1);
+    }
+}
+
+const CalibrationConfiguration& StoryboardsHandler::getMainCallibrationParameters()
+{
+    return guiDataManager_.getMainCallibrationParameters();
+}
+
+const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationParameters()
+{
+    return guiDataManager_.getRedundantCallibrationParameters();
+}
+
+void StoryboardsHandler::setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
+{
+    gui::BitsInformation bitsInformation = {master, redundant, masterBITs, redundantBITs};
+
+    guiDataManager_.setBitsInformation(bitsInformation);
+}
+
+tuple<uint8_t , uint8_t , uint8_t, uint8_t> StoryboardsHandler::getBitsInformation()
+{
+    const auto bitsInformation = guiDataManager_.getBitsInformation();
+
+    return make_tuple(bitsInformation.master, bitsInformation.redundant, bitsInformation.masterBITS, bitsInformation.redundantBITS);
+}
+
+bool StoryboardsHandler::isSystemActive()
+{
+    return guiDataManager_.isSystemAcitve();
+}
+
+void StoryboardsHandler::setSystemActivation()
+{
+    guiDataManager_.setSystemActivation();
 }

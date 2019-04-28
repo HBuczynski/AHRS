@@ -1,13 +1,11 @@
 #include "ClientUDPManager.h"
 
-#include "machine_state/IdleState.h"
-
 using namespace std;
 using namespace utility;
 using namespace communication;
 
-ClientUDPManager::ClientUDPManager()
-    :   currentState_(make_unique<IdleState>()),
+ClientUDPManager::ClientUDPManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    :   hsm::HSM(name, transitionTable, rootState),
         flightDataManager_(make_unique<FlightDataManager>(bind(&ClientUDPManager::broadcast, this, std::placeholders::_1))),
         logger_(Logger::getInstance())
 { }
@@ -28,7 +26,8 @@ void ClientUDPManager::insertNewClient(pair<shared_ptr<ClientUDP>, uint8_t> newC
 
     if(clientList_.size() == 1)
     {
-        acceptedUsers();
+        //TODO
+        //acceptedUsers();
     }
 }
 
@@ -66,61 +65,32 @@ bool ClientUDPManager::broadcast(vector<uint8_t> frame)
     return true;
 }
 
-void ClientUDPManager::setNewState(AbstractState *newState)
+void ClientUDPManager::sendToMainProcess(std::vector<uint8_t>& data)
 {
-    if(newState != nullptr)
+    if(mainProcCallback_)
     {
-        currentState_.reset(newState);
-    }
-    else
-    {
-        if(logger_.isWarningEnable())
-        {
-            const string message = string("ClientUDPManager :: Empty state has been forwarded to the state machine.");
-            logger_.writeLog(LogType::WARNING_LOG, message);
-        }
+        mainProcCallback_(data);
     }
 }
 
-void ClientUDPManager::acceptedUsers()
+void ClientUDPManager::registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback)
 {
-    if(logger_.isWarningEnable())
-    {
-        const string message = string("ClientUDPManager ::acceptedUsers.");
-        logger_.writeLog(LogType::WARNING_LOG, message);
-    }
-
-    currentState_->acceptedUsers(*this);
+     mainProcCallback_ = callback;
 }
 
-void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus status)
-{
-    currentState_->startCalibration(*this, planeName, status);
-}
+//void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus status)
+//{
+//    currentState_->startCalibration(*this, planeName, status);
+//}
 
-void ClientUDPManager::startDataSending()
-{
-    currentState_->startDataSending(*this);
+//void ClientUDPManager::startDataSending()
+//{
+//    currentState_->startDataSending(*this);
 
-    flightDataManager_->startFlightDataTransmission();
-}
+//    flightDataManager_->startFlightDataTransmission();
+//}
 
-void ClientUDPManager::stopDataSending()
-{
-    flightDataManager_->stopFlightDataTransmission();
-}
-
-void ClientUDPManager::restartProcess()
-{
-    currentState_->restartProcess(*this);
-}
-
-void ClientUDPManager::shutdownProcess()
-{
-    currentState_->shutdownProcess(*this);
-}
-
-const FeederExternalStateCode &ClientUDPManager::getCurrentState() const
-{
-    return currentState_->getStateCode();
-}
+//void ClientUDPManager::stopDataSending()
+//{
+//    flightDataManager_->stopFlightDataTransmission();
+//}

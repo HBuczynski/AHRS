@@ -19,6 +19,7 @@
 #include <message_queue_wrapper/MessageQueueWrapper.h>
 
 #include "MainWindow.h"
+#include "GUIDataManager.h"
 #include "PageController.h"
 #include "storyboards/ExitPage.h"
 #include "storyboards/AHRSPage.h"
@@ -58,6 +59,24 @@ public slots:
     void setCallibrationPage() override;
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
 
+    void setPlaneName(const std::string& name) override;
+    const std::string& getPlaneName() override;
+
+    void setPlaneDataset(const std::string& name) override;
+    const std::string& getPlaneDataset() override;
+
+    void setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) override;
+    void setRedundantCallibrationParameters(const communication::CalibrationConfiguration& paramteres) override;
+
+    const communication::CalibrationConfiguration& getMainCallibrationParameters() override;
+    const communication::CalibrationConfiguration& getRedundantCallibrationParameters() override;
+
+    void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
+    std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() override;
+
+    bool isSystemActive() override;
+    void setSystemActivation() override;
+
 private:
 
     void inititalizeMessageQueue();
@@ -83,6 +102,8 @@ private:
     CallibrationPage* callibrationPage_;
 
     QWidget *previousWidget_;
+
+    gui::GUIDataManager guiDataManager_;
 
     config::UIMessageQueues uiMessageQueuesParameters_;
     std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;

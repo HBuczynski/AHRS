@@ -33,7 +33,7 @@ bool ClientTCP::connectToServer()
         if(logger_.isErrorEnable())
         {
             const string message =
-                    string("ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                    string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
                     string("-. Received exception: ") + e.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
@@ -126,7 +126,7 @@ void ClientTCP::executeCommands()
 
                     if(logger_.isInformationEnable())
                     {
-                        const string message = string("ClientTCP :: Client data: ") + address_ + string(" and port: ") +
+                        const string message = string("-ExtCOMM- ClientTCP :: Client data: ") + address_ + string(" and port: ") +
                                                to_string(port_) + string(". Send command: ") +
                                                command->getName();
                         logger_.writeLog(LogType::INFORMATION_LOG, message);
@@ -161,7 +161,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     if(logger_.isErrorEnable() && !isEndConnectionSent)
     {
         const string message =
-                string("ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
                 string("-. Received exception: ") + exception;
         logger_.writeLog(LogType::ERROR_LOG, message);
     }
@@ -175,7 +175,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
         if(logger_.isErrorEnable())
         {
             const string message =
-                    string("ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                    string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
                     string("-. Sending command was repeated by 5 times, no response was received. Connection with server is closed.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
@@ -192,7 +192,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
         if(logger_.isWarningEnable())
         {
             const string message =
-                    string("ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                    string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
                     string("-. Ending connection command was sent. Connection with server is closed.");
             logger_.writeLog(LogType::WARNING_LOG, message);
         }

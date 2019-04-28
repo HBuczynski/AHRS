@@ -11,21 +11,21 @@ namespace communication
     class PlanesDatasetResponse final : public Response
     {
     public:
-        PlanesDatasetResponse(const std::vector<std::string> &dataset);
+        PlanesDatasetResponse(const std::string& dataset);
         ~PlanesDatasetResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(ResponseVisitor& visitor) override;
 
-        void setDataset(const std::vector<std::string> &dataset);
+        void setDataset(const std::string& dataset);
 
-        const std::vector<std::string>& getDataset() const;
+        std::string getDataset() const;
 
     private:
         virtual void initializeDataSize() override;
 
-        std::vector<std::string> dataset_;
+        std::string dataset_;
     };
 }
 

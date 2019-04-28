@@ -16,7 +16,8 @@ namespace communication
         ~InterprocessExtCommunicationVisitor();
 
         virtual void visit(const CalibrateMgnDemandCommand& command) override ;
-        virtual void visit(const CalibrationStatusNotification& command) override;
+        virtual void visit(const CalibrationStatusNotification& notification) override;
+        virtual void visit(const StateNotification& notification) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
 

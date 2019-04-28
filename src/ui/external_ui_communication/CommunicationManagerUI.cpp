@@ -1,25 +1,25 @@
 #include "CommunicationManagerUI.h"
-#include "ui/external_ui_communication/machine_state/IdleState.h"
+
+#include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
+#include <interfaces/wireless_commands/InitConnectionCommand.h>
 
 #include <config_reader/ConfigurationReader.h>
-#include <interfaces/wireless_commands/InitConnectionCommand.h>
-#include <interfaces/wireless_commands/CollectDataCommand.h>
-#include <interfaces/wireless_commands/EndConnectionCommand.h>
-#include <iostream>
 
+#include <iostream>
 #include <thread>
 #include <chrono>
-#include <interfaces/wireless_commands/PerformBITsCommand.h>
 
 using namespace std;
+using namespace hsm;
 using namespace config;
 using namespace utility;
 using namespace communication;
 
-CommunicationManagerUI::CommunicationManagerUI(uint8_t processNumber)
-    : currentState_(make_unique<IdleState>()),
+CommunicationManagerUI::CommunicationManagerUI(uint8_t processNumber, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    : HSM(name, transitionTable, rootState),
       processNumber_(processNumber),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
+      connectionEstablished_(false),
       logger_(Logger::getInstance())
 {}
 
@@ -42,7 +42,7 @@ bool CommunicationManagerUI::initializeServer()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -50,14 +50,55 @@ bool CommunicationManagerUI::initializeServer()
     }
 
     server_->startListening();
+    launchTimer();
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) + ". Server initialized correctly.";
+        const std::string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) + ". Server initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     return true;
+}
+
+void CommunicationManagerUI::registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback)
+{
+    mainProcCallback_ = callback;
+}
+
+void CommunicationManagerUI::launchTimer()
+{
+    connectionEstablishingInterrupt_.startPeriodic(5000, this);
+}
+
+void CommunicationManagerUI::interruptNotification(timer_t timerID)
+{
+    if(!connectionEstablished_)
+    {
+        if ( connectionEstablishingInterrupt_.getTimerID() == timerID )
+        {
+            if (connectToFeeder())
+            {
+                connectionEstablished_ = true;
+
+                auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getProcessNumber());
+                auto packet = notification.getFrameBytes();
+
+                if(logger_.isErrorEnable())
+                {
+                    const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Send to main: "
+                            + notification.getName();
+                    logger_.writeLog(LogType::ERROR_LOG, message);
+                }
+
+                mainProcCallback_(packet);
+            }
+        }
+    }
+    else
+    {
+        connectionEstablishingInterrupt_.stop();
+    }
 }
 
 bool CommunicationManagerUI::connectToFeeder()
@@ -76,7 +117,7 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -92,15 +133,18 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
         return false;
     }
 
-    connectedToServer();
+    return true;
+}
 
+bool CommunicationManagerUI::reconnect()
+{
     return true;
 }
 
@@ -109,55 +153,7 @@ void CommunicationManagerUI::sendCommands(unique_ptr<Command> command)
     client_->sendCommand(move(command));
 }
 
-const UIExternalStateCode& CommunicationManagerUI::getCurrentState() const
-{
-    return currentState_->getStateCode();
-}
-
 uint8_t CommunicationManagerUI::getProcessNumber() const
 {
     return processNumber_;
 }
-
-void CommunicationManagerUI::setNewState(AbstractState *newState)
-{
-    if(newState != nullptr)
-    {
-        currentState_.reset(newState);
-    }
-    else
-    {
-        if(logger_.isWarningEnable())
-        {
-            const string message = string("CommunicationManagerUI :: Empty state has been forwarded to the state machine.");
-            logger_.writeLog(LogType::WARNING_LOG, message);
-        }
-    }
-}
-
-void CommunicationManagerUI::connectedToServer()
-{
-    currentState_->connectedToServer(*this);
-}
-
-void CommunicationManagerUI::redundantProcess()
-{
-    currentState_->redundantProcess(*this);
-}
-
-void CommunicationManagerUI::masterProcess()
-{
-    currentState_->masterProcess(*this);
-}
-
-void CommunicationManagerUI::restartProcess()
-{
-    currentState_->restartProcess(*this);
-}
-
-void CommunicationManagerUI::shutdownProcess()
-{
-    currentState_->shutdownProcess(*this);
-}
-
-

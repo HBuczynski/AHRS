@@ -1,27 +1,20 @@
 #include "UIAcquisitionState.h"
 
-#include "../UIApplicationManager.h"
-
-using namespace main_process;
-
-UIAcquisitionState::UIAcquisitionState()
-        :  UIAbstractState("UIAcquisitionState", UIMainStateCode::COMMUNICATION_OK)
+UIAcquisitionState::UIAcquisitionState(const std::string &name, std::shared_ptr<State> parent)
+    : State(name, parent)
 {}
 
-UIAcquisitionState::~UIAcquisitionState()
-{}
-
-void UIAcquisitionState::setWelcomePage(UIApplicationManager &uiApplicationManager)
+void UIAcquisitionState::runEntryEvent()
 {
 
 }
 
-void UIAcquisitionState::communicationInProgress(UIApplicationManager &uiApplicationManager)
+void UIAcquisitionState::runExitEvent()
 {
 
 }
 
-void UIAcquisitionState::setInformationPage(UIApplicationManager &uiApplicationManager)
+void UIAcquisitionState::runInitEvent()
 {
 
 }

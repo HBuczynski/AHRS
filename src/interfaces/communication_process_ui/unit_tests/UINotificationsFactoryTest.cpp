@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE( factory )
     BOOST_AUTO_TEST_CASE( communicationStatusNotification )
     {
             UINotificationFactory factory;
-            UIExternalStateCode code = UIExternalStateCode::ERROR;
+            UIExternalComCode code = UIExternalComCode::ERROR;
             uint8_t processNumber = 1;
 
             CommunicationStatusNotification command(code, processNumber);

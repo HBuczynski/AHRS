@@ -4,7 +4,7 @@
 using namespace std;
 using namespace communication;
 
-CommunicationStatusNotification::CommunicationStatusNotification(const UIExternalStateCode &state, uint8_t processNumber)
+CommunicationStatusNotification::CommunicationStatusNotification(const UIExternalComCode &state, uint8_t processNumber)
     : UINotification(10, UINotificationType::COMMMUNICATION_PROCESS_STATUS),
       state_(state)
 { }
@@ -33,12 +33,12 @@ void CommunicationStatusNotification::accept(UINotificationVisitor &visitor)
     visitor.visit(*this);
 }
 
-UIExternalStateCode CommunicationStatusNotification::getState() const
+UIExternalComCode CommunicationStatusNotification::getState() const
 {
     return state_;
 }
 
-void CommunicationStatusNotification::setState(UIExternalStateCode mode)
+void CommunicationStatusNotification::setState(UIExternalComCode mode)
 {
     state_ = mode;
 }

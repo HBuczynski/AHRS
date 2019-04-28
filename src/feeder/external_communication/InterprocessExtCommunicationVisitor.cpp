@@ -16,7 +16,12 @@ void InterprocessExtCommunicationVisitor::visit(const CalibrateMgnDemandCommand 
 
 }
 
-void InterprocessExtCommunicationVisitor::visit(const CalibrationStatusNotification &command)
+void InterprocessExtCommunicationVisitor::visit(const CalibrationStatusNotification& notification)
+{
+
+}
+
+void InterprocessExtCommunicationVisitor::visit(const StateNotification &notification)
 {
 //    const auto status = command.getCalibrationStatus();
 

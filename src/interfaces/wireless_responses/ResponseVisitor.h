@@ -7,6 +7,7 @@
 #include "CalibratingStatusResponse.h"
 #include "CurrentStateResponse.h"
 #include "BITsResponse.h"
+#include "CalibrateAccelerometerResponse.h"
 
 namespace communication
 {
@@ -22,6 +23,7 @@ namespace communication
         virtual void visit(PlanesDatasetResponse& data) = 0;
         virtual void visit(CurrentStateResponse& data) = 0;
         virtual void visit(BITsResponse& data) = 0;
+        virtual void visit(CalibrateAccelerometerResponse& data) = 0;
     };
 }
 

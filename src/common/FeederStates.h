@@ -8,15 +8,18 @@ enum class FeederBITs : uint8_t
     IMU_2_BITS = 0x03,
 };
 
-enum class FeederExternalStateCode : uint8_t
+enum FeederStateCode : uint8_t
 {
-    IDLE = 0x01,
-    ERROR = 0x03,
-    MASTER_SENDING = 0x05,
-    REDUNDANT_SENDING = 0x06,
-    REGISTERED_USERS = 0x07,
-    RESET = 0x08,
-    SHUTDOWN = 0x09
+    CALLIBATION = 0x01,
+    IDLE = 0x02,
+    CONNECTION = 0x03,
+    MAIN_ACQ = 0x04,
+    ERROR = 0x05,
+    FAULT_MANAGEMENT = 0x06,
+    PERFORM_BIT = 0x07,
+    REDUNDANT_ACQ = 0x08,
+    REGISTERED_USERS = 0x09,
+    SETTINNG = 0x10
 };
 
 #endif //AHRS_FEEDERBITS_H

@@ -5,13 +5,14 @@
 #include <atomic>
 #include <memory>
 
-#include <logger/Logger.h>
+#include <interfaces/communication_process_ui/UINotificationFactory.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
-#include <config_reader/UIParameters.h>
 #include <interfaces/gui/GUIResponseFactory.h>
-#include <interfaces/communication_process_ui/UINotificationFactory.h>
 #include <interfaces/gui/GUICommandFactory.h>
+#include <config_reader/UIParameters.h>
+#include <logger/Logger.h>
+#include <hsm/HSM.h>
 
 #include "CommunicationProcessesHandler.h"
 #include "GuiProcessHandler.h"
@@ -19,14 +20,12 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "GUIInterprocessVisitor.h"
 
-#include "machine_state/UIAbstractState.h"
-
 namespace main_process
 {
-    class UIApplicationManager
+    class UIApplicationManager : public hsm::HSM
     {
     public:
-        UIApplicationManager();
+        UIApplicationManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~UIApplicationManager();
 
         bool initialize();
@@ -34,14 +33,8 @@ namespace main_process
         void startUISystem();
         void stopUISystem();
 
-        /***** Machine State methods *****/
-        void setWelcomePage();
-        void communicationInProgress();
-        void setInformationPage(uint8_t master, uint8_t redundant, uint8_t bitMaster, uint8_t bitRedundant);
+        void sendToGUIProcess(std::vector<uint8_t> data);
         void sendToExternalCommunicationProcess(std::vector<uint8_t> data, config::UICommunicationMode mode);
-
-        void setNewState(UIAbstractState *newState);
-        /***** END Machine State *****/
 
     private:
         bool initializeMainProcessMessageQueue();
@@ -59,7 +52,6 @@ namespace main_process
 
         CommunicationProcessesHandler communicationProcessesHandler_;
         GuiProcessHandler guiProcessHandler_;
-        std::unique_ptr<UIAbstractState> currentState_;
 
         std::unique_ptr<ExternalCommInterprocessVisitor> externalCommunicationVisitor_;
         communication::UINotificationFactory uiNotificationFactory_;

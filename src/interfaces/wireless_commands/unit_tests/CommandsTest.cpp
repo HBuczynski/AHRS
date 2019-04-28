@@ -7,7 +7,7 @@
 #include "../CollectDataCommand.h"
 #include "../EndConnectionCommand.h"
 #include "../InitConnectionCommand.h"
-#include "../SetPlaneMagnetometerCommand.h"
+#include "../SetPlaneCommand.h"
 #include "../RemovePlaneDataCommand.h"
 #include "../PerformBITsCommand.h"
 
@@ -20,18 +20,16 @@ BOOST_AUTO_TEST_SUITE( commands )
 
     BOOST_AUTO_TEST_CASE( calibrateMagnetometerCommand )
     {
-        string planeName = "temp";
-        PlaneStatus status = PlaneStatus::NEW;
+        Action status = Action::APPROVE;
 
-        CallibrateMagnetometerCommand command(planeName, status);
+        CallibrateMagnetometerCommand command(status);
         command.getFrameBytes();
 
-        BOOST_CHECK( planeName == command.getPlaneName());
         BOOST_CHECK( status == command.getPlaneStatus());
         BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::CALIBRATE_MAGNETOMETER == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
-        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::CALIBRATE_MAGNETOMETER) +
+        BOOST_CHECK( (sizeof(CommandType::CALIBRATE_MAGNETOMETER) +
                 sizeof(status)) == command.getDataSize());
         BOOST_CHECK( "CallibrateMagnetometerCommand" == command.getName());
     }
@@ -92,19 +90,19 @@ BOOST_AUTO_TEST_SUITE( commands )
         BOOST_CHECK( "InitConnectionCommand" == command.getName());
     }
 
-    BOOST_AUTO_TEST_CASE( setPlaneMagnetometerCommand )
+    BOOST_AUTO_TEST_CASE( setPlaneCommand )
     {
         string planeName = "temp";
 
-        SetPlaneMagnetometerCommand command(planeName);
+        SetPlaneCommand command(planeName);
         command.getFrameBytes();
 
         BOOST_CHECK( planeName == command.getPlaneName());
         BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
-        BOOST_CHECK( CommandType::SET_PLANE_MAGNETOMETER_DATA == command.getCommandType());
+        BOOST_CHECK( CommandType::SET_PLANE_NAME == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());
-        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_MAGNETOMETER_DATA)) == command.getDataSize());
-        BOOST_CHECK( "SetPlaneMagnetometerCommand" == command.getName());
+        BOOST_CHECK( (planeName.size()+ sizeof(END_STRING_IN_FRAME) + sizeof(CommandType::SET_PLANE_NAME)) == command.getDataSize());
+        BOOST_CHECK( "SetPlaneCommand" == command.getName());
     }
 
     BOOST_AUTO_TEST_CASE( performBITCommand )

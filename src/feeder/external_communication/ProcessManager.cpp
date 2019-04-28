@@ -1,8 +1,11 @@
 #include "ProcessManager.h"
 
+#include <interfaces/communication_process_feeder/CalibrationStatusNotification.h>
+#include <interfaces/communication_process_feeder/StateNotification.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
-#include <interfaces/communication_process_feeder/CalibrationStatusNotification.h>
+
+#include <functional>
 #include <iostream>
 
 using namespace std;
@@ -11,36 +14,36 @@ using namespace config;
 using namespace communication;
 using namespace boost::interprocess;
 
-ProcessManager::ProcessManager()
+ProcessManager::ProcessManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     :   feederExternalWirelessParameters_(ConfigurationReader::getFeederExternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
         runConfigurationProcess_(true),
         logger_(Logger::getInstance())
 {
+    clientUDPManager_ = make_shared<ClientUDPManager>(name, transitionTable, rootState);
+
+    function<void(std::vector<uint8_t>&)> callback = bind(&ProcessManager::sendMessageToMainProcess, this, std::placeholders::_1);
+    clientUDPManager_->registerCallbackToMainProc(callback);
+}
+
+bool ProcessManager::initialize()
+{
     bool isSuccess = true;
 
     isSuccess = isSuccess & initializeMessageQueueCommunication();
-    isSuccess = isSuccess & initializeExternalCommunication();
+    isSuccess = isSuccess & initializeWirelesslCommunication();
 
-    if(isSuccess)
-    {
-        //TODO: send info about appropriate init
-//        CalibrationStatusNotification notification(CalibrationStatus::PASSED);
-//
-//        const auto commandFrame = notification.getFrameBytes();
-//        sendingMessageQueue_->send(commandFrame.data(), commandFrame.size(), 0);
-    }
-    messageVisitor_.initializeClientUDPManager(clientUDPManager_);
+    // Send information to Main Process
+    auto notification = StateNotification(FeederStateCode::REGISTERED_USERS);
+    auto packet = notification.getFrameBytes();
+    sendMessageToMainProcess(packet);
+
+    return isSuccess;
 }
 
-ProcessManager::~ProcessManager()
-{ }
-
-bool ProcessManager::initializeExternalCommunication()
+bool ProcessManager::initializeWirelesslCommunication()
 {
-    clientUDPManager_ = make_shared<ClientUDPManager>();
-
     switch (feederType_.processNumber)
     {
         case 1 :
@@ -59,7 +62,7 @@ bool ProcessManager::initializeExternalCommunication()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = "ProcessManager: Inappropriate process communication type.";
+                const string message = "-EXTCOM- ProcessManager: Inappropriate process communication type.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -69,7 +72,7 @@ bool ProcessManager::initializeExternalCommunication()
 
     if(logger_.isInformationEnable())
     {
-        const string message = "ProcessManager: Initialized external communication process. Process type: " + to_string(static_cast<int>(feederType_.mode));
+        const string message = "-EXTCOM- ProcessManager: Initialized external communication process. Process type: " + to_string(static_cast<int>(feederType_.mode));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -87,7 +90,7 @@ bool ProcessManager::initializeMessageQueueCommunication()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("ProcessManager :: ") + ex.what();
+            const string message = string("-EXTCOM- ProcessManager :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -97,8 +100,10 @@ bool ProcessManager::initializeMessageQueueCommunication()
     return true;
 }
 
-void ProcessManager::startConfigurationProcess()
+void ProcessManager::start()
 {
+    clientUDPManager_->startHSM();
+
     while(runConfigurationProcess_)
     {
         try
@@ -120,7 +125,7 @@ void ProcessManager::startConfigurationProcess()
             {
                 if(logger_.isErrorEnable())
                 {
-                    const string message = string("ProcessManager :: Rceived wrong type of message");
+                    const string message = string("-EXTCOM- ProcessManager :: Rceived wrong type of message");
                     logger_.writeLog(LogType::ERROR_LOG, message);
                 }
             }
@@ -129,7 +134,7 @@ void ProcessManager::startConfigurationProcess()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager :: ") + ex.what();
+                const string message = string("-EXTCOM- ProcessManager :: ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -138,11 +143,21 @@ void ProcessManager::startConfigurationProcess()
     }
 }
 
-void ProcessManager::stopConfigurationProcess()
+void ProcessManager::stop()
 {
     runConfigurationProcess_ = false;
 }
 
+void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
+{
+    sendingMessageQueue_->send(data);
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = string("-EXTCOMM- ProcessManager:: Send msg to main process.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
 
 
 

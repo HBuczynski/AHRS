@@ -47,7 +47,7 @@ bool GUIApplicationManager::initializeGUIMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("GUIApplicationManager:: ") + " During openning main queue - " + ex.what();
+            const string message = string("-GUI-ApplicationManager:: ") + " During openning main queue - " + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -56,7 +56,7 @@ bool GUIApplicationManager::initializeGUIMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("GUIApplicationManager:: ") + " GUI massage queue initialized correctly.";
+        const std::string message = string("-GUI- ApplicationManager:: ") + " GUI massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -73,7 +73,7 @@ bool GUIApplicationManager::initializeSharedMemory()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("GUIApplicationManager :: ") + ex.what();
+            const string message = string("-GUI- ApplicationManager :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -114,7 +114,7 @@ void GUIApplicationManager::interprocessCommunication()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("ProcessManager :: ") + ex.what();
+                const string message = string("-GUI- ApplicationManager :: ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -139,7 +139,7 @@ void GUIApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("GUIApplicationManager :: Received wrong type of message.");
+                const string message = string("-GUI- ApplicationManager :: Received wrong type of message.");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -148,7 +148,7 @@ void GUIApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("GUIApplicationManager :: Received wrong type of interface.");
+            const string message = string("-GUI- ApplicationManager :: Received wrong type of interface.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

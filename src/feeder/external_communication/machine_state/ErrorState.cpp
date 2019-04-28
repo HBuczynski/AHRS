@@ -1,46 +1,30 @@
 #include "ErrorState.h"
-#include "ClientUDPManager.h"
 
 using namespace std;
+using namespace utility;
 using namespace communication;
 
-ErrorState::ErrorState()
-    : AbstractState("ErrorState", FeederExternalStateCode::ERROR)
+ErrorState::ErrorState(const std::string &name, std::shared_ptr<State> parent)
+    : State(name, parent)
+{}
+
+void ErrorState::runEntryEvent()
 {
 
 }
 
-ErrorState::~ErrorState()
+void ErrorState::runExitEvent()
 {
 
 }
 
-void ErrorState::acceptedUsers(ClientUDPManager &clientUDPManager) {
-
-}
-
-void ErrorState::startCalibration(ClientUDPManager &clientUDPManager, const std::string &planeName, PlaneStatus status) {
-
-}
-
-void ErrorState::calibrationPassed(ClientUDPManager &clientUDPManager) {
-
-}
-
-void ErrorState::calibrationFailed(ClientUDPManager &clientUDPManager) {
-
-}
-
-void ErrorState::startDataSending(ClientUDPManager &clientUDPManager) {
-
-}
-
-void ErrorState::restartProcess(ClientUDPManager &clientUDPManager) {
-
-}
-
-void ErrorState::shutdownProcess(ClientUDPManager &clientUDPManager) {
-
+void ErrorState::runInitEvent()
+{
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-EXTCOM- ErrorState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 

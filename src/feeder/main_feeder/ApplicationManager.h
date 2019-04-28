@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <atomic>
 
+#include <hsm/HSM.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
@@ -20,10 +21,10 @@
 
 namespace main_process
 {
-    class ApplicationManager
+    class ApplicationManager : public hsm::HSM
     {
     public:
-        ApplicationManager();
+        ApplicationManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~ApplicationManager();
 
         bool initialize();

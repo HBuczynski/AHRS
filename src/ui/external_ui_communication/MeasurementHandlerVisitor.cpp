@@ -31,7 +31,7 @@ void MeasurementHandlerVisitor::initializeSharedMemory()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("MainProcessScheduler :: ") + ex.what();
+            const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
@@ -44,7 +44,7 @@ void MeasurementHandlerVisitor::visit(ImuData &data)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("MeasurementHandlerVisitor :: Received ImuData.") + to_string((data.getMeasurement()));
+        const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ImuData.") + to_string((data.getMeasurement()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -56,7 +56,7 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("MeasurementHandlerVisitor :: Received GPSData.");
+        const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received GPSData.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -68,7 +68,7 @@ void MeasurementHandlerVisitor::visit(FlightData &data)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("MeasurementHandlerVisitor :: Received ") + data.getName() +
+        const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
                 string(". Data: ") + to_string(data.getMeasurements().altitude);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }

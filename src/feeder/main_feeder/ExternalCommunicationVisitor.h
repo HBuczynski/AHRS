@@ -7,17 +7,22 @@
 
 namespace main_process
 {
+    class ApplicationManager;
+
     class ExternalCommunicationVisitor final : virtual public communication::FeederCommandVisitor, virtual public communication::FeederNotificationVisitor
     {
     public:
         ExternalCommunicationVisitor();
         ~ExternalCommunicationVisitor();
 
+        void registerApplicationManager(ApplicationManager *appManager);
         virtual void visit(const communication::CalibrateMgnDemandCommand& command) override ;
         virtual void visit(const communication::CalibrationStatusNotification& command) override;
+        virtual void visit(const communication::StateNotification& command) override;
 
     private:
         utility::Logger& logger_;
+        ApplicationManager* appManager_;
     };
 }
 

@@ -23,7 +23,7 @@ int main(int argc , char *argv[])
 
     if(logger.isInformationEnable())
     {
-        const string message = "Main External Process: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
+        const string message = "-INTCOM- Main: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
         logger.writeLog(LogType::INFORMATION_LOG, message);
     }
 

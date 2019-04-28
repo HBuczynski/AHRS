@@ -28,7 +28,7 @@ int main( int argc, char *argv[] )
 
     if(logger.isInformationEnable())
     {
-        const string message = string("GUI :: Initialization!!");
+        const string message = string("-GUI- :: Initialization!!");
         logger.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -45,7 +45,7 @@ int main( int argc, char *argv[] )
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("Main UI :: Initialization failed !!");
+            const string message = string("-GUI- Main UI :: Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

@@ -60,7 +60,7 @@ void ServerTCP::activateUsers()
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("ServerTCP :: Server starts user acceptance.");
+        const string message = string("-EXTCOM- ServerTCP :: Server starts user acceptance.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -75,7 +75,7 @@ void ServerTCP::activateUsers()
 
             if(logger_.isInformationEnable())
             {
-                const string message = string("ServerTCP :: Client with ID -") + to_string(clientID) + string("- was registered.");
+                const string message = string("-EXTCOM- ServerTCP :: Client with ID -") + to_string(clientID) + string("- was registered.");
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
             client->setID(clientID);
@@ -99,7 +99,7 @@ void ServerTCP::updateClientList()
         {
             if(logger_.isInformationEnable())
             {
-                const string message = string("ServerTCP :: Client with ID -") + to_string((*iter)->getID()) + string("- was removed.");
+                const string message = string("-EXTCOM- ServerTCP :: Client with ID -") + to_string((*iter)->getID()) + string("- was removed.");
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
 

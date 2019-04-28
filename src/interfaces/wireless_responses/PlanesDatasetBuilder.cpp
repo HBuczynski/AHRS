@@ -17,27 +17,10 @@ PlanesDatasetBuilder::~PlanesDatasetBuilder()
 
 unique_ptr<Response> PlanesDatasetBuilder::create(const vector<uint8_t> &dataInBytes)
 {
-    vector<string> dataset;
-//    uint16_t dataSize = BytesConverter::fromVectorOfUINT8toUINT16(dataInBytes, Frame::DATA_SIZE_UINT16_POSITION) - 1;
-//
-//    if((dataSize % sizeof(string)) != 0)
-//    {
-//        throw invalid_argument("PlanesDatasetBuilder: wrong dataset");
-//    }
-//
-//    uint16_t numberOfPlanes = dataSize / sizeof(string);
-//    uint16_t currentPosition = Frame::INITIAL_DATA_POSITION;
-//
-//    string plane;
-//
-//    for(uint16_t i = 0; i < numberOfPlanes; ++i)
-//    {
-//        BytesConverter::fromVectorOfUINT8toStruct(dataInBytes, currentPosition, plane);
-//        dataset.push_back(plane);
-//
-//        currentPosition += sizeof(plane);
-//    }
-//
-    auto command = make_unique<PlanesDatasetResponse>(dataset);
+    const auto dataSize = BytesConverter::fromVectorOfUINT8toUINT16(dataInBytes, Frame::DATA_SIZE_UINT16_POSITION) - 1;
+    const auto planes = string(dataInBytes.begin()+Frame::INITIAL_DATA_POSITION, dataInBytes.begin() + Frame::INITIAL_DATA_POSITION + dataSize) ;
+
+    auto command = make_unique<PlanesDatasetResponse>(planes);
+
     return move(command);
 }

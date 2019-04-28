@@ -1,25 +1,21 @@
 #ifndef AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 #define AHRS_BLACK_BOX_CALLBACKFUNCTIONS_H
 
-#include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
-
-#include "machine_state/AbstractState.h"
-#include "ClientUDP.h"
 #include "FlightDataManager.h"
+#include "ClientUDP.h"
 
+#include <hsm/HSM.h>
+#include <functional>
 #include <list>
 #include <cstdint>
 #include <memory>
-#include <mutex>
-#include <thread>
-#include <utility>
 
 namespace communication
 {
-    class ClientUDPManager
+    class ClientUDPManager : public hsm::HSM
     {
     public:
-        ClientUDPManager();
+        ClientUDPManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~ClientUDPManager();
 
         // Communication methods
@@ -29,20 +25,13 @@ namespace communication
 
         bool broadcast(std::vector<uint8_t> frame);
 
-        // Managing finite machine state
-        void acceptedUsers();
-        void startCalibration(const std::string &planeName, PlaneStatus status);
-        void startDataSending();
-        void stopDataSending();
-        void restartProcess();
-        void shutdownProcess();
-        const FeederExternalStateCode& getCurrentState() const;
-
-        void setNewState(AbstractState *newState);
+        void sendToMainProcess(std::vector<uint8_t>& data);
+        void registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback);
 
     private:
-        std::unique_ptr<AbstractState> currentState_;
         std::unique_ptr<FlightDataManager> flightDataManager_;
+
+        std::function<void(std::vector<uint8_t>&)> mainProcCallback_;
 
         std::mutex clientListMutex_;
         std::list<std::pair<std::shared_ptr<ClientUDP>, uint8_t> > clientList_;

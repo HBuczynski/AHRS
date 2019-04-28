@@ -1,11 +1,12 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "UIApplicationManager.h"
 
-#include "ui/main_ui/machine_state/UIAcquisitionState.h"
+#include <interfaces/gui/GUIPlanesSetCommand.h>
+#include <interfaces/gui/GUICallibrationCommand.h>
+#include <interfaces/wireless_responses/PlanesDatasetResponse.h>
+#include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 
-#include <interfaces/wireless_commands/PerformBITsCommand.h>
 #include <interfaces/wireless_responses/ResponseFactory.h>
-#include <interfaces/communication_process_ui/SendingDataCommand.h>
 
 using namespace std;
 using namespace utility;
@@ -26,23 +27,35 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
 {
     ResponseFactory responseFactory;
 
-    const auto response = responseFactory.createCommand(command.getData());
+    auto response = responseFactory.createCommand(command.getData());
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("ExternalCommInterprocessVisitor:: Received - ") + response->getName();
+        const string message = string("-MAIN- ExternalCommInterprocessVisitor:: Received - ") + response->getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     switch (response->getResponseType())
     {
-        case ResponseType::BITs_STATUS :
+        case ResponseType::CALIBRATING_STATUS :
         {
-            get<2>(informationParameters_) = 1;
+            const auto calibratingStatus = static_pointer_cast<CalibratingStatusResponse, Response>(responseFactory.createCommand(command.getData()));
 
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
+            GUICallibrationCommand command(calibratingStatus->getCalibrationConfiguration(), calibratingStatus->getMode());
+            uiApplicationManager_->sendToGUIProcess(command.getFrameBytes());
+            break;
         }
+        case ResponseType::PLANES_DATASET :
+        {
+            const auto planeDataSet = static_pointer_cast<PlanesDatasetResponse, Response>(responseFactory.createCommand(command.getData()));
+            const auto planes = planeDataSet->getDataset();
+
+            GUIPlanesSetCommand guiCommand(planes);
+            uiApplicationManager_->sendToGUIProcess(guiCommand.getFrameBytes());
+            break;
+        }
+        default :
+            break;
     }
 }
 
@@ -52,45 +65,17 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
 
     switch(status)
     {
-        case UIExternalStateCode::MASTER :
+        case UIExternalComCode::INIT_CONNECTION :
         {
-            get<0>(informationParameters_) = 1;
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
-
-            auto performBIT = PerformBITsCommand();
-            auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
-
-            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
-                    config::UICommunicationMode::MASTER);
-
+            uiApplicationManager_->handleEvent("SET_SETTINGS");
             break;
         }
-        case UIExternalStateCode::IDLE :
-        {
-            break;
-        }
-        case UIExternalStateCode::REDUNDANT :
-        {
-            get<1>(informationParameters_) = 1;
-            uiApplicationManager_->setInformationPage(get<0>(informationParameters_), get<1>(informationParameters_),
-                    get<2>(informationParameters_), get<3>(informationParameters_));
-
-            auto performBIT = PerformBITsCommand();
-            auto wrapCommand = SendingDataCommand(performBIT.getFrameBytes());
-
-            uiApplicationManager_->sendToExternalCommunicationProcess(wrapCommand.getFrameBytes(),
-                    config::UICommunicationMode::MASTER);
-
-            break;
-        }
-        case UIExternalStateCode::ERROR :
-        {
-
-            break;
-        }
+        case UIExternalComCode::RECONNECTED :
+        case UIExternalComCode::REDUNDANT :
+        case UIExternalComCode::MASTER :
+        case UIExternalComCode::ERROR :
+        case UIExternalComCode::IDLE :
         default:
-
             break;
     }
 }

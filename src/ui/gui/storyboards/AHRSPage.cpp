@@ -276,7 +276,7 @@ void AHRSPage::acquireFlightData()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("AHRSPage :: ") + ex.what();
+            const string message = string("-GUI- AHRSPage :: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

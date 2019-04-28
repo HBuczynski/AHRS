@@ -19,11 +19,12 @@ namespace communication
         virtual void visit(PlanesDatasetResponse& data) override;
         virtual void visit(CurrentStateResponse& data) override ;
         virtual void visit(BITsResponse& data) override;
+        virtual void visit(CalibrateAccelerometerResponse& data) override;
 
     private:
         void initializeMessageQueue();
 
-        void sendMessage(std::vector<uint8_t> msg);
+        void sendMessageToMain(std::vector<uint8_t> msg);
 
         config::UIMessageQueues uiMessageQueuesParameters_;
         std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;

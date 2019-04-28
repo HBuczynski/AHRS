@@ -7,7 +7,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-PlanesDatasetResponse::PlanesDatasetResponse(const vector<std::string> &dataset)
+PlanesDatasetResponse::PlanesDatasetResponse(const string &dataset)
     : Response(10, ResponseType::PLANES_DATASET),
       dataset_(dataset)
 { }
@@ -21,12 +21,7 @@ vector<uint8_t> PlanesDatasetResponse::getFrameBytes()
 
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(responseType_));
-
-    for(const auto& plane : dataset_)
-    {
-        const auto serializedPlane = BytesConverter::appendStructToVectorOfUINT8(plane);
-        frame.insert(frame.end(), serializedPlane.begin(), serializedPlane.end());
-    }
+    BytesConverter::appendStringToVectorOfUINT8(dataset_, frame);
 
     return frame;
 }
@@ -34,11 +29,7 @@ vector<uint8_t> PlanesDatasetResponse::getFrameBytes()
 void PlanesDatasetResponse::initializeDataSize()
 {
     dataSize_ = sizeof(responseType_);
-
-    for(const auto& plane : dataset_)
-    {
-        dataSize_ += sizeof(plane);
-    }
+    dataSize_ += sizeof(char)*dataset_.size();
 }
 
 string PlanesDatasetResponse::getName()
@@ -46,12 +37,12 @@ string PlanesDatasetResponse::getName()
     return string("PlanesDatasetResponse");
 }
 
-void PlanesDatasetResponse::setDataset(const vector<std::string> &dataset)
+void PlanesDatasetResponse::setDataset(const string &dataset)
 {
     dataset_ = dataset;
 }
 
-const vector<std::string> &PlanesDatasetResponse::getDataset() const
+string PlanesDatasetResponse::getDataset() const
 {
     return dataset_;
 }

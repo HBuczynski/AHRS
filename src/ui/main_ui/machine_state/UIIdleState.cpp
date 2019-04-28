@@ -1,29 +1,24 @@
 #include "UIIdleState.h"
 
-#include "../UIApplicationManager.h"
-
 using namespace std;
 using namespace utility;
-using namespace main_process;
 
-UIIdleState::UIIdleState()
-        :  UIAbstractState("UIIdleState", UIMainStateCode::IDLE)
+UIIdleState::UIIdleState(const string &name, shared_ptr<State> parent)
+    : State(name, parent)
 {}
 
-UIIdleState::~UIIdleState()
+void UIIdleState::runEntryEvent()
 {}
 
-void UIIdleState::setWelcomePage(UIApplicationManager &uiApplicationManager)
+void UIIdleState::runExitEvent()
+{}
+
+void UIIdleState::runInitEvent()
 {
-
-}
-
-void UIIdleState::communicationInProgress(UIApplicationManager &uiApplicationManager)
-{
-
-}
-
-void UIIdleState::setInformationPage(UIApplicationManager &uiApplicationManager)
-{
-
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- UIIdleState:: Invoke procedure for - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+    registerInternalState_("LaunchState");
 }

@@ -1,10 +1,9 @@
 #include <Logger.h>
 #include <chrono>
 
-#include "ApplicationManager.h"
+#include "FeederScheduler.h"
 
 using namespace std;
-using namespace chrono;
 using namespace utility;
 using namespace main_process;
 
@@ -21,17 +20,17 @@ int main()
     struc.writeOnConsole = true;
     logger.initLogger(struc);
 
-    ApplicationManager applicationManager;
+    FeederScheduler feederScheduler;
 
-    if(applicationManager.initialize())
+    if(feederScheduler.initialize())
     {
-        applicationManager.startFeederSystem();
+        feederScheduler.run();
     }
     else
     {
         if(logger.isErrorEnable())
         {
-            const string message = string("main :: Initialization failed !!");
+            const string message = string("-MAIN- Initialization failed !!");
             logger.writeLog(LogType::ERROR_LOG, message);
         }
     }

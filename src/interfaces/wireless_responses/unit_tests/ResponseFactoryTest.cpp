@@ -64,15 +64,34 @@ BOOST_AUTO_TEST_SUITE( test )
 
     BOOST_AUTO_TEST_CASE( calibratingStatusBuilder )
     {
-        const auto status = CalibrationStatus::IN_THE_PROCESS;
-        CalibratingStatusResponse response(status);
+        uint8_t mode = 0;
+        CalibrationConfiguration calibration;
+        calibration.progress = 23;
+        calibration.accelerometer.maxX = 76.34;
+        calibration.accelerometer.minX = 126.34;
+        calibration.magnetometer.maxX = 76.34;
+        calibration.magnetometer.minX = 126.34;
+        calibration.accelerometer.maxZ = 769.34;
+        calibration.accelerometer.minZ = 3426.34;
+        calibration.ellipsoid.quadrant_8 = 3426;
+
+        CalibratingStatusResponse response(calibration, mode);
 
         ResponseFactory factory;
 
         auto responseFromVec = static_pointer_cast<CalibratingStatusResponse, Response>(factory.createCommand(response.getFrameBytes()));
 
+        const auto newCallibration = responseFromVec->getCalibrationConfiguration();
+
         BOOST_CHECK( responseFromVec->getFrameType() == response.getFrameType());
-        BOOST_CHECK( responseFromVec->getCalibrationStatus() == response.getCalibrationStatus());
+        BOOST_CHECK( calibration.progress == newCallibration.progress);
+        BOOST_CHECK( calibration.accelerometer.maxX == newCallibration.accelerometer.maxX);
+        BOOST_CHECK( calibration.accelerometer.minX == newCallibration.accelerometer.minX);
+        BOOST_CHECK( calibration.magnetometer.maxX == newCallibration.magnetometer.maxX);
+        BOOST_CHECK( calibration.magnetometer.minX == newCallibration.magnetometer.minX);
+        BOOST_CHECK( calibration.accelerometer.maxZ == newCallibration.accelerometer.maxZ);
+        BOOST_CHECK( calibration.accelerometer.minZ == newCallibration.accelerometer.minZ);
+        BOOST_CHECK( calibration.ellipsoid.quadrant_8 == newCallibration.ellipsoid.quadrant_8);
         BOOST_CHECK( responseFromVec->getResponseType() == response.getResponseType());
         BOOST_CHECK( responseFromVec->getFrameBytes() == response.getFrameBytes());
         BOOST_CHECK( responseFromVec->getSystemVersion() == response.getSystemVersion());
@@ -82,49 +101,19 @@ BOOST_AUTO_TEST_SUITE( test )
 
     BOOST_AUTO_TEST_CASE( planesDatasetBuilder )
     {
-//        vector<AircraftParameters> dataset;
-//
-//        AircraftParameters plane_1;
-//        const char *temp = "Boeing";
-//        strcpy(plane_1.name, temp);
-//        dataset.push_back(plane_1);
-//
-//        AircraftParameters plane_2;
-//        const char *temp_2 = "bombardier4";
-//        strcpy(plane_1.name, temp_2);
-//        dataset.push_back(plane_2);
-//
-//        AircraftParameters plane_3;
-//        const char *temp_3 = "boeing_kk5";
-//        strcpy(plane_1.name, temp_3);
-//        dataset.push_back(plane_3);
-//
-//        AircraftParameters plane_4;
-//        const char *temp_4 = "airbus_11";
-//        strcpy(plane_1.name, temp_4);
-//        dataset.push_back(plane_4);
-//
-//        PlanesDatasetResponse response(dataset);
-//
-//        ResponseFactory factory;
-//
-//        auto responseFromVec = static_pointer_cast<PlanesDatasetResponse, Response>(factory.createCommand(response.getFrameBytes()));
-//
-//        bool isSuccess = true;
-//        const auto dataset2 = response.getDataset();
-//
-//        for(uint8_t i = 0; i < dataset.size(); ++i)
-//        {
-//            isSuccess = isSuccess & compareNames(dataset[i].name, dataset2[i].name, 32);
-//        }
-//
-//        BOOST_CHECK( responseFromVec->getFrameType() == response.getFrameType());
-//        BOOST_CHECK( isSuccess == true);
-//        BOOST_CHECK( responseFromVec->getResponseType() == response.getResponseType());
-//        BOOST_CHECK( responseFromVec->getFrameBytes() == response.getFrameBytes());
-//        BOOST_CHECK( responseFromVec->getSystemVersion() == response.getSystemVersion());
-//        BOOST_CHECK( responseFromVec->getDataSize() == response.getDataSize());
-//        BOOST_CHECK( responseFromVec->getName() == response.getName());
+        ResponseFactory factory;
+        string planes = "Boeing,Trolo";
+
+        PlanesDatasetResponse command(planes);
+        auto commandFromVec = static_pointer_cast<PlanesDatasetResponse, Response>(factory.createCommand(command.getFrameBytes()));
+
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getFrameType() == command.getFrameType());
+        BOOST_CHECK( commandFromVec->getResponseType() == command.getResponseType());
+        BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
+        BOOST_CHECK(commandFromVec->getDataset() == command.getDataset());
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -2,7 +2,6 @@
 #define AHRS_PROCESSMANAGER_H
 
 #include <message_queue_wrapper/MessageQueueWrapper.h>
-#include <time_manager/TimerInterrupt.h>
 
 #include <thread>
 #include <memory>
@@ -13,14 +12,15 @@
 #include <interfaces/communication_process_ui/UICommandFactory.h>
 #include <interfaces/communication_process_ui/UICommandVisitor.h>
 
+#include <common/UIStates.h>
 #include <logger/Logger.h>
 
 namespace communication
 {
-    class ProcessManager final : public utility::TimerInterruptNotification
+    class ProcessManager final
     {
     public:
-        ProcessManager(uint8_t processNumber);
+        ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~ProcessManager();
 
         bool initialize();
@@ -28,23 +28,21 @@ namespace communication
         void startCommunication();
         void stopCommunication();
 
-    private:
+        void setState(UIExternalComCode code);
+
+     private:
 
         bool initializeMainMessageQueue();
         bool initializeCommunicationProcessMessageQueue();
         bool initializeSharedMemory();
         bool initializeWirelessCommunication();
-        void connectToFeeder();
-
-        void interruptNotification(timer_t timerID);
 
         void handleMessageQueue(const std::vector<uint8_t> &data);
         void sendMessageToMainProcess(std::vector<uint8_t > &data);
 
         uint8_t processNumber_;
-        utility::TimerInterrupt connectionEstablishingInterrupt_;
 
-        config::UIWirelessCommunication uiWirelessCommunicationParameters_;
+        UIExternalComCode communicationState_;
         config::UIMessageQueues uiMessageQueuesParameters_;
         config::UISharedMemory uiSharedMemoryParameters_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
@@ -60,7 +58,6 @@ namespace communication
         std::unique_ptr<boost::interprocess::shared_memory_object> sharedMemory_;
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
-        std::atomic<bool> connectionEstablished_;
         std::atomic<bool> runCommunicationProcess_;
         utility::Logger& logger_;
     };

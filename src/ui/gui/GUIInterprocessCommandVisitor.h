@@ -1,6 +1,7 @@
 #ifndef AHRS_GUIINTERPROCESSCOMMANDVISITOR_H
 #define AHRS_GUIINTERPROCESSCOMMANDVISITOR_H
 
+#include <QString>
 #include <map>
 #include <memory>
 #include <functional>
@@ -20,11 +21,17 @@ namespace gui
 
         void visit(communication::GUIWindowCommand& command) override;
         void visit(communication::GUIInformationWindowCommand& command) override;
+        void visit(communication::GUIPlanesSetCommand& command) override;
+        void visit(communication::GUICallibrationCommand& command) override;
 
     signals:
         void signalWelcomePage();
         void signalEstablishingConnection();
+        void signalSettingPage();
+        void signalMenuPage();
         void signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t);
+        void signalPlanesDataset(QString);
+        void signalCallibrationMode(uint8_t, communication::CalibrationConfiguration);
 
     private:
         void initializeWindowsContainer();
@@ -38,6 +45,7 @@ namespace gui
         void launchAHRSWindow();
         void launchRestartWindow();
         void launchShutdownWindow();
+        void launchMainPage();
 
         std::map<PagesType, std::function<void()>> windowsContainer_;
 

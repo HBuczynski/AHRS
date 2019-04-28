@@ -23,6 +23,7 @@ namespace main_process
     private:
         std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> informationParameters_;
 
+        bool correctInitialization_;
         UIApplicationManager* uiApplicationManager_;
         utility::Logger& logger_;
     };

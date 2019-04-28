@@ -39,9 +39,7 @@ void GuiProcessHandler::sendMessage(std::vector<uint8_t> &message)
 }
 
 void GuiProcessHandler::resetProcess()
-{
-
-}
+{}
 
 bool GuiProcessHandler::initializeMessageQueue()
 {
@@ -55,7 +53,7 @@ bool GuiProcessHandler::initializeMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("GuiProcessHandler:: Communication message queue has not initialized correctly - ") + ex.what();
+            const string message = string("-MAIN- GuiProcessHandler:: Communication message queue has not initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -87,7 +85,7 @@ bool GuiProcessHandler::launchProcess()
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("GuiProcessHandler:: GUI process was initialized.");
+            const string message = string("-MAIN- GuiProcessHandler:: GUI process was initialized.");
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -95,7 +93,7 @@ bool GuiProcessHandler::launchProcess()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("GuiProcessHandler:: GUI process was not initialized correctly.");
+            const string message = string("-MAIN- GuiProcessHandler:: GUI process was not initialized correctly.");
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
