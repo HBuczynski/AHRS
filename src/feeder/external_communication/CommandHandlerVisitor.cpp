@@ -145,16 +145,32 @@ void CommandHandlerVisitor::visit(SetPlaneCommand &command)
     const auto planeName = command.getPlaneName();
     const auto dataset = Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH);
 
-    //TO DO
+    //TO DO !!!!!!!!!
     if(std::find(dataset.cbegin(), dataset.cend(), planeName) != dataset.cend())
     {
         CalibrationConfiguration callibration;
-        response_ = make_unique<CalibratingStatusResponse>(callibration, 0);
+        callibration.status = CalibrationStatus::START_CALIBARTION;
+        callibration.progress = 0x07;
+        callibration.accelerometer.axis = 1;
+        callibration.accelerometer.mode = 0;
+        callibration.accelerometer.maxX = 45.9876;
+        callibration.accelerometer.maxY = 145.9876;
+        callibration.accelerometer.maxZ = 435.9876;
+
+        callibration.accelerometer.minX = 5.9876;
+        callibration.accelerometer.minY = 54.9876;
+        callibration.accelerometer.minZ = 508.9876;
+
+        callibration.ellipsoid.mode = 1;
+
+        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
     }
     else
     {
         CalibrationConfiguration callibration;
-        response_ = make_unique<CalibratingStatusResponse>(callibration, 0);
+        callibration.status = CalibrationStatus::START_CALIBARTION;
+        callibration.progress = 0x01;
+        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
     }
 
     if(logger_.isInformationEnable())

@@ -10,21 +10,23 @@ namespace communication
         PASSED = 0x01,
         FAILED = 0x02,
         START_CALIBARTION = 0x03,
-        IS_NOT_CALIBRATING = 0x04,
+        IS_NOT_CALIBRATED = 0x04,
         IN_THE_PROCESS = 0x05,
         IS_CALIBRATED = 0x06
     };
 
     struct CalibrationConfiguration
     {
-        uint8_t progress;
-        CalibrationStatus status;
+        uint8_t progress = 0;
+        CalibrationStatus status = IS_NOT_CALIBRATED;
 
         struct
         {
             float minX, maxX;
             float minY, maxY;
             float minZ, maxZ;
+            uint8_t axis;
+            uint8_t mode;
         } accelerometer;
 
         struct
@@ -44,6 +46,8 @@ namespace communication
             uint16_t quadrant_6;
             uint16_t quadrant_7;
             uint16_t quadrant_8;
+
+            uint8_t mode;
         } ellipsoid;
     };
 

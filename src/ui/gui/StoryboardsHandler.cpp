@@ -421,11 +421,21 @@ const string &StoryboardsHandler::getPlaneDataset()
 void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setMainCallibrationParameters(paramteres);
+
+    if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
+    {
+        callibrationPage_->setupPage(1);
+    }
 }
 
 void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setRedundantCallibrationParameters(paramteres);
+
+    if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
+    {
+        callibrationPage_->setupPage(1);
+    }
 }
 
 const CalibrationConfiguration& StoryboardsHandler::getMainCallibrationParameters()

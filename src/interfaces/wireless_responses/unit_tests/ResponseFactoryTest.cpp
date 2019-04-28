@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_SUITE( test )
 
         auto responseFromVec = static_pointer_cast<CalibratingStatusResponse, Response>(factory.createCommand(response.getFrameBytes()));
 
-        const auto newCallibration = response.getCalibrationConfiguration();
+        const auto newCallibration = responseFromVec->getCalibrationConfiguration();
 
         BOOST_CHECK( responseFromVec->getFrameType() == response.getFrameType());
         BOOST_CHECK( calibration.progress == newCallibration.progress);
