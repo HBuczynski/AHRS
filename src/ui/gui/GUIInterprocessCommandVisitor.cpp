@@ -35,7 +35,7 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
     QObject::connect(this, SIGNAL(signalSettingPage()), mainWindow_.get(), SLOT(setSettingPage()));
     QObject::connect(this, SIGNAL(signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)), mainWindow_.get(), SLOT(setInformationPage(uint8_t, uint8_t, uint8_t, uint8_t)));
     QObject::connect(this, SIGNAL(signalPlanesDataset(QString)), mainWindow_.get(), SLOT(setPlanesDataset(QString)));
-    QObject::connect(this, SIGNAL(signalCallibrationMode(uint8_t, communication::CallibrationConfiguration)), mainWindow_.get(), SLOT(setCallibrationMode(uint8_t, communication::CallibrationConfiguration)));
+    QObject::connect(this, SIGNAL(signalCallibrationMode(uint8_t, communication::CalibrationConfiguration)), mainWindow_.get(), SLOT(setCallibrationMode(uint8_t, communication::CalibrationConfiguration)));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)

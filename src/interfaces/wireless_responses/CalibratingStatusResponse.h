@@ -15,7 +15,7 @@ namespace communication
         IS_CALIBRATED = 0x06
     };
 
-    struct CallibrationConfiguration
+    struct CalibrationConfiguration
     {
         uint8_t progress;
         CalibrationStatus status;
@@ -50,15 +50,15 @@ namespace communication
     class CalibratingStatusResponse final : public Response
     {
     public:
-        CalibratingStatusResponse(CallibrationConfiguration configuration, uint8_t mode);
+        CalibratingStatusResponse(CalibrationConfiguration configuration, uint8_t mode);
         ~CalibratingStatusResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(ResponseVisitor& visitor) override;
 
-        CallibrationConfiguration getCalibrationConfiguration() const;
-        void setCalibrationConfiguration(const CallibrationConfiguration &status);
+        CalibrationConfiguration getCalibrationConfiguration() const;
+        void setCalibrationConfiguration(const CalibrationConfiguration &status);
 
         uint8_t getMode() const noexcept;
         void setMode(uint8_t mode) noexcept;
@@ -67,7 +67,7 @@ namespace communication
         virtual void initializeDataSize() override;
 
         uint8_t mode_;
-        CallibrationConfiguration calibrationConfiguration_;
+        CalibrationConfiguration calibrationConfiguration_;
     };
 }
 

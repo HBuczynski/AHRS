@@ -31,7 +31,7 @@ namespace gui
         void signalMenuPage();
         void signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t);
         void signalPlanesDataset(QString);
-        void signalCallibrationMode(uint8_t, communication::CallibrationConfiguration);
+        void signalCallibrationMode(uint8_t, communication::CalibrationConfiguration);
 
     private:
         void initializeWindowsContainer();

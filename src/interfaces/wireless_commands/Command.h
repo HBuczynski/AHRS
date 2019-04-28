@@ -11,6 +11,7 @@ namespace communication
     {
         INIT_CONNECTION = 10,
         CALIBRATE_MAGNETOMETER = 20,
+        CALIBRATE_ACCELEROMETER = 21,
         REMOVE_PLANE_DATA = 25,
         SET_PLANE_NAME = 30,
         COLLECT_DATA = 40,

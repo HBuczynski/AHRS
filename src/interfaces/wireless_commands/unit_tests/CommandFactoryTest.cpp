@@ -20,13 +20,12 @@ BOOST_AUTO_TEST_SUITE( factory )
     BOOST_AUTO_TEST_CASE( calibrateMagnetometerBuilder )
     {
         CommandFactory factory;
-        string planeName = "temp";
-        PlaneStatus status = PlaneStatus::NEW;
+        Action status = Action::APPROVE;
 
-        CallibrateMagnetometerCommand command(planeName, status);
+        CallibrateMagnetometerCommand command(status);
 
         auto commandFromVec = static_pointer_cast<CallibrateMagnetometerCommand, Command>(factory.createCommand(command.getFrameBytes()));
-        BOOST_CHECK(commandFromVec->getPlaneName() == command.getPlaneName());
+
         BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
         BOOST_CHECK( commandFromVec->getCommandType() == command.getCommandType());
         BOOST_CHECK( 1 == commandFromVec->getSystemVersion());

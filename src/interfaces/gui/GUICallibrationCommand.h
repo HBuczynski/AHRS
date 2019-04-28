@@ -10,15 +10,15 @@ namespace communication
     class GUICallibrationCommand final : public GUICommand
     {
     public:
-        GUICallibrationCommand(CallibrationConfiguration configuration, uint8_t mode);
+        GUICallibrationCommand(CalibrationConfiguration configuration, uint8_t mode);
         ~GUICallibrationCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(GUICommandVisitor &visitor) override;
 
-        CallibrationConfiguration getCalibrationConfiguration() const;
-        void setCalibrationConfiguration(const CallibrationConfiguration &status);
+        CalibrationConfiguration getCalibrationConfiguration() const;
+        void setCalibrationConfiguration(const CalibrationConfiguration &status);
 
         uint8_t getMode() const noexcept;
         void setMode(uint8_t mode) noexcept;
@@ -27,7 +27,7 @@ namespace communication
         virtual void initializeDataSize() override;
 
         uint8_t mode_;
-        CallibrationConfiguration calibrationConfiguration_;
+        CalibrationConfiguration calibrationConfiguration_;
     };
 }
 

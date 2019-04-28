@@ -19,7 +19,7 @@ unique_ptr<Response> CalibratingStatusBuilder::create(const vector<uint8_t> &dat
     const auto mode = dataInBytes[position];
 
     position += sizeof(mode);
-    CallibrationConfiguration callibrationConfiguration;
+    CalibrationConfiguration callibrationConfiguration;
     BytesConverter::fromVectorOfUINT8toStruct(dataInBytes, position, callibrationConfiguration);
 
     auto command = make_unique<CalibratingStatusResponse>(callibrationConfiguration, mode);

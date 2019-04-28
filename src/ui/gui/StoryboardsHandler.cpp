@@ -418,22 +418,22 @@ const string &StoryboardsHandler::getPlaneDataset()
     return guiDataManager_.getPlaneDataset();
 }
 
-void StoryboardsHandler::setMainCallibrationParameters(const CallibrationConfiguration& paramteres)
+void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setMainCallibrationParameters(paramteres);
 }
 
-void StoryboardsHandler::setRedundantCallibrationParameters(const CallibrationConfiguration& paramteres)
+void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setRedundantCallibrationParameters(paramteres);
 }
 
-const CallibrationConfiguration& StoryboardsHandler::getMainCallibrationParameters()
+const CalibrationConfiguration& StoryboardsHandler::getMainCallibrationParameters()
 {
     return guiDataManager_.getMainCallibrationParameters();
 }
 
-const CallibrationConfiguration& StoryboardsHandler::getRedundantCallibrationParameters()
+const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationParameters()
 {
     return guiDataManager_.getRedundantCallibrationParameters();
 }

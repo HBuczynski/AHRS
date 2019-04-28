@@ -49,22 +49,22 @@ bool GUIDataManager::isSystemAcitve() noexcept
     return isAHRSActive_;
 }
 
-void GUIDataManager::setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept
+void GUIDataManager::setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept
 {
     masterCallibrationConfiguration_ = paramteres;
 }
 
-void GUIDataManager::setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept
+void GUIDataManager::setRedundantCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept
 {
     redundantCallibrationConfiguration_ = paramteres;
 }
 
-const communication::CallibrationConfiguration& GUIDataManager::getMainCallibrationParameters() const noexcept
+const communication::CalibrationConfiguration& GUIDataManager::getMainCallibrationParameters() const noexcept
 {
     return masterCallibrationConfiguration_;
 }
 
-const communication::CallibrationConfiguration& GUIDataManager::getRedundantCallibrationParameters() const noexcept
+const communication::CalibrationConfiguration& GUIDataManager::getRedundantCallibrationParameters() const noexcept
 {
     return redundantCallibrationConfiguration_;
 }

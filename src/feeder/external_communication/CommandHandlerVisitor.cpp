@@ -68,7 +68,7 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 
 void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 {
-    //clientUDPManager_->startCalibration(planeName, planeStatus);
+
     response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
@@ -148,12 +148,12 @@ void CommandHandlerVisitor::visit(SetPlaneCommand &command)
     //TO DO
     if(std::find(dataset.cbegin(), dataset.cend(), planeName) != dataset.cend())
     {
-        CallibrationConfiguration callibration;
+        CalibrationConfiguration callibration;
         response_ = make_unique<CalibratingStatusResponse>(callibration, 0);
     }
     else
     {
-        CallibrationConfiguration callibration;
+        CalibrationConfiguration callibration;
         response_ = make_unique<CalibratingStatusResponse>(callibration, 0);
     }
 
@@ -168,6 +168,18 @@ void CommandHandlerVisitor::visit(SetPlaneCommand &command)
 void CommandHandlerVisitor::visit(PerformBITsCommand& command)
 {
     response_ = std::make_unique<BITsResponse>(1, UICommunicationMode::MASTER);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
+{
+    //response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
 
     if(logger_.isInformationEnable())
     {

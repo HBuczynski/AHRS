@@ -7,7 +7,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-CalibratingStatusResponse::CalibratingStatusResponse(CallibrationConfiguration configuration, uint8_t mode)
+CalibratingStatusResponse::CalibratingStatusResponse(CalibrationConfiguration configuration, uint8_t mode)
     : Response(10, ResponseType::CALIBRATING_STATUS),
       mode_(mode),
       calibrationConfiguration_(configuration)
@@ -35,12 +35,12 @@ string CalibratingStatusResponse::getName()
     return string("CalibratingStatusResponse");
 }
 
-CallibrationConfiguration CalibratingStatusResponse::getCalibrationConfiguration() const
+CalibrationConfiguration CalibratingStatusResponse::getCalibrationConfiguration() const
 {
     return calibrationConfiguration_;
 }
 
-void CalibratingStatusResponse::setCalibrationConfiguration(const CallibrationConfiguration &status)
+void CalibratingStatusResponse::setCalibrationConfiguration(const CalibrationConfiguration &status)
 {
     calibrationConfiguration_ = status;
 }

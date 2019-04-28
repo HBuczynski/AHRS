@@ -20,7 +20,7 @@ unique_ptr<GUICommand> GUICallibrationBuilder::create(const vector<uint8_t> &com
     const auto mode = commandInBytes[position];
 
     position += sizeof(mode);
-    CallibrationConfiguration callibrationConfiguration;
+    CalibrationConfiguration callibrationConfiguration;
     BytesConverter::fromVectorOfUINT8toStruct(commandInBytes, position, callibrationConfiguration);
 
     auto command = make_unique<GUICallibrationCommand>(callibrationConfiguration, mode);

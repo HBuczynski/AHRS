@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_SUITE( data )
     BOOST_AUTO_TEST_CASE( calibratingStatus )
     {
         uint8_t mode = 0;
-        CallibrationConfiguration calibration;
+        CalibrationConfiguration calibration;
         calibration.progress = 23;
         calibration.accelerometer.maxX = 76.34;
         calibration.accelerometer.minX = 126.34;
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_SUITE( data )
         BOOST_CHECK( calibration.accelerometer.minZ == newCallibration.accelerometer.minZ);
         BOOST_CHECK( calibration.ellipsoid.quadrant_8 == newCallibration.ellipsoid.quadrant_8);
         BOOST_CHECK( 1 == response.getSystemVersion());
-        BOOST_CHECK( (sizeof(ResponseType::CALIBRATING_STATUS) + sizeof(CallibrationConfiguration) + 1) == response.getDataSize());
+        BOOST_CHECK( (sizeof(ResponseType::CALIBRATING_STATUS) + sizeof(CalibrationConfiguration) + 1) == response.getDataSize());
         BOOST_CHECK( "CalibratingStatusResponse" == response.getName());
     }
 

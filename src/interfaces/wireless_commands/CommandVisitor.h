@@ -11,6 +11,7 @@
 #include "StartAcquisitionCommand.h"
 #include "CurrentStateCommand.h"
 #include "PerformBITsCommand.h"
+#include "CalibrateAccelerometerCommand.h"
 
 namespace communication
 {
@@ -30,6 +31,7 @@ namespace communication
         virtual void visit(StartAcquisitionCommand& command) = 0;
         virtual void visit(CurrentStateCommand& command) = 0;
         virtual void visit(PerformBITsCommand& command) = 0;
+        virtual void visit(CalibrateAccelerometerCommand& command) = 0;
     };
 }
 #endif

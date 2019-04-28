@@ -19,6 +19,7 @@ namespace communication
         virtual void visit(PlanesDatasetResponse& data) override;
         virtual void visit(CurrentStateResponse& data) override ;
         virtual void visit(BITsResponse& data) override;
+        virtual void visit(CalibrateAccelerometerResponse& data) override;
 
     private:
         void initializeMessageQueue();

@@ -14,7 +14,8 @@ namespace communication
         CALIBRATING_STATUS = 30,
         PLANES_DATASET = 40,
         CURRENT_STATE_RES = 50,
-        BITs_STATUS = 60
+        BITs_STATUS = 60,
+        ACCEL_STATUS = 70,
     };
 
     class Response : public Frame

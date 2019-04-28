@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_SUITE( test )
     BOOST_AUTO_TEST_CASE( calibratingStatusBuilder )
     {
         uint8_t mode = 0;
-        CallibrationConfiguration calibration;
+        CalibrationConfiguration calibration;
         calibration.progress = 23;
         calibration.accelerometer.maxX = 76.34;
         calibration.accelerometer.minX = 126.34;

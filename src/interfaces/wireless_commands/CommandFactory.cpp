@@ -9,6 +9,7 @@
 #include "CalibrationStatusBuilder.h"
 #include "CurrentStateBuilder.h"
 #include "PerformBITsBuilder.h"
+#include "CalibrateAccelerometerBuilder.h"
 
 #include <stdexcept>
 
@@ -35,6 +36,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             return move(builder_->create(commandInBytes));
         case CommandType::CALIBRATE_MAGNETOMETER :
             builder_ = make_unique<CalibrateMagnetometerBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::CALIBRATE_ACCELEROMETER :
+            builder_ = make_unique<CalibrateAccelerometerBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::REMOVE_PLANE_DATA :
             builder_ = make_unique<RemovePlaneDataBuilder>();

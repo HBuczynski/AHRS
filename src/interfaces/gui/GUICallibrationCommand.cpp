@@ -7,7 +7,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-GUICallibrationCommand::GUICallibrationCommand(CallibrationConfiguration configuration, uint8_t mode)
+GUICallibrationCommand::GUICallibrationCommand(CalibrationConfiguration configuration, uint8_t mode)
     : GUICommand(10, GUICommandType::CALIBRATION),
       mode_(mode),
       calibrationConfiguration_(configuration)
@@ -35,12 +35,12 @@ string GUICallibrationCommand::getName()
     return string("GUICallibrationCommand");
 }
 
-CallibrationConfiguration GUICallibrationCommand::getCalibrationConfiguration() const
+CalibrationConfiguration GUICallibrationCommand::getCalibrationConfiguration() const
 {
     return calibrationConfiguration_;
 }
 
-void GUICallibrationCommand::setCalibrationConfiguration(const CallibrationConfiguration &status)
+void GUICallibrationCommand::setCalibrationConfiguration(const CalibrationConfiguration &status)
 {
     calibrationConfiguration_ = status;
 }

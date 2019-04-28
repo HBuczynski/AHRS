@@ -88,6 +88,15 @@ void ResponseHandlerVisitor::visit(BITsResponse& data)
     }
 }
 
+void ResponseHandlerVisitor::visit(CalibrateAccelerometerResponse& data)
+{
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received CalibrateAccelerometerResponse.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
 void ResponseHandlerVisitor::initializeMessageQueue()
 {
     try

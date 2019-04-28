@@ -31,11 +31,11 @@ namespace gui
         void setPlaneDataset(const std::string& planeDataset) noexcept;
         const std::string& getPlaneDataset() const noexcept;
 
-        void setMainCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept;
-        void setRedundantCallibrationParameters(const communication::CallibrationConfiguration& paramteres) noexcept;
+        void setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept;
+        void setRedundantCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept;
 
-        const communication::CallibrationConfiguration& getMainCallibrationParameters() const noexcept;
-        const communication::CallibrationConfiguration& getRedundantCallibrationParameters() const noexcept;
+        const communication::CalibrationConfiguration& getMainCallibrationParameters() const noexcept;
+        const communication::CalibrationConfiguration& getRedundantCallibrationParameters() const noexcept;
 
         void setSystemActivation() noexcept;
         bool isSystemAcitve() noexcept;
@@ -46,8 +46,8 @@ namespace gui
 
         std::atomic<bool> isAHRSActive_;
 
-        communication::CallibrationConfiguration masterCallibrationConfiguration_;
-        communication::CallibrationConfiguration redundantCallibrationConfiguration_;
+        communication::CalibrationConfiguration masterCallibrationConfiguration_;
+        communication::CalibrationConfiguration redundantCallibrationConfiguration_;
 
         std::string planeName_;
         std::string planeDataset_;

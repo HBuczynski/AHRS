@@ -10,7 +10,7 @@
 class StoryboardsHandler;
 
 
-Q_DECLARE_METATYPE(communication::CallibrationConfiguration)
+Q_DECLARE_METATYPE(communication::CalibrationConfiguration)
 
 class MainWindow : public QMainWindow
 {
@@ -33,7 +33,7 @@ public slots:
     void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs);
 
     void setPlanesDataset(QString planes);
-    void setCallibrationMode(uint8_t mode, communication::CallibrationConfiguration parameters);
+    void setCallibrationMode(uint8_t mode, communication::CalibrationConfiguration parameters);
 
 private:
     StoryboardsHandler *storyboardsHandler_;
