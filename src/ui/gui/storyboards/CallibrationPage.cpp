@@ -551,9 +551,6 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
                 buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
                 buttonNames[SwitchCode::FOURTH_SWITCH] = "BITS";
             }
-
-
-
             break;
         }
         default:
