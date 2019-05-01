@@ -74,6 +74,11 @@ void ClientThreadTCP::runListen()
         {
             const auto frame = socket_->receivePacket();
 
+//            cout << "\nFrame: " << endl;
+//            for(auto a : frame)
+//                cout << static_cast<int>(a);
+//            cout << endl;
+
             const auto command = commandFactory_.createCommand(frame);
             command->accept(commandHandler_);
 

@@ -1,11 +1,16 @@
 #include "CallibrationPage.h"
 #include "ui_CallibrationPage.h"
 
+#include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
+#include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+
 #define FIRST_STEP 0x01
 #define SECOND_STEP 0x02
 #define THIRD_STEP 0x04
 
 using namespace std;
+using namespace communication;
 using namespace peripherals;
 
 CallibrationPage::CallibrationPage(gui::PageController* controller, QWidget *parent) :
@@ -365,7 +370,7 @@ void CallibrationPage::calibrateMagnetometer()
     initialize();
 }
 
-void CallibrationPage::setEllipsoidParameters()
+void CallibrationPage:: setEllipsoidParameters()
 {
     QFont fontSmaller("Arial", 20, QFont::Bold);
     QFont fontTheSmallest("Arial", 15, QFont::Bold);
@@ -506,7 +511,7 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
         case CalibrationMode::ACCEL_ENABLE :
         {
             buttonNames[SwitchCode::FIRST_SWITCH] = "< BACK";
-            buttonNames[SwitchCode::SECOND_SWITCH] = "ENABLE";
+            buttonNames[SwitchCode::SECOND_SWITCH] = "DISABLE";
             buttonNames[SwitchCode::THIRD_SWITCH] = "APPROVE";
             buttonNames[SwitchCode::FOURTH_SWITCH] = "NEXT AXIS";
             break;
@@ -514,7 +519,7 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
         case CalibrationMode::ACCEL_DISABLE :
         {
             buttonNames[SwitchCode::FIRST_SWITCH] = "< BACK";
-            buttonNames[SwitchCode::SECOND_SWITCH] = "DISABLE";
+            buttonNames[SwitchCode::SECOND_SWITCH] = "ENABLE";
             buttonNames[SwitchCode::THIRD_SWITCH] = "APPROVE";
             buttonNames[SwitchCode::FOURTH_SWITCH] = "NEXT AXIS";
             break;
@@ -524,15 +529,15 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
             buttonNames[SwitchCode::FIRST_SWITCH] = " ";
             buttonNames[SwitchCode::SECOND_SWITCH] = " ";
             buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
-            buttonNames[SwitchCode::FOURTH_SWITCH] = "MENU";
+            buttonNames[SwitchCode::FOURTH_SWITCH] = "APPROVE";
             break;
         }
         case CalibrationMode::ELLIPSOID :
         {
             buttonNames[SwitchCode::FIRST_SWITCH] = " ";
             buttonNames[SwitchCode::SECOND_SWITCH] = " ";
-            buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
-            buttonNames[SwitchCode::FOURTH_SWITCH] = "APPROVE";
+            buttonNames[SwitchCode::THIRD_SWITCH] = " ";
+            buttonNames[SwitchCode::FOURTH_SWITCH] = "< BACK";
             break;
         }
         case CalibrationMode::ELLIPSOID_DONE :
@@ -592,7 +597,19 @@ void CallibrationPage::secondButton()
     {
         case CalibrationMode::IDLE :
         case CalibrationMode::ACCEL_ENABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::DISABLE);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ACCEL_DISABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::ENABLE);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ELLIPSOID :
         case CalibrationMode::ELLIPSOID_DONE :
         case CalibrationMode::MAGNETOMETER :
@@ -607,7 +624,19 @@ void CallibrationPage::thirdButton()
     {
         case CalibrationMode::IDLE :
         case CalibrationMode::ACCEL_ENABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::APPROVE);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ACCEL_DISABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::APPROVE);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ELLIPSOID :
         case CalibrationMode::ELLIPSOID_DONE :
             break;
@@ -627,10 +656,35 @@ void CallibrationPage::fourthButton()
             emit signalBackPage();
             break;
         case CalibrationMode::ACCEL_ENABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::NEXT_AXIS);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ACCEL_DISABLE :
+        {
+            CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::NEXT_AXIS);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         case CalibrationMode::ELLIPSOID :
+        {
+            emit signalBackPage();
+            break;
+        }
         case CalibrationMode::ELLIPSOID_DONE :
+        {
+            break;
+        }
         case CalibrationMode::MAGNETOMETER :
+        {
+            CallibrateMagnetometerCommand command(Action::APPROVE);
+            GUIWirelessComWrapperResponse response(command.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
+            break;
+        }
         default:
             break;
     }

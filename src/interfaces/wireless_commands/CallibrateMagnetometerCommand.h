@@ -23,8 +23,8 @@ namespace communication
         virtual std::string getName() override;
         virtual void accept(CommandVisitor& visitor) override;
 
-        void setPlaneStatus(Action status);
-        const Action& getPlaneStatus() const;
+        void setMagAction(Action status);
+        const Action& getMagAction() const;
 
     private:
         virtual void initializeDataSize() override;

@@ -1,6 +1,5 @@
 #include "CommandFactory.h"
 #include "InitConnectionBuilder.h"
-#include "CalibrateMagnetometerBuilder.h"
 #include "SetPlaneBuilder.h"
 #include "CollectDataBuilder.h"
 #include "EndConnectionBuilder.h"
@@ -10,8 +9,11 @@
 #include "CurrentStateBuilder.h"
 #include "PerformBITsBuilder.h"
 #include "CalibrateAccelerometerBuilder.h"
+#include "CalibrateDataBuilder.h"
+#include "CalibMagBuilder.h"
 
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 using namespace communication;
@@ -28,14 +30,17 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
 
     switch (type)
     {
+        case CommandType::CALIBRATE_MAGNETOMETER :
+            builder_ = make_unique<CalibMagBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::CALIBRATE_DATA :
+            builder_ = make_unique<CalibrateDataBuilder>();
+            return move(builder_->create(commandInBytes));
         case CommandType::INIT_CONNECTION :
             builder_ = make_unique<InitConnectionBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::PERFORM_BIT :
             builder_ = make_unique<PerformBITsBuilder>();
-            return move(builder_->create(commandInBytes));
-        case CommandType::CALIBRATE_MAGNETOMETER :
-            builder_ = make_unique<CalibrateMagnetometerBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::CALIBRATE_ACCELEROMETER :
             builder_ = make_unique<CalibrateAccelerometerBuilder>();

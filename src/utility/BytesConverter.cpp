@@ -3,6 +3,7 @@
 #include <interfaces/frame/Frame.h>
 #include <algorithm>
 #include <stdexcept>
+#include <iostream>
 
 using namespace utility;
 using namespace std;

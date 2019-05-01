@@ -45,12 +45,12 @@ void CallibrateMagnetometerCommand::accept(CommandVisitor &visitor)
     visitor.visit(*this);
 }
 
-void CallibrateMagnetometerCommand::setPlaneStatus(Action status)
+void CallibrateMagnetometerCommand::setMagAction(Action status)
 {
     status_ = status;
 }
 
-const Action &CallibrateMagnetometerCommand::getPlaneStatus() const
+const Action &CallibrateMagnetometerCommand::getMagAction() const
 {
     return status_;
 }

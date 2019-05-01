@@ -16,6 +16,7 @@ namespace main_process
 
         void visit(communication::GUIPlaneResponse& data);
         void visit(communication::GUIWindowResponse& data);
+        void visit(communication::GUIWirelessComWrapperResponse& data);
 
     private:
         UIApplicationManager* uiApplicationManager_;

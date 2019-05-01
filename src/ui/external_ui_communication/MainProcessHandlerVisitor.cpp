@@ -31,6 +31,5 @@ void MainProcessHandlerVisitor::visit(ReconnectCommand &command)
 void MainProcessHandlerVisitor::visit(SendingDataCommand &command)
 {
     auto com = wirelessCommandFactory_.createCommand(command.getDataFrame());
-
     communicationManager_->sendCommands(move(com));
 }

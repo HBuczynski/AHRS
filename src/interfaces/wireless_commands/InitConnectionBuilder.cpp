@@ -1,6 +1,7 @@
 #include "InitConnectionBuilder.h"
 #include "InitConnectionCommand.h"
 
+#include <iostream>
 #include <utility/BytesConverter.h>
 
 using namespace std;

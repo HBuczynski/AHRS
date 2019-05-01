@@ -73,7 +73,8 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + string(", action: ") +
+                                    to_string(static_cast<int>(command.getMagAction())) + std::string(" from ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
@@ -142,36 +143,7 @@ void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
 
 void CommandHandlerVisitor::visit(SetPlaneCommand &command)
 {
-    const auto planeName = command.getPlaneName();
-    const auto dataset = Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH);
-
-    //TO DO !!!!!!!!!
-    if(std::find(dataset.cbegin(), dataset.cend(), planeName) != dataset.cend())
-    {
-        CalibrationConfiguration callibration;
-        callibration.status = CalibrationStatus::START_CALIBARTION;
-        callibration.progress = 0x07;
-        callibration.accelerometer.axis = 1;
-        callibration.accelerometer.mode = 0;
-        callibration.accelerometer.maxX = 45.9876;
-        callibration.accelerometer.maxY = 145.9876;
-        callibration.accelerometer.maxZ = 435.9876;
-
-        callibration.accelerometer.minX = 5.9876;
-        callibration.accelerometer.minY = 54.9876;
-        callibration.accelerometer.minZ = 508.9876;
-
-        callibration.ellipsoid.mode = 1;
-
-        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
-    }
-    else
-    {
-        CalibrationConfiguration callibration;
-        callibration.status = CalibrationStatus::START_CALIBARTION;
-        callibration.progress = 0x01;
-        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
-    }
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
     {
@@ -195,11 +167,53 @@ void CommandHandlerVisitor::visit(PerformBITsCommand& command)
 
 void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
 {
-    //response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() + ". Action: " +
+                                    to_string(static_cast<int>(command.getAction()))+ std::string(". From ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void CommandHandlerVisitor::visit(CalibrateDataCommand& command)
+{
+//    const auto planeName = command.getPlaneName();
+//    const auto dataset = Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH);
+
+    //TO DO !!!!!!!!!
+   // if(std::find(dataset.cbegin(), dataset.cend(), planeName) != dataset.cend())
+    {
+        CalibrationConfiguration callibration;
+        callibration.status = CalibrationStatus::START_CALIBARTION;
+        callibration.progress = 0x03;
+        callibration.accelerometer.axis = 1;
+        callibration.accelerometer.mode = 1;
+        callibration.accelerometer.maxX = 45.9876;
+        callibration.accelerometer.maxY = 145.9876;
+        callibration.accelerometer.maxZ = 435.9876;
+
+        callibration.accelerometer.minX = 5.9876;
+        callibration.accelerometer.minY = 54.9876;
+        callibration.accelerometer.minZ = 508.9876;
+
+        callibration.ellipsoid.mode = 0;
+
+        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
+    }
+//    else
+//    {
+//        CalibrationConfiguration callibration;
+//        callibration.status = CalibrationStatus::START_CALIBARTION;
+//        callibration.progress = 0x01;
+//        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
+//    }
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() +
+                                    std::string(". From ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }

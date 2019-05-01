@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE( commands )
         CallibrateMagnetometerCommand command(status);
         command.getFrameBytes();
 
-        BOOST_CHECK( status == command.getPlaneStatus());
+        BOOST_CHECK( status == command.getMagAction());
         BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
         BOOST_CHECK( CommandType::CALIBRATE_MAGNETOMETER == command.getCommandType());
         BOOST_CHECK( 1 == command.getSystemVersion());

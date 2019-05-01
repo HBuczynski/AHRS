@@ -44,6 +44,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC Qt5::Core Qt5::Widgets Qt5::Gu
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hal)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC switches)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC gui_interface)

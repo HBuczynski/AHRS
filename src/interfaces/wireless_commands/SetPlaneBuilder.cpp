@@ -2,13 +2,16 @@
 #include "SetPlaneCommand.h"
 
 #include <utility/BytesConverter.h>
+#include <iostream>
 
 using namespace std;
 using namespace utility;
 using namespace communication;
 
 SetPlaneBuilder::SetPlaneBuilder()
-{}
+{
+    cout << "set connection " << endl;
+}
 
 SetPlaneBuilder::~SetPlaneBuilder()
 {}

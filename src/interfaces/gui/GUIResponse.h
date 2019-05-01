@@ -10,7 +10,8 @@ namespace communication
     enum GUIResponseType : uint8_t
     {
         SET_PLANE = 0x01,
-        WINDOWS_TYPE = 0x02
+        WINDOWS_TYPE = 0x02,
+        WRAPPER = 0x03,
     };
 
     class GUIResponse : public Frame

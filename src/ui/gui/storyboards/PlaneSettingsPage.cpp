@@ -2,7 +2,8 @@
 #include "ui_PlaneSettingsPage.h"
 
 #include <interfaces/gui/GUIPlaneResponse.h>
-
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+#include <interfaces/wireless_commands/CalibrateDataCommand.h>
 
 #include <functional>
 #include <iostream>
@@ -267,6 +268,10 @@ void PlaneSettingsPage::selectButton()
         {
             communication::GUIPlaneResponse planeResponse(planeName);
             controller_->sendToMainProcess(planeResponse.getFrameBytes());
+
+            communication::CalibrateDataCommand calibrateDataCommand;
+            communication::GUIWirelessComWrapperResponse response(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response.getFrameBytes());
 
             emit signalCallibrationPage();
             break;

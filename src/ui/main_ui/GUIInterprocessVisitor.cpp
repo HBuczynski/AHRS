@@ -49,3 +49,16 @@ void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
+
+void GUIInterprocessVisitor::visit(communication::GUIWirelessComWrapperResponse& data)
+{
+    auto commandWrapper = SendingDataCommand(data.getDataFrame());
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN-GUIInterprocessVisitor:: Received - ") + data.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+

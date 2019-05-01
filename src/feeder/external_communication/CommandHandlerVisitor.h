@@ -32,6 +32,7 @@ namespace communication
         virtual void visit(CurrentStateCommand& command) override ;
         virtual void visit(PerformBITsCommand& command) override;
         virtual void visit(CalibrateAccelerometerCommand& command) override;
+        virtual void visit(CalibrateDataCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);

@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_SUITE( factory )
         BOOST_CHECK( 1 == commandFromVec->getSystemVersion());
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
-        BOOST_CHECK( commandFromVec->getPlaneStatus() == command.getPlaneStatus());
+        BOOST_CHECK( commandFromVec->getMagAction() == command.getMagAction());
     }
 
     BOOST_AUTO_TEST_CASE( removePlaneBuilder )
