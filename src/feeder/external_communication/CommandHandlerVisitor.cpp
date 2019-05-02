@@ -28,7 +28,6 @@ using namespace boost::interprocess;
 
 extern char **environ;
 
-
 CommandHandlerVisitor::CommandHandlerVisitor()
     : sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
@@ -92,8 +91,8 @@ void CommandHandlerVisitor::visit(CalibrateDataCommand& command)
     }
 
     const auto frame = externalSharedMemory_->read();
-    ResponseFactory responseFactory;
 
+    ResponseFactory responseFactory;
     response_ = responseFactory.createCommand(frame);
 }
 

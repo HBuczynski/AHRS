@@ -302,7 +302,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magXValueMin->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magXValueMin->setFont(fontTheSmallest);
-    ui_->magXValueMin->setText("0");
+    ui_->magXValueMin->setText(to_string(currentConfiguration_.magnetometer.minX).c_str());
     ui_->magXValueMin->setAlignment(Qt::AlignLeft);
 
     ui_->magYLabelMin->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -312,7 +312,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magYValueMin->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magYValueMin->setFont(fontTheSmallest);
-    ui_->magYValueMin->setText("0");
+    ui_->magYValueMin->setText(to_string(currentConfiguration_.magnetometer.minY).c_str());
     ui_->magYValueMin->setAlignment(Qt::AlignLeft);
 
     ui_->magZLabelMin->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -322,7 +322,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magZValueMin->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magZValueMin->setFont(fontTheSmallest);
-    ui_->magZValueMin->setText("0");
+    ui_->magZValueMin->setText(to_string(currentConfiguration_.magnetometer.minZ).c_str());
     ui_->magZValueMin->setAlignment(Qt::AlignLeft);
 
     ui_->magMaxLabel->setStyleSheet("QLabel { color: rgb(255,255,255)}");
@@ -337,7 +337,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magXValueMax->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magXValueMax->setFont(fontTheSmallest);
-    ui_->magXValueMax->setText("0");
+    ui_->magXValueMax->setText(to_string(currentConfiguration_.magnetometer.maxX).c_str());
     ui_->magXValueMax->setAlignment(Qt::AlignLeft);
 
     ui_->magYLabelMax->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -347,7 +347,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magYValueMax->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magYValueMax->setFont(fontTheSmallest);
-    ui_->magYValueMax->setText("0");
+    ui_->magYValueMax->setText(to_string(currentConfiguration_.magnetometer.maxY).c_str());
     ui_->magYValueMax->setAlignment(Qt::AlignLeft);
 
     ui_->magZLabelMax->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -357,7 +357,7 @@ void CallibrationPage::setMagnetometerParameters()
 
     ui_->magZValueMax->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->magZValueMax->setFont(fontTheSmallest);
-    ui_->magZValueMax->setText("0");
+    ui_->magZValueMax->setText(to_string(currentConfiguration_.magnetometer.maxZ).c_str());
     ui_->magZValueMax->setAlignment(Qt::AlignLeft);
 }
 
@@ -372,9 +372,9 @@ void CallibrationPage::calibrateMagnetometer()
 
 void CallibrationPage:: setEllipsoidParameters()
 {
-    QFont fontSmaller("Arial", 20, QFont::Bold);
     QFont fontTheSmallest("Arial", 15, QFont::Bold);
 
+    string value;
     ui_->ellipsoidLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->ellipsoidLabel->setFont(fontTheSmallest);
     ui_->ellipsoidLabel->setText("ELLIPSOID");
@@ -385,9 +385,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_1->setText("---:");
     ui_->elLabel_1->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_11) + string(" / 200");
     ui_->elValue_1->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_1->setFont(fontTheSmallest);
-    ui_->elValue_1->setText("0 / 200");
+    ui_->elValue_1->setText(value.c_str());
     ui_->elValue_1->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_2->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -395,9 +396,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_2->setText("+--:");
     ui_->elLabel_2->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_12) + string(" / 200");
     ui_->elValue_2->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_2->setFont(fontTheSmallest);
-    ui_->elValue_2->setText("0 / 200");
+    ui_->elValue_2->setText(value.c_str());
     ui_->elValue_2->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_3->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -405,9 +407,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_3->setText("-+-:");
     ui_->elLabel_3->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_13) + string(" / 200");
     ui_->elValue_3->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_3->setFont(fontTheSmallest);
-    ui_->elValue_3->setText("0 / 200");
+    ui_->elValue_3->setText(value.c_str());
     ui_->elValue_3->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_4->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -415,9 +418,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_4->setText("++-:");
     ui_->elLabel_4->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_21) + string(" / 200");
     ui_->elValue_4->setStyleSheet("QLabel { color: rgb(255,255,255)}");
     ui_->elValue_4->setFont(fontTheSmallest);
-    ui_->elValue_4->setText("0 / 200");
+    ui_->elValue_4->setText(value.c_str());
     ui_->elValue_4->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_5->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -425,9 +429,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_5->setText("--+:");
     ui_->elLabel_5->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_22) + string(" / 200");
     ui_->elValue_5->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_5->setFont(fontTheSmallest);
-    ui_->elValue_5->setText("0 / 200");
+    ui_->elValue_5->setText(value.c_str());
     ui_->elValue_5->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_6->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -435,9 +440,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_6->setText("+-+:");
     ui_->elLabel_6->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_23) + string(" / 200");
     ui_->elValue_6->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_6->setFont(fontTheSmallest);
-    ui_->elValue_6->setText("0 / 200");
+    ui_->elValue_6->setText(value.c_str());
     ui_->elValue_6->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_7->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -445,9 +451,10 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_7->setText("-++:");
     ui_->elLabel_7->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_31) + string(" / 200");
     ui_->elValue_7->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_7->setFont(fontTheSmallest);
-    ui_->elValue_7->setText("0 / 200");
+    ui_->elValue_7->setText(value.c_str());
     ui_->elValue_7->setAlignment(Qt::AlignLeft);
 
     ui_->elLabel_8->setStyleSheet("QLabel { color: rgb(250,250,250)}");
@@ -455,10 +462,14 @@ void CallibrationPage:: setEllipsoidParameters()
     ui_->elLabel_8->setText("+++:");
     ui_->elLabel_8->setAlignment(Qt::AlignLeft);
 
+    value = to_string(currentConfiguration_.ellipsoid.quadrant_32) + string(" / 200");
     ui_->elValue_8->setStyleSheet("QLabel { color: rgb(250,250,250)}");
     ui_->elValue_8->setFont(fontTheSmallest);
-    ui_->elValue_8->setText("0 / 200");
+    ui_->elValue_8->setText(value.c_str());
     ui_->elValue_8->setAlignment(Qt::AlignLeft);
+
+
+    //TODO new quadrant !!!!!!!!!!
 }
 
 void CallibrationPage::calibrateElipsoid()

@@ -21,6 +21,7 @@ namespace telemetry
         void setPlane(const std::string& plane);
 
     private:
+        void parseIniFile();
 
         config::FeederSharedMemory sharedMemoryParameters_;
         std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;

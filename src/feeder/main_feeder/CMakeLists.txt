@@ -20,6 +20,7 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC logger)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC utility)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hsm)

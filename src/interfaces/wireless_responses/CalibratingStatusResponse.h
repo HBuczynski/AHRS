@@ -38,17 +38,18 @@ namespace communication
 
         struct
         {
-            uint16_t quadrant_1;
-            uint16_t quadrant_2;
-            uint16_t quadrant_3;
-            uint16_t quadrant_4;
-            uint16_t quadrant_5;
-            uint16_t quadrant_6;
-            uint16_t quadrant_7;
-            uint16_t quadrant_8;
+            uint16_t quadrant_11;
+            uint16_t quadrant_12;
+            uint16_t quadrant_13;
+            uint16_t quadrant_21;
+            uint16_t quadrant_22;
+            uint16_t quadrant_23;
+            uint16_t quadrant_31;
+            uint16_t quadrant_32;
+            uint16_t quadrant_33;
 
             uint8_t mode;
-        } ellipsoid;
+        }   ellipsoid;
     };
 
     class CalibratingStatusResponse final : public Response

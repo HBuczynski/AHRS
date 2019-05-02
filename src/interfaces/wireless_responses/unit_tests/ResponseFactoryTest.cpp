@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_SUITE( test )
         calibration.magnetometer.minX = 126.34;
         calibration.accelerometer.maxZ = 769.34;
         calibration.accelerometer.minZ = 3426.34;
-        calibration.ellipsoid.quadrant_8 = 3426;
+        calibration.ellipsoid.quadrant_32 = 3426;
 
         CalibratingStatusResponse response(calibration, mode);
 
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_SUITE( test )
         BOOST_CHECK( calibration.magnetometer.minX == newCallibration.magnetometer.minX);
         BOOST_CHECK( calibration.accelerometer.maxZ == newCallibration.accelerometer.maxZ);
         BOOST_CHECK( calibration.accelerometer.minZ == newCallibration.accelerometer.minZ);
-        BOOST_CHECK( calibration.ellipsoid.quadrant_8 == newCallibration.ellipsoid.quadrant_8);
+        BOOST_CHECK( calibration.ellipsoid.quadrant_32 == newCallibration.ellipsoid.quadrant_32);
         BOOST_CHECK( responseFromVec->getResponseType() == response.getResponseType());
         BOOST_CHECK( responseFromVec->getFrameBytes() == response.getFrameBytes());
         BOOST_CHECK( responseFromVec->getSystemVersion() == response.getSystemVersion());

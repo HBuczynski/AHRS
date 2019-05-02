@@ -269,6 +269,8 @@ void PlaneSettingsPage::selectButton()
             communication::GUIPlaneResponse planeResponse(planeName);
             controller_->sendToMainProcess(planeResponse.getFrameBytes());
 
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
             communication::CalibrateDataCommand calibrateDataCommand;
             communication::GUIWirelessComWrapperResponse response(calibrateDataCommand.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
