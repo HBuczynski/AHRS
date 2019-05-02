@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE( feeder )
 
     BOOST_AUTO_TEST_CASE( calibrationStatusNotification )
     {
-            CalibrationStatus status = CalibrationStatus::IN_THE_PROCESS;
+            NotificationStatus status = NotificationStatus::IN_THE_PROCESS;
             CalibrationStatusNotification notification(status);
             notification.getFrameBytes();
 

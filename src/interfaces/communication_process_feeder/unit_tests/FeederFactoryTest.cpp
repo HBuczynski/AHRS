@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_SUITE( factory )
     {
         FeederNotificationFactory factory;
 
-        CalibrationStatus status = CalibrationStatus::IN_THE_PROCESS;
+        NotificationStatus status = NotificationStatus::IN_THE_PROCESS;
 
         CalibrationStatusNotification notification(status);
 

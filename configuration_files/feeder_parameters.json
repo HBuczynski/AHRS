@@ -29,7 +29,7 @@
     {
       "externalMemoryName" : "ExternalMemoryFeeder",
       "internalMemoryName" : "InternalMemoryFeeder",
-      "size" : 100
+      "size" : 500
     },
 
     "ExecutableFiles" :

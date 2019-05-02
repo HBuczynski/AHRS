@@ -11,7 +11,13 @@ void SettingsState::runEntryEvent()
 {}
 
 void SettingsState::runExitEvent()
-{}
+{
+    if (logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- SettingsState:: Exit from - ") + getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
 
 void SettingsState::runInitEvent()
 {

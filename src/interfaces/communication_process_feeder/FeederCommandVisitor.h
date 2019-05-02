@@ -2,6 +2,7 @@
 #define AHRS_FEEDERCOMMANDVISITOR_H
 
 #include "CalibrateMgnDemandCommand.h"
+#include "FeederWirelessWrapperCommand.h"
 
 namespace communication
 {
@@ -12,6 +13,7 @@ namespace communication
         virtual ~FeederCommandVisitor(){};
 
         virtual void visit(const CalibrateMgnDemandCommand& command) = 0;
+        virtual void visit(const FeederWirelessWrapperCommand& command) = 0;
     };
 }
 

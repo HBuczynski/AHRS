@@ -63,6 +63,10 @@ void FeederScheduler::create()
 
 bool FeederScheduler::initialize()
 {
+
+    function<FeederDataContainer&()> dataCallback = bind(&ApplicationManager::getFeederDataContainer, applicationManager_.get());
+    static_pointer_cast<CalibrationState, hsm::State>(states_["CalibrationState"])->registerDataCallback(dataCallback);
+
     return applicationManager_->initialize();
 }
 

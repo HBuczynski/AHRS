@@ -331,6 +331,16 @@ void ApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
     }
 }
 
+FeederDataContainer &ApplicationManager::getFeederDataContainer()
+{
+    return dataContainer_;
+}
+
+void ApplicationManager::setPlaneName(const std::string& name) noexcept
+{
+    dataContainer_.planeName = name;
+}
+
 void ApplicationManager::restartExternalProcess()
 {
 

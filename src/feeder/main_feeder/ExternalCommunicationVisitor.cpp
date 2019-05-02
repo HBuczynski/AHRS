@@ -1,6 +1,12 @@
 #include "ExternalCommunicationVisitor.h"
 #include "ApplicationManager.h"
 
+#include "machine_state/CalibrationState.h"
+#include <interfaces/wireless_commands/CommandFactory.h>
+#include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
+#include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
+#include <interfaces/wireless_commands/SetPlaneCommand.h>
+
 using namespace std;
 using namespace main_process;
 using namespace utility;
@@ -21,6 +27,52 @@ void ExternalCommunicationVisitor::registerApplicationManager(ApplicationManager
 void ExternalCommunicationVisitor::visit(const CalibrateMgnDemandCommand &command)
 {
 
+}
+
+void ExternalCommunicationVisitor::visit(const FeederWirelessWrapperCommand& command)
+{
+    const auto frame = command.getDataFrame();
+
+    CommandFactory commandFactory;
+    auto newCommand = commandFactory.createCommand(frame);
+
+    switch (newCommand->getCommandType())
+    {
+        case CommandType::CALIBRATE_ACCELEROMETER :
+        {
+            if (appManager_->getCurrentStateName() == "CalibrationState")
+            {
+                auto state = appManager_->getState("CalibrationState");
+                auto calibrateCommand = static_pointer_cast<CalibrateAccelerometerCommand, Command>(commandFactory.createCommand(frame));
+                static_pointer_cast<CalibrationState, hsm::State>(state)->accelerometerAction(calibrateCommand->getAxis(), calibrateCommand->getAction());
+            }
+            break;
+        }
+        case CommandType::CALIBRATE_MAGNETOMETER :
+        {
+            if (appManager_->getCurrentStateName() == "CalibrationState")
+            {
+                auto state = appManager_->getState("CalibrationState");
+                static_pointer_cast<CalibrationState, hsm::State>(state)->approveMagnetometer();
+            }
+            break;
+        }
+        case CommandType::SET_PLANE_NAME :
+        {
+            auto setPlaneNameCommand = static_pointer_cast<SetPlaneCommand, Command>(commandFactory.createCommand(frame));
+            appManager_->getFeederDataContainer().planeName = setPlaneNameCommand->getPlaneName();
+
+            break;
+        }
+        default:
+            break;
+    }
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- ExternalCommInterprocessVisitor :: Received - FeederWirelessWrapperCommand.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void ExternalCommunicationVisitor::visit(const CalibrationStatusNotification &command)
@@ -48,9 +100,15 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
         case FeederStateCode::REGISTERED_USERS :
             appManager_->handleEvent("RUN_REGISTARTION");
             break;
+
         case FeederStateCode::SETTINNG :
             appManager_->handleEvent("GET_SETTINGS");
             break;
+
+        case FeederStateCode::CALLIBATION :
+            appManager_->handleEvent("RUN_CALLIBRATION");
+            break;
+
         default:
             break;
     }

@@ -1,6 +1,7 @@
 #include "FeederCommandFactory.h"
 
 #include "CalibrateMagnetometerBuilder.h"
+#include "FeederWirelessWrapperBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -19,6 +20,9 @@ std::unique_ptr<FeederCommand> FeederCommandFactory::createCommand(const std::ve
     {
         case FeederCommandType::CALIBRATE_MAGNETOMETER_DEMAND :
             builder_ = make_unique<CalibrateMagnetometerBuilder>();
+            return move(builder_->create(commandInBytes));
+        case FeederCommandType::COMMAND_WRAPPER :
+            builder_ = make_unique<FeederWirelessWrapperBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

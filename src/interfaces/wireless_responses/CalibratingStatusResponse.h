@@ -7,11 +7,11 @@ namespace communication
 {
     enum CalibrationStatus : uint8_t
     {
-        PASSED = 0x01,
-        FAILED = 0x02,
+        CALIB_PASSED = 0x01,
+        CALIB_FAILED = 0x02,
         START_CALIBARTION = 0x03,
         IS_NOT_CALIBRATED = 0x04,
-        IN_THE_PROCESS = 0x05,
+        CALIB_IN_THE_PROCESS = 0x05,
         IS_CALIBRATED = 0x06
     };
 

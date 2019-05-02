@@ -17,6 +17,7 @@ namespace main_process
 
         void registerApplicationManager(ApplicationManager *appManager);
         virtual void visit(const communication::CalibrateMgnDemandCommand& command) override ;
+        virtual void visit(const communication::FeederWirelessWrapperCommand& command) override;
         virtual void visit(const communication::CalibrationStatusNotification& command) override;
         virtual void visit(const communication::StateNotification& command) override;
 

@@ -7,8 +7,8 @@ using namespace std;
 using namespace hsm;
 
 HSM::HSM(const string& name, const TransitionTable &transitionTable, shared_ptr<State> rootState)
-:     NAME(name),
-      transitionTable_(transitionTable),
+:     transitionTable_(transitionTable),
+      NAME(name),
       nextState_(nullptr),
       sourceState_(nullptr),
       currentState_(nullptr),
@@ -66,6 +66,16 @@ void HSM::handleEvent(const std::string &eventName) noexcept
             }
         }
     }
+}
+
+const string& HSM::getCurrentStateName() const noexcept
+{
+    return currentState_->getName();
+}
+
+std::shared_ptr<State> HSM::getState(const std::string& id) noexcept
+{
+    return transitionTable_.getState(id);
 }
 
 void HSM::tracePathToTargetState()

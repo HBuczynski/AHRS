@@ -1,6 +1,7 @@
 #include "CommandHandlerVisitor.h"
 
 #include <interfaces/communication_process_feeder/StateNotification.h>
+#include <interfaces/communication_process_feeder/FeederWirelessWrapperCommand.h>
 #include <interfaces/wireless_responses/DataResponse.h>
 #include <interfaces/wireless_responses/AckResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
@@ -8,6 +9,7 @@
 #include <interfaces/wireless_measurement_commands/ImuData.h>
 #include <interfaces/wireless_responses/CurrentStateResponse.h>
 #include <interfaces/wireless_responses/BITsResponse.h>
+#include <interfaces/wireless_responses/ResponseFactory.h>
 
 #include <feeder/external_communication/ClientThreadTCP.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
@@ -16,14 +18,20 @@
 #include <iostream>
 #include <algorithm>
 
+#include <utility/BytesConverter.h>
+
 using namespace std;
 using namespace config;
 using namespace utility;
 using namespace communication;
 using namespace boost::interprocess;
 
+extern char **environ;
+
+
 CommandHandlerVisitor::CommandHandlerVisitor()
-    :  logger_(Logger::getInstance())
+    : sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
+      logger_(Logger::getInstance())
 {}
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
@@ -51,11 +59,8 @@ void CommandHandlerVisitor::visit(InitConnectionCommand &command)
     response_ = std::make_unique<PlanesDatasetResponse>(getPlanesDataset());
 }
 
-void CommandHandlerVisitor::visit(EndConnectionCommand &command)
+void CommandHandlerVisitor::visit(SetPlaneCommand &command)
 {
-    clientUDPManager_->removeClient(currentClient_->getID());
-    currentClient_->stopListen();
-
     response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
@@ -64,11 +69,36 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    // Send information to main process about plane state.
+    auto wrapper = FeederWirelessWrapperCommand(command.getFrameBytes());
+    auto wrapperPacket = wrapper.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(wrapperPacket);
+
+    // Send information to main process to change state.
+    auto notification = StateNotification(FeederStateCode::CALLIBATION);
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
+}
+
+void CommandHandlerVisitor::visit(CalibrateDataCommand& command)
+{
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() +
+                                    std::string(". From ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    const auto frame = externalSharedMemory_->read();
+    ResponseFactory responseFactory;
+
+    response_ = responseFactory.createCommand(frame);
 }
 
 void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
 {
-
     response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
@@ -80,74 +110,15 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
     }
 }
 
-void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
-{
-//    switch (clientUDPManager_->getCurrentState())
-//    {
-//
-//
-//    }
 
-    //TODO
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
-{
-//    clientUDPManager_->startDataSending();
-
-//    if(clientUDPManager_->getCurrentState() == FeederExternalStateCode::MASTER_SENDING)
-//    {
-//        response_ = std::make_unique<AckResponse>(AckType::OK);
-//    }
-//    else
-//    {
-//        response_ = std::make_unique<AckResponse>(AckType::FAIL);
-//    }
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void CommandHandlerVisitor::visit(CurrentStateCommand &command)
-{
-    //response_ = std::make_unique<CurrentStateResponse>(clientUDPManager_->getCurrentState());
-
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-}
-
-void CommandHandlerVisitor::visit(CollectDataCommand &command)
-{
-
-}
-
-void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
-{
-
-}
-
-void CommandHandlerVisitor::visit(SetPlaneCommand &command)
+void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
 {
     response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() + ". Action: " +
+                                    to_string(static_cast<int>(command.getAction()))+ std::string(". From ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
@@ -165,58 +136,57 @@ void CommandHandlerVisitor::visit(PerformBITsCommand& command)
     }
 }
 
-void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
+void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
 {
-    response_ = std::make_unique<AckResponse>(AckType::OK);
-
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() + ". Action: " +
-                                    to_string(static_cast<int>(command.getAction()))+ std::string(". From ClientID -") +
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
-void CommandHandlerVisitor::visit(CalibrateDataCommand& command)
+void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 {
-//    const auto planeName = command.getPlaneName();
-//    const auto dataset = Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH);
+    clientUDPManager_->removeClient(currentClient_->getID());
+    currentClient_->stopListen();
 
-    //TO DO !!!!!!!!!
-   // if(std::find(dataset.cbegin(), dataset.cend(), planeName) != dataset.cend())
-    {
-        CalibrationConfiguration callibration;
-        callibration.status = CalibrationStatus::START_CALIBARTION;
-        callibration.progress = 0x03;
-        callibration.accelerometer.axis = 1;
-        callibration.accelerometer.mode = 1;
-        callibration.accelerometer.maxX = 45.9876;
-        callibration.accelerometer.maxY = 145.9876;
-        callibration.accelerometer.maxZ = 435.9876;
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 
-        callibration.accelerometer.minX = 5.9876;
-        callibration.accelerometer.minY = 54.9876;
-        callibration.accelerometer.minZ = 508.9876;
-
-        callibration.ellipsoid.mode = 0;
-
-        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
-    }
-//    else
-//    {
-//        CalibrationConfiguration callibration;
-//        callibration.status = CalibrationStatus::START_CALIBARTION;
-//        callibration.progress = 0x01;
-//        response_ = make_unique<CalibratingStatusResponse>(callibration, 1);
-//    }
     if(logger_.isInformationEnable())
     {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received - ") + command.getName() +
-                                    std::string(". From ClientID -") +
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
+{
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void CommandHandlerVisitor::visit(CurrentStateCommand &command)
+{
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void CommandHandlerVisitor::visit(CollectDataCommand &command)
+{
+}
+
+void CommandHandlerVisitor::visit(RemovePlaneDataCommand &command)
+{
 }
 
 std::unique_ptr<Response> CommandHandlerVisitor::getResponse()
@@ -246,6 +216,28 @@ std::string CommandHandlerVisitor::getPlanesDataset()
     }
 
     return nameMsg.substr(0, nameMsg.size() - 1);
+}
+
+void CommandHandlerVisitor::initializeExternalSharedMemory()
+{
+    try
+    {
+        externalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.externalMemoryName);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if (logger_.isErrorEnable())
+        {
+            const std::string message = std::string("-EXTCOMM- CommandHandlerVisitor:: External SharedMemory: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOMM- CommandHandlerVisitor :: External shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 

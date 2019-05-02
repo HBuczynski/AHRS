@@ -710,10 +710,10 @@ string CallibrationPage::getCallibrationStatus(communication::CalibrationStatus 
 {
     switch (status)
     {
-        case communication::CalibrationStatus::PASSED :
+        case communication::CalibrationStatus::CALIB_PASSED :
             return string("PASSED");
 
-        case communication::CalibrationStatus::FAILED :
+        case communication::CalibrationStatus::CALIB_FAILED :
             return string("FAILED");
 
         case communication::CalibrationStatus::START_CALIBARTION :
@@ -722,7 +722,7 @@ string CallibrationPage::getCallibrationStatus(communication::CalibrationStatus 
         case communication::CalibrationStatus::IS_NOT_CALIBRATED :
             return string("IS NOT CALIBRATED");
 
-        case communication::CalibrationStatus::IN_THE_PROCESS :
+        case communication::CalibrationStatus::CALIB_IN_THE_PROCESS :
             return string("IS CALIBRATING");
 
         case communication::CalibrationStatus::IS_CALIBRATED :

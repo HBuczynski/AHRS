@@ -19,6 +19,8 @@
 #include "ExternalCommunicationVisitor.h"
 #include "InternalCommunicationVisitor.h"
 
+#include "FeederDataContainer.h"
+
 namespace main_process
 {
     class ApplicationManager : public hsm::HSM
@@ -29,6 +31,9 @@ namespace main_process
 
         bool initialize();
 
+        FeederDataContainer& getFeederDataContainer();
+        void setPlaneName(const std::string& name) noexcept;
+
         void startFeederSystem();
         void stopFeederSystem();
 
@@ -36,6 +41,7 @@ namespace main_process
         bool initializeMainQueue();
         bool initializeExternalQueue();
         bool initializeInternalQueue();
+        bool initializeCalibrationSharedMemory();
 
         bool initializeExternalSharedMemory();
         bool initializeInternalSharedMemory();
@@ -50,6 +56,7 @@ namespace main_process
         void handleCommand(const std::vector<uint8_t>& packet);
 
         std::thread processingThread_;
+        FeederDataContainer dataContainer_;
 
         std::shared_ptr<communication::MessageQueueWrapper> externalComMessageQueue;
         std::shared_ptr<communication::MessageQueueWrapper> internalComMessageQueue;

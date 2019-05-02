@@ -9,7 +9,7 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-CalibrationStatusNotification::CalibrationStatusNotification(CalibrationStatus status)
+CalibrationStatusNotification::CalibrationStatusNotification(NotificationStatus status)
     : FeederNotification(10, FeederNotificationType::CALIBRATION_STATUS_NOTIFY),
       status_(status)
 {}
@@ -41,12 +41,12 @@ string CalibrationStatusNotification::getName()
     return string("CalibrationStatusNotification");
 }
 
-CalibrationStatus CalibrationStatusNotification::getCalibrationStatus() const
+NotificationStatus CalibrationStatusNotification::getCalibrationStatus() const
 {
     return status_;
 }
 
-void CalibrationStatusNotification::setCalibrationStatus(CalibrationStatus status)
+void CalibrationStatusNotification::setCalibrationStatus(NotificationStatus status)
 {
     status_ = status;
 }

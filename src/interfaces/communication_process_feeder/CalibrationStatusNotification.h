@@ -5,7 +5,7 @@
 
 namespace communication
 {
-    enum CalibrationStatus : uint8_t
+    enum NotificationStatus : uint8_t
     {
         PASSED = 0x01,
         FAILED = 0x02,
@@ -15,20 +15,20 @@ namespace communication
     class CalibrationStatusNotification final : public FeederNotification
     {
     public:
-        CalibrationStatusNotification(CalibrationStatus status);
+        CalibrationStatusNotification(NotificationStatus status);
         ~CalibrationStatusNotification();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(FeederNotificationVisitor& visitor) override;
 
-        CalibrationStatus getCalibrationStatus() const;
-        void setCalibrationStatus(CalibrationStatus status);
+        NotificationStatus getCalibrationStatus() const;
+        void setCalibrationStatus(NotificationStatus status);
 
     private:
         virtual void initializeDataSize() override;
 
-        CalibrationStatus status_;
+        NotificationStatus status_;
 
     };
 }

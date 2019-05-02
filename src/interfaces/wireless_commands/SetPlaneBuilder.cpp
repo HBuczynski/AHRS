@@ -9,9 +9,7 @@ using namespace utility;
 using namespace communication;
 
 SetPlaneBuilder::SetPlaneBuilder()
-{
-    cout << "set connection " << endl;
-}
+{}
 
 SetPlaneBuilder::~SetPlaneBuilder()
 {}

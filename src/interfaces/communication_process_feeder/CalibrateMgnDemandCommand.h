@@ -26,4 +26,5 @@ namespace communication
         std::string planeName_;
     };
 }
+
 #endif

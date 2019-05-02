@@ -26,6 +26,7 @@ void ClientThreadTCP::initializeCommandHandler()
 {
     commandHandler_.initializeClientUDPManager(clientUDPManager_);
     commandHandler_.initializeCurrentClient(this);
+    commandHandler_.initializeExternalSharedMemory();
 }
 
 void ClientThreadTCP::setID(uint32_t id)

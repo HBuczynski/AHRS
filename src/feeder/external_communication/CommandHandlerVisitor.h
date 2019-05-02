@@ -2,13 +2,12 @@
 #define AHRS_BLACK_BOX_COMMANDHANDLER_H
 
 #include <feeder/external_communication/ClientUDPManager.h>
-#include <logger/Logger.h>
 #include <interfaces/wireless_commands/CommandVisitor.h>
 #include <interfaces/wireless_responses/Response.h>
 
-#include <boost/interprocess/ipc/message_queue.hpp>
-
 #include <config_reader/FeederParameters.h>
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
+#include <logger/Logger.h>
 #include <memory>
 
 namespace communication
@@ -35,6 +34,7 @@ namespace communication
         virtual void visit(CalibrateDataCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
+        void initializeExternalSharedMemory();
         void initializeCurrentClient(ClientThreadTCP *client);
 
         std::unique_ptr<Response> getResponse();
@@ -44,8 +44,10 @@ namespace communication
 
         ClientThreadTCP *currentClient_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
-
         std::unique_ptr<Response> response_;
+
+        config::FeederSharedMemory sharedMemoryParameters_;
+        std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;
 
         utility::Logger& logger_;
     };
