@@ -1,10 +1,11 @@
-#include "IMUCalibrator.h"
+#include "CalibrationManager.h"
 
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 #include <utility/Utility.h>
 #include <algorithm>
+#include <chrono>
 
 #include <RTIMUSettings.h>
 
@@ -17,17 +18,18 @@ using namespace boost::interprocess;
 
 extern char **environ;
 
-IMUCalibrator::IMUCalibrator()
-    : sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
+CalibrationManager::CalibrationManager()
+    : runCalibration_(false),
+      sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
 {}
 
-void IMUCalibrator::setPlane(const std::string& plane)
+void CalibrationManager::setPlane(const std::string& plane)
 {
     planeName_ = plane;
 }
 
-void IMUCalibrator::initializeExternalSharedMemory()
+void CalibrationManager::initializeExternalSharedMemory()
 {
     try
     {
@@ -37,19 +39,19 @@ void IMUCalibrator::initializeExternalSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("-MAIN- IMUCalibrator:: External SharedMemory: ") + ex.what();
+            const std::string message = std::string("-MAIN- CalibrationManager:: External SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("-MAIN- IMUCalibrator :: External shared memory has been initialized correctly.");
+        const std::string message = std::string("-MAIN- CalibrationManager :: External shared memory has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
-void IMUCalibrator::startCalibration()
+void CalibrationManager::startCalibration()
 {
     const auto dataset = Utility::getFilesNamesInDir(FEEDER_AIRCRAFTS_DATABASE_PATH);
 
@@ -59,40 +61,40 @@ void IMUCalibrator::startCalibration()
     }
     else
     {
-        calibrationConfiguration_.progress = 0x07;
-        calibrationConfiguration_.status = CalibrationStatus::IS_CALIBRATED;
+        runCalibration_ = true;
+        calibrationThread_ = thread(&CalibrationManager::run, this);
 
-        calibrationConfiguration_.accelerometer.mode = 1;
-        calibrationConfiguration_.accelerometer.axis = 3;
-        calibrationConfiguration_.accelerometer.maxX = 23;
-        calibrationConfiguration_.accelerometer.maxY = 34;
-        calibrationConfiguration_.accelerometer.maxZ = 34;
-        calibrationConfiguration_.accelerometer.minX = 134;
-        calibrationConfiguration_.accelerometer.minY = 45;
-        calibrationConfiguration_.accelerometer.minZ = 34;
-
-        calibrationConfiguration_.magnetometer.maxX = 54.05;
-        calibrationConfiguration_.magnetometer.maxY = 54.05;
-        calibrationConfiguration_.magnetometer.maxZ = 54.05;
-        calibrationConfiguration_.magnetometer.minX = 54.05;
-        calibrationConfiguration_.magnetometer.minY = 54.05;
-        calibrationConfiguration_.magnetometer.minZ = 54.05;
+        if (logger_.isInformationEnable())
+        {
+            const std::string message = std::string("-MAIN- CalibrationManager :: Started new calibration thread.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
     }
-
-    CalibratingStatusResponse response(calibrationConfiguration_, 1);
-    auto packet = response.getFrameBytes();
-
-    cout << "IMU Calib: " << calibrationConfiguration_.magnetometer.maxX << endl;
-
-    externalSharedMemory_->write(packet);
 }
 
-void IMUCalibrator::parseIniFile()
+void CalibrationManager::stopCalibration()
+{
+    runCalibration_ = false;
+    if(calibrationThread_.joinable())
+    {
+        calibrationThread_.join();
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- CalibrationManager :: Stopped calibration thread.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void CalibrationManager::parseIniFile()
 {
     const string path = config::FEEDER_AIRCRAFTS_DATABASE_PATH + planeName_;
     RTIMUSettings calibParam(path.c_str());
 
     calibParam.loadSettings();
+
+    communication::CalibrationConfiguration calibrationConfiguration_;
 
     calibrationConfiguration_.progress = 0x07;
     calibrationConfiguration_.status = CalibrationStatus::IS_CALIBRATED;
@@ -123,4 +125,51 @@ void IMUCalibrator::parseIniFile()
     calibrationConfiguration_.ellipsoid.quadrant_31 = calibParam.m_compassCalEllipsoidCorr[2][0];
     calibrationConfiguration_.ellipsoid.quadrant_32 = calibParam.m_compassCalEllipsoidCorr[2][1];
     calibrationConfiguration_.ellipsoid.quadrant_33 = calibParam.m_compassCalEllipsoidCorr[2][2];
+
+    saveInMemory(calibrationConfiguration_);
+}
+
+void CalibrationManager::accelerometerAction(uint8_t axis, communication::AccelAction action)
+{
+    switch (action)
+    {
+    case AccelAction::APPROVE :
+        imuCalibrator_.approveAccelAxis(axis);
+        break;
+    case AccelAction::DISABLE :
+        imuCalibrator_.disableAccelAxis(axis);
+        break;
+    case AccelAction::ENABLE :
+        imuCalibrator_.enableAccelAxis(axis);
+        break;
+    case AccelAction::NEXT_AXIS :
+        imuCalibrator_.nextAccelAxis();
+        break;
+    default:
+        break;
+    }
+}
+
+void CalibrationManager::approveMagnetometer()
+{
+    imuCalibrator_.approveMagnetometer();
+}
+
+void CalibrationManager::run()
+{
+    while (runCalibration_)
+    {
+        imuCalibrator_.calibrateDevice();
+        saveInMemory(imuCalibrator_.getConfiguration());
+
+        this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void CalibrationManager::saveInMemory(const communication::CalibrationConfiguration& config)
+{
+    CalibratingStatusResponse response(config, 1);
+    auto packet = response.getFrameBytes();
+
+    externalSharedMemory_->write(packet);
 }

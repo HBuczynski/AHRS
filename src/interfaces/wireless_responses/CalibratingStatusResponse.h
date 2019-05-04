@@ -27,6 +27,7 @@ namespace communication
             float minZ, maxZ;
             uint8_t axis;
             uint8_t mode;
+            uint8_t approved;
         } accelerometer;
 
         struct

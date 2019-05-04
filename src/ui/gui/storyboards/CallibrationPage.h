@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include <time_manager/TimerInterrupt.h>
 #include <QWidget>
 #include "Buttons.h"
 #include "../PageController.h"
@@ -13,7 +14,7 @@ namespace Ui {
 class CallibrationPage;
 }
 
-class CallibrationPage : public QWidget
+class CallibrationPage : public QWidget, public utility::TimerInterruptNotification
 {
     Q_OBJECT
 
@@ -38,6 +39,8 @@ signals:
     void signalBackPage();
 
 private:
+    void interruptNotification(timer_t timerID) override;
+
     void setupMaster();
     void setupRedundant();
 
@@ -63,6 +66,7 @@ private:
     std::string getAxisName(uint8_t axis);
     std::string getCallibrationStatus(communication::CalibrationStatus status);
 
+    utility::TimerInterrupt timerInterrupt_;
     uint8_t mode_;
     communication::CalibrationConfiguration currentConfiguration_;
 
@@ -70,6 +74,8 @@ private:
     Ui::CallibrationPage *ui_;
     gui::PageController* controller_;
     std::unique_ptr<Buttons> buttons_;
+
+    const uint16_t USER_UPDATE_INTERVAL_MS = 1000;
 };
 
 #endif

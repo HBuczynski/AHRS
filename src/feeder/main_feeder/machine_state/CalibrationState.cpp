@@ -5,7 +5,6 @@
 #include <utility/BytesConverter.h>
 
 using namespace std;
-using namespace config;
 using namespace utility;
 
 
@@ -17,7 +16,9 @@ void CalibrationState::runEntryEvent()
 {}
 
 void CalibrationState::runExitEvent()
-{}
+{
+    calibrationManager_.stopCalibration();
+}
 
 void CalibrationState::runInitEvent()
 {
@@ -27,10 +28,9 @@ void CalibrationState::runInitEvent()
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    cout << "Plane name: " << getFeederData_().planeName << endl;
-    imuCalibrator_.setPlane(getFeederData_().planeName);
-    imuCalibrator_.initializeExternalSharedMemory();
-    imuCalibrator_.startCalibration();
+    calibrationManager_.setPlane(getFeederData_().planeName);
+    calibrationManager_.initializeExternalSharedMemory();
+    calibrationManager_.startCalibration();
 }
 
 void CalibrationState::registerDataCallback(function<FeederDataContainer&()> getFeederData)
@@ -38,12 +38,12 @@ void CalibrationState::registerDataCallback(function<FeederDataContainer&()> get
     getFeederData_ = getFeederData;
 }
 
-void CalibrationState::accelerometerAction(uint8_t axis, communication::AccelAction)
+void CalibrationState::accelerometerAction(uint8_t axis, communication::AccelAction action)
 {
-    cout << "Calib accel" << endl;
+    calibrationManager_.accelerometerAction(axis, action);
 }
 
 void CalibrationState::approveMagnetometer()
 {
-    cout << "Approve Mag" << endl;
+    calibrationManager_.approveMagnetometer();
 }

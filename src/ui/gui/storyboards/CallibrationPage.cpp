@@ -3,6 +3,7 @@
 
 #include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
+#include <interfaces/wireless_commands/CalibrateDataCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 
 #define FIRST_STEP 0x01
@@ -22,11 +23,20 @@ CallibrationPage::CallibrationPage(gui::PageController* controller, QWidget *par
 {
     ui_->setupUi(this);
     setupPage(mode_);
+    timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
 }
 
 CallibrationPage::~CallibrationPage()
 {
+    timerInterrupt_.stop();
     delete ui_;
+}
+
+void CallibrationPage::interruptNotification(timer_t timerID)
+{
+    CalibrateDataCommand calibrateDataCommand;
+    GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+    controller_->sendToMainProcess(response2.getFrameBytes());
 }
 
 void CallibrationPage::setupPage(uint8_t mode)
@@ -45,6 +55,11 @@ void CallibrationPage::setupPage(uint8_t mode)
     {
         currentConfiguration_ = controller_->getRedundantCallibrationParameters();
         setupRedundant();
+    }
+
+    if(currentConfiguration_.status == CalibrationStatus::IS_CALIBRATED)
+    {
+        timerInterrupt_.stop();
     }
 }
 
@@ -268,12 +283,18 @@ void CallibrationPage::calibrateAccelerometer()
     if(currentConfiguration_.accelerometer.mode == 1)
     {
         string text = "Note: Axis - " + getAxisName(currentConfiguration_.accelerometer.axis) + " is enabled.";
+        if(currentConfiguration_.accelerometer.approved)
+            text += string(" Approved.");
+
         currentMode_ = CalibrationMode::ACCEL_ENABLE;
         ui_->noteLabel->setText(text.c_str());
     }
     else
     {
         string text = "Note: Axis - " + getAxisName(currentConfiguration_.accelerometer.axis) + " is disbaled.";
+        if(currentConfiguration_.accelerometer.approved)
+            text += string(" Approved.");
+
         currentMode_ = CalibrationMode::ACCEL_DISABLE;
         ui_->noteLabel->setText(text.c_str());
     }
@@ -619,6 +640,13 @@ void CallibrationPage::secondButton()
             CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::ENABLE);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         case CalibrationMode::ELLIPSOID :
@@ -634,11 +662,19 @@ void CallibrationPage::thirdButton()
     switch (currentMode_)
     {
         case CalibrationMode::IDLE :
+            break;
         case CalibrationMode::ACCEL_ENABLE :
         {
             CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::APPROVE);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         case CalibrationMode::ACCEL_DISABLE :
@@ -646,10 +682,19 @@ void CallibrationPage::thirdButton()
             CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::APPROVE);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         case CalibrationMode::ELLIPSOID :
+            break;
         case CalibrationMode::ELLIPSOID_DONE :
+            emit signalBackPage();
             break;
         case CalibrationMode::MAGNETOMETER :
             emit signalBackPage();
@@ -664,13 +709,22 @@ void CallibrationPage::fourthButton()
     switch (currentMode_)
     {
         case CalibrationMode::IDLE :
+        {
             emit signalBackPage();
             break;
+        }
         case CalibrationMode::ACCEL_ENABLE :
         {
             CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::NEXT_AXIS);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         case CalibrationMode::ACCEL_DISABLE :
@@ -678,6 +732,13 @@ void CallibrationPage::fourthButton()
             CalibrateAccelerometerCommand command(currentConfiguration_.accelerometer.axis, AccelAction::NEXT_AXIS);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         case CalibrationMode::ELLIPSOID :
@@ -694,6 +755,13 @@ void CallibrationPage::fourthButton()
             CallibrateMagnetometerCommand command(Action::APPROVE);
             GUIWirelessComWrapperResponse response(command.getFrameBytes());
             controller_->sendToMainProcess(response.getFrameBytes());
+
+            this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            CalibrateDataCommand calibrateDataCommand;
+            GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
+            controller_->sendToMainProcess(response2.getFrameBytes());
+
             break;
         }
         default:

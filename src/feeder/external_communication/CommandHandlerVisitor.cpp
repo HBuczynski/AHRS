@@ -107,6 +107,11 @@ void CommandHandlerVisitor::visit(CallibrateMagnetometerCommand &command)
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    // Send information to main process about plane state.
+    auto wrapper = FeederWirelessWrapperCommand(command.getFrameBytes());
+    auto wrapperPacket = wrapper.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(wrapperPacket);
 }
 
 
@@ -121,6 +126,11 @@ void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    // Send information to main process about plane state.
+    auto wrapper = FeederWirelessWrapperCommand(command.getFrameBytes());
+    auto wrapperPacket = wrapper.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(wrapperPacket);
 }
 
 void CommandHandlerVisitor::visit(PerformBITsCommand& command)
