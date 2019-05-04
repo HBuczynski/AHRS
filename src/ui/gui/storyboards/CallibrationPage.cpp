@@ -57,8 +57,10 @@ void CallibrationPage::setupPage(uint8_t mode)
         setupRedundant();
     }
 
+    //TODO: Update after redundant state.
     if(currentConfiguration_.status == CalibrationStatus::IS_CALIBRATED)
     {
+        controller_->setBITSActive();
         timerInterrupt_.stop();
     }
 }
@@ -524,6 +526,7 @@ void CallibrationPage::initialize()
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalBackPage()), controller_, SLOT(backToPreviousPage()));
+    QObject::connect(this, SIGNAL(signalBITSPage()), controller_, SLOT(setBITSPage()));
 }
 
 map<SwitchCode, string> CallibrationPage::configureButtons()
@@ -579,7 +582,7 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
                 buttonNames[SwitchCode::FIRST_SWITCH] = " ";
                 buttonNames[SwitchCode::SECOND_SWITCH] = " ";
                 buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
-                buttonNames[SwitchCode::FOURTH_SWITCH] = "RDNT";
+                buttonNames[SwitchCode::FOURTH_SWITCH] = "BITS";
             }
             else
             {
@@ -748,6 +751,7 @@ void CallibrationPage::fourthButton()
         }
         case CalibrationMode::ELLIPSOID_DONE :
         {
+            emit signalBITSPage();
             break;
         }
         case CalibrationMode::MAGNETOMETER :

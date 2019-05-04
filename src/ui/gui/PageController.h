@@ -27,7 +27,7 @@ namespace gui
         virtual void setMenuPage() = 0;
         virtual void setConnectingPage() = 0;
         virtual void setCallibrationPage() = 0;
-        virtual void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) = 0;
+        virtual void setBITSPage() = 0;
 
         virtual void setPlaneName(const std::string& name) = 0;
         virtual const std::string& getPlaneName() = 0;
@@ -46,6 +46,9 @@ namespace gui
 
         virtual bool isSystemActive() = 0;
         virtual void setSystemActivation() = 0;
+
+        virtual bool areBITSActive() = 0;
+        virtual void setBITSActive() = 0;
     };
 }
 

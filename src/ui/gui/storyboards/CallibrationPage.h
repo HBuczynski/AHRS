@@ -37,6 +37,7 @@ public:
 
 signals:
     void signalBackPage();
+    void signalBITSPage();
 
 private:
     void interruptNotification(timer_t timerID) override;

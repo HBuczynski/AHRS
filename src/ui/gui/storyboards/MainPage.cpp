@@ -47,11 +47,6 @@ void MainPage::setupPage()
         ui_->ahrsLabel->setText("AHRS");
         ui_->ahrsLabel->setAlignment(Qt::AlignCenter);
 
-        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
-        ui_->bitLabel->setFont(font2);
-        ui_->bitLabel->setText("BITS INFO");
-        ui_->bitLabel->setAlignment(Qt::AlignCenter);
-
         ui_->notesLabel->setStyleSheet("QLabel { color: rgb(255,0, 0)}");
         ui_->notesLabel->setFont(font3);
         ui_->notesLabel->setText("");
@@ -64,15 +59,25 @@ void MainPage::setupPage()
         ui_->ahrsLabel->setText("AHRS");
         ui_->ahrsLabel->setAlignment(Qt::AlignCenter);
 
-        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");
-        ui_->bitLabel->setFont(font2);
-        ui_->bitLabel->setText("BITS INFO");
-        ui_->bitLabel->setAlignment(Qt::AlignCenter);
-
         ui_->notesLabel->setStyleSheet("QLabel { color: rgb(255,0, 0)}");
         ui_->notesLabel->setFont(font3);
         ui_->notesLabel->setText("NOTE: Set appropriate plane settings !!");
         ui_->notesLabel->setAlignment(Qt::AlignLeft);
+    }
+
+    if(controller_->areBITSActive())
+    {
+        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
+        ui_->bitLabel->setFont(font2);
+        ui_->bitLabel->setText("BITS INFO");
+        ui_->bitLabel->setAlignment(Qt::AlignCenter);
+    }
+    else
+    {
+        ui_->bitLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");
+        ui_->bitLabel->setFont(font2);
+        ui_->bitLabel->setText("BITS INFO");
+        ui_->bitLabel->setAlignment(Qt::AlignCenter);
     }
 
     ui_->planeLabel->setStyleSheet("QLabel { color: rgb(255,255, 255)}");
@@ -110,7 +115,7 @@ void MainPage::initialize()
     QObject::connect(this, SIGNAL(signalBackPage()), controller_, SLOT(backToPreviousPage()));
     QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
     QObject::connect(this, SIGNAL(signalPlaneSettingsPage()), controller_, SLOT(setPlaneSettingPage()));
-    QObject::connect(this, SIGNAL(signalBitsInfoPage()), controller_, SLOT(setPlaneSettingPage()));
+    QObject::connect(this, SIGNAL(signalBitsInfoPage()), controller_, SLOT(setBITSPage()));
     QObject::connect(this, SIGNAL(signalExitPage()), controller_, SLOT(setExitPage()));
 }
 
@@ -143,7 +148,15 @@ void MainPage::secondButton()
         tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
 
     const auto type = static_cast<MainPageOptions>(tempNumber);
-    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS))
+    {
+        tempNumber += 1;
+
+        if(tempNumber >= MAX_OPTIONS_NUMBER)
+            tempNumber = tempNumber % MAX_OPTIONS_NUMBER;
+    }
+
+    if(!controller_->areBITSActive() && ( type == MainPageOptions::BITS_INFO))
     {
         tempNumber += 1;
 
@@ -163,7 +176,15 @@ void MainPage::thirdButton()
 
     const auto type = static_cast<MainPageOptions>(tempNumber);
 
-    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS || type == MainPageOptions::BITS_INFO))
+    if(!controller_->isSystemActive() && (type == MainPageOptions::AHRS))
+    {
+        tempNumber -= 1;
+
+        if(tempNumber<0)
+            tempNumber += MAX_OPTIONS_NUMBER;
+    }
+
+    if(!controller_->areBITSActive() && (type == MainPageOptions::BITS_INFO))
     {
         tempNumber -= 1;
 

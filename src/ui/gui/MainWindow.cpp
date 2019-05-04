@@ -65,9 +65,9 @@ void MainWindow::setConnectingPage()
     storyboardsHandler_->setConnectingPage();
 }
 
-void MainWindow::setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
+void MainWindow::setBITSPage()
 {
-    storyboardsHandler_->setInformationPage(master, redundant, masterBITs, redundantBITs);
+    storyboardsHandler_->setBITSPage();
 }
 
 void MainWindow::setPlanesDataset(QString planes)

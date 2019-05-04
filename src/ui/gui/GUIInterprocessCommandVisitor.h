@@ -29,7 +29,7 @@ namespace gui
         void signalEstablishingConnection();
         void signalSettingPage();
         void signalMenuPage();
-        void signalInformationPage(uint8_t, uint8_t, uint8_t, uint8_t);
+        void signalBITSPage();
         void signalPlanesDataset(QString);
         void signalCallibrationMode(uint8_t, communication::CalibrationConfiguration);
 

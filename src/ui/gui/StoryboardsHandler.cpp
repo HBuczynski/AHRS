@@ -15,11 +15,9 @@ StoryboardsHandler::StoryboardsHandler()
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       previousPage_(PagesType::WELCOME_PAGE),
       currentPage_(PagesType::WELCOME_PAGE),
-      informationParameters_(42,42,42,42),
       logger_(Logger::getInstance())
 {
     inititalizeMessageQueue();
-
     initializeStoryboardsContainer();
 }
 
@@ -293,7 +291,7 @@ void StoryboardsHandler::setConnectingPage()
     previousWidget_ = connectingPage_;
 }
 
-void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
+void StoryboardsHandler::setBITSPage()
 {
     if(previousWidget_)
     {
@@ -304,58 +302,13 @@ void StoryboardsHandler::setInformationPage(uint8_t master, uint8_t redundant, u
         delete previousWidget_;
     }
 
-    informationPage_ = new InformationPage(this);
-    informationPage_->resize(QSize(1024, 600));
+    bitsPage_ = new InformationPage(this);
+    bitsPage_->resize(QSize(1024, 600));
+    bitsPage_->initialize();
 
-    if(master == 1 && masterBITs == 1 )//&& redundant ==1 && redundantBITs ==1)
-    {
-        informationPage_->initializeContinue();
-    }
-    else
-    {
-        informationPage_->initializeExit();
-    }
 
-    if(master == 1)
-    {
-        informationPage_->setMasterConnectionEstablished();
-    }
-    else if (master == 0)
-    {
-        informationPage_->setMasterConnectionFailed();
-    }
-
-    if(redundant == 1)
-    {
-        informationPage_->setSecondaryConnectionEstablished();
-    }
-    else if (redundant == 0)
-    {
-        informationPage_->setSecondaryConnectionFailed();
-    }
-
-    if(masterBITs == 1)
-    {
-        informationPage_->setBITSMaster();
-    }
-    else if (masterBITs == 0)
-    {
-        informationPage_->setBITSMasterFailed();
-    }
-
-    if(redundantBITs == 1)
-    {
-        informationPage_->setBITSRedundant();
-    }
-    else if (redundantBITs == 0)
-    {
-        informationPage_->setBITRedundantFailed();
-    }
-
-    informationParameters_= make_tuple(master, redundant, masterBITs, redundantBITs);
-
-    gridLayout_2->addWidget(informationPage_);
-    previousWidget_ = informationPage_;
+    gridLayout_2->addWidget(bitsPage_);
+    previousWidget_ = bitsPage_;
 }
 
 void StoryboardsHandler::sendToMainProcess(vector<uint8_t> msg)
@@ -470,4 +423,14 @@ bool StoryboardsHandler::isSystemActive()
 void StoryboardsHandler::setSystemActivation()
 {
     guiDataManager_.setSystemActivation();
+}
+
+bool StoryboardsHandler::areBITSActive()
+{
+    return guiDataManager_.areBITSActive();
+}
+
+void StoryboardsHandler::setBITSActive()
+{
+    guiDataManager_.setBITSActivation();
 }

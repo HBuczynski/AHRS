@@ -90,43 +90,24 @@ void InformationPage::pageSetup()
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
-void InformationPage::initializeExit()
+void InformationPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "";
     buttonNames[SwitchCode::SECOND_SWITCH] = "";
-    buttonNames[SwitchCode::THIRD_SWITCH] = "";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "EXIT";
+    buttonNames[SwitchCode::THIRD_SWITCH] = "MAIN";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "AHRS";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
     callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&InformationPage::secondButton, this);
     callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&InformationPage::thirdButton, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::exitButton, this);
-
-    initializeButtons(buttonNames, callbackFunctions);
-
-    QObject::connect(this, SIGNAL(signalExitPage()), controller_, SLOT(setExitPage()));
-}
-
-void InformationPage::initializeContinue()
-{
-    map<SwitchCode, string> buttonNames;
-    buttonNames[SwitchCode::FIRST_SWITCH] = "";
-    buttonNames[SwitchCode::SECOND_SWITCH] = "";
-    buttonNames[SwitchCode::THIRD_SWITCH] = "";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "CONTINUE";
-
-    map<SwitchCode, function<void()> > callbackFunctions;
-    callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
-    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&InformationPage::secondButton, this);
-    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&InformationPage::thirdButton, this);
-    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::continueButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&InformationPage::fourthButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalAHRSPage()), controller_, SLOT(setAHRSPage()));
-    QObject::connect(this, SIGNAL(signalExitPage()), controller_, SLOT(setExitPage()));
+    QObject::connect(this, SIGNAL(signalMainPage()), controller_, SLOT(setMenuPage()));
     QObject::connect(this, SIGNAL(signalStartAcquisition(std::vector<uint8_t>)), controller_, SLOT(sendToMainProcess(std::vector<uint8_t>)));
 }
 
@@ -226,13 +207,10 @@ void InformationPage::thirdButton()
 
 }
 
-void InformationPage::exitButton()
+void InformationPage::fourthButton()
 {
-    emit signalExitPage();
-}
+    emit signalMainPage();
 
-void InformationPage::continueButton()
-{
     communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
     auto packet = command.getFrameBytes();
     controller_->sendToMainProcess(packet);

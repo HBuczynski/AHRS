@@ -40,11 +40,14 @@ namespace gui
         void setSystemActivation() noexcept;
         bool isSystemAcitve() noexcept;
 
+        void setBITSActivation() noexcept;
+        bool areBITSActive() noexcept;
 
     private:
         BitsInformation bitsInformation_;
 
         std::atomic<bool> isAHRSActive_;
+        std::atomic<bool> areBITSActive_;
 
         communication::CalibrationConfiguration masterCallibrationConfiguration_;
         communication::CalibrationConfiguration redundantCallibrationConfiguration_;

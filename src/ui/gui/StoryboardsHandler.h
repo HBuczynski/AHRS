@@ -57,7 +57,7 @@ public slots:
     void setMenuPage() override;
     void setConnectingPage() override;
     void setCallibrationPage() override;
-    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
+    void setBITSPage() override;
 
     void setPlaneName(const std::string& name) override;
     const std::string& getPlaneName() override;
@@ -76,6 +76,9 @@ public slots:
 
     bool isSystemActive() override;
     void setSystemActivation() override;
+
+    bool areBITSActive();
+    void setBITSActive();
 
 private:
 
@@ -97,7 +100,7 @@ private:
     WelcomePage* welcomePage_;
     SystemSetupPage* systemSetupPage_;
     PlaneSettingsPage* planeSettings_;
-    InformationPage* informationPage_;
+    InformationPage* bitsPage_;
     ConnectingPage* connectingPage_;
     CallibrationPage* callibrationPage_;
 
@@ -111,7 +114,6 @@ private:
     PagesType previousPage_;
     PagesType currentPage_;
     std::map<PagesType, std::function<void()> > storyboardsContainer_;
-    std::tuple<uint8_t, uint8_t, uint8_t, uint8_t> informationParameters_;
 
     utility::Logger& logger_;
 };

@@ -23,8 +23,7 @@ public:
     explicit InformationPage(gui::PageController *controller, QWidget *parent = 0);
     ~InformationPage();
 
-    void initializeExit();
-    void initializeContinue();
+    void initialize();
 
     void setMasterConnectionEstablished();
     void setMasterConnectionFailed();
@@ -37,7 +36,7 @@ public:
 
 signals:
     void signalAHRSPage();
-    void signalExitPage();
+    void signalMainPage();
     void signalStartAcquisition(std::vector<uint8_t>);
 
 private:
@@ -48,8 +47,7 @@ private:
     void firstButton();
     void secondButton();
     void thirdButton();
-    void exitButton();
-    void continueButton();
+    void fourthButton();
 
     gui::PageController *controller_;
     std::unique_ptr<Buttons> buttons_;

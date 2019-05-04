@@ -49,6 +49,16 @@ bool GUIDataManager::isSystemAcitve() noexcept
     return isAHRSActive_;
 }
 
+void GUIDataManager::setBITSActivation() noexcept
+{
+    areBITSActive_ = true;
+}
+
+bool GUIDataManager::areBITSActive() noexcept
+{
+    return areBITSActive_;
+}
+
 void GUIDataManager::setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept
 {
     masterCallibrationConfiguration_ = paramteres;

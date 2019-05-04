@@ -30,7 +30,7 @@ public slots:
     void setLogsPage();
     void setMenuPage();
     void setConnectingPage();
-    void setInformationPage(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs);
+    void setBITSPage();
 
     void setPlanesDataset(QString planes);
     void setCallibrationMode(uint8_t mode, communication::CalibrationConfiguration parameters);
