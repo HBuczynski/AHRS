@@ -2,6 +2,7 @@
 
 using namespace gui;
 using namespace std;
+using namespace communication;
 
 GUIDataManager::GUIDataManager()
     : bitsInformation_({0}),

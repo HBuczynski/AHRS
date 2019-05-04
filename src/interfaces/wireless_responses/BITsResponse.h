@@ -6,27 +6,35 @@
 
 namespace communication
 {
+    struct BitsInformation
+    {
+        uint8_t mode;
+        uint8_t m_communication;
+        uint8_t m_imu;
+        uint8_t m_gps;
+
+        uint8_t r_communication;
+        uint8_t r_imu;
+        uint8_t r_gps;
+    };
+
     class BITsResponse final : public Response
     {
     public:
-        BITsResponse(uint8_t state, config::UICommunicationMode systemMode);
+        BITsResponse(const BitsInformation& bits);
         ~BITsResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(ResponseVisitor& visitor) override;
 
-        uint8_t getState() const;
-        void setState(uint8_t state);
-
-        config::UICommunicationMode getSystemMode() const;
-        void setSystemMode(config::UICommunicationMode systemMode);
+        const BitsInformation& getBits() const;
+        void setBITs(const BitsInformation& bits);
 
     private:
         virtual void initializeDataSize() override;
 
-        uint8_t state_;
-        config::UICommunicationMode systemMode_;
+        BitsInformation bits_;
     };
 }
 

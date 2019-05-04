@@ -381,6 +381,7 @@ void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfigur
     }
 }
 
+//TODO - change master
 void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setRedundantCallibrationParameters(paramteres);
@@ -401,18 +402,19 @@ const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationPara
     return guiDataManager_.getRedundantCallibrationParameters();
 }
 
-void StoryboardsHandler::setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs)
+void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformation)
 {
-    gui::BitsInformation bitsInformation = {master, redundant, masterBITs, redundantBITs};
-
     guiDataManager_.setBitsInformation(bitsInformation);
+
+    if(currentPage_ == PagesType::INFORMATION_PAGE && bitsPage_)
+    {
+        bitsPage_->update();
+    }
 }
 
-tuple<uint8_t , uint8_t , uint8_t, uint8_t> StoryboardsHandler::getBitsInformation()
+const BitsInformation &StoryboardsHandler::getBitsInformation()
 {
-    const auto bitsInformation = guiDataManager_.getBitsInformation();
-
-    return make_tuple(bitsInformation.master, bitsInformation.redundant, bitsInformation.masterBITS, bitsInformation.redundantBITS);
+    return guiDataManager_.getBitsInformation();
 }
 
 bool StoryboardsHandler::isSystemActive()

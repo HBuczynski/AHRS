@@ -1,13 +1,15 @@
 #include "BITsResponse.h"
 #include "ResponseVisitor.h"
 
+#include <utility/BytesConverter.h>
+
 using namespace std;
+using namespace utility;
 using namespace communication;
 
-BITsResponse::BITsResponse(uint8_t state, config::UICommunicationMode systemMode)
+BITsResponse::BITsResponse(const BitsInformation &bits)
         : Response(10, ResponseType::BITs_STATUS),
-          state_(state),
-          systemMode_(systemMode)
+          bits_(bits)
 { }
 
 BITsResponse::~BITsResponse()
@@ -19,8 +21,9 @@ vector<uint8_t> BITsResponse::getFrameBytes()
 
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(responseType_));
-    frame.push_back(state_);
-    frame.push_back(static_cast<uint8_t>(systemMode_));
+
+    const auto bitsInBytes = BytesConverter::appendStructToVectorOfUINT8(bits_);
+    frame.insert(frame.end(), bitsInBytes.begin(), bitsInBytes.end());
 
     return frame;
 }
@@ -35,31 +38,20 @@ void BITsResponse::accept(ResponseVisitor &visitor)
     visitor.visit(*this);
 }
 
-uint8_t BITsResponse::getState() const
+const BitsInformation &BITsResponse::getBits() const
 {
-    return state_;
+    return bits_;
 }
 
-void BITsResponse::setState(uint8_t state)
+void BITsResponse::setBITs(const BitsInformation &bits)
 {
-    state_ = state;
-}
-
-config::UICommunicationMode BITsResponse::getSystemMode() const
-{
-    return systemMode_;
-}
-
-void BITsResponse::setSystemMode(config::UICommunicationMode systemMode)
-{
-    systemMode_ = systemMode;
+    bits_ = bits;
 }
 
 void BITsResponse::initializeDataSize()
 {
     uint16_t dataSize = sizeof(responseType_);
-    dataSize += sizeof(systemMode_);
-    dataSize += sizeof(state_);
+    dataSize += sizeof(bits_);
 
     setDataSize(dataSize);
 }

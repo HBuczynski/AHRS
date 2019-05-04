@@ -7,6 +7,7 @@
 #include <memory>
 #include <vector>
 
+#include <interfaces/wireless_responses/BITsResponse.h>
 #include "Buttons.h"
 
 
@@ -24,16 +25,22 @@ public:
     ~InformationPage();
 
     void initialize();
+    void update();
 
     void setMasterConnectionEstablished();
     void setMasterConnectionFailed();
     void setSecondaryConnectionEstablished();
     void setSecondaryConnectionFailed();
-    void setBITSMaster();
-    void setBITSMasterFailed();
-    void setBITSRedundant();
-    void setBITRedundantFailed();
 
+    void setGPSMaster();
+    void setGPSMasterFailed();
+    void setGPSRedundant();
+    void setGPSRedundantFailed();
+
+    void setIMUMaster();
+    void setIMUSMasterFailed();
+    void setIMURedundant();
+    void setIMURedundantFailed();
 signals:
     void signalAHRSPage();
     void signalMainPage();
@@ -48,6 +55,8 @@ private:
     void secondButton();
     void thirdButton();
     void fourthButton();
+
+    communication::BitsInformation bitsInformation_;
 
     gui::PageController *controller_;
     std::unique_ptr<Buttons> buttons_;

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <vector>
 
+#include "GUIDataManager.h"
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 
 namespace gui
@@ -41,8 +42,8 @@ namespace gui
         virtual const communication::CalibrationConfiguration& getMainCallibrationParameters() = 0;
         virtual const communication::CalibrationConfiguration& getRedundantCallibrationParameters() = 0;
 
-        virtual void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) = 0;
-        virtual std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() = 0;
+        virtual void setBitsInformation(const communication::BitsInformation& bitsInformation) = 0;
+        virtual const communication::BitsInformation& getBitsInformation() = 0;
 
         virtual bool isSystemActive() = 0;
         virtual void setSystemActivation() = 0;

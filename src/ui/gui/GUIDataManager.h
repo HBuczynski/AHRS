@@ -6,24 +6,17 @@
 #include <atomic>
 
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
+#include <interfaces/wireless_responses/BITsResponse.h>
 
 namespace gui
 {
-    struct BitsInformation
-    {
-        uint8_t master;
-        uint8_t redundant;
-        uint8_t masterBITS;
-        uint8_t redundantBITS;
-    };
-
     class GUIDataManager
     {
     public:
         GUIDataManager();
 
-        void setBitsInformation(const BitsInformation& bitsInformation) noexcept;
-        const BitsInformation& getBitsInformation() const noexcept;
+        void setBitsInformation(const communication::BitsInformation& bitsInformation) noexcept;
+        const communication::BitsInformation& getBitsInformation() const noexcept;
 
         void setPlaneName(const std::string& name) noexcept;
         const std::string& getPlaneName() const noexcept;
@@ -44,7 +37,7 @@ namespace gui
         bool areBITSActive() noexcept;
 
     private:
-        BitsInformation bitsInformation_;
+        communication::BitsInformation bitsInformation_;
 
         std::atomic<bool> isAHRSActive_;
         std::atomic<bool> areBITSActive_;

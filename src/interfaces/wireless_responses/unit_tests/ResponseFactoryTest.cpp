@@ -6,6 +6,7 @@
 #include "../ResponseFactory.h"
 #include "../DataResponse.h"
 #include "../AckResponse.h"
+#include "../BITsResponse.h"
 #include "../CalibratingStatusResponse.h"
 #include "../PlanesDatasetResponse.h"
 
@@ -114,6 +115,28 @@ BOOST_AUTO_TEST_SUITE( test )
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
         BOOST_CHECK(commandFromVec->getDataset() == command.getDataset());
+    }
+
+    BOOST_AUTO_TEST_CASE( bitsBuilder )
+    {
+        ResponseFactory factory;
+        BitsInformation info;
+        info.m_communication = 98;
+        info.m_gps = 123;
+
+        BITsResponse command(info);
+        auto commandFromVec = static_pointer_cast<BITsResponse, Response>(factory.createCommand(command.getFrameBytes()));
+
+        const auto tempInfo = commandFromVec->getBits();
+
+        BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
+        BOOST_CHECK( commandFromVec->getFrameType() == command.getFrameType());
+        BOOST_CHECK( commandFromVec->getResponseType() == command.getResponseType());
+        BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
+        BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
+        BOOST_CHECK( commandFromVec->getName() == command.getName());
+        BOOST_CHECK(info.m_communication == tempInfo.m_communication);
+        BOOST_CHECK(info.m_gps == tempInfo.m_gps);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -5,11 +5,11 @@
 
 namespace communication
 {
-    class GUIInformationWindowBuilder final : public GUICommandBuilder
+    class GUIBITSBuilder final : public GUICommandBuilder
     {
     public:
-        GUIInformationWindowBuilder();
-        ~GUIInformationWindowBuilder();
+        GUIBITSBuilder();
+        ~GUIBITSBuilder();
 
         std::unique_ptr<GUICommand> create(const std::vector<uint8_t> &commandInBytes) override;
     };

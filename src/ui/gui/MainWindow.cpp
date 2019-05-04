@@ -12,6 +12,7 @@ MainWindow::MainWindow( QWidget *parent ) :
     storyboardsHandler_( new StoryboardsHandler )
 {
     qRegisterMetaType<communication::CalibrationConfiguration>();
+    qRegisterMetaType<communication::BitsInformation>();
     storyboardsHandler_->setupUi( this );
 }
 
@@ -65,9 +66,9 @@ void MainWindow::setConnectingPage()
     storyboardsHandler_->setConnectingPage();
 }
 
-void MainWindow::setBITSPage()
+void MainWindow::setBITSPage(communication::BitsInformation info)
 {
-    storyboardsHandler_->setBITSPage();
+    storyboardsHandler_->setBitsInformation(info);
 }
 
 void MainWindow::setPlanesDataset(QString planes)

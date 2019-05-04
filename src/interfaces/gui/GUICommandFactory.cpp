@@ -2,7 +2,7 @@
 
 #include "GUIWindowBuilder.h"
 #include "GUIPlanesSetBuilder.h"
-#include "GUIInformationWindowBuilder.h"
+#include "GUIBITSBuilder.h"
 #include "GUICallibrationBuilder.h"
 
 using namespace std;
@@ -27,7 +27,7 @@ unique_ptr<GUICommand> GUICommandFactory::createCommand(const vector<uint8_t> &c
             builder_ = make_unique<GUIPlanesSetBuilder>();
             return move(builder_->create(commandInBytes));
         case GUICommandType::INFORMATION_WINDOW :
-            builder_ = make_unique<GUIInformationWindowBuilder>();
+            builder_ = make_unique<GUIBITSBuilder>();
             return move(builder_->create(commandInBytes));
         case GUICommandType::CALIBRATION :
             builder_ = make_unique<GUICallibrationBuilder>();

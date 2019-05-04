@@ -3,6 +3,8 @@
 
 #include <interfaces/gui/GUIPlanesSetCommand.h>
 #include <interfaces/gui/GUICallibrationCommand.h>
+#include <interfaces/gui/GUIBITSCommand.h>
+#include <interfaces/wireless_responses/BITsResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 
@@ -52,6 +54,14 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
 
             GUIPlanesSetCommand guiCommand(planes);
             uiApplicationManager_->sendToGUIProcess(guiCommand.getFrameBytes());
+            break;
+        }
+        case ResponseType::BITs_STATUS :
+        {
+            const auto bits = static_pointer_cast<BITsResponse, Response>(responseFactory.createCommand(command.getData()));
+
+            GUIBITSCommand bitsCommand(bits->getBits());
+            uiApplicationManager_->sendToGUIProcess(bitsCommand.getFrameBytes());
             break;
         }
         default :

@@ -4,7 +4,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../GUIWindowCommand.h"
-#include "../GUIInformationWindowCommand.h"
+#include "../GUIBITSCommand.h"
 #include "../GUIPlanesSetCommand.h"
 #include "../GUICommandFactory.h"
 
@@ -35,13 +35,13 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
     BOOST_AUTO_TEST_CASE( informationSet )
     {
         GUICommandFactory factory;
-        uint8_t master =1;
-        uint8_t redundant = 1;
-        uint8_t bitsMaster = 1;
-        uint8_t bitsRedundant = 1;
+        BitsInformation info;
+        info.mode = 23;
+        info.m_communication = 43;
 
-        GUIInformationWindowCommand command(master, redundant, bitsMaster, bitsRedundant);
-        auto commandFromVec = static_pointer_cast<GUIInformationWindowCommand, GUICommand>(factory.createCommand(command.getFrameBytes()));
+        GUIBITSCommand command(info);
+        auto commandFromVec = static_pointer_cast<GUIBITSCommand, GUICommand>(factory.createCommand(command.getFrameBytes()));
+        const auto temp = commandFromVec->getBitsInfo();
 
         BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
         BOOST_CHECK( commandFromVec->getFrameType() == command.getFrameType());
@@ -49,9 +49,8 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
         BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
-        BOOST_CHECK(commandFromVec->getBitsMaster() == command.getBitsMaster());
-        BOOST_CHECK( commandFromVec->getMasterConnection() == command.getMasterConnection());
-        BOOST_CHECK( commandFromVec->getRedundantConnection() == command.getRedundantConnection());
+        BOOST_CHECK( info.mode == temp.mode );
+        BOOST_CHECK( info.m_communication == temp.m_communication );
     }
 
     BOOST_AUTO_TEST_CASE( planesSet )

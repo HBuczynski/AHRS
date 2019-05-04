@@ -20,7 +20,7 @@ namespace gui
         GUIInterprocessCommandVisitor(std::shared_ptr<MainWindow> mainWindow);
 
         void visit(communication::GUIWindowCommand& command) override;
-        void visit(communication::GUIInformationWindowCommand& command) override;
+        void visit(communication::GUIBITSCommand& command) override;
         void visit(communication::GUIPlanesSetCommand& command) override;
         void visit(communication::GUICallibrationCommand& command) override;
 
@@ -29,7 +29,7 @@ namespace gui
         void signalEstablishingConnection();
         void signalSettingPage();
         void signalMenuPage();
-        void signalBITSPage();
+        void signalBITSPage(communication::BitsInformation);
         void signalPlanesDataset(QString);
         void signalCallibrationMode(uint8_t, communication::CalibrationConfiguration);
 

@@ -1,6 +1,6 @@
 #include "UIApplicationManager.h"
 
-#include <interfaces/gui/GUIInformationWindowCommand.h>
+#include <interfaces/gui/GUIBITSCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/gui/GUIWindowCommand.h>

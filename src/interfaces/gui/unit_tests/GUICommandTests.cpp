@@ -4,7 +4,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../GUIWindowCommand.h"
-#include "../GUIInformationWindowCommand.h"
+#include "../GUIBITSCommand.h"
 
 using namespace std;
 using namespace communication;
@@ -28,19 +28,22 @@ BOOST_AUTO_TEST_SUITE( command )
 
     BOOST_AUTO_TEST_CASE( informationWindow )
     {
-            uint8_t master =1;
-            uint8_t redundant = 1;
-            uint8_t bitsMaster = 1;
-            uint8_t bitsRedundant = 1;
+            BitsInformation info;
+            info.mode = 23;
+            info.m_communication = 43;
 
-            GUIInformationWindowCommand command(master, redundant, bitsMaster, bitsRedundant);
+            GUIBITSCommand command(info);
             command.getFrameBytes();
+
+            const auto temp = command.getBitsInfo();
             
             BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
             BOOST_CHECK( GUICommandType::INFORMATION_WINDOW == command.getCommandType());
             BOOST_CHECK( 1 == command.getSystemVersion());
-            BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(master) + sizeof(redundant) + sizeof(bitsMaster) + sizeof(bitsRedundant) ) == command.getDataSize()));
-            BOOST_CHECK( "GUIInformationWindowCommand" == command.getName());
+            BOOST_CHECK( info.mode == temp.mode);
+            BOOST_CHECK( info.m_communication == temp.m_communication);
+            BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(info)) == command.getDataSize()));
+            BOOST_CHECK( "GUIBITSCommand" == command.getName());
     }
 
 

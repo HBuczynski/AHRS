@@ -135,7 +135,11 @@ void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
 
 void CommandHandlerVisitor::visit(PerformBITsCommand& command)
 {
-    response_ = std::make_unique<BITsResponse>(1, UICommunicationMode::MASTER);
+    BitsInformation info;
+    info.mode = 1;
+    info.m_communication = 25;
+
+    response_ = std::make_unique<BITsResponse>(info);
 
     if(logger_.isInformationEnable())
     {

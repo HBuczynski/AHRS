@@ -6,11 +6,13 @@
 #include <QTime>
 
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
+#include <interfaces/wireless_responses/BITsResponse.h>
 
 class StoryboardsHandler;
 
 
 Q_DECLARE_METATYPE(communication::CalibrationConfiguration)
+Q_DECLARE_METATYPE(communication::BitsInformation)
 
 class MainWindow : public QMainWindow
 {
@@ -30,8 +32,8 @@ public slots:
     void setLogsPage();
     void setMenuPage();
     void setConnectingPage();
-    void setBITSPage();
 
+    void setBITSPage(communication::BitsInformation info);
     void setPlanesDataset(QString planes);
     void setCallibrationMode(uint8_t mode, communication::CalibrationConfiguration parameters);
 

@@ -2,6 +2,9 @@
 #include "ui_InformationPage.h"
 #include <interfaces/gui/GUIWindowResponse.h>
 
+#define PASSED 25
+#define FAILED 42
+
 using namespace std;
 using namespace utility;
 using namespace peripherals;
@@ -13,6 +16,7 @@ InformationPage::InformationPage(gui::PageController *controller, QWidget *paren
 {
     ui_->setupUi(this);
     pageSetup();
+    update();
 
     qRegisterMetaType<std::vector<uint8_t>>("std::vector<uint8_t>");
 }
@@ -28,63 +32,96 @@ void InformationPage::pageSetup()
     this->setStyleSheet("background-color:black;");
 
     QFont font("Arial", 30, QFont::Bold);
+    QFont labelFont("Arial", 20, QFont::Bold);
+    QFont sqareFont("Arial", 22, QFont::Bold);
+
     ui_->titleLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->titleLabel->setFont(font);
-    ui_->titleLabel->setText("INFO");
+    ui_->titleLabel->setText("BITS");
     ui_->titleLabel->setAlignment(Qt::AlignCenter);
 
-    QFont labelFont("Arial", 15, QFont::Bold);
-    ui_->lefLabel->setStyleSheet("QLabel { color : white}");
-    ui_->lefLabel->setFont(labelFont);
-    ui_->lefLabel->setText("CONNECTION MASTER");
+
+    ui_->masterLabel->setStyleSheet("QLabel { color : rgb(51,255,0)}");
+    ui_->masterLabel->setFont(labelFont);
+    ui_->masterLabel->setText("MASTER");
+
+    ui_->m_comLabel->setStyleSheet("QLabel { color : white}");
+    ui_->m_comLabel->setFont(labelFont);
+    ui_->m_comLabel->setText("COMMUNICATION");
 
     ui_->dotsLabel->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel->setFont(labelFont);
     ui_->dotsLabel->setText("...........................................................................................................................................");
 
-    QFont sqareFont("Arial", 22, QFont::Bold);
-    ui_->rightLabel->setStyleSheet("QLabel { color : white}");
-    ui_->rightLabel->setFont(sqareFont);
-    ui_->rightLabel->setText("\u25FB\u25FB\u25FB");
+    ui_->m_comValue->setStyleSheet("QLabel { color : white}");
+    ui_->m_comValue->setFont(sqareFont);
+    ui_->m_comValue->setText("\u25FB\u25FB\u25FB");
 
-    ui_->lefLabel_2->setStyleSheet("QLabel { color : white}");
-    ui_->lefLabel_2->setFont(labelFont);
-    ui_->lefLabel_2->setText("CONNECTION SECONDARY");
+    ui_->m_imuLabel->setStyleSheet("QLabel { color : white}");
+    ui_->m_imuLabel->setFont(labelFont);
+    ui_->m_imuLabel->setText("IMU");
 
     ui_->dotsLabel_2->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel_2->setFont(labelFont);
-    ui_->dotsLabel_2->setText(".........................................................................................................................");
+    ui_->dotsLabel_2->setText("...........................................................................................................................................");
 
-    ui_->rightLabel_2->setStyleSheet("QLabel { color : white}");
-    ui_->rightLabel_2->setFont(sqareFont);
-    ui_->rightLabel_2->setText("\u25FB\u25FB\u25FB");
+    ui_->m_imuValue->setStyleSheet("QLabel { color : white}");
+    ui_->m_imuValue->setFont(sqareFont);
+    ui_->m_imuValue->setText("\u25FB\u25FB\u25FB");
 
-    ui_->lefLabel_3->setStyleSheet("QLabel { color : white}");
-    ui_->lefLabel_3->setFont(labelFont);
-    ui_->lefLabel_3->setText("BITS MASTER");
+    ui_->m_gpsLabel->setStyleSheet("QLabel { color : white}");
+    ui_->m_gpsLabel->setFont(labelFont);
+    ui_->m_gpsLabel->setText("GPS");
 
     ui_->dotsLabel_3->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel_3->setFont(labelFont);
-    ui_->dotsLabel_3->setText("............................................................................................................................."
-                              "..................................................................");
+    ui_->dotsLabel_3->setText("...........................................................................................................................................");
 
-    ui_->rightLabel_3->setStyleSheet("QLabel { color : white}");
-    ui_->rightLabel_3->setFont(sqareFont);
-    ui_->rightLabel_3->setText("\u25FB\u25FB\u25FB");
+    ui_->m_gpsValue->setStyleSheet("QLabel { color : white}");
+    ui_->m_gpsValue->setFont(sqareFont);
+    ui_->m_gpsValue->setText("\u25FB\u25FB\u25FB");
 
-    ui_->lefLabel_5->setStyleSheet("QLabel { color : white}");
-    ui_->lefLabel_5->setFont(labelFont);
-    ui_->lefLabel_5->setText("BITS REDUNDANT");
+
+
+    ui_->redundantLabel->setStyleSheet("QLabel { color : rgb(51,255,0)}");
+    ui_->redundantLabel->setFont(labelFont);
+    ui_->redundantLabel->setText("REDUNDANT");
+
+    ui_->r_comLabel->setStyleSheet("QLabel { color : white}");
+    ui_->r_comLabel->setFont(labelFont);
+    ui_->r_comLabel->setText("COMMUNICATION");
+
+    ui_->dotsLabel_7->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabel_7->setFont(labelFont);
+    ui_->dotsLabel_7->setText("...........................................................................................................................................");
+
+    ui_->r_comValue->setStyleSheet("QLabel { color : white}");
+    ui_->r_comValue->setFont(sqareFont);
+    ui_->r_comValue->setText("\u25FB\u25FB\u25FB");
+
+    ui_->r_imuLabel->setStyleSheet("QLabel { color : white}");
+    ui_->r_imuLabel->setFont(labelFont);
+    ui_->r_imuLabel->setText("IMU");
 
     ui_->dotsLabel_5->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel_5->setFont(labelFont);
-    ui_->dotsLabel_5->setText("............................................................................................................................."
-                              "..................................................................");
+    ui_->dotsLabel_5->setText("...........................................................................................................................................");
 
-    ui_->rightLabel_5->setStyleSheet("QLabel { color : white}");
-    ui_->rightLabel_5->setFont(sqareFont);
-    ui_->rightLabel_5->setText("\u25FB\u25FB\u25FB");
+    ui_->r_imuValue->setStyleSheet("QLabel { color : white}");
+    ui_->r_imuValue->setFont(sqareFont);
+    ui_->r_imuValue->setText("\u25FB\u25FB\u25FB");
 
+    ui_->r_gpsLabel->setStyleSheet("QLabel { color : white}");
+    ui_->r_gpsLabel->setFont(labelFont);
+    ui_->r_gpsLabel->setText("GPS");
+
+    ui_->dotsLabel_6->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabel_6->setFont(labelFont);
+    ui_->dotsLabel_6->setText("...........................................................................................................................................");
+
+    ui_->r_gpsValue->setStyleSheet("QLabel { color : white}");
+    ui_->r_gpsValue->setFont(sqareFont);
+    ui_->r_gpsValue->setText("\u25FB\u25FB\u25FB");
 
     buttons_ = make_unique<Buttons>(this);
     ui_->buttonLayout->addWidget(buttons_.get());
@@ -93,10 +130,21 @@ void InformationPage::pageSetup()
 void InformationPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
-    buttonNames[SwitchCode::FIRST_SWITCH] = "";
-    buttonNames[SwitchCode::SECOND_SWITCH] = "";
-    buttonNames[SwitchCode::THIRD_SWITCH] = "MAIN";
-    buttonNames[SwitchCode::FOURTH_SWITCH] = "AHRS";
+
+    if(bitsInformation_.mode == 1)
+    {
+        buttonNames[SwitchCode::FIRST_SWITCH] = "";
+        buttonNames[SwitchCode::SECOND_SWITCH] = "";
+        buttonNames[SwitchCode::THIRD_SWITCH] = "MAIN";
+        buttonNames[SwitchCode::FOURTH_SWITCH] = "<AHRS>";
+    }
+    else
+    {
+        buttonNames[SwitchCode::FIRST_SWITCH] = "";
+        buttonNames[SwitchCode::SECOND_SWITCH] = "";
+        buttonNames[SwitchCode::THIRD_SWITCH] = " ";
+        buttonNames[SwitchCode::FOURTH_SWITCH] = "MAIN";
+    }
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&InformationPage::firstButton, this);
@@ -119,101 +167,177 @@ void InformationPage::initializeButtons(map<SwitchCode, string> name, map<Switch
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
+void InformationPage::update()
+{
+    bitsInformation_ = controller_->getBitsInformation();
+
+    if (bitsInformation_.m_communication == PASSED)
+        setMasterConnectionEstablished();
+    if (bitsInformation_.m_communication == FAILED)
+        setMasterConnectionFailed();
+    if (bitsInformation_.r_communication == PASSED)
+        setSecondaryConnectionEstablished();
+    if (bitsInformation_.r_communication == FAILED)
+        setSecondaryConnectionFailed();
+
+    if (bitsInformation_.m_gps == PASSED)
+        setGPSMaster();
+    if (bitsInformation_.m_gps == FAILED)
+        setGPSMasterFailed();
+    if (bitsInformation_.r_gps == PASSED)
+        setGPSRedundant();
+    if (bitsInformation_.r_gps == FAILED)
+        setGPSRedundantFailed();
+
+    if (bitsInformation_.m_imu == PASSED)
+        setIMUMaster();
+    if (bitsInformation_.m_imu == FAILED)
+        setIMUSMasterFailed();
+    if (bitsInformation_.r_imu == PASSED)
+        setIMURedundant();
+    if (bitsInformation_.r_imu == FAILED)
+        setIMURedundantFailed();
+
+    initialize();
+}
+
 void InformationPage::setMasterConnectionEstablished()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel->setStyleSheet("QLabel { color: rgb(51,255,0)}");
-    ui_->rightLabel->setFont(sqareFont);
-    ui_->rightLabel->setText("TRUE");
-    ui_->rightLabel->setAlignment(Qt::AlignLeft);
+    ui_->m_comValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->m_comValue->setFont(sqareFont);
+    ui_->m_comValue->setText("TRUE");
+    ui_->m_comValue->setAlignment(Qt::AlignLeft);
 }
 
 void InformationPage::setMasterConnectionFailed()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel->setStyleSheet("QLabel { color: red}");
-    ui_->rightLabel->setFont(sqareFont);
-    ui_->rightLabel->setText("FALSE");
-    ui_->rightLabel->setAlignment(Qt::AlignLeft);
+    ui_->m_comValue->setStyleSheet("QLabel { color: red}");
+    ui_->m_comValue->setFont(sqareFont);
+    ui_->m_comValue->setText("FALSE");
+    ui_->m_comValue->setAlignment(Qt::AlignLeft);
 }
 
 void InformationPage::setSecondaryConnectionEstablished()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_2->setStyleSheet("QLabel { color: rgb(51,255,0)}");
-    ui_->rightLabel_2->setFont(sqareFont);
-    ui_->rightLabel_2->setText("TRUE");
-    ui_->rightLabel_2->setAlignment(Qt::AlignLeft);
+    ui_->r_comValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->r_comValue->setFont(sqareFont);
+    ui_->r_comValue->setText("TRUE");
+    ui_->r_comValue->setAlignment(Qt::AlignLeft);
 }
 
 void InformationPage::setSecondaryConnectionFailed()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_2->setStyleSheet("QLabel { color: red}");
-    ui_->rightLabel_2->setFont(sqareFont);
-    ui_->rightLabel_2->setText("FALSE");
-    ui_->rightLabel_2->setAlignment(Qt::AlignLeft);
+    ui_->r_comValue->setStyleSheet("QLabel { color: red}");
+    ui_->r_comValue->setFont(sqareFont);
+    ui_->r_comValue->setText("FALSE");
+    ui_->r_comValue->setAlignment(Qt::AlignLeft);
 }
 
-void InformationPage::setBITSMaster()
+void InformationPage::setGPSMaster()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_3->setStyleSheet("QLabel { color: rgb(51,255,0)}");
-    ui_->rightLabel_3->setFont(sqareFont);
-    ui_->rightLabel_3->setText("TRUE");
-    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);
+    ui_->m_gpsValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->m_gpsValue->setFont(sqareFont);
+    ui_->m_gpsValue->setText("TRUE");
+    ui_->m_gpsValue->setAlignment(Qt::AlignLeft);
 }
 
-void InformationPage::setBITSMasterFailed()
+void InformationPage::setGPSMasterFailed()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_3->setStyleSheet("QLabel { color: red}");
-    ui_->rightLabel_3->setFont(sqareFont);
-    ui_->rightLabel_3->setText("FALSE");
-    ui_->rightLabel_3->setAlignment(Qt::AlignLeft);
+    ui_->m_gpsValue->setStyleSheet("QLabel { color: red}");
+    ui_->m_gpsValue->setFont(sqareFont);
+    ui_->m_gpsValue->setText("FALSE");
+    ui_->m_gpsValue->setAlignment(Qt::AlignLeft);
 }
 
 
-void InformationPage::setBITSRedundant()
+void InformationPage::setGPSRedundant()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_5->setStyleSheet("QLabel { color: rgb(51,255,0)}");
-    ui_->rightLabel_5->setFont(sqareFont);
-    ui_->rightLabel_5->setText("TRUE");
-    ui_->rightLabel_5->setAlignment(Qt::AlignLeft);
+    ui_->r_gpsValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
+    ui_->r_gpsValue->setFont(sqareFont);
+    ui_->r_gpsValue->setText("TRUE");
+    ui_->r_gpsValue->setAlignment(Qt::AlignLeft);
 }
 
-void InformationPage::setBITRedundantFailed()
+void InformationPage::setGPSRedundantFailed()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->rightLabel_5->setStyleSheet("QLabel { color: red}");
-    ui_->rightLabel_5->setFont(sqareFont);
-    ui_->rightLabel_5->setText("FALSE");
-    ui_->rightLabel_5->setAlignment(Qt::AlignLeft);;
+    ui_->r_gpsValue->setStyleSheet("QLabel { color: red}");
+    ui_->r_gpsValue->setFont(sqareFont);
+    ui_->r_gpsValue->setText("FALSE");
+    ui_->r_gpsValue->setAlignment(Qt::AlignLeft);
+}
+
+void InformationPage::setIMUMaster()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->m_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->m_imuValue->setFont(sqareFont);
+    ui_->m_imuValue->setText("TRUE");
+    ui_->m_imuValue->setAlignment(Qt::AlignLeft);
+}
+
+void InformationPage::setIMUSMasterFailed()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->m_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->m_imuValue->setFont(sqareFont);
+    ui_->m_imuValue->setText("FALSE");
+    ui_->m_imuValue->setAlignment(Qt::AlignLeft);
+}
+
+void InformationPage::setIMURedundant()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->r_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->r_imuValue->setFont(sqareFont);
+    ui_->r_imuValue->setText("TRUE");
+    ui_->r_imuValue->setAlignment(Qt::AlignLeft);
+}
+
+void InformationPage::setIMURedundantFailed()
+{
+    QFont sqareFont("Arial", 18, QFont::Bold);
+    ui_->r_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->r_imuValue->setFont(sqareFont);
+    ui_->r_imuValue->setText("FALSE");
+    ui_->r_imuValue->setAlignment(Qt::AlignLeft);
 }
 
 void InformationPage::firstButton()
-{
-
-}
+{}
 
 void InformationPage::secondButton()
-{
-
-}
+{}
 
 void InformationPage::thirdButton()
 {
-
+    if( bitsInformation_.mode == 1)
+    {
+        emit signalMainPage();
+    }
 }
 
 void InformationPage::fourthButton()
 {
-    emit signalMainPage();
+    if( bitsInformation_.mode == 1)
+    {
+        controller_->setSystemActivation();
 
-    communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
-    auto packet = command.getFrameBytes();
-    controller_->sendToMainProcess(packet);
+        communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
+        auto packet = command.getFrameBytes();
+        controller_->sendToMainProcess(packet);
 
-    emit signalAHRSPage();
+        emit signalAHRSPage();
+    }
+    else
+    {
+        emit signalMainPage();
+    }
 }

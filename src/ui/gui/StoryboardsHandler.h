@@ -71,8 +71,8 @@ public slots:
     const communication::CalibrationConfiguration& getMainCallibrationParameters() override;
     const communication::CalibrationConfiguration& getRedundantCallibrationParameters() override;
 
-    void setBitsInformation(uint8_t master, uint8_t redundant, uint8_t masterBITs, uint8_t redundantBITs) override;
-    std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> getBitsInformation() override;
+    void setBitsInformation(const communication::BitsInformation &bitsInformation) override;
+    const communication::BitsInformation& getBitsInformation() override;
 
     bool isSystemActive() override;
     void setSystemActivation() override;
