@@ -6,6 +6,7 @@
 #include <interfaces/wireless_commands/PerformBITsCommand.h>
 #include <interfaces/wireless_commands/CalibrateDataCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+#include <interfaces/gui/GUIWindowResponse.h>
 
 #define FIRST_STEP 0x01
 #define SECOND_STEP 0x02
@@ -752,9 +753,8 @@ void CallibrationPage::fourthButton()
         }
         case CalibrationMode::ELLIPSOID_DONE :
         {
-            PerformBITsCommand command;
-            GUIWirelessComWrapperResponse response(command.getFrameBytes());
-            controller_->sendToMainProcess(response.getFrameBytes());
+            GUIWindowResponse bitsCommand(PagesType::BITS_PAGE);
+            controller_->sendToMainProcess(bitsCommand.getFrameBytes());
 
             emit signalBITSPage();
             break;

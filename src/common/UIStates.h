@@ -23,7 +23,7 @@ enum PagesType : uint8_t
     LOGS_PAGE,
     MENU_PAGE,
     CONNECTING_PAGE,
-    INFORMATION_PAGE
+    BITS_PAGE
 };
 
 #endif //AHRS_UIMAINSTATES_H

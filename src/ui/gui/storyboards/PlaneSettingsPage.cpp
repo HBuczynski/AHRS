@@ -2,6 +2,7 @@
 #include "ui_PlaneSettingsPage.h"
 
 #include <interfaces/gui/GUIPlaneResponse.h>
+#include <interfaces/gui/GUIWindowResponse.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 #include <interfaces/wireless_commands/CalibrateDataCommand.h>
 
@@ -189,7 +190,9 @@ void PlaneSettingsPage::cancelButton()
         case FieldType::COMBO_BOX :
         {
             ui_->fromDatabaseComboBox->hidePopup();
-            selectIsPresssed = true;
+            selectIsPresssed = false;
+
+            cout << "In combobox" << endl;
             break;
         }
         case FieldType::TEXT_FIELD :
@@ -271,9 +274,8 @@ void PlaneSettingsPage::selectButton()
 
             this_thread::sleep_for(std::chrono::milliseconds(200));
 
-            communication::CalibrateDataCommand calibrateDataCommand;
-            communication::GUIWirelessComWrapperResponse response(calibrateDataCommand.getFrameBytes());
-            controller_->sendToMainProcess(response.getFrameBytes());
+            communication::GUIWindowResponse calibrationCommand(PagesType::CALLIBRATION_PAGE);
+            controller_->sendToMainProcess(calibrationCommand.getFrameBytes());
 
             emit signalCallibrationPage();
             break;

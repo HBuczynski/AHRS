@@ -37,16 +37,28 @@ void GUIInterprocessVisitor::visit(GUIPlaneResponse &data)
 
 void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)
 {
-    auto command = StartAcquisitionCommand();
-    auto commandWrapper = SendingDataCommand(command.getFrameBytes());
-
-    //TODO
-    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
-
     if(logger_.isInformationEnable())
     {
         const string message = string("-MAIN-GUIInterprocessVisitor:: Received - ") + data.getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    switch (data.getPageType())
+    {
+    case PagesType::CALLIBRATION_PAGE :
+        uiApplicationManager_->handleEvent("CALIBRATE");
+        break;
+
+    case PagesType::BITS_PAGE :
+        uiApplicationManager_->handleEvent("PERFORM_BIT");
+        break;
+
+    case PagesType::AHRS_PAGE :
+        uiApplicationManager_->handleEvent("DATA_ACQUISITION");
+        break;
+
+    default:
+        break;
     }
 }
 

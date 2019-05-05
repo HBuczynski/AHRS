@@ -296,7 +296,7 @@ void StoryboardsHandler::setBITSPage()
     if(previousWidget_)
     {
         previousPage_ = currentPage_;
-        currentPage_ = PagesType::INFORMATION_PAGE;
+        currentPage_ = PagesType::BITS_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
@@ -406,7 +406,7 @@ void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformati
 {
     guiDataManager_.setBitsInformation(bitsInformation);
 
-    if(currentPage_ == PagesType::INFORMATION_PAGE && bitsPage_)
+    if(currentPage_ == PagesType::BITS_PAGE && bitsPage_)
     {
         bitsPage_->update();
     }

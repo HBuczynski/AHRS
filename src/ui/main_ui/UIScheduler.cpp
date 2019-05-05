@@ -68,6 +68,9 @@ bool UIScheduler::initialize()
     static_pointer_cast<UIConnectionState, hsm::State>(states_["ConnectionState"])->registerCallbackToGUI(sendToGUI);
     static_pointer_cast<UIConnectionState, hsm::State>(states_["SettingState"])->registerCallbackToGUI(sendToGUI);
 
+    static_pointer_cast<UIAcquisitionState, hsm::State>(states_["AcquisitionState"])->registerCallbackToExternalComm(sendToExternalProcess);
+    static_pointer_cast<UIBitState, hsm::State>(states_["BitState"])->registerCallbackToExternalComm(sendToExternalProcess);
+    static_pointer_cast<UICallibrationState, hsm::State>(states_["CallibrationState"])->registerCallbackToExternalComm(sendToExternalProcess);
     return uiApplicationManager_->initialize();
 }
 

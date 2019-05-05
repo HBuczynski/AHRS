@@ -2,6 +2,7 @@
 #include "ui_InformationPage.h"
 #include <interfaces/gui/GUIWindowResponse.h>
 
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/wireless_commands/BITSDataCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 
@@ -345,6 +346,10 @@ void InformationPage::fourthButton()
     if( bitsInformation_.progress == 1)
     {
         controller_->setSystemActivation();
+
+        communication::StartAcquisitionCommand acqCommand;
+        communication::GUIWirelessComWrapperResponse response(acqCommand.getFrameBytes());
+        controller_->sendToMainProcess(response.getFrameBytes());
 
         communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
         auto packet = command.getFrameBytes();
