@@ -135,11 +135,7 @@ void CommandHandlerVisitor::visit(CalibrateAccelerometerCommand& command)
 
 void CommandHandlerVisitor::visit(PerformBITsCommand& command)
 {
-    BitsInformation info;
-    info.mode = 1;
-    info.m_communication = 25;
-
-    response_ = std::make_unique<BITsResponse>(info);
+    response_ = std::make_unique<AckResponse>(AckType::OK);
 
     if(logger_.isInformationEnable())
     {
@@ -147,6 +143,46 @@ void CommandHandlerVisitor::visit(PerformBITsCommand& command)
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    //Send information to main process
+    auto notification = StateNotification(FeederStateCode::PERFORM_BIT);
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
+}
+
+void CommandHandlerVisitor::visit(BITSDataCommand& command)
+{
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    ResponseFactory responseFactory;
+    vector<uint8_t> frame;
+    BitsInformation bitInfo;
+
+    try
+    {
+        frame = externalSharedMemory_->read();
+    }
+    catch(exception& e)
+    {
+        response_ = std::make_unique<BITsResponse>(bitInfo);
+
+        if(logger_.isInformationEnable())
+        {
+            const std::string message = std::string("-EXTCOM- CommandHandler :: Shared memory is empty.");
+            logger_.writeLog(LogType::WARNING_LOG, message);
+        }
+
+        return;
+    }
+    response_ = responseFactory.createCommand(frame);
+
+    if(response_->getResponseType() != ResponseType::BITs_STATUS)
+        response_ = std::make_unique<BITsResponse>(bitInfo);
 }
 
 void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)

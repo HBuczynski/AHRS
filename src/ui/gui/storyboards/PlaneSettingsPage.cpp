@@ -303,7 +303,11 @@ void PlaneSettingsPage::setKeyClicked(string name)
 
     if(selectIsPresssed && type == FieldType::TEXT_FIELD)
     {
-        planeNameTextField += name.c_str();
+        if(name == string("Backspace"))
+            planeNameTextField = planeNameTextField.substr(0, planeNameTextField.size()-1);
+        else
+            planeNameTextField += name.c_str();
+
         ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());
     }
 }

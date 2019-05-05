@@ -659,7 +659,7 @@ public:
         iButton->setText(QApplication::translate("Keyboard", "i", 0));
         oButton->setText(QApplication::translate("Keyboard", "o", 0));
         pButton->setText(QApplication::translate("Keyboard", "p", 0));
-        bpButton->setText(QString());
+        bpButton->setText(QApplication::translate("Keyboard", "Backspace", 0));
         aButton->setText(QApplication::translate("Keyboard", "a", 0));
         sButton->setText(QApplication::translate("Keyboard", "s", 0));
         dButton->setText(QApplication::translate("Keyboard", "d", 0));

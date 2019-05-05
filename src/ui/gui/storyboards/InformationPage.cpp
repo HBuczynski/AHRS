@@ -2,12 +2,16 @@
 #include "ui_InformationPage.h"
 #include <interfaces/gui/GUIWindowResponse.h>
 
+#include <interfaces/wireless_commands/BITSDataCommand.h>
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+
 #define PASSED 25
 #define FAILED 42
 
 using namespace std;
 using namespace utility;
 using namespace peripherals;
+using namespace communication;
 
 InformationPage::InformationPage(gui::PageController *controller, QWidget *parent) :
     QWidget(parent),
@@ -18,11 +22,12 @@ InformationPage::InformationPage(gui::PageController *controller, QWidget *paren
     pageSetup();
     update();
 
-    qRegisterMetaType<std::vector<uint8_t>>("std::vector<uint8_t>");
+    timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
 }
 
 InformationPage::~InformationPage()
 {
+    timerInterrupt_.stop();
     delete ui_;
 }
 
@@ -131,7 +136,7 @@ void InformationPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
 
-    if(bitsInformation_.mode == 1)
+    if(bitsInformation_.progress == 1)
     {
         buttonNames[SwitchCode::FIRST_SWITCH] = "";
         buttonNames[SwitchCode::SECOND_SWITCH] = "";
@@ -169,7 +174,11 @@ void InformationPage::initializeButtons(map<SwitchCode, string> name, map<Switch
 
 void InformationPage::update()
 {
+
     bitsInformation_ = controller_->getBitsInformation();
+
+    if(bitsInformation_.progress)
+        timerInterrupt_.stop();
 
     if (bitsInformation_.m_communication == PASSED)
         setMasterConnectionEstablished();
@@ -199,6 +208,13 @@ void InformationPage::update()
         setIMURedundantFailed();
 
     initialize();
+}
+
+void InformationPage::interruptNotification(timer_t timerID)
+{
+    BITSDataCommand dataCommand;
+    GUIWirelessComWrapperResponse response(dataCommand.getFrameBytes());
+    controller_->sendToMainProcess(response.getFrameBytes());
 }
 
 void InformationPage::setMasterConnectionEstablished()
@@ -277,7 +293,7 @@ void InformationPage::setGPSRedundantFailed()
 void InformationPage::setIMUMaster()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->m_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->m_imuValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->m_imuValue->setFont(sqareFont);
     ui_->m_imuValue->setText("TRUE");
     ui_->m_imuValue->setAlignment(Qt::AlignLeft);
@@ -295,7 +311,7 @@ void InformationPage::setIMUSMasterFailed()
 void InformationPage::setIMURedundant()
 {
     QFont sqareFont("Arial", 18, QFont::Bold);
-    ui_->r_imuValue->setStyleSheet("QLabel { color: red}");
+    ui_->r_imuValue->setStyleSheet("QLabel { color: rgb(51,255,0)}");
     ui_->r_imuValue->setFont(sqareFont);
     ui_->r_imuValue->setText("TRUE");
     ui_->r_imuValue->setAlignment(Qt::AlignLeft);
@@ -318,7 +334,7 @@ void InformationPage::secondButton()
 
 void InformationPage::thirdButton()
 {
-    if( bitsInformation_.mode == 1)
+    if( bitsInformation_.progress == 1)
     {
         emit signalMainPage();
     }
@@ -326,7 +342,7 @@ void InformationPage::thirdButton()
 
 void InformationPage::fourthButton()
 {
-    if( bitsInformation_.mode == 1)
+    if( bitsInformation_.progress == 1)
     {
         controller_->setSystemActivation();
 

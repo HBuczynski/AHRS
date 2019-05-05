@@ -32,6 +32,7 @@ namespace communication
         virtual void visit(PerformBITsCommand& command) override;
         virtual void visit(CalibrateAccelerometerCommand& command) override;
         virtual void visit(CalibrateDataCommand& command) override;
+        virtual void visit(BITSDataCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeExternalSharedMemory();

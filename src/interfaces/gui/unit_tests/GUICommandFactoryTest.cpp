@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
     {
         GUICommandFactory factory;
         BitsInformation info;
-        info.mode = 23;
+        info.device = 23;
         info.m_communication = 43;
 
         GUIBITSCommand command(info);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE( commandFactory )
         BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
-        BOOST_CHECK( info.mode == temp.mode );
+        BOOST_CHECK( info.device == temp.device );
         BOOST_CHECK( info.m_communication == temp.m_communication );
     }
 

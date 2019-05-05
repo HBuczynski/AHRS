@@ -109,6 +109,10 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
             appManager_->handleEvent("RUN_CALLIBRATION");
             break;
 
+        case FeederStateCode::PERFORM_BIT :
+            appManager_->handleEvent("CHECK_BIT");
+            break;
+
         default:
             break;
     }

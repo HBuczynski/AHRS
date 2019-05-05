@@ -20,7 +20,8 @@ namespace communication
         START_ACQ = 70,
         CURRENT_STATE = 80,
         PERFORM_BIT = 90,
-        CALIBRATE_DATA = 100
+        CALIBRATE_DATA = 100,
+        BITS_DATA = 110,
     };
 
     class Command : public Frame

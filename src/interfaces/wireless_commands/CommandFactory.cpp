@@ -11,6 +11,7 @@
 #include "CalibrateAccelerometerBuilder.h"
 #include "CalibrateDataBuilder.h"
 #include "CalibMagBuilder.h"
+#include "BITSDataBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -62,6 +63,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             return move(builder_->create(commandInBytes));
         case CommandType::CURRENT_STATE :
             builder_ = make_unique<CurrentStateBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::BITS_DATA :
+            builder_ = make_unique<BITSDataBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::END_CONNECTION :
             builder_ = make_unique<EndConnectionBuilder>();
