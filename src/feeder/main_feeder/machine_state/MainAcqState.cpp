@@ -145,15 +145,29 @@ void MainAcqState::runAcquisition()
 
 void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
 {
-    //TODO
     generalData.flightMeasurements.pitch = generalData.imuData.pitch;
     generalData.flightMeasurements.roll = generalData.imuData.roll;
     generalData.flightMeasurements.heading = generalData.imuData.yaw;
+
+    generalData.flightMeasurements.altitude = generalData.gpsData.altitude;
+    generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
+    generalData.flightMeasurements.latitude = generalData.gpsData.latitude;
+    generalData.flightMeasurements.latitudeDirection = generalData.gpsData.latitudeDirection;
+    generalData.flightMeasurements.longitude = generalData.gpsData.longitude;
+    generalData.flightMeasurements.longitudeDirection = generalData.gpsData.longitudeDirection;
+    generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
+
+    //TODO:
+    generalData.flightMeasurements.machNo = 0.45;
+    generalData.flightMeasurements.pressure = 456;
+    generalData.flightMeasurements.slipSkid = 896;
+    generalData.flightMeasurements.turnCoordinator = 23;
+    generalData.flightMeasurements.verticalSpeed = 23;
 }
 
 void MainAcqState::writeGeneralData(FeederGeneralData& generalData)
 {
-//TODO
+
 }
 
 void MainAcqState::save2Database(FeederGeneralData& generalData)

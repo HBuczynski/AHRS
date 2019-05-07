@@ -42,9 +42,19 @@ void GPSAdafruitInterface::dataAcq()
     while(runAcq_)
     {
         {
+            //TODO
             lock_guard<mutex> lock(gpsDataMutex_);
             gpsData_.altitude = 234;
             gpsData_.course = 456;
+            gpsData_.fixQuality = 1;
+            gpsData_.groundSpeed = 567;
+            gpsData_.latitude = 54.32;
+            gpsData_.latitudeDirection = 'N';
+            gpsData_.longitude = 32.34;
+            gpsData_.longitudeDirection = 'S';
+            gpsData_.numberOfSatellites = 6;
+            gpsData_.receiverWarning = 'A';
+            gpsData_.timestamp = 235666;
         }
         this_thread::sleep_for(std::chrono::milliseconds(2));
     }

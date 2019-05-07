@@ -22,7 +22,7 @@ namespace database
 
         const std::string GPS_TABLE = "CREATE TABLE GPS ("
                                     "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                    "TIMESTAMP              TEXT    NOT NULL, "
+                                    "TIMESTAMP              NUMERIC, "
                                     "LATITUDE               DOUBLE  NOT NULL, "
                                     "LATITUDE_DIRECTION     TEXT     NOT NULL, "
                                     "LONGITUDE              DOUBLE     NOT NULL, "
@@ -42,23 +42,22 @@ namespace database
 
         const std::string IMU_TABLE = "CREATE TABLE IMU ("
                                       "ID                 INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                      "TIMESTAMP          TEXT    NOT NULL, "
+                                      "TIMESTAMP          NUMERIC, "
                                       "ACCEL_X            DOUBLE  NOT NULL, "
                                       "ACCEL_Y            DOUBLE  NOT NULL, "
                                       "ACCEL_Z            DOUBLE  NOT NULL, "
                                       "YAW                DOUBLE  NOT NULL, "
                                       "PITCH              DOUBLE  NOT NULL, "
-                                      "ROLL               DOUBLE  NOT NULL, "
-                                      "HEADING            DOUBLE  NOT NULL "
+                                      "ROLL               DOUBLE  NOT NULL "
                                       ");";
 
-        const std::string INSERT_IMU = "INSERT INTO IMU (TIMESTAMP,ACCEL_X,ACCEL_Y,ACCEL_Z,YAW, PITCH, ROLL, HEADING) "
+        const std::string INSERT_IMU = "INSERT INTO IMU (TIMESTAMP,ACCEL_X,ACCEL_Y,ACCEL_Z,YAW, PITCH, ROLL) "
                                        "VALUES";
 
 
         const std::string FEEDER_PROPERTIES = "CREATE TABLE FEEDER_PROPERTIES ("
                                               "ID                 INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                              "TIMESTAMP          TEXT    NOT NULL, "
+                                              "TIMESTAMP          NUMERIC, "
                                               "MODE               TEXT    NOT NULL, "
                                               "BANDWITH           NUMERIC, "
                                               "RPI_TEMPERATURE    NUMERIC, "

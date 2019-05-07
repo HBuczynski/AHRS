@@ -93,9 +93,11 @@ void NMEAParser::getTime(const std::string &sentence, GPSData &gpsData)
 {
     const auto time = atoi(sentence.c_str());
 
-    gpsData.hour = time / 10000;
-    gpsData.minutes = (time % 10000) / 100;
-    gpsData.seconds = time % 100;
+    gpsData.timestamp = 235;
+    //TODO
+//    gpsData.hour = time / 10000;
+//    gpsData.minutes = (time % 10000) / 100;
+//    gpsData.seconds = time % 100;
 }
 
 void NMEAParser::getLatitude(const string &latitude, string direction, GPSData &gpsData)

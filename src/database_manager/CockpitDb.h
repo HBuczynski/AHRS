@@ -2,30 +2,11 @@
 #define AHRS_COCKPITDB_H
 
 #include "Database.h"
+#include <common/CockpitParameters.h>
 #include <common/Measurements.h>
 
 namespace database
 {
-    struct CockpitProperties
-    {
-        std::string timestamp;
-
-        double temperature;
-        double power;
-
-        double processorConsumption;
-    };
-
-    struct CockpitNetwork
-    {
-        std::string timestamp;
-
-        std::string networkNumber;
-        std::string networkMode;
-
-        double bandwith;
-    };
-
     class CockpitDb : public Database
     {
     public:
@@ -42,7 +23,6 @@ namespace database
 
         const std::string FLIGHT_MEASUREMENT_TABLE = "CREATE TABLE FLIGHT_MEASUREMENT ("
                                                             "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                                            "TIMESTAMP              TEXT    NOT NULL, "
                                                             "ROLL                   DOUBLE  NOT NULL, "
                                                             "PITCH                  DOUBLE  NOT NULL, "
                                                             "YAW                    DOUBLE  NOT NULL, "
@@ -59,7 +39,7 @@ namespace database
                                                             "SLIP_SKID              DOUBLE  NOT NULL"
                                                      ");";
 
-        const std::string FLIGHT_MEASUREMENT_INSERT = "INSERT INTO FLIGHT_MEASUREMENT (TIMESTAMP,ROLL,PITCH,YAW,ALTITUDE,PRESSURE,"
+        const std::string FLIGHT_MEASUREMENT_INSERT = "INSERT INTO FLIGHT_MEASUREMENT (ROLL,PITCH,YAW,ALTITUDE,PRESSURE,"
                                                       "MACH_NO,GROUND_SPEED,VERTICAL_SPEED,LATITUDE,LATITUDE_DIRECTION,LONGITUDE,"
                                                       "LONGITUDE_DIRECTION,TURN_COORDINATOR,SLIP_SKID) "
                                                       "VALUES";

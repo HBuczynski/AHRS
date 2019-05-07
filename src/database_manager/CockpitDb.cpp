@@ -32,9 +32,7 @@ bool CockpitDb::createTable()
 void CockpitDb::insertFlightMeasurement(const FlightMeasurements &measurements)
 {
     stringstream stream;
-    string time = "temp";
-    stream << FLIGHT_MEASUREMENT_INSERT << "(" << APOSTROPHE << time << APOSTROPHE << SEMICOLON
-                                                             << measurements.roll << SEMICOLON
+    stream << FLIGHT_MEASUREMENT_INSERT << "("               << measurements.roll << SEMICOLON
                                                              << measurements.pitch << SEMICOLON
                                                              << measurements.heading << SEMICOLON
                                                              << measurements.altitude << SEMICOLON

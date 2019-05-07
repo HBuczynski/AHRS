@@ -12,6 +12,7 @@ BOOST_AUTO_TEST_SUITE( feeder )
 BOOST_AUTO_TEST_CASE( test_int )
         {
                 FeederDb feederDb("feederExample.db");
+                feederDb.initialize();
 
                 IMUData data;
                 data.roll = 46.3;
@@ -34,9 +35,7 @@ BOOST_AUTO_TEST_CASE( test_int )
                 gpsData.altitude =345.89;
                 gpsData.longitudeDirection = 'N';
                 gpsData.latitudeDirection = 'E';
-                gpsData.seconds = 56;
-                gpsData.minutes = 54;
-                gpsData.hour = 23;
+                gpsData.timestamp = 232323;
                 feederDb.insertGPS(gpsData);
 
                 FeederProperties properties;

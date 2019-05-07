@@ -23,9 +23,7 @@ struct FlightMeasurements
 
 struct GPSData
 {
-    uint8_t hour;
-    uint8_t minutes;
-    uint8_t seconds;
+    uint64_t timestamp;
 
     double latitude;
     char latitudeDirection;
