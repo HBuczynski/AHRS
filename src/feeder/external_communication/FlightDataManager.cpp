@@ -1,16 +1,24 @@
 #include "FlightDataManager.h"
 
 #include <math.h>
-#include <interfaces/wireless_measurement_commands/FlightData.h>
-#include <telemetry/PlaneOrientation.h>
+#include <interfaces/wireless_measurement_commands/FeederData.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
+
+#include <boost/interprocess/sync/named_mutex.hpp>
+#include <config_reader/ConfigurationReader.h>
+#include <utility/BytesConverter.h>
 
 using namespace std;
+using namespace config;
 using namespace utility;
 using namespace communication;
+using namespace boost::interprocess;
 
-FlightDataManager::FlightDataManager(function<bool(vector<uint8_t> )> broadcastFun)
+extern char **environ;
+
+FlightDataManager::FlightDataManager()
     : runAcquisition_(false),
-      broadcastFunction_(broadcastFun),
+      sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
 {}
 
@@ -24,14 +32,19 @@ FlightDataManager::~FlightDataManager()
     stopFlightDataTransmission();
 }
 
+bool FlightDataManager::isActive()
+{
+    return runAcquisition_;
+}
+
+void FlightDataManager::registerFun(std::function<bool(std::vector<uint8_t> )> broadcastFun)
+{
+    broadcastFunction_ = broadcastFun;
+}
+
 void FlightDataManager::startFlightDataTransmission()
 {
     runAcquisition_ = true;
-
-    if(acquisitionThread_.joinable())
-    {
-        acquisitionThread_.join();
-    }
     acquisitionThread_ = thread(&FlightDataManager::sendMeasurements, this);
 
     if(logger_.isInformationEnable())
@@ -59,38 +72,19 @@ void FlightDataManager::stopFlightDataTransmission()
 
 void FlightDataManager::sendMeasurements()
 {
-    uint64_t counter = 0;
-
-    telemetry::PlaneOrientation orientation;
-    runAcquisition_ = orientation.initDataAcquisition("lol");
-
+    MeasuringDataFactory dataFactory;
     while (runAcquisition_)
     {
-        ++counter;
-
-        orientation.readData();
-        FlightMeasurements measurements;
-        measurements.roll      =  orientation.getRoll();//180.0f * sin( counter / 9000.0f );
-        measurements.pitch     =  orientation.getPitch(); //90.0f * sin( counter /  20000.0f );
-        measurements.heading   =  orientation.getYaw(); //360.0f * sin( counter /  4000.0f );
-        measurements.slipSkid  =    1.0f * sin( counter /  1000.0f );
-        measurements.turnCoordinator  =    7.0f * sin( counter /  1000.0f )/6.0f;
-        measurements.groundSpeed  =  125.0f * sin( counter /  4000.0f ) +  125.0f;
-        measurements.altitude  = 9000.0f * sin( counter /  4000.0f ) + 9000.0f;
-        measurements.pressure  =    2.0f * sin( counter /  2000.0f ) +   30.0f;
-        measurements.verticalSpeed =  650.0f * sin( counter /  2000.0f )/100.0f;
-        measurements.machNo    = measurements.groundSpeed / 650.0f;
-
-        if(logger_.isInformationEnable() )
-        {
-            const string message = string("-EXTCOM- FlightDataManager:: Roll: ") + to_string(measurements.roll) + string(" Pitch : ") + to_string(measurements.pitch);
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
-
-        FlightData command(measurements);
         try
         {
-            if(!broadcastFunction_(command.getFrameBytes()))
+            cout << "Before read" << endl;
+            auto frame = externalSharedMemory_->read();
+            auto dataCommand = static_pointer_cast<FeederData, MeasuringData>(dataFactory.createCommand(frame));
+
+            if(dataCommand->getMeasuringType() != MeasuringType::FLIGHT_DATA)
+                break;
+
+            if(!broadcastFunction_(dataCommand->getFrameBytes()))
             {
                 runAcquisition_ = false;
                 if(logger_.isInformationEnable() )
@@ -110,5 +104,29 @@ void FlightDataManager::sendMeasurements()
         }
 
         this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    cout << "OUT " << endl;
+}
+
+void FlightDataManager::initializeExternalSharedMemory()
+{
+    try
+    {
+        externalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.externalMemoryName);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if (logger_.isErrorEnable())
+        {
+            const std::string message = std::string("-EXTCOMM- FlightDataManager:: External SharedMemory: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOMM- FlightDataManager :: External shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

@@ -1,4 +1,4 @@
-#include "PlaneOrientation.h"
+#include "PlaneOrientationHandler.h"
 
 #include <config_reader/FeederParameters.h>
 #include <RTIMULib.h>
@@ -8,11 +8,11 @@ using namespace std;
 using namespace utility;
 using namespace telemetry;
 
-PlaneOrientation::PlaneOrientation()
+PlaneOrientationHandler::PlaneOrientationHandler()
     : logger_(Logger::getInstance())
 {}
 
-PlaneOrientation::~PlaneOrientation()
+PlaneOrientationHandler::~PlaneOrientationHandler()
 {
     if(settings_)
         delete settings_;
@@ -21,7 +21,7 @@ PlaneOrientation::~PlaneOrientation()
         delete imu_;
 }
 
-bool PlaneOrientation::initDataAcquisition(const std::string& planeName)
+bool PlaneOrientationHandler::initDataAcquisition(const std::string& planeName)
 {
     const auto filePath = config::FEEDER_AIRCRAFTS_DATABASE_PATH + planeName;
 
@@ -48,7 +48,7 @@ bool PlaneOrientation::initDataAcquisition(const std::string& planeName)
     return true;
 }
 
-void PlaneOrientation::readData()
+void PlaneOrientationHandler::readData()
 {
     usleep(imu_->IMUGetPollInterval() * 1000);
 
@@ -58,18 +58,18 @@ void PlaneOrientation::readData()
     }
 }
 
-float PlaneOrientation::getPitch()
+const IMUData& PlaneOrientationHandler::getImuData() const noexcept
 {
-    return imuData_.fusionPose.y()*RTMATH_RAD_TO_DEGREE;
-}
+    imuData_.pitch = rtImuData_.fusionPose.y()*RTMATH_RAD_TO_DEGREE;
+    imuData_.roll = rtImuData_.fusionPose.x()*RTMATH_RAD_TO_DEGREE;
+    imuData_.yaw = rtImuData_.fusionPose.z()*RTMATH_RAD_TO_DEGREE;
 
-float PlaneOrientation::getRoll()
-{
-    return imuData_.fusionPose.x()*RTMATH_RAD_TO_DEGREE;
-}
+    imuData_.accelX = rtImuData_.accel.x();
+    imuData_.accelY = rtImuData_.accel.y();
+    imuData_.accelZ = rtImuData_.accel.z();
 
-float PlaneOrientation::getYaw()
-{
-    return imuData_.fusionPose.z()*RTMATH_RAD_TO_DEGREE;
+    imuData_.timestamp = 0; //TODO
+
+    return imuData_;
 }
 

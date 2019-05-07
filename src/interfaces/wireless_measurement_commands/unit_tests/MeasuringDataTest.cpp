@@ -5,7 +5,7 @@
 
 #include "../ImuData.h"
 #include "../GpsData.h"
-#include "../FlightData.h"
+#include "../FeederData.h"
 
 #include <string>
 
@@ -40,20 +40,29 @@ BOOST_AUTO_TEST_SUITE( data )
 
     BOOST_AUTO_TEST_CASE( flightData )
     {
-        FlightMeasurements measurements = {5.67, 5.67, 5.67, 5.67, 5.67, 5.67, 5.67};
-        FlightData data(measurements);
+        FeederGeneralData measurements;
+
+        measurements.flightMeasurements.altitude = 5.67;
+        measurements.flightMeasurements.groundSpeed = 5.67;
+        measurements.flightMeasurements.heading = 5.67;
+        measurements.flightMeasurements.latitude = 5.67;
+        measurements.flightMeasurements.longitude = 5.67;
+        measurements.flightMeasurements.turnCoordinator = 5.67;
+        measurements.flightMeasurements.verticalSpeed = 5.67;
+
+        FeederData data(measurements);
         data.getFrameBytes();
 
         bool isSuccess = true;
         const auto measurementsFromCommand = data.getMeasurements();
 
-        isSuccess = isSuccess && (measurements.altitude = measurementsFromCommand.altitude);
-        isSuccess = isSuccess && (measurements.groundSpeed = measurementsFromCommand.groundSpeed);
-        isSuccess = isSuccess && (measurements.heading = measurementsFromCommand.heading);
-        isSuccess = isSuccess && (measurements.latitude = measurementsFromCommand.latitude);
-        isSuccess = isSuccess && (measurements.longitude = measurementsFromCommand.longitude);
-        isSuccess = isSuccess && (measurements.turnCoordinator = measurementsFromCommand.turnCoordinator);
-        isSuccess = isSuccess && (measurements.verticalSpeed = measurementsFromCommand.verticalSpeed);
+        isSuccess = isSuccess && (measurements.flightMeasurements.altitude = measurementsFromCommand.flightMeasurements.altitude);
+        isSuccess = isSuccess && (measurements.flightMeasurements.groundSpeed = measurementsFromCommand.flightMeasurements.groundSpeed);
+        isSuccess = isSuccess && (measurements.flightMeasurements.heading = measurementsFromCommand.flightMeasurements.heading);
+        isSuccess = isSuccess && (measurements.flightMeasurements.latitude = measurementsFromCommand.flightMeasurements.latitude);
+        isSuccess = isSuccess && (measurements.flightMeasurements.longitude = measurementsFromCommand.flightMeasurements.longitude);
+        isSuccess = isSuccess && (measurements.flightMeasurements.turnCoordinator = measurementsFromCommand.flightMeasurements.turnCoordinator);
+        isSuccess = isSuccess && (measurements.flightMeasurements.verticalSpeed = measurementsFromCommand.flightMeasurements.verticalSpeed);
 
         BOOST_CHECK( FrameType::MEASUREMENT_DATA == data.getFrameType());
         BOOST_CHECK( MeasuringType::FLIGHT_DATA == data.getMeasuringType());

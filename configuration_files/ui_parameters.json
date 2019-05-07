@@ -28,7 +28,7 @@
     "SharedMemory" :
     {
       "sharedMemoryName" : "SharedMemoryUI",
-      "size" : 100
+      "size" : 500
     },
 
     "ExecutableFiles" :

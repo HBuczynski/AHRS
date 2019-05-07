@@ -14,6 +14,7 @@
 #include "CalibrateAccelerometerCommand.h"
 #include "CalibrateDataCommand.h"
 #include "BITSDataCommand.h"
+#include "StopAcqCommand.h"
 
 namespace communication
 {
@@ -36,6 +37,7 @@ namespace communication
         virtual void visit(CalibrateAccelerometerCommand& command) = 0;
         virtual void visit(CalibrateDataCommand& command) = 0;
         virtual void visit(BITSDataCommand& command) = 0;
+        virtual void visit(StopAcqCommand& command) = 0;
     };
 }
 #endif

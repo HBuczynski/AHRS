@@ -29,8 +29,6 @@ namespace communication
         void registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback);
 
     private:
-        std::unique_ptr<FlightDataManager> flightDataManager_;
-
         std::function<void(std::vector<uint8_t>&)> mainProcCallback_;
 
         std::mutex clientListMutex_;

@@ -6,7 +6,6 @@ using namespace communication;
 
 ClientUDPManager::ClientUDPManager(const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     :   hsm::HSM(name, transitionTable, rootState),
-        flightDataManager_(make_unique<FlightDataManager>(bind(&ClientUDPManager::broadcast, this, std::placeholders::_1))),
         logger_(Logger::getInstance())
 { }
 
@@ -57,9 +56,16 @@ bool ClientUDPManager::broadcast(vector<uint8_t> frame)
         return false;
     }
 
-    for(const auto& client : clientList_)
+    try
     {
-        client.first->sendData(frame);
+        for(const auto& client : clientList_)
+        {
+            client.first->sendData(frame);
+        }
+    }
+    catch(exception &e)
+    {
+        return false;
     }
 
     return true;
@@ -77,20 +83,3 @@ void ClientUDPManager::registerCallbackToMainProc(std::function<void(std::vector
 {
      mainProcCallback_ = callback;
 }
-
-//void ClientUDPManager::startCalibration(const string &planeName, PlaneStatus status)
-//{
-//    currentState_->startCalibration(*this, planeName, status);
-//}
-
-//void ClientUDPManager::startDataSending()
-//{
-//    currentState_->startDataSending(*this);
-
-//    flightDataManager_->startFlightDataTransmission();
-//}
-
-//void ClientUDPManager::stopDataSending()
-//{
-//    flightDataManager_->stopFlightDataTransmission();
-//}

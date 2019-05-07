@@ -50,6 +50,7 @@ void FeederScheduler::create()
              {settingsState,                        hsm::Event{"RUN_CALLIBRATION"},             calibrationState},
              {calibrationState,                     hsm::Event{"CHECK_BIT"},                    performBitState},
              {performBitState,                      hsm::Event{"START_MAIN_ACQ"},               mainAcqState},
+             {mainAcqState,                         hsm::Event{"RELAUNCH_ACQ"},                 mainAcqState},
              {performBitState,                      hsm::Event{"START_REDUNDANT_ACQ"},          redundantAcqState},
              {mainFaultManagementState,             hsm::Event{"RESTORE_MAIN_ACQ"},             mainAcqState},
              {mainAcqState,                         hsm::Event{"ABORT_MAIN_ACQ"},               mainFaultManagementState},
@@ -66,6 +67,7 @@ bool FeederScheduler::initialize()
 
     function<FeederDataContainer&()> dataCallback = bind(&ApplicationManager::getFeederDataContainer, applicationManager_.get());
     static_pointer_cast<CalibrationState, hsm::State>(states_["CalibrationState"])->registerDataCallback(dataCallback);
+    static_pointer_cast<MainAcqState, hsm::State>(states_["MainAcqState"])->registerDataCallback(dataCallback);
 
     return applicationManager_->initialize();
 }

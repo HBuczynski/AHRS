@@ -84,11 +84,11 @@ void CommunicationManagerUI::interruptNotification(timer_t timerID)
                 auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getProcessNumber());
                 auto packet = notification.getFrameBytes();
 
-                if(logger_.isErrorEnable())
+                if(logger_.isInformationEnable())
                 {
                     const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Send to main: "
                             + notification.getName();
-                    logger_.writeLog(LogType::ERROR_LOG, message);
+                    logger_.writeLog(LogType::INFORMATION_LOG, message);
                 }
 
                 mainProcCallback_(packet);

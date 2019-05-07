@@ -1,4 +1,4 @@
-#include "FlightData.h"
+#include "FeederData.h"
 #include "MeasuringDataVisitor.h"
 
 #include <BytesConverter.h>
@@ -7,15 +7,15 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-FlightData::FlightData(FlightMeasurements measurements)
+FeederData::FeederData(FeederGeneralData measurements)
         : MeasuringData(10, MeasuringType::FLIGHT_DATA),
           measurements_(measurements)
 {}
 
-FlightData::~FlightData()
+FeederData::~FeederData()
 {}
 
-vector<uint8_t> FlightData::getFrameBytes()
+vector<uint8_t> FeederData::getFrameBytes()
 {
     initializeDataSize();
 
@@ -28,27 +28,27 @@ vector<uint8_t> FlightData::getFrameBytes()
     return frame;
 }
 
-string FlightData::getName()
+string FeederData::getName()
 {
     return string("FlightData");
 }
 
-void FlightData::accept(MeasuringDataVisitor &visitor)
+void FeederData::accept(MeasuringDataVisitor &visitor)
 {
     visitor.visit(*this);
 }
 
-FlightMeasurements FlightData::getMeasurements() const
+FeederGeneralData FeederData::getMeasurements() const
 {
     return measurements_;
 }
 
-void FlightData::setMeasurements(FlightMeasurements measurements)
+void FeederData::setMeasurements(FeederGeneralData measurements)
 {
     measurements_ = measurements;
 }
 
-void FlightData::initializeDataSize()
+void FeederData::initializeDataSize()
 {
     dataSize_ = sizeof(measuringType_);
     dataSize_ += sizeof(measurements_);

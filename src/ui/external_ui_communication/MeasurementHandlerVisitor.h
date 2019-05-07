@@ -18,7 +18,7 @@ namespace communication
 
         virtual void visit(ImuData& data) override;
         virtual void visit(GpsData& data) override;
-        virtual void visit(FlightData& data) override;
+        virtual void visit(FeederData& data) override;
 
     private:
         void initializeSharedMemory();

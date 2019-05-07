@@ -2,37 +2,10 @@
 #define AHRS_FEEDERDB_H
 
 #include "Database.h"
-#include <telemetry/NMEAParser.h>
+#include <common/Measurements.h>
 
 namespace database
 {
-    struct IMUData
-    {
-        std::string timestamp;
-
-        double accelX;
-        double accelY;
-        double accelZ;
-
-        double yaw;
-        double pitch;
-        double roll;
-
-        double heading;
-    };
-
-    struct FeederProperties
-    {
-        std::string timestamp;
-        std::string mode;
-        double bandwith;
-
-        double temperature;
-        double power;
-
-        double processorConsumption;
-    };
-
     class FeederDb : public Database
     {
     public:
@@ -41,7 +14,7 @@ namespace database
         bool initialize();
 
         void insertIMU(const IMUData& data);
-        void insertGPS(const gps::GPSData& data);
+        void insertGPS(const GPSData& data);
         void insertFeederProperties(const FeederProperties& feederProperties);
 
     private:

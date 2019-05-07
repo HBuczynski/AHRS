@@ -3,6 +3,9 @@
 #include <iostream>
 #include <config_reader/ConfigurationReader.h>
 
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+
 using namespace std;
 using namespace gui;
 using namespace config;
@@ -139,6 +142,10 @@ void StoryboardsHandler::setAHRSPage()
 
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
+
+    StartAcquisitionCommand command;
+    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    sendToMainProcess(response.getFrameBytes());
 }
 
 void StoryboardsHandler::setSystemSetupPage()

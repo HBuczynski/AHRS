@@ -6,23 +6,23 @@
 
 namespace communication
 {
-    class FlightData final : public MeasuringData
+    class FeederData final : public MeasuringData
     {
     public:
-        FlightData(FlightMeasurements measurements);
-        ~FlightData();
+        FeederData(FeederGeneralData measurements);
+        ~FeederData();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(MeasuringDataVisitor& visitor) override;
 
-        FlightMeasurements getMeasurements() const;
-        void setMeasurements(FlightMeasurements measurements);
+        FeederGeneralData getMeasurements() const;
+        void setMeasurements(FeederGeneralData measurements);
 
     private:
         virtual void initializeDataSize() override;
 
-        FlightMeasurements measurements_;
+        FeederGeneralData measurements_;
     };
 }
 

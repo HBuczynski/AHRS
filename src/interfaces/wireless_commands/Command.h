@@ -18,6 +18,7 @@ namespace communication
         END_CONNECTION = 50,
         CALIBRATION_STATUS = 60,
         START_ACQ = 70,
+        STOP_ACQ = 75,
         CURRENT_STATE = 80,
         PERFORM_BIT = 90,
         CALIBRATE_DATA = 100,

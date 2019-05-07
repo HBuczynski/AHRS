@@ -61,7 +61,7 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
     }
 }
 
-void MeasurementHandlerVisitor::visit(FlightData &data)
+void MeasurementHandlerVisitor::visit(FeederData &data)
 {
     auto frame = data.getFrameBytes();
     writeDataToSharedMemory(frame);
@@ -69,7 +69,7 @@ void MeasurementHandlerVisitor::visit(FlightData &data)
     if(logger_.isInformationEnable())
     {
         const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
-                string(". Data: ") + to_string(data.getMeasurements().altitude);
+                string(". Data: ") + to_string(data.getMeasurements().imuData.pitch);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

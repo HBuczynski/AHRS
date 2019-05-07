@@ -103,8 +103,9 @@ void ServerTCP::updateClientList()
                 logger_.writeLog(LogType::INFORMATION_LOG, message);
             }
 
-            clientUDPManager_->removeClient((*iter)->getID());
+            const auto id = (*iter)->getID();
             clientList_.erase(iter);
+            clientUDPManager_->removeClient(id);
 
             isSuccess = true;
         }

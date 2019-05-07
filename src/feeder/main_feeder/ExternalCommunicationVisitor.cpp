@@ -2,6 +2,7 @@
 #include "ApplicationManager.h"
 
 #include "machine_state/CalibrationState.h"
+#include "machine_state/MainAcqState.h"
 #include <interfaces/wireless_commands/CommandFactory.h>
 #include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
@@ -113,6 +114,28 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
             appManager_->handleEvent("CHECK_BIT");
             break;
 
+        case FeederStateCode::MAIN_ACQ :
+        {
+            auto currentName = appManager_->getCurrentStateName();
+            if(currentName == string("MainAcqState"))
+            {
+                appManager_->handleEvent("RELAUNCH_ACQ");
+            }
+            else
+            {
+                appManager_->handleEvent("START_MAIN_ACQ");
+            }
+            break;
+        }
+        case FeederStateCode::STOP_ACQ :
+        {
+            auto currentName = appManager_->getCurrentStateName();
+            if(currentName == string("MainAcqState"))
+            {
+                auto state = appManager_->getState("MainAcqState");
+                static_pointer_cast<MainAcqState, hsm::State>(state)->stopAcq();
+            }
+        }
         default:
             break;
     }

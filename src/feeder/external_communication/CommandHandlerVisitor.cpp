@@ -20,6 +20,10 @@
 
 #include <utility/BytesConverter.h>
 
+
+#include <interfaces/wireless_measurement_commands/FeederData.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
+
 using namespace std;
 using namespace config;
 using namespace utility;
@@ -29,12 +33,17 @@ using namespace boost::interprocess;
 extern char **environ;
 
 CommandHandlerVisitor::CommandHandlerVisitor()
-    : sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
+    : runAcquisition_(false),
+      sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
-{}
+{
+
+}
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
-{}
+{
+    stopAcq();
+}
 
 void CommandHandlerVisitor::visit(InitConnectionCommand &command)
 {
@@ -187,12 +196,39 @@ void CommandHandlerVisitor::visit(BITSDataCommand& command)
 
 void CommandHandlerVisitor::visit(StartAcquisitionCommand &command)
 {
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
     if(logger_.isInformationEnable())
     {
         const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    //Send information to main process
+    if(!runAcquisition_)
+    {
+        auto notification = StateNotification(FeederStateCode::MAIN_ACQ);
+        auto packet = notification.getFrameBytes();
+        clientUDPManager_->sendToMainProcess(packet);
+
+        runAcquisition_ = true;
+        acquisitionThread_ = thread(&CommandHandlerVisitor::runAcq, this);
+    }
+}
+
+void CommandHandlerVisitor::visit(StopAcqCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    stopAcq();
 }
 
 void CommandHandlerVisitor::visit(EndConnectionCommand &command)
@@ -212,22 +248,10 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
 
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
 }
 
 void CommandHandlerVisitor::visit(CurrentStateCommand &command)
 {
-    if(logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
-                                    std::to_string(currentClient_->getID()) + std::string("-.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
 }
 
 void CommandHandlerVisitor::visit(CollectDataCommand &command)
@@ -289,5 +313,51 @@ void CommandHandlerVisitor::initializeExternalSharedMemory()
     }
 }
 
+void CommandHandlerVisitor::stopAcq()
+{
+    auto notification = StateNotification(FeederStateCode::STOP_ACQ);
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
 
+    runAcquisition_ = false;
+    if(acquisitionThread_.joinable())
+    {
+        acquisitionThread_.join();
+    }
+}
 
+void CommandHandlerVisitor::runAcq()
+{
+    MeasuringDataFactory dataFactory;
+    while (runAcquisition_)
+    {
+        try
+        {
+            auto frame = externalSharedMemory_->read();
+            auto dataCommand = static_pointer_cast<FeederData, MeasuringData>(dataFactory.createCommand(frame));
+
+            if(dataCommand->getMeasuringType() != MeasuringType::FLIGHT_DATA)
+                break;
+
+            if(!clientUDPManager_->broadcast(dataCommand->getFrameBytes()))
+            {
+
+                if(logger_.isInformationEnable() )
+                {
+                    const string message = string("-EXTCOM- FlightDataManager:: Broadcast is stopped, users are unavailable.");
+                    logger_.writeLog(LogType::INFORMATION_LOG, message);
+                }
+            }
+        }
+        catch (exception &e)
+        {
+            if(logger_.isErrorEnable() )
+            {
+                const string message = string("-EXTCOM- FlightDataManager:: In catch function.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+
+        this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}

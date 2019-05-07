@@ -14,17 +14,16 @@ BOOST_AUTO_TEST_CASE( test_int )
                 FeederDb feederDb("feederExample.db");
 
                 IMUData data;
-                data.heading = 736.3435;
                 data.roll = 46.3;
                 data.pitch = 76.34;
                 data.yaw = 53.23;
                 data.accelZ = 764.34;
                 data.accelY = 762.232;
                 data.accelX = 6522.90;
-                data.timestamp = "12565632";
+                data.timestamp = 12565632;
                 feederDb.insertIMU(data);
 
-                gps::GPSData gpsData;
+                GPSData gpsData;
                 gpsData.course = 23.45;
                 gpsData.groundSpeed = 384.90;
                 gpsData.receiverWarning = 'A';
@@ -41,11 +40,11 @@ BOOST_AUTO_TEST_CASE( test_int )
                 feederDb.insertGPS(gpsData);
 
                 FeederProperties properties;
-                properties.timestamp = "12:32:09";
+                properties.timestamp = 126527434;
                 properties.power = 100.01;
                 properties.temperature  = 78.09;
                 properties.bandwith = 2.46;
-                properties.mode = "MASTER";
+                properties.mode = 10;
                 properties.processorConsumption = 89.90;
                 feederDb.insertFeederProperties(properties);
 

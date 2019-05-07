@@ -5,10 +5,10 @@
 
 namespace communication
 {
-    class FlightDataBuilder final : public MeasuringDataBuilder
+    class FeedertDataBuilder final : public MeasuringDataBuilder
     {
     public:
-        FlightDataBuilder();
+        FeedertDataBuilder();
 
         virtual std::unique_ptr<MeasuringData> create(const std::vector<uint8_t> &dataInBytes) override;
 

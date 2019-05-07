@@ -347,10 +347,6 @@ void InformationPage::fourthButton()
     {
         controller_->setSystemActivation();
 
-        communication::StartAcquisitionCommand acqCommand;
-        communication::GUIWirelessComWrapperResponse response(acqCommand.getFrameBytes());
-        controller_->sendToMainProcess(response.getFrameBytes());
-
         communication::GUIWindowResponse command(PagesType::AHRS_PAGE);
         auto packet = command.getFrameBytes();
         controller_->sendToMainProcess(packet);

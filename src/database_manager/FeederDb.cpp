@@ -34,13 +34,13 @@ void FeederDb::insertIMU(const IMUData& data)
                                               << data.accelZ << SEMICOLON
                                               << data.yaw <<  SEMICOLON
                                               << data.pitch << SEMICOLON
-                                              << data.roll << SEMICOLON
-                                              << data.heading << ");";
+                                              << data.roll << SEMICOLON; //TO DO
+                                              //<< data.heading << ");";
     const auto command = stream.str();
     executeCommand(command);
 }
 
-void FeederDb::insertGPS(const gps::GPSData& data)
+void FeederDb::insertGPS(const GPSData& data)
 {
     stringstream stream;
     string time = to_string(data.hour) + ":" + to_string(data.minutes) + ":" + to_string(data.seconds);

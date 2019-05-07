@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <string>
 
+#include <common/Measurements.h>
+
 namespace gps
 {
     const std::string NMEA_GPRMC = "$GPRMC";
@@ -16,10 +18,6 @@ namespace gps
     const uint8_t NMEA_GPGGA_STATUS = 0x02;
     const uint8_t NMEA_COMPLETED = 0x03;
 
-//    const uint8_t NMEA_GPGGA_INIT_TIME_POSITION = 7;
-//    const uint8_t NMEA_GPGGA_INIT_LATITUDE_POSITION = 18;
-//    const uint8_t NMEA_GPGGA_INIT_LONGITUDE_POSITION = 7;
-
     enum class SentenceType
     {
         GPRMC,
@@ -27,28 +25,6 @@ namespace gps
         ERROR
     };
 
-    struct GPSData
-    {
-        uint8_t hour;
-        uint8_t minutes;
-        uint8_t seconds;
-
-        double latitude;
-        char latitudeDirection;
-
-        double longitude;
-        char longitudeDirection;
-
-        double altitude;
-
-        uint8_t fixQuality;
-        uint8_t numberOfSatellites;
-
-        char receiverWarning;
-
-        double groundSpeed;
-        double course;
-    };
 
     class NMEAParser
     {

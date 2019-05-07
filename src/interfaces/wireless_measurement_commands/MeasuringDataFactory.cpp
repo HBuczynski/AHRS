@@ -2,7 +2,7 @@
 
 #include "ImuDataBuilder.h"
 #include "GpsDataBuilder.h"
-#include "FlightDataBuilder.h"
+#include "FeedertDataBuilder.h"
 
 #include <stdexcept>
 
@@ -28,7 +28,7 @@ unique_ptr<MeasuringData> MeasuringDataFactory::createCommand(const vector<uint8
             builder_ = make_unique<GpsDataBuilder>();
             return move(builder_->create(commandInBytes));
         case MeasuringType::FLIGHT_DATA :
-            builder_ = make_unique<FlightDataBuilder>();
+            builder_ = make_unique<FeedertDataBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

@@ -19,7 +19,8 @@ enum FeederStateCode : uint8_t
     PERFORM_BIT = 0x07,
     REDUNDANT_ACQ = 0x08,
     REGISTERED_USERS = 0x09,
-    SETTINNG = 0x10
+    SETTINNG = 0x10,
+    STOP_ACQ = 0x11
 };
 
 #endif //AHRS_FEEDERBITS_H

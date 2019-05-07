@@ -12,6 +12,7 @@
 #include "CalibrateDataBuilder.h"
 #include "CalibMagBuilder.h"
 #include "BITSDataBuilder.h"
+#include "StopAcqBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -60,6 +61,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             return move(builder_->create(commandInBytes));
         case CommandType::START_ACQ :
             builder_ = make_unique<StartAcquisitionBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::STOP_ACQ :
+            builder_ = make_unique<StopAcqBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::CURRENT_STATE :
             builder_ = make_unique<CurrentStateBuilder>();

@@ -1,6 +1,9 @@
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
-#include <interfaces/wireless_measurement_commands/FlightData.h>
+#include <interfaces/wireless_measurement_commands/FeederData.h>
+#include <interfaces/wireless_commands/StopAcqCommand.h>
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 #include <time_manager/TimeManager.h>
 
 #include "AHRSPage.h"
@@ -35,6 +38,10 @@ AHRSPage::~AHRSPage()
     }
 
     stopAcqTimer();
+
+    StopAcqCommand command;
+    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    controller_->sendToMainProcess(response.getFrameBytes());
 }
 
 void AHRSPage::setup()
@@ -266,10 +273,17 @@ void AHRSPage::acquireFlightData()
 
         if(frame.size() != 0)
         {
-            auto flightData = static_pointer_cast<communication::FlightData, communication::MeasuringData>(
+            auto flightData = static_pointer_cast<communication::FeederData, communication::MeasuringData>(
                     dataFactory_.createCommand(frame));
 
-            handleFlightDataCommand(flightData->getMeasurements());
+            const auto measurements = flightData->getMeasurements();
+            handleFlightDataCommand(measurements.flightMeasurements);
+
+            if(logger_.isInformationEnable())
+            {
+                const string message = string("-GUI- AHRSPage :: received ") + to_string(measurements.flightMeasurements.pitch);
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
         }
     }
     catch (exception &ex)
@@ -287,13 +301,13 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
-    setSlipSkid(measurements.slipSkid);
-    setTurnRate(measurements.turnCoordinator);
-    setAirspeed(measurements.groundSpeed);
-    setAltitude(measurements.altitude);
-    setPressure(measurements.pressure);
-    setClimbRate(measurements.verticalSpeed);
-    setMachNo(measurements.machNo);
+//    setSlipSkid(measurements.slipSkid);
+//    setTurnRate(measurements.turnCoordinator);
+//    setAirspeed(measurements.groundSpeed);
+//    setAltitude(measurements.altitude);
+//    setPressure(measurements.pressure);
+//    setClimbRate(measurements.verticalSpeed);
+//    setMachNo(measurements.machNo);
     setTimeSinceStart(TimeManager::getTimeSinceStart());
     update();
 }

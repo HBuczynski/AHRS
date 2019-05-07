@@ -30,7 +30,7 @@ void PerformBitState::runInitEvent()
 {
     if (logger_.isInformationEnable())
     {
-        const string message = string("-MAIN- CalibrationState:: Invoke procedure for - ") + getName();
+        const string message = string("-MAIN- PerformBitState:: Invoke procedure for - ") + getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -58,7 +58,7 @@ void PerformBitState::initializeExternalSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("-MAIN- CalibrationManager:: External SharedMemory: ") + ex.what();
+            const std::string message = std::string("-MAIN- PerformBitState:: External SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }

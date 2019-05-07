@@ -1,6 +1,7 @@
 #ifndef AHRS_PLANEORIENTATION_H
 #define AHRS_PLANEORIENTATION_H
 
+#include <common/Measurements.h>
 #include <logger/Logger.h>
 #include <memory>
 
@@ -10,24 +11,24 @@
 
 namespace telemetry
 {
-    class PlaneOrientation
+    class PlaneOrientationHandler
     {
     public:
-        PlaneOrientation();
-        ~PlaneOrientation();
+        PlaneOrientationHandler();
+        ~PlaneOrientationHandler();
 
         bool initDataAcquisition(const std::string& planeName);
         void readData();
 
-        float getPitch();
-        float getRoll();
-        float getYaw();
+        const IMUData& getImuData() noexcept;
 
     private:
+        uint64_t counter_;
         RTIMUSettings* settings_;
         RTIMU* imu_;
-        RTIMU_DATA imuData_;
+        RTIMU_DATA rtImuData_;
 
+        IMUData imuData_;
         utility::Logger& logger_;
     };
 }

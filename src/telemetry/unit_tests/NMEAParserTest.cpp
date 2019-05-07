@@ -4,7 +4,7 @@
 
 #include <boost/test/unit_test.hpp>
 #include "../NMEAParser.h"
-#include "../GPSAdafruitInterface.h"
+
 
 #include <thread>
 #include <iostream>
@@ -25,17 +25,17 @@ BOOST_AUTO_TEST_SUITE( nmea_telemetry )
 //
 //        NMEAParser::parseGPGGAData(gpgga, data);
 //        NMEAParser::parseGPRMCData(gprmc, data);
-        GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
-        adafruitInterface.initialize();
+//        GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
+//        adafruitInterface.initialize();
 
-        while (1)
-        {
-            auto data = adafruitInterface.getData();
+//        while (1)
+//        {
+//            auto data = adafruitInterface.getData();
 
-            cout << (int) data.hour << endl;
-            cout << (int) data.minutes << endl;
-            cout << (int) data.seconds << endl;
-        }
+//            cout << (int) data.hour << endl;
+//            cout << (int) data.minutes << endl;
+//            cout << (int) data.seconds << endl;
+//        }
     }
 
 BOOST_AUTO_TEST_SUITE_END()

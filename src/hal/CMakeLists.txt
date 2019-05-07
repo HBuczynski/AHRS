@@ -36,6 +36,9 @@ if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL cockpit_
 
 endif()
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC RTIMULib)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
+
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
 
