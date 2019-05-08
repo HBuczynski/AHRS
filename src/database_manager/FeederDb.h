@@ -11,15 +11,14 @@ namespace database
     public:
         FeederDb(const std::string& name);
 
-        bool initialize();
+        bool openDb();
+        bool createTable();
 
         void insertIMU(const IMUData& data);
         void insertGPS(const GPSData& data);
         void insertFeederProperties(const FeederProperties& feederProperties);
 
     private:
-        bool createTable();
-
         const std::string GPS_TABLE = "CREATE TABLE GPS ("
                                     "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
                                     "TIMESTAMP              NUMERIC, "

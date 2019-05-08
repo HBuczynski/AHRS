@@ -12,7 +12,7 @@ BOOST_AUTO_TEST_SUITE( feeder )
 BOOST_AUTO_TEST_CASE( test_int )
         {
                 FeederDb feederDb("feederExample.db");
-                feederDb.initialize();
+                feederDb.openDb();
 
                 IMUData data;
                 data.roll = 46.3;

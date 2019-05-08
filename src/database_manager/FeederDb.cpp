@@ -8,10 +8,9 @@ FeederDb::FeederDb(const std::string& name)
     : Database(name)
 {}
 
-bool FeederDb::initialize()
+bool FeederDb::openDb()
 {
-    open(name_.c_str());
-    return createTable();
+    return open(name_.c_str());
 }
 
 bool FeederDb::createTable()

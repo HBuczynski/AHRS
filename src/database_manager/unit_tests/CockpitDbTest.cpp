@@ -12,10 +12,10 @@ BOOST_AUTO_TEST_SUITE( cockpit )
         BOOST_AUTO_TEST_CASE( test_int )
         {
             CockpitDb cockpitDb("cockpitExample.db");
-            cockpitDb.initialize();
+            cockpitDb.openDb();
 
             CockpitNetwork cockpitNetwork;
-            cockpitNetwork.timestamp = "12.34.56";
+            cockpitNetwork.timestamp = "22.34.56";
             cockpitNetwork.bandwith = 234.56;
             cockpitNetwork.networkMode = "MASTER";
             cockpitNetwork.networkNumber = "2";

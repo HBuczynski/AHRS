@@ -12,15 +12,14 @@ namespace database
     public:
         CockpitDb(const std::string& name);
 
-        bool initialize();
+        bool openDb();
+        bool createTable();
 
         void insertFlightMeasurement(const FlightMeasurements& measurements);
         void insertCockpitProperties(const CockpitProperties& properties);
         void insertCockpitNetwork(const CockpitNetwork& network);
 
     private:
-        bool createTable();
-
         const std::string FLIGHT_MEASUREMENT_TABLE = "CREATE TABLE FLIGHT_MEASUREMENT ("
                                                             "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
                                                             "ROLL                   DOUBLE  NOT NULL, "
