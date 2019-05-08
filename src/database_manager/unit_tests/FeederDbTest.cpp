@@ -25,13 +25,13 @@ BOOST_AUTO_TEST_CASE( test_int )
                 feederDb.insertIMU(data);
 
                 GPSData gpsData;
-                gpsData.course = 23.45;
-                gpsData.groundSpeed = 384.90;
+                gpsData.course = 22223.45;
+                gpsData.groundSpeed = 22384.90;
                 gpsData.receiverWarning = 'A';
                 gpsData.numberOfSatellites = 9;
                 gpsData.fixQuality = 0;
-                gpsData.longitude = 23.456;
-                gpsData.latitude = 23.7464;
+                gpsData.longitude = 1223.456;
+                gpsData.latitude = 12232.7464;
                 gpsData.altitude =345.89;
                 gpsData.longitudeDirection = 'N';
                 gpsData.latitudeDirection = 'E';

@@ -358,6 +358,6 @@ void CommandHandlerVisitor::runAcq()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(10));
+        this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }

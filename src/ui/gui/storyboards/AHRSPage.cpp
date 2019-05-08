@@ -278,12 +278,6 @@ void AHRSPage::acquireFlightData()
 
             const auto measurements = flightData->getMeasurements();
             handleFlightDataCommand(measurements.flightMeasurements);
-
-            if(logger_.isInformationEnable())
-            {
-                const string message = string("-GUI- AHRSPage :: received ") + to_string(measurements.flightMeasurements.pitch);
-                logger_.writeLog(LogType::INFORMATION_LOG, message);
-            }
         }
     }
     catch (exception &ex)
@@ -301,13 +295,13 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     setRoll(measurements.roll);
     setPitch(measurements.pitch);
     setHeading(measurements.heading);
-//    setSlipSkid(measurements.slipSkid);
-//    setTurnRate(measurements.turnCoordinator);
-//    setAirspeed(measurements.groundSpeed);
-//    setAltitude(measurements.altitude);
-//    setPressure(measurements.pressure);
-//    setClimbRate(measurements.verticalSpeed);
-//    setMachNo(measurements.machNo);
+    setSlipSkid(measurements.slipSkid);
+    setTurnRate(measurements.turnCoordinator);
+    setAirspeed(measurements.groundSpeed);
+    setAltitude(measurements.altitude);
+    setPressure(measurements.pressure);
+    setClimbRate(measurements.verticalSpeed);
+    setMachNo(measurements.machNo);
     setTimeSinceStart(TimeManager::getTimeSinceStart());
     update();
 }

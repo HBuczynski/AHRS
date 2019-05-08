@@ -17,6 +17,7 @@ namespace utility
 		static std::string getTime();
 		static std::string getPreciselyTime();
 		static std::string getTimeAndDate();
+        static uint64_t getImeSinceEpoch();
 
     private:
 

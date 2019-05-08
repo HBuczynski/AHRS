@@ -1,4 +1,5 @@
 #include "MainAcqState.h"
+#include <math.h>
 
 #include <interfaces/wireless_measurement_commands/FeederData.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
@@ -139,7 +140,7 @@ void MainAcqState::runAcquisition()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(20));
+        this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }
 
@@ -158,11 +159,11 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
     generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
 
     //TODO:
-    generalData.flightMeasurements.machNo = 0.45;
-    generalData.flightMeasurements.pressure = 456;
-    generalData.flightMeasurements.slipSkid = 896;
-    generalData.flightMeasurements.turnCoordinator = 23;
-    generalData.flightMeasurements.verticalSpeed = 23;
+    generalData.flightMeasurements.machNo = generalData.gpsData.groundSpeed  / 360.0f;
+    generalData.flightMeasurements.pressure = 3;
+    generalData.flightMeasurements.slipSkid = 2;
+    generalData.flightMeasurements.turnCoordinator = sin(generalData.imuData.pitch / 23.0f)*4;
+    generalData.flightMeasurements.verticalSpeed = 5.0f + sin(33.0f * generalData.imuData.pitch / 238.098f)*15.0f;
 }
 
 void MainAcqState::writeGeneralData(FeederGeneralData& generalData)

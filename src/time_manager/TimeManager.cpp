@@ -72,6 +72,15 @@ string TimeManager::getPreciselyTime()
     return ss.str();
 }
 
+uint64_t TimeManager::getImeSinceEpoch()
+{
+    system_clock::time_point tp = system_clock::now();
+    system_clock::duration dtn = tp.time_since_epoch();
+
+    uint64_t seconds = dtn.count()*system_clock::period::num / system_clock::period::den;
+    return seconds;
+}
+
 string TimeManager::getTimeSinceStart()
 {
     stringstream ss;

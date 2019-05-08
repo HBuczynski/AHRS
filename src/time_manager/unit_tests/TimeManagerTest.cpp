@@ -4,6 +4,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include "../TimeManager.h"
+#include <iostream>
+
+using namespace std;
 
 BOOST_AUTO_TEST_SUITE( test_multiply )
 
@@ -24,7 +27,7 @@ BOOST_AUTO_TEST_SUITE( test_computeInterest )
 
     BOOST_AUTO_TEST_CASE( test_simple )
     {
-
+        cout << utility::TimeManager::getImeSinceEpoch() << endl;
     }
 
 BOOST_AUTO_TEST_SUITE_END()
