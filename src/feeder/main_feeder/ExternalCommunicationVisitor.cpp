@@ -140,3 +140,15 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
             break;
     }
 }
+
+void ExternalCommunicationVisitor::visit(const communication::DbHashNotification& command)
+{
+    appManager_->setHash(command.getHash());
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- ExternalCommInterprocessVisitor :: Received - DbHashNotification - Hash: ")
+                + to_string(command.getHash());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}

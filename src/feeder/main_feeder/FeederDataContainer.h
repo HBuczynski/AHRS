@@ -6,6 +6,7 @@
 struct FeederDataContainer
 {
     std::string planeName;
+    std::string dbName;
 };
 
 #endif // FEEDERDATACONTAINER_H

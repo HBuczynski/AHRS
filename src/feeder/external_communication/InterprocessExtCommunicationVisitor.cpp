@@ -31,6 +31,11 @@ void InterprocessExtCommunicationVisitor::visit(const StateNotification &notific
 
 }
 
+void InterprocessExtCommunicationVisitor::visit(const DbHashNotification& notification)
+{
+
+}
+
 void InterprocessExtCommunicationVisitor::initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager)
 {
     clientUDPManager_ = clientUDPManager;

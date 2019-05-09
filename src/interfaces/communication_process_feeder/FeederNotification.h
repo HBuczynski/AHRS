@@ -10,7 +10,8 @@ namespace communication
     enum FeederNotificationType : uint8_t
     {
         CALIBRATION_STATUS_NOTIFY = 0x05,
-        STATE = 0x10
+        STATE = 0x10,
+        DB_HASH = 0x15
     };
 
     class FeederNotification : public Frame

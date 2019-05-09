@@ -6,6 +6,7 @@
 #include <thread>
 #include <atomic>
 
+#include <database_manager/FeederDb.h>
 #include <FeederDataContainer.h>
 #include <hal/include/PlaneOrientationHandler.h>
 #include <hal/include/GPSAdafruitInterface.h>
@@ -23,6 +24,7 @@ public:
     void runInitEvent() override;
 
     void stopAcq();
+    bool initializeDb(const std::string& name);
     void registerDataCallback(std::function<FeederDataContainer&()> getFeederData);
 
 private:
@@ -32,6 +34,9 @@ private:
     void calculateFlightParameters(FeederGeneralData& generalData);
     void writeGeneralData(FeederGeneralData& generalData);
     void save2Database(FeederGeneralData& generalData);
+
+
+    std::shared_ptr<database::FeederDb> feederDb_;
 
     std::function<FeederDataContainer&()> getFeederData_;
     telemetry::PlaneOrientationHandler planeOrientation_;

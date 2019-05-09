@@ -93,6 +93,13 @@ bool MainAcqState::initializeExternalSharedMemory()
     return true;
 }
 
+bool MainAcqState::initializeDb(const std::string& name)
+{
+    feederDb_ = make_shared<database::FeederDb>(name);
+
+    return feederDb_->openDb();
+}
+
 void MainAcqState::stopAcq()
 {
     gpsAdafruit_.stopAcq();
@@ -140,7 +147,7 @@ void MainAcqState::runAcquisition()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(30));
+        this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
@@ -173,5 +180,6 @@ void MainAcqState::writeGeneralData(FeederGeneralData& generalData)
 
 void MainAcqState::save2Database(FeederGeneralData& generalData)
 {
-//TODO
+    feederDb_->insertGPS(generalData.gpsData);
+    feederDb_->insertIMU(generalData.imuData);
 }

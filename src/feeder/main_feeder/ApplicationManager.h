@@ -9,6 +9,7 @@
 #include <atomic>
 
 #include <hsm/HSM.h>
+#include <database_manager/FeederDb.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
@@ -33,6 +34,7 @@ namespace main_process
 
         FeederDataContainer& getFeederDataContainer();
         void setPlaneName(const std::string& name) noexcept;
+        void setHash(uint32_t hash) noexcept;
 
         void startFeederSystem();
         void stopFeederSystem();
@@ -42,6 +44,8 @@ namespace main_process
         bool initializeExternalQueue();
         bool initializeInternalQueue();
         bool initializeCalibrationSharedMemory();
+
+        bool initializeFeederDB();
 
         bool initializeExternalSharedMemory();
         bool initializeInternalSharedMemory();
@@ -57,6 +61,8 @@ namespace main_process
 
         std::thread processingThread_;
         FeederDataContainer dataContainer_;
+
+        std::shared_ptr<database::FeederDb> feederDb_;
 
         std::shared_ptr<communication::MessageQueueWrapper> externalComMessageQueue;
         std::shared_ptr<communication::MessageQueueWrapper> internalComMessageQueue;

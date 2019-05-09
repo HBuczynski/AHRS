@@ -2,6 +2,7 @@
 
 #include <interfaces/communication_process_feeder/StateNotification.h>
 #include <interfaces/communication_process_feeder/FeederWirelessWrapperCommand.h>
+#include <interfaces/communication_process_feeder/DbHashNotification.h>
 #include <interfaces/wireless_responses/DataResponse.h>
 #include <interfaces/wireless_responses/AckResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
@@ -246,6 +247,22 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
     }
 }
 
+void CommandHandlerVisitor::visit(SetHashCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("- ") + to_string(command.getHash());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    auto notification = DbHashNotification(command.getHash());
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
+}
+
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
 }
@@ -358,6 +375,6 @@ void CommandHandlerVisitor::runAcq()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(30));
+        this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }

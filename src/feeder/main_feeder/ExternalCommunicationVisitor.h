@@ -20,6 +20,7 @@ namespace main_process
         virtual void visit(const communication::FeederWirelessWrapperCommand& command) override;
         virtual void visit(const communication::CalibrationStatusNotification& command) override;
         virtual void visit(const communication::StateNotification& command) override;
+        virtual void visit(const communication::DbHashNotification& command) override;
 
     private:
         utility::Logger& logger_;

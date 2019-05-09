@@ -1,5 +1,6 @@
 #include "ApplicationManager.h"
 
+#include <machine_state/MainAcqState.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 
@@ -41,6 +42,8 @@ bool ApplicationManager::initialize()
 
     isSuccess &= initializeExternalSharedMemory();
     isSuccess &= initializeInternalSharedMemory();
+
+    isSuccess &= initializeFeederDB();
 
     isSuccess &= createExternalCommunicationProcess();
     isSuccess &= createInternalCommunicationProcess();
@@ -130,6 +133,42 @@ bool ApplicationManager::initializeInternalQueue()
     }
 
     return true;
+}
+
+bool ApplicationManager::initializeFeederDB()
+{
+    bool isSuccess = true;
+
+    const auto dbName = string("FeederDB_") + TimeManager::getTimeAndDate() + string(".db");
+
+    dataContainer_.dbName = dbName;
+    feederDb_ = make_shared<database::FeederDb>(dbName);
+
+    isSuccess = isSuccess & feederDb_->openDb();
+    isSuccess = isSuccess & feederDb_->createTable();
+
+    auto state = getState("MainAcqState");
+    isSuccess = isSuccess & static_pointer_cast<MainAcqState, hsm::State>(state)->initializeDb(dbName);
+
+    if(isSuccess)
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: Database has initialized correctly.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: Database has not initialized correctly - ");
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+        return false;
+    }
+
+    return isSuccess;
 }
 
 bool ApplicationManager::initializeExternalSharedMemory()
@@ -339,6 +378,11 @@ FeederDataContainer &ApplicationManager::getFeederDataContainer()
 void ApplicationManager::setPlaneName(const std::string& name) noexcept
 {
     dataContainer_.planeName = name;
+}
+
+void ApplicationManager::setHash(uint32_t hash) noexcept
+{
+    feederDb_->insertHASH(hash);
 }
 
 void ApplicationManager::restartExternalProcess()

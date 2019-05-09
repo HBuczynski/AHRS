@@ -8,6 +8,8 @@
 #include <interfaces/wireless_responses/BITsResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
+#include <interfaces/wireless_commands/SetHashCommand.h>
+#include <interfaces/communication_process_ui/SendingDataCommand.h>
 
 #include <interfaces/wireless_responses/ResponseFactory.h>
 
@@ -79,6 +81,10 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
         case UIExternalComCode::INIT_CONNECTION :
         {
             uiApplicationManager_->handleEvent("SET_SETTINGS");
+            auto hashCommand = SetHashCommand(uiApplicationManager_->getDbHash());
+            auto commandWrapper = SendingDataCommand(hashCommand.getFrameBytes());
+            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+
             break;
         }
         case UIExternalComCode::RECONNECTED :
