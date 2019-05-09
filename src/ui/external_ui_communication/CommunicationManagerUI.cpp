@@ -157,3 +157,8 @@ uint8_t CommunicationManagerUI::getProcessNumber() const
 {
     return processNumber_;
 }
+
+void CommunicationManagerUI::setDBParameters(uint32_t hash, const std::string& name)
+{
+    server_->registerDbParameters(hash, name);
+}

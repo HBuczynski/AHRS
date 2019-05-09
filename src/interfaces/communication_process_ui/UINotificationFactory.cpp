@@ -2,6 +2,7 @@
 
 #include "CommunicationStatusBuilder.h"
 #include "ReceivingDataBuilder.h"
+#include "DatabaseNameBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -18,11 +19,14 @@ unique_ptr<UINotification> UINotificationFactory::createCommand(const vector<uin
 
     switch (type)
     {
-        case UINotificationType ::COMMMUNICATION_PROCESS_STATUS :
+        case UINotificationType::COMMMUNICATION_PROCESS_STATUS :
             builder_ = make_unique<CommunicationStatusBuilder>();
             return move(builder_->create(commandInBytes));
-        case UINotificationType ::RECEIVING_DATA :
+        case UINotificationType::RECEIVING_DATA :
             builder_ = make_unique<ReceivingDataBuilder>();
+            return move(builder_->create(commandInBytes));
+        case UINotificationType::DATABASE_NAME :
+            builder_ = make_unique<DatabaseNameBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

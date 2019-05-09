@@ -25,6 +25,8 @@ namespace communication
         void startListening();
         void stopListening();
 
+        void registerDbParameters(uint32_t hash, const std::string& name);
+
     private:
         void listen();
 

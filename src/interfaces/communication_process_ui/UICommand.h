@@ -12,7 +12,8 @@ namespace communication
         CHANGE_STATE = 0x01,
         SHUTDOWN = 0x02,
         RECONNECT = 0x03,
-        SEND_FRAME = 0x04
+        SEND_FRAME = 0x04,
+        DATABASE_HASH = 0x05
     };
 
     class UICommand : public Frame

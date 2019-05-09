@@ -3,6 +3,7 @@
 
 #include "ReceivingDataNotification.h"
 #include "CommunicationStatusNotification.h"
+#include "DatabaseNameNotification.h"
 
 namespace communication
 {
@@ -14,6 +15,7 @@ namespace communication
 
         virtual void visit(ReceivingDataNotification& command) = 0;
         virtual void visit(CommunicationStatusNotification& command) = 0;
+        virtual void visit(DatabaseNameNotification& command) = 0;
 
     };
 }

@@ -3,6 +3,7 @@
 #include "ShutdownBuilder.h"
 #include "ReconnectBuilder.h"
 #include "SendingDataBuilder.h"
+#include "DatabaseHashBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -30,6 +31,9 @@ unique_ptr<UICommand> UICommandFactory::createCommand(const vector<uint8_t> &com
             return move(builder_->create(commandInBytes));
         case UICommandType ::SEND_FRAME :
             builder_ = make_unique<SendingDataBuilder>();
+            return move(builder_->create(commandInBytes));
+        case UICommandType ::DATABASE_HASH :
+            builder_ = make_unique<DatabaseHashBuilder>();
             return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");

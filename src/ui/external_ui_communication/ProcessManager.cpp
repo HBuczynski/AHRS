@@ -2,6 +2,7 @@
 #include <interfaces/wireless_commands/Command.h>
 #include <interfaces/wireless_commands/PerformBITsCommand.h>
 
+#include <interfaces/communication_process_ui/DatabaseNameNotification.h>
 #include <config_reader/ConfigurationReader.h>
 
 using namespace std;
@@ -172,6 +173,8 @@ void ProcessManager::startCommunication()
 {
     communicationManagerUI_->startHSM();
 
+    initInformation();
+
     while(runCommunicationProcess_)
     {
         try
@@ -209,6 +212,19 @@ void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Send msg to main process.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void ProcessManager::initInformation()
+{
+    //TODO
+    DatabaseNameNotification notif(config::UICommunicationMode::MASTER);
+    if(processNumber_ == 1)
+        notif.setMode(config::UICommunicationMode::MASTER);
+    else
+        notif.setMode(config::UICommunicationMode::REDUNDANT);
+
+    auto packet = notif.getFrameBytes();
+    sendMessageToMainProcess(packet);
 }
 
 void ProcessManager::setState(UIExternalComCode code)

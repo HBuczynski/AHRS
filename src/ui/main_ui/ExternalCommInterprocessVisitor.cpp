@@ -4,6 +4,7 @@
 #include <interfaces/gui/GUIPlanesSetCommand.h>
 #include <interfaces/gui/GUICallibrationCommand.h>
 #include <interfaces/gui/GUIBITSCommand.h>
+#include <interfaces/communication_process_ui/DatabaseHashCommand.h>
 #include <interfaces/wireless_responses/BITsResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
@@ -88,4 +89,16 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
         default:
             break;
     }
+}
+
+void ExternalCommInterprocessVisitor::visit(DatabaseNameNotification& command)
+{
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- ExternalCommInterprocessVisitor:: Received - ") + command.getName();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    DatabaseHashCommand hashCommand(uiApplicationManager_->getDbHash(), uiApplicationManager_->getDbName());
+    uiApplicationManager_->sendToExternalCommunicationProcess(hashCommand.getFrameBytes(), command.getMode());
 }

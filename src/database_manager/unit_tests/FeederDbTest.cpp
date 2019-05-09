@@ -12,7 +12,12 @@ BOOST_AUTO_TEST_SUITE( feeder )
 BOOST_AUTO_TEST_CASE( test_int )
         {
                 FeederDb feederDb("feederExample.db");
+
                 feederDb.openDb();
+                feederDb.createTable();
+
+                FeederDb lol("feederExample.db");
+                lol.openDb();
 
                 IMUData data;
                 data.roll = 46.3;
@@ -22,7 +27,7 @@ BOOST_AUTO_TEST_CASE( test_int )
                 data.accelY = 762.232;
                 data.accelX = 6522.90;
                 data.timestamp = 12565632;
-                feederDb.insertIMU(data);
+                lol.insertIMU(data);
 
                 GPSData gpsData;
                 gpsData.course = 22223.45;
@@ -36,7 +41,7 @@ BOOST_AUTO_TEST_CASE( test_int )
                 gpsData.longitudeDirection = 'N';
                 gpsData.latitudeDirection = 'E';
                 gpsData.timestamp = 232323;
-                feederDb.insertGPS(gpsData);
+                lol.insertGPS(gpsData);
 
                 FeederProperties properties;
                 properties.timestamp = 126527434;
@@ -47,7 +52,7 @@ BOOST_AUTO_TEST_CASE( test_int )
                 properties.processorConsumption = 89.90;
                 feederDb.insertFeederProperties(properties);
 
-                feederDb.insertHASH(127864356);
+                lol.insertHASH(127864356);
         }
 
 BOOST_AUTO_TEST_SUITE_END()

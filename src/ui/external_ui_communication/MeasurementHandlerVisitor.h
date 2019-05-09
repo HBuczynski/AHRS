@@ -7,6 +7,9 @@
 
 #include <vector>
 #include <logger/Logger.h>
+#include <database_manager/CockpitDb.h>
+
+#include <thread>
 
 namespace communication
 {
@@ -20,12 +23,17 @@ namespace communication
         virtual void visit(GpsData& data) override;
         virtual void visit(FeederData& data) override;
 
+        void initializeDB(uint32_t hash, const std::string& name);
+
     private:
         void initializeSharedMemory();
         void writeDataToSharedMemory(std::vector<uint8_t> &rawData);
+        void trolo();
 
         config::UISharedMemory uiSharedMemoryParameters_;
+        std::thread lol;
 
+        std::shared_ptr<database::CockpitDb> cockpitDb_;
         std::unique_ptr<communication::SharedMemoryWrapper> sharedMemory_;
 
         utility::Logger& logger_;

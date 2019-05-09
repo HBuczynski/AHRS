@@ -5,6 +5,7 @@
 #include "ShutdownCommand.h"
 #include "ReconnectCommand.h"
 #include "SendingDataCommand.h"
+#include "DatabaseHashCommand.h"
 
 namespace communication
 {
@@ -18,6 +19,7 @@ namespace communication
         virtual void visit(ShutdownCommand& command) = 0;
         virtual void visit(ReconnectCommand& command) = 0;
         virtual void visit(SendingDataCommand& command) = 0;
+        virtual void visit(DatabaseHashCommand& command) = 0;
     };
 }
 

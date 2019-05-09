@@ -14,6 +14,7 @@ file(GLOB header_list "${CMAKE_CURRENT_SOURCE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_
 
 add_executable(${PROJECT_NAME} ${source_list})
 
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC database_manager)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC message_queue_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC shared_memory_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hsm)

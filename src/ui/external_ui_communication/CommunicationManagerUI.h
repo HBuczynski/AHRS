@@ -27,6 +27,8 @@ namespace communication
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
         uint8_t getProcessNumber() const ;
 
+        void setDBParameters(uint32_t hash, const std::string& name);
+
     private:
         void launchTimer();
         void interruptNotification(timer_t timerID);

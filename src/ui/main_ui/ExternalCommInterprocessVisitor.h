@@ -19,6 +19,7 @@ namespace main_process
 
         virtual void visit(communication::ReceivingDataNotification& command);
         virtual void visit(communication::CommunicationStatusNotification& command);
+        virtual void visit(communication::DatabaseNameNotification& command);
 
     private:
         std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> informationParameters_;

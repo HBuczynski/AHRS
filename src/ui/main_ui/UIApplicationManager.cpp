@@ -1,5 +1,6 @@
 #include "UIApplicationManager.h"
 
+#include <functional>
 #include <interfaces/gui/GUIBITSCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
@@ -35,6 +36,7 @@ bool UIApplicationManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
+    isSuccess = isSuccess & initializeDb();
     isSuccess = isSuccess & communicationProcessesHandler_.initialize();
     isSuccess = isSuccess & guiProcessHandler_.initialize();
 
@@ -93,6 +95,51 @@ bool UIApplicationManager::initializeSharedMemory()
     }
 
     return true;
+}
+
+bool UIApplicationManager::initializeDb()
+{
+    bool isSuccess = true;
+    std::hash<std::string> hasher;
+
+    const auto dbName = string("CockpitDB_") + TimeManager::getTimeAndDate() + string(".db");
+    cockpitDb_ = make_shared<database::CockpitDb>(dbName);
+
+    isSuccess = isSuccess & cockpitDb_->openDb();
+    isSuccess = isSuccess & cockpitDb_->createTable();
+
+    if(isSuccess)
+    {
+        if(logger_.isInformationEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: Database has initialized correctly.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+    else
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: Database has not initialized correctly - ");
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+        return false;
+    }
+
+    uint32_t hashed = hasher(dbName);
+    cockpitDb_->insertHASH(hashed);
+
+    return isSuccess;
+}
+
+uint32_t UIApplicationManager::getDbHash() const noexcept
+{
+    return cockpitDb_->getHash();
+}
+
+const string& UIApplicationManager::getDbName() const noexcept
+{
+    return cockpitDb_->getName();
 }
 
 void UIApplicationManager::startUISystem()

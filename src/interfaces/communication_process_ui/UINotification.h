@@ -10,7 +10,8 @@ namespace communication
     enum UINotificationType : uint8_t
     {
         COMMMUNICATION_PROCESS_STATUS = 0x01,
-        RECEIVING_DATA = 0x02
+        RECEIVING_DATA = 0x02,
+        DATABASE_NAME = 0x03
     };
 
     class UINotification : public Frame

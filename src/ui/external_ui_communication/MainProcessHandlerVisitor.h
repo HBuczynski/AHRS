@@ -21,6 +21,7 @@ namespace communication
         virtual void visit(ShutdownCommand& command) override;
         virtual void visit(ReconnectCommand& command) override;
         virtual void visit(SendingDataCommand& command) override;
+        virtual void visit(DatabaseHashCommand& command) override;
 
     private:
         std::shared_ptr<CommunicationManagerUI> communicationManager_;

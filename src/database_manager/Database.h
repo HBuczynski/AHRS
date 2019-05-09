@@ -15,6 +15,8 @@ namespace database
         virtual ~Database();
 
         bool insertHASH(uint32_t hash);
+        uint32_t getHash() const noexcept;
+        const std::string &getName() const noexcept;
 
     protected:
         bool open(const std::string& name);
@@ -24,6 +26,7 @@ namespace database
         const std::string APOSTROPHE = "'";
         const std::string SEMICOLON = ",";
 
+        uint32_t hash_;
         std::string name_;
         utility::Logger& logger_;
 

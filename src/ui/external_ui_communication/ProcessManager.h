@@ -37,6 +37,8 @@ namespace communication
         bool initializeSharedMemory();
         bool initializeWirelessCommunication();
 
+        void initInformation();
+
         void handleMessageQueue(const std::vector<uint8_t> &data);
         void sendMessageToMainProcess(std::vector<uint8_t > &data);
 

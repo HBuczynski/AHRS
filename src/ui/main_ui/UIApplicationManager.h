@@ -20,6 +20,8 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "GUIInterprocessVisitor.h"
 
+#include <database_manager/CockpitDb.h>
+
 namespace main_process
 {
     class UIApplicationManager : public hsm::HSM
@@ -36,11 +38,17 @@ namespace main_process
         void sendToGUIProcess(std::vector<uint8_t> data);
         void sendToExternalCommunicationProcess(std::vector<uint8_t> data, config::UICommunicationMode mode);
 
+        uint32_t getDbHash() const noexcept;
+        const std::string& getDbName() const noexcept;
+
     private:
         bool initializeMainProcessMessageQueue();
         bool initializeSharedMemory();
+        bool initializeDb();
 
         void handleMessage(const std::vector<uint8_t>& packet);
+
+        std::shared_ptr<database::CockpitDb> cockpitDb_;
 
         config::UIWirelessCommunication uiWirelessCommunicationParameters_;
         config::UIMessageQueues uiMessageQueuesParameters_;

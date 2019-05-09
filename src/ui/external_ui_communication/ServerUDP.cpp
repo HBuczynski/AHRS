@@ -59,7 +59,6 @@ void ServerUDP::listen()
 
             const auto data = dataFactory_.createCommand(frame);
             data->accept(dataVisitor_);
-
         }
         catch (exception &e)
         {
@@ -72,4 +71,9 @@ void ServerUDP::listen()
 
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+}
+
+void ServerUDP::registerDbParameters(uint32_t hash, const std::string& name)
+{
+    dataVisitor_.initializeDB(hash, name);
 }
