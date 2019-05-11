@@ -33,7 +33,7 @@ void PlaneOrientationHandler::readData()
     ++counter_;
 }
 
-const IMUData& PlaneOrientationHandler::getImuData() noexcept
+const IMUData& PlaneOrientationHandler::getImuData()
 {
     imuData_.pitch = 180.0f * sin( counter_ / 9000.0f );
     imuData_.roll = 90.0f * sin( counter_ /  20000.0f );

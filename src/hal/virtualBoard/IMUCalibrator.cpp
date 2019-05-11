@@ -16,6 +16,9 @@ IMUCalibrator::IMUCalibrator()
     config_.status = CalibrationStatus::CALIB_IN_THE_PROCESS;
 }
 
+IMUCalibrator::~IMUCalibrator()
+{}
+
 void IMUCalibrator::setFileName(const std::string& name)
 {
     fileName_ = name;

@@ -24,6 +24,7 @@ class IMUCalibrator
 {
 public:
     IMUCalibrator();
+    ~IMUCalibrator();
 
     void setFileName(const std::string& name);
     bool initializeCalibration();

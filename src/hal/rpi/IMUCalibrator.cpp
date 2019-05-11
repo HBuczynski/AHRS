@@ -19,7 +19,7 @@ IMUCalibrator::IMUCalibrator()
     config_.status = CalibrationStatus::CALIB_IN_THE_PROCESS;
 }
 
-IMUCalibrator::IMUCalibrator()
+IMUCalibrator::~IMUCalibrator()
 {
     if (imu != NULL)
         delete imu;
