@@ -64,6 +64,20 @@ void MainAcqState::runInitEvent()
         runAcq_ = true;
         //gpsAdafruit_.startAcq();
         acqThread_ = thread(&MainAcqState::runAcquisition, this);
+
+        if (logger_.isInformationEnable())
+        {
+            const string message = string("-MAIN- MainAcqState:: Started acq thread.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+    }
+    else
+    {
+        if (logger_.isInformationEnable())
+        {
+            const string message = string("-MAIN- MainAcqState:: Cannot start new acq thread.");
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
     }
 }
 

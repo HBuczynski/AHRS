@@ -56,7 +56,6 @@ void ServerUDP::listen()
         try
         {
             const auto frame = socket_->receivePacket();
-
             const auto data = dataFactory_.createCommand(frame);
             data->accept(dataVisitor_);
         }

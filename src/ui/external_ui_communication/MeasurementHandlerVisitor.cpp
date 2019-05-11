@@ -111,18 +111,18 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
 void MeasurementHandlerVisitor::visit(FeederData &data)
 {
-    auto frame = data.getFrameBytes();
-    writeDataToSharedMemory(frame);
-
-    const auto measurement = data.getMeasurements().flightMeasurements;
-    cockpitDb_->insertFlightMeasurement(measurement);
-
     if(logger_.isInformationEnable())
     {
         const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
                 string(". Data: ") + to_string(data.getMeasurements().imuData.pitch);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    auto frame = data.getFrameBytes();
+    writeDataToSharedMemory(frame);
+
+//    const auto measurement = data.getMeasurements().flightMeasurements;
+//    cockpitDb_->insertFlightMeasurement(measurement);
 }
 
 void MeasurementHandlerVisitor::writeDataToSharedMemory(std::vector<uint8_t> &rawData)
