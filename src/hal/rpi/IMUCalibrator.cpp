@@ -99,10 +99,13 @@ void IMUCalibrator::calibrateAccel()
             axes[i].first = axes[i].second = false;
 
         accelInit_ = true;
+
+    cout << "After init" << endl;
     }
 
     usleep(imu->IMUGetPollInterval() * 1000);
 
+    lock_guard<mutex> lock(mutex_);
 
     for (int i = 0; i < 3; i++)
         accelCal->accelCalEnable(i, axes[i].first);
@@ -121,6 +124,12 @@ void IMUCalibrator::calibrateAccel()
 
     config_.accelerometer.maxZ = accelCal->m_accelMax.data(2);
     config_.accelerometer.minZ = accelCal->m_accelMin.data(2);
+
+    printf("\nMin x: %6.2f  min y: %6.2f  min z: %6.2f\n", accelCal->m_accelMin.data(0),
+           accelCal->m_accelMin.data(1), accelCal->m_accelMin.data(2));
+    printf("Max x: %6.2f  max y: %6.2f  max z: %6.2f\n", accelCal->m_accelMax.data(0),
+           accelCal->m_accelMax.data(1), accelCal->m_accelMax.data(2));
+    fflush(stdout);
 
     if(axes[0].second && axes[1].second && axes[2].second)
     {
