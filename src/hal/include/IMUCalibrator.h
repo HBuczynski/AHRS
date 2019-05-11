@@ -6,6 +6,13 @@
 #include <atomic>
 #include <mutex>
 
+#if defined(FEEDER) || defined(COCKPIT_UI)
+#include <RTIMULib.h>
+#include <RTIMUMagCal.h>
+#include <RTIMUAccelCal.h>
+#endif
+
+
 struct AccelCommon
 {
     std::pair<bool, bool> x;
@@ -17,6 +24,9 @@ class IMUCalibrator
 {
 public:
     IMUCalibrator();
+
+    void setFileName(const std::string& name);
+    bool initializeCalibration();
 
     void calibrateDevice();
 
@@ -37,11 +47,26 @@ private:
 
     void calibrateMag();
 
+#if defined(FEEDER) || defined(COCKPIT_UI)
+    bool pollIMU();
+
+    RTIMUSettings *settings;
+    RTIMU_DATA imuData;
+    RTIMU *imu;
+    RTIMUMagCal *magCal;
+    RTIMUAccelCal *accelCal;
+
+    bool accelInit_;
+    bool magInit_;
+    bool ellInit_;
+#endif
+
     void calibrateEll();
     void checkEllCondition();
 
     communication::CalibrationConfiguration config_;
 
+    std::string fileName_;
     int8_t prevAxis_;
     int8_t currentAxis_;
     std::pair<bool, bool> axes[3]; // first - enable/disable; second - approve
