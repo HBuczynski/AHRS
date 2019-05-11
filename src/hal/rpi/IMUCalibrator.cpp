@@ -8,6 +8,7 @@
 #include <sys/ioctl.h>
 
 #define ELLIPSOID_FIT_DIR   "../../3rd_party/RTEllipsoidFit/"
+#define AIRCRAFTS_DATABASE "../../aircrafts_database/"
 
 using namespace std;
 using namespace communication;
@@ -45,7 +46,8 @@ void IMUCalibrator::setFileName(const std::string& name)
 
 bool IMUCalibrator::initializeCalibration()
 {
-    settings = new RTIMUSettings(fileName_.c_str());
+    const auto totalPath = string(AIRCRAFTS_DATABASE) + fileName_;
+    settings = new RTIMUSettings(totalPath.c_str());
 
     if (imu != NULL)
         delete imu;
