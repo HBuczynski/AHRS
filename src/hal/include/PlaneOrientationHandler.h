@@ -20,7 +20,7 @@ namespace telemetry
         bool initDataAcquisition(const std::string& planeName);
         void readData();
 
-        const IMUData& getImuData() noexcept;
+        const IMUData& getImuData();
 
     private:
         uint64_t counter_;
