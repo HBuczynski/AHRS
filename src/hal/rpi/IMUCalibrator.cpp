@@ -34,7 +34,7 @@ bool IMUCalibrator::initializeCalibration()
     imu = RTIMU::createIMU(settings);
 
     if ((imu == NULL) || (imu->IMUType() == RTIMU_TYPE_NULL))
-        return true;
+        return false;
 
     imu->IMUInit();
 
@@ -45,6 +45,8 @@ bool IMUCalibrator::initializeCalibration()
 
     accelCal = new RTIMUAccelCal(settings);
     accelCal->accelCalInit();
+
+    return true;
 }
 
 void IMUCalibrator::calibrateDevice()
