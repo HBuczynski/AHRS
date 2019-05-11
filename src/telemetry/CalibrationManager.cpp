@@ -63,12 +63,23 @@ void CalibrationManager::startCalibration()
     else
     {
         runCalibration_ = true;
-        calibrationThread_ = thread(&CalibrationManager::run, this);
 
-        if (logger_.isInformationEnable())
+        if (imuCalibrator_.initializeCalibration())
         {
-            const std::string message = std::string("-MAIN- CalibrationManager :: Started new calibration thread.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            calibrationThread_ = thread(&CalibrationManager::run, this);
+            if (logger_.isInformationEnable())
+            {
+                const std::string message = std::string("-MAIN- CalibrationManager :: Started new calibration thread.");
+                logger_.writeLog(LogType::INFORMATION_LOG, message);
+            }
+        }
+        else
+        {
+            if (logger_.isErrorEnable())
+            {
+                const std::string message = std::string("-MAIN- CalibrationManager :: NOT Started new calibration thread.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
         }
     }
 }

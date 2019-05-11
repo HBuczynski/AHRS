@@ -19,6 +19,18 @@ IMUCalibrator::IMUCalibrator()
     config_.status = CalibrationStatus::CALIB_IN_THE_PROCESS;
 }
 
+IMUCalibrator::IMUCalibrator()
+{
+    if (imu != NULL)
+        delete imu;
+
+    if (magCal != NULL)
+        delete magCal;
+
+    if (accelCal != NULL)
+        delete accelCal;
+}
+
 void IMUCalibrator::setFileName(const std::string& name)
 {
     fileName_ = name;
