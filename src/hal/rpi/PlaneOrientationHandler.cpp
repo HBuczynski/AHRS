@@ -58,7 +58,7 @@ void PlaneOrientationHandler::readData()
     }
 }
 
-const IMUData& PlaneOrientationHandler::getImuData() const noexcept
+const IMUData& PlaneOrientationHandler::getImuData()
 {
     imuData_.pitch = rtImuData_.fusionPose.y()*RTMATH_RAD_TO_DEGREE;
     imuData_.roll = rtImuData_.fusionPose.x()*RTMATH_RAD_TO_DEGREE;
