@@ -1,4 +1,5 @@
 #include "../include/IMUCalibrator.h"
+#include <config_reader/FeederParameters.h>
 
 #include <iostream>
 #include <termios.h>
@@ -8,7 +9,6 @@
 #include <sys/ioctl.h>
 
 #define ELLIPSOID_FIT_DIR   "../../3rd_party/RTEllipsoidFit/"
-#define AIRCRAFTS_DATABASE "../../aircrafts_database/"
 
 using namespace std;
 using namespace communication;
@@ -46,7 +46,7 @@ void IMUCalibrator::setFileName(const std::string& name)
 
 bool IMUCalibrator::initializeCalibration()
 {
-    const auto totalPath = string(AIRCRAFTS_DATABASE) + fileName_;
+    const auto totalPath = config::FEEDER_AIRCRAFTS_DATABASE_PATH + fileName_;
     settings = new RTIMUSettings(totalPath.c_str());
 
     if (imu != NULL)
