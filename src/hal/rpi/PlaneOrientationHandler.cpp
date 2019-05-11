@@ -54,7 +54,7 @@ void PlaneOrientationHandler::readData()
 
     while (imu_->IMURead())
     {
-        imuData_ = imu_->getIMUData();
+        rtImuData_ = imu_->getIMUData();
     }
 }
 
