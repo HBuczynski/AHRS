@@ -27,6 +27,7 @@ CalibrationManager::CalibrationManager()
 void CalibrationManager::setPlane(const std::string& plane)
 {
     planeName_ = plane;
+    imuCalibrator_.setFileName(plane);
 }
 
 void CalibrationManager::initializeExternalSharedMemory()
@@ -162,7 +163,7 @@ void CalibrationManager::run()
         imuCalibrator_.calibrateDevice();
         saveInMemory(imuCalibrator_.getConfiguration());
 
-        this_thread::sleep_for(std::chrono::milliseconds(10));
+        this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
