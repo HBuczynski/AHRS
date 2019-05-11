@@ -21,7 +21,7 @@
       "secondCommunicationQueueName": "SecondCommunicationQueueName",
       "guiProcessQueueName" : "GuiProcessQueue",
 
-      "messageQueueNumber" : 20,
+      "messageQueueNumber" : 200,
       "messageSize": 400
     },
 

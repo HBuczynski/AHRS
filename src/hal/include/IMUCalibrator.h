@@ -50,6 +50,7 @@ private:
 
 #if defined(FEEDER) || defined(COCKPIT_UI)
     bool pollIMU();
+    void processEllipsoid();
 
     RTIMUSettings *settings;
     RTIMU_DATA imuData;

@@ -1,6 +1,13 @@
 #include "../include/IMUCalibrator.h"
 
 #include <iostream>
+#include <termios.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <sys/wait.h>
+#include <sys/ioctl.h>
+
+#define ELLIPSOID_FIT_DIR   "../../3rd_party/RTEllipsoidFit/"
 
 using namespace std;
 using namespace communication;
@@ -99,65 +106,50 @@ void IMUCalibrator::calibrateAccel()
             axes[i].first = axes[i].second = false;
 
         accelInit_ = true;
-
-    cout << "After init" << endl;
     }
 
     usleep(imu->IMUGetPollInterval() * 1000);
 
-    lock_guard<mutex> lock(mutex_);
-
-    for (int i = 0; i < 3; i++)
-        accelCal->accelCalEnable(i, axes[i].first);
-    accelCal->newAccelCalData(imuData.accel);
-
-    config_.accelerometer.axis = currentAxis_;
-    config_.accelerometer.mode = axes[currentAxis_].first ? 1 : 0;
-    config_.accelerometer.approved = axes[currentAxis_].second ? 1 : 0;
-
-
-    config_.accelerometer.maxX = accelCal->m_accelMax.data(0);
-    config_.accelerometer.minX = accelCal->m_accelMin.data(0);
-
-    config_.accelerometer.maxY = accelCal->m_accelMax.data(1);
-    config_.accelerometer.minY = accelCal->m_accelMin.data(1);
-
-    config_.accelerometer.maxZ = accelCal->m_accelMax.data(2);
-    config_.accelerometer.minZ = accelCal->m_accelMin.data(2);
-
-    printf("\nMin x: %6.2f  min y: %6.2f  min z: %6.2f\n", accelCal->m_accelMin.data(0),
-           accelCal->m_accelMin.data(1), accelCal->m_accelMin.data(2));
-    printf("Max x: %6.2f  max y: %6.2f  max z: %6.2f\n", accelCal->m_accelMax.data(0),
-           accelCal->m_accelMax.data(1), accelCal->m_accelMax.data(2));
-
-    if(axes[0].second && axes[1].second && axes[2].second)
+    while (pollIMU()) 
     {
-        accelIsDone_ = true;
-        config_.progress |= 0x01;
+        for (int i = 0; i < 3; i++)
+            accelCal->accelCalEnable(i, axes[i].first);
+        
+        accelCal->newAccelCalData(imuData.accel);
+
+        config_.accelerometer.axis = currentAxis_;
+        config_.accelerometer.mode = axes[currentAxis_].first ? 1 : 0;
+        config_.accelerometer.approved = axes[currentAxis_].second ? 1 : 0;
+
+
+        config_.accelerometer.maxX = accelCal->m_accelMax.data(0);
+        config_.accelerometer.minX = accelCal->m_accelMin.data(0);
+
+        config_.accelerometer.maxY = accelCal->m_accelMax.data(1);
+        config_.accelerometer.minY = accelCal->m_accelMin.data(1);
+
+        config_.accelerometer.maxZ = accelCal->m_accelMax.data(2);
+        config_.accelerometer.minZ = accelCal->m_accelMin.data(2);
+
+        if(axes[0].second && axes[1].second && axes[2].second)
+        {
+            accelIsDone_ = true;
+            config_.progress |= 0x01;
+        }
     }
 }
 
 void IMUCalibrator::calibrateAccelX()
-{
-    config_.accelerometer.maxX += 0.01;
-    config_.accelerometer.minX -= 0.01;
-}
+{}
 
 void IMUCalibrator::calibrateAccelY()
-{
-    config_.accelerometer.maxY += 0.01;
-    config_.accelerometer.minY -= 0.01;
-}
+{}
 
 void IMUCalibrator::calibrateAccelZ()
-{
-    config_.accelerometer.maxZ += 0.01;
-    config_.accelerometer.minZ -= 0.01;
-}
+{}
 
 void IMUCalibrator::calibrateMag()
 {
-    lock_guard<mutex> lock(mutex_);
     if (!magInit_)
     {
         magCal->magCalInit();
@@ -167,31 +159,82 @@ void IMUCalibrator::calibrateMag()
     usleep(imu->IMUGetPollInterval() * 1000);
 
     while (pollIMU()) 
+    { 
         magCal->newMinMaxData(imuData.compass);
 
-    config_.magnetometer.maxX = magCal->m_magMax.data(0);
-    config_.magnetometer.maxY = magCal->m_magMax.data(1);
-    config_.magnetometer.maxZ = magCal->m_magMax.data(2);
+        config_.magnetometer.maxX = magCal->m_magMax.data(0);
+        config_.magnetometer.maxY = magCal->m_magMax.data(1);
+        config_.magnetometer.maxZ = magCal->m_magMax.data(2);
 
-    config_.magnetometer.minX = magCal->m_magMin.data(0);
-    config_.magnetometer.minY = magCal->m_magMin.data(1);
-    config_.magnetometer.minZ = magCal->m_magMin.data(2);
-
+        config_.magnetometer.minX = magCal->m_magMin.data(0);
+        config_.magnetometer.minY = magCal->m_magMin.data(1);
+        config_.magnetometer.minZ = magCal->m_magMin.data(2);
+    }
 }
 
 void IMUCalibrator::calibrateEll()
 {
-    config_.ellipsoid.quadrant_11 += 1;
-    config_.ellipsoid.quadrant_12 += 1;
-    config_.ellipsoid.quadrant_13 += 4;
-    config_.ellipsoid.quadrant_21 += 3;
-    config_.ellipsoid.quadrant_22 += 2;
-    config_.ellipsoid.quadrant_23 += 1;
-    config_.ellipsoid.quadrant_31 += 1;
-    config_.ellipsoid.quadrant_32 += 2;
-    config_.ellipsoid.quadrant_33 += 5;
+    usleep(imu->IMUGetPollInterval() * 1000);
 
-    checkEllCondition();
+    while (pollIMU()) {
+        magCal->newEllipsoidData(imuData.compass);
+
+        if (magCal->magCalEllipsoidValid()) 
+        {
+            magCal->magCalSaveRaw(ELLIPSOID_FIT_DIR);
+            processEllipsoid();
+    
+            config_.ellipsoid.mode = 1;
+            config_.progress |= 0x04;
+            ellIsDone_ = true;
+            
+            return;
+        }
+
+        int counts[RTIMUCALDEFS_OCTANT_COUNT];
+        magCal->magCalOctantCounts(counts);
+
+        config_.ellipsoid.quadrant_11 = counts[0];
+        config_.ellipsoid.quadrant_12 = counts[1];
+        config_.ellipsoid.quadrant_13 = counts[2];
+        config_.ellipsoid.quadrant_21 = counts[3];
+        config_.ellipsoid.quadrant_22 = counts[4];
+        config_.ellipsoid.quadrant_23 = counts[5];
+        config_.ellipsoid.quadrant_31 = counts[6];
+        config_.ellipsoid.quadrant_32 = counts[7];
+    }
+}
+
+void IMUCalibrator::processEllipsoid()
+{
+    pid_t pid;
+    int status;
+
+    printf("\n\nProcessing ellipsoid fit data...\n");
+
+    pid = fork();
+    if (pid == 0) {
+        //  child process
+        chdir(ELLIPSOID_FIT_DIR);
+        execl("/bin/sh", "/bin/sh", "-c", RTIMUCALDEFS_OCTAVE_COMMAND, NULL);
+        printf("here");
+        _exit(EXIT_FAILURE);
+    } else if (pid < 0) {
+        printf("\nFailed to start ellipsoid fitting code.\n");
+        return;
+    } else {
+        //  parent process - wait for child
+        if (waitpid(pid, &status, 0) != pid) {
+            printf("\n\nEllipsoid fit failed, %d\n", status);
+        } else {
+            if (status == 0) {
+                printf("\nEllipsoid fit completed - saving data to file.");
+                magCal->magCalSaveCorr(ELLIPSOID_FIT_DIR);
+            } else {
+                printf("\nEllipsoid fit returned %d - aborting.\n", status);
+            }
+        }
+    }
 }
 
 void IMUCalibrator::checkEllCondition()

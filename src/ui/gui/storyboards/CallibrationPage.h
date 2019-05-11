@@ -3,8 +3,9 @@
 
 #include <memory>
 
-#include <time_manager/TimerInterrupt.h>
 #include <QWidget>
+#include <QTimer>
+
 #include "Buttons.h"
 #include "../PageController.h"
 
@@ -14,7 +15,7 @@ namespace Ui {
 class CallibrationPage;
 }
 
-class CallibrationPage : public QWidget, public utility::TimerInterruptNotification
+class CallibrationPage : public QWidget
 {
     Q_OBJECT
 
@@ -39,9 +40,10 @@ signals:
     void signalBackPage();
     void signalBITSPage();
 
-private:
-    void interruptNotification(timer_t timerID) override;
+private slots:
+    void sendNotificaion();
 
+private:
     void setupMaster();
     void setupRedundant();
 
@@ -56,6 +58,11 @@ private:
     void setEllipsoidParameters();
     void calibrateElipsoid();
 
+    void startAcqTimer();
+    void stopAcqTimer();
+
+    QTimer calTimer_;
+
     std::map<peripherals::SwitchCode, std::string> configureButtons();
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
@@ -67,7 +74,6 @@ private:
     std::string getAxisName(uint8_t axis);
     std::string getCallibrationStatus(communication::CalibrationStatus status);
 
-    utility::TimerInterrupt timerInterrupt_;
     uint8_t mode_;
     communication::CalibrationConfiguration currentConfiguration_;
 
@@ -76,7 +82,7 @@ private:
     gui::PageController* controller_;
     std::unique_ptr<Buttons> buttons_;
 
-    const uint16_t USER_UPDATE_INTERVAL_MS = 1000;
+    const uint16_t USER_UPDATE_INTERVAL_MS = 30;
 };
 
 #endif

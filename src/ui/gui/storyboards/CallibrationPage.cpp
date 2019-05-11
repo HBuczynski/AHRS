@@ -25,16 +25,16 @@ CallibrationPage::CallibrationPage(gui::PageController* controller, QWidget *par
 {
     ui_->setupUi(this);
     setupPage(mode_);
-    timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
+    startAcqTimer();
 }
 
 CallibrationPage::~CallibrationPage()
 {
-    timerInterrupt_.stop();
+    stopAcqTimer();
     delete ui_;
 }
 
-void CallibrationPage::interruptNotification(timer_t timerID)
+void CallibrationPage::sendNotificaion()
 {
     CalibrateDataCommand calibrateDataCommand;
     GUIWirelessComWrapperResponse response2(calibrateDataCommand.getFrameBytes());
@@ -63,7 +63,7 @@ void CallibrationPage::setupPage(uint8_t mode)
     if(currentConfiguration_.status == CalibrationStatus::IS_CALIBRATED)
     {
         controller_->setBITSActive();
-        timerInterrupt_.stop();
+        stopAcqTimer();
     }
 }
 
@@ -818,5 +818,19 @@ string CallibrationPage::getCallibrationStatus(communication::CalibrationStatus 
 
         default:
             return string(" ");
+    }
+}
+
+void CallibrationPage::startAcqTimer()
+{
+    connect(&calTimer_, SIGNAL(timeout()), this, SLOT(sendNotificaion()));
+    calTimer_.start(USER_UPDATE_INTERVAL_MS);
+}
+
+void CallibrationPage::stopAcqTimer()
+{
+    while(calTimer_.isActive())
+    {
+        calTimer_.stop();
     }
 }
