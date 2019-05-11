@@ -48,7 +48,7 @@ private:
     void calibrateMag();
 
 #if defined(FEEDER) || defined(COCKPIT_UI)
-    bool IMUCalibrator::pollIMU();
+    bool pollIMU();
 
     RTIMUSettings *settings;
     RTIMU_DATA imuData;

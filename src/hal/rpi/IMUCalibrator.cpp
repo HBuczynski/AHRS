@@ -26,7 +26,7 @@ void IMUCalibrator::setFileName(const std::string& name)
 
 bool IMUCalibrator::initializeCalibration()
 {
-    settings = new RTIMUSettings(fileName_);
+    settings = new RTIMUSettings(fileName_.c_str());
 
     if (imu != NULL)
         delete imu;
@@ -71,7 +71,7 @@ void IMUCalibrator::calibrateDevice()
 
 void IMUCalibrator::calibrateAccel()
 {
-    if (!accelInit)
+    if (!accelInit_)
     {
         for (int i = 0; i < 3; i++)
             accelCal->accelCalEnable(i, true);
@@ -82,7 +82,7 @@ void IMUCalibrator::calibrateAccel()
             accelCal->accelCalEnable(i, false);
 
         for (int i = 0; i < 3; i++)
-            accelEnables[i] = false;
+            axes[i].first = axes[i].second = false;
 
         accelInit_ = true;
     }
