@@ -17,6 +17,7 @@ extern char **environ;
 
 PerformBitState::PerformBitState(const std::string &name, std::shared_ptr<State> parent)
     : State(name, parent),
+      runBits_(true),
       sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH))
 {}
 
@@ -24,7 +25,12 @@ void PerformBitState::runEntryEvent()
 {}
 
 void PerformBitState::runExitEvent()
-{}
+{
+    runBits_ = false;
+
+    if(runBitsThread_.joinable())
+        runBitsThread_.join();
+}
 
 void PerformBitState::runInitEvent()
 {
@@ -36,16 +42,8 @@ void PerformBitState::runInitEvent()
 
     initializeExternalSharedMemory();
 
-    bitExecutor_.checkConnection();
-    bitExecutor_.checkGPS();
-    bitExecutor_.checkIMU();
-
-    const auto bitsInfo = bitExecutor_.getBitsInformation();
-
-    BITsResponse response(bitsInfo);
-    auto packet = response.getFrameBytes();
-
-    externalSharedMemory_->write(packet);
+    runBits_ = true;
+    runBitsThread_ = thread(&PerformBitState::startBITs, this);
 }
 
 void PerformBitState::initializeExternalSharedMemory()
@@ -65,7 +63,45 @@ void PerformBitState::initializeExternalSharedMemory()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = std::string("-MAIN- CalibrationManager :: External shared memory has been initialized correctly.");
+        const std::string message = std::string("-MAIN- PerformBitState :: External shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void PerformBitState::startBITs()
+{
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- PerformBitState :: Run BIT thread.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    while(runBits_)
+    {
+        bitExecutor_.checkConnection();
+        bitExecutor_.checkGPS();
+        bitExecutor_.checkIMU();
+
+        const auto bitsInfo = bitExecutor_.getBitsInformation();
+
+        BITsResponse response(bitsInfo);
+        auto packet = response.getFrameBytes();
+
+        externalSharedMemory_->write(packet);
+
+        bool condition = (bitsInfo.m_communication == 25)
+                         && (bitsInfo.m_gps == 25)
+                         && (bitsInfo.m_imu == 25);
+
+        if(condition)
+        {
+            runBits_ = false;
+        }
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- PerformBitState :: STOP BIT thread.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

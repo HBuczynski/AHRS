@@ -25,18 +25,28 @@ BOOST_AUTO_TEST_SUITE( nmea_telemetry )
 //
 //        NMEAParser::parseGPGGAData(gpgga, data);
 //        NMEAParser::parseGPRMCData(gprmc, data);
-        GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
+        GPSAdafruitInterface adafruitInterface("/dev/ttyS0");
         adafruitInterface.initialize();
 
-        adafruitInterface.startAcq();
-
-        while (1)
-        {
-            auto data = adafruitInterface.getData();
-
-            cout << (int) data.latitude << endl;
-            cout << (int) data.numberOfSatellites << endl;
+        while (adafruitInterface.getStatus() != GPSStatus::FIXED) {
+            this_thread::sleep_for(std::chrono::milliseconds(2));
         }
+
+        cout << "DONE" << endl;
+
+//        adafruitInterface.startAcq();
+
+//        while (1)
+//        {
+//            auto data = adafruitInterface.getData();
+
+//            cout << (int) data.latitude << endl;
+//            cout << (char) data.latitudeDirection << endl;
+//            cout << (int) data.longitude << endl;
+//            cout << (char) data.longitudeDirection << endl;
+//            cout << (int) data.numberOfSatellites << endl;
+//            cout << (int) data.fixQuality << endl;
+//        }
     }
 
 BOOST_AUTO_TEST_SUITE_END()

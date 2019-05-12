@@ -9,6 +9,7 @@ namespace config
     const std::string FEEDER_TYPE_FILE_PATH = "../../configuration_files/feeder_system.json";
     const std::string FEEDER_AIRCRAFTS_DATABASE_FILE_PATH = "../../configuration_files/aircrafts_database.json";
     const std::string FEEDER_AIRCRAFTS_DATABASE_PATH = "../../aircrafts_database/";
+    const std::string FEEDER_GPS_DEVICE_FILE = "/dev/ttyS0";
 
     enum class FeederMode : uint8_t
     {

@@ -19,7 +19,7 @@ bool MainAcqState::initialization_ = false;
 
 MainAcqState::MainAcqState(const std::string &name, std::shared_ptr<State> parent)
     : State(name, parent),
-      gpsAdafruit_("/dev/ttyUSB0"),
+      gpsAdafruit_(FEEDER_GPS_DEVICE_FILE),
       runAcq_(false),
       sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH))
 {}
@@ -62,7 +62,7 @@ void MainAcqState::runInitEvent()
     if(isSuccess)
     {
         runAcq_ = true;
-        //gpsAdafruit_.startAcq();
+        gpsAdafruit_.startAcq();
         acqThread_ = thread(&MainAcqState::runAcquisition, this);
 
         if (logger_.isInformationEnable())
@@ -116,7 +116,7 @@ bool MainAcqState::initializeDb(const std::string& name)
 
 void MainAcqState::stopAcq()
 {
-    //gpsAdafruit_.stopAcq();
+    gpsAdafruit_.stopAcq();
 
     runAcq_ = false;
 
@@ -143,7 +143,7 @@ void MainAcqState::runAcquisition()
             planeOrientation_.readData();
 
             data.imuData = planeOrientation_.getImuData();
-            //data.gpsData = gpsAdafruit_.getData();
+            data.gpsData = gpsAdafruit_.getData();
 
             data.gpsData.altitude = 10000.0f + fabs(8000.0f * sin( counter * 34.0f / 923456.098f));
             data.gpsData.course = 450.0f + 300.0f * sin(counter / 1000);

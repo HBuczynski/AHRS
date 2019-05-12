@@ -1,6 +1,8 @@
 #ifndef PERFORMBITSTATE_H
 #define PERFORMBITSTATE_H
 
+#include <thread>
+
 #include <hsm/State.h>
 #include <config_reader/FeederParameters.h>
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
@@ -20,6 +22,11 @@ public:
 
 private:
     BITExecutor bitExecutor_;
+
+    void startBITs();
+
+    std::atomic<bool> runBits_;
+    std::thread runBitsThread_;
 
     config::FeederSharedMemory sharedMemoryParameters_;
     std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;

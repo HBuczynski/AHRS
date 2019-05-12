@@ -1,9 +1,15 @@
 #include "../include/BITExecutor.h"
 
+#include <config_reader/FeederParameters.h>
+
+using namespace config;
 using namespace communication;
 
 BITExecutor::BITExecutor()
-{}
+    :   gpsInterface_(FEEDER_GPS_DEVICE_FILE)
+{
+    gpsInterface_.initialize();
+}
 
 void BITExecutor::checkConnection()
 {
@@ -18,10 +24,16 @@ void BITExecutor::checkIMU()
 
 void BITExecutor::checkGPS()
 {
-    bitsInformation_.m_gps = 25;
+    const auto status = gpsInterface_.getStatus();
+
+    if(status == gps::GPSStatus::FIXED)
+        bitsInformation_.m_gps = 25;
+    else
+        bitsInformation_.m_gps = 42;
 }
 
-const communication::BitsInformation& BITExecutor::getBitsInformation() noexcept
+const communication::BitsInformation& BITExecutor::getBitsInformation() const noexcept
 {
     return bitsInformation_;
 }
+
