@@ -135,7 +135,6 @@ void MainAcqState::stopAcq()
 void MainAcqState::runAcquisition()
 {
     FeederGeneralData data;
-    int counter = 0;
     while(runAcq_)
     {
         try
@@ -144,20 +143,6 @@ void MainAcqState::runAcquisition()
 
             data.imuData = planeOrientation_.getImuData();
             data.gpsData = gpsAdafruit_.getData();
-
-            data.gpsData.altitude = 10000.0f + fabs(8000.0f * sin( counter * 34.0f / 923456.098f));
-            data.gpsData.course = 450.0f + 300.0f * sin(counter / 1000);
-            data.gpsData.fixQuality = 1;
-            data.gpsData.groundSpeed = 50.0f + fabs(sin(counter / 9739.0f)) * 356;
-            data.gpsData.latitude = 54.32 + fabs(sin(counter / 10000) * 568.0) / 100.0;
-            data.gpsData.latitudeDirection = 'N';
-            data.gpsData.longitude = 32.34 + fabs(sin(counter * 1927.0f / 98745.0f)) / 2345.0;
-            data.gpsData.longitudeDirection = 'S';
-            data.gpsData.numberOfSatellites = 6;
-            data.gpsData.receiverWarning = 'A';
-            data.gpsData.timestamp = utility::TimeManager::getImeSinceEpoch();
-
-            counter++;
 
             calculateFlightParameters(data);
             writeGeneralData(data);

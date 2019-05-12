@@ -24,33 +24,8 @@ MeasurementHandlerVisitor::~MeasurementHandlerVisitor()
 void MeasurementHandlerVisitor::initializeDB(uint32_t hash, const std::string& name)
 {
     cockpitDb_ = make_shared<database::CockpitDb>(name);
-    auto isSuccess = cockpitDb_->openDb();
 
-    FlightMeasurements flightMeasurements;
-
-    flightMeasurements.pitch = 234;
-    flightMeasurements.roll = 234;
-    flightMeasurements.heading = 234;
-
-    flightMeasurements.altitude = 234;
-    flightMeasurements.groundSpeed = 346 ;
-    flightMeasurements.latitude = 234;
-    flightMeasurements.latitudeDirection = 234;
-    flightMeasurements.longitude = 234;
-    flightMeasurements.longitudeDirection = 234;
-    flightMeasurements.groundSpeed = 234;
-
-    //TODO:
-    flightMeasurements.machNo = 345;
-    flightMeasurements.pressure = 3;
-    flightMeasurements.slipSkid = 2;
-    flightMeasurements.turnCoordinator = 345;
-    flightMeasurements.verticalSpeed = 15.0;
-
-    cockpitDb_->insertFlightMeasurement(flightMeasurements);
-
-
-    if(isSuccess)
+    if(cockpitDb_->openDb())
     {
         if(logger_.isInformationEnable())
         {
@@ -114,7 +89,9 @@ void MeasurementHandlerVisitor::visit(FeederData &data)
     if(logger_.isInformationEnable())
     {
         const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
-                string(". Data: ") + to_string(data.getMeasurements().imuData.pitch);
+                string(". Pitch: ") + to_string(data.getMeasurements().imuData.pitch);
+                string(". Latitude: ") + to_string(data.getMeasurements().gpsData.latitude);
+                string(". Altirude: ") + to_string(data.getMeasurements().gpsData.altitude);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
