@@ -3,7 +3,7 @@
 #define BOOST_TEST_DYN_LINK
 
 #include <boost/test/unit_test.hpp>
-#include "../NMEAParser.h"
+#include "../include/GPSAdafruitInterface.h"
 
 
 #include <thread>
@@ -25,17 +25,18 @@ BOOST_AUTO_TEST_SUITE( nmea_telemetry )
 //
 //        NMEAParser::parseGPGGAData(gpgga, data);
 //        NMEAParser::parseGPRMCData(gprmc, data);
-//        GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
-//        adafruitInterface.initialize();
+        GPSAdafruitInterface adafruitInterface("/dev/ttyUSB0");
+        adafruitInterface.initialize();
 
-//        while (1)
-//        {
-//            auto data = adafruitInterface.getData();
+        adafruitInterface.startAcq();
 
-//            cout << (int) data.hour << endl;
-//            cout << (int) data.minutes << endl;
-//            cout << (int) data.seconds << endl;
-//        }
+        while (1)
+        {
+            auto data = adafruitInterface.getData();
+
+            cout << (int) data.latitude << endl;
+            cout << (int) data.numberOfSatellites << endl;
+        }
     }
 
 BOOST_AUTO_TEST_SUITE_END()

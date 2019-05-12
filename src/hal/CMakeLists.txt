@@ -38,6 +38,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC RTIMULib)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC rt)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC time_manager)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)
