@@ -3,6 +3,8 @@
 #include <thread>
 #include "../include/GPSAdafruitInterface.h"
 
+#include <telemetry/NMEAParser.h>
+
 using namespace std;
 using namespace gps;
 

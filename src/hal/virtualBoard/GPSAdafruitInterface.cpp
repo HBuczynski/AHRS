@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include <time_manager/TimeManager.h>
+#include <telemetry/NMEAParser.h>
 #include "../include/GPSAdafruitInterface.h"
 
 using namespace std;
