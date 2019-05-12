@@ -153,8 +153,6 @@ RTIMU::RTIMU(RTIMUSettings *settings)
     switch (m_settings->m_fusionType) {
     case RTFUSION_TYPE_KALMANSTATE4:
         m_fusion = new RTFusionKalman4();
-        //second_fusion = new RTFusionMadgiwck();
-        //third_fusion = new RTFusionGyro();
         break;
 
     case RTFUSION_TYPE_RTQF:

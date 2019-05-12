@@ -474,7 +474,7 @@ void RTIMUSettings::setDefaults()
     m_SPIBus = 0;
     m_SPISelect = 0;
     m_SPISpeed = 500000;
-    m_fusionType = RTFUSION_TYPE_RTQF;
+    m_fusionType = RTFUSION_TYPE_KALMANSTATE4;
     m_axisRotation = RTIMU_XNORTH_YEAST;
     m_pressureType = RTPRESSURE_TYPE_AUTODISCOVER;
     m_I2CPressureAddress = 0;
