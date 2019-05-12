@@ -3,6 +3,8 @@
 #include <iterator>
 #include "NMEAParser.h"
 
+#include <time_manager/TimeManager.h>
+
 using namespace std;
 using namespace gps;
 
@@ -89,15 +91,9 @@ std::vector<std::string> NMEAParser::splitSentence(const std::string &sentence, 
     return words;
 }
 
-void NMEAParser::getTime(const std::string &sentence, GPSData &gpsData)
+void NMEAParser::getTime(const string &time, GPSData &gpsData)
 {
-    const auto time = atoi(sentence.c_str());
-
-    gpsData.timestamp = 235;
-    //TODO
-//    gpsData.hour = time / 10000;
-//    gpsData.minutes = (time % 10000) / 100;
-//    gpsData.seconds = time % 100;
+    gpsData.timestamp = utility::TimeManager::getImeSinceEpoch();
 }
 
 void NMEAParser::getLatitude(const string &latitude, string direction, GPSData &gpsData)

@@ -1,5 +1,6 @@
 #include "../include/PlaneOrientationHandler.h"
 
+#include <time_manager/TimeManager.h>
 #include <config_reader/FeederParameters.h>
 #include <RTIMULib.h>
 #include <iostream>
@@ -68,7 +69,7 @@ const IMUData& PlaneOrientationHandler::getImuData()
     imuData_.accelY = rtImuData_.accel.y();
     imuData_.accelZ = rtImuData_.accel.z();
 
-    imuData_.timestamp = 0; //TODO
+    imuData_.timestamp = utility::TimeManager::getImeSinceEpoch();
 
     return imuData_;
 }
