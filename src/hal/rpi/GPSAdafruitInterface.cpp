@@ -11,7 +11,8 @@ using namespace gps;
 bool GPSAdafruitInterface::initDone_ = false;
 
 GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
-    :   fixedSwitch_(hardware::GPIO{23, hardware::GPIOMode::IN, hardware::GPIOPullMode::DOWN}),
+    :   gpsData_({0}),
+        fixedSwitch_(hardware::GPIO{23, hardware::GPIOMode::IN, hardware::GPIOPullMode::DOWN}),
         runAcq_(false),
         rs232Interface_(deviceName),
         gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED)
@@ -36,6 +37,10 @@ void GPSAdafruitInterface::initialize()
 
         start_ = std::chrono::system_clock::now();
         fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
+    }
+    else
+    {
+        gpsStatus_ = GPSStatus::FIXED;
     }
 }
 
