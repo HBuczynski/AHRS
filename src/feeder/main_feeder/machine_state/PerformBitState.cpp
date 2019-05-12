@@ -92,6 +92,10 @@ void PerformBitState::startBITs()
             bitsInfo.progress = 1;
             runBits_ = false;
         }
+        else
+        {
+            bitsInfo.progress = 0;
+        }
 
         BITsResponse response(bitsInfo);
         auto packet = response.getFrameBytes();

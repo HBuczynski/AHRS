@@ -3,6 +3,7 @@
 #include <iostream>
 #include <config_reader/FeederParameters.h>
 
+using namespace std;
 using namespace config;
 using namespace communication;
 
@@ -15,7 +16,6 @@ BITExecutor::BITExecutor()
 void BITExecutor::checkConnection()
 {
     bitsInformation_.m_communication = 25;
-    bitsInformation_.progress = 1;
 }
 
 void BITExecutor::checkIMU()
