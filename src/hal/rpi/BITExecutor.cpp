@@ -1,5 +1,6 @@
 #include "../include/BITExecutor.h"
 
+#include <iostream>
 #include <config_reader/FeederParameters.h>
 
 using namespace config;
@@ -27,7 +28,10 @@ void BITExecutor::checkGPS()
     const auto status = gpsInterface_.getStatus();
 
     if(status == gps::GPSStatus::FIXED)
+    {    
         bitsInformation_.m_gps = 25;
+        cout << "FIXED GPS. " << endl;
+    }
     else
         bitsInformation_.m_gps = 42;
 }

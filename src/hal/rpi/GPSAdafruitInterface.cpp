@@ -8,11 +8,12 @@
 using namespace std;
 using namespace gps;
 
+atomic<GPSStatus> GPSAdafruitInterface::gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED);
+
 GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
     :   fixedSwitch_(hardware::GPIO{23, hardware::GPIOMode::IN, hardware::GPIOPullMode::DOWN}),
         runAcq_(false),
-        rs232Interface_(deviceName),
-        gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED)
+        rs232Interface_(deviceName)
 {}
 
 GPSAdafruitInterface::~GPSAdafruitInterface()
@@ -89,7 +90,7 @@ void GPSAdafruitInterface::dataAcq()
                         break;
                 }
             }
-        }F
+        }
 
         this_thread::sleep_for(std::chrono::milliseconds(2));
     }

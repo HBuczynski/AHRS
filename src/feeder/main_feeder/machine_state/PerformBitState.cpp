@@ -82,21 +82,20 @@ void PerformBitState::startBITs()
         bitExecutor_.checkGPS();
         bitExecutor_.checkIMU();
 
-        const auto bitsInfo = bitExecutor_.getBitsInformation();
-
-        BITsResponse response(bitsInfo);
-        auto packet = response.getFrameBytes();
-
-        externalSharedMemory_->write(packet);
-
+        auto bitsInfo = bitExecutor_.getBitsInformation();
         bool condition = (bitsInfo.m_communication == 25)
                          && (bitsInfo.m_gps == 25)
                          && (bitsInfo.m_imu == 25);
 
         if(condition)
         {
+            bitsInfo.progress = 1;
             runBits_ = false;
         }
+
+        BITsResponse response(bitsInfo);
+        auto packet = response.getFrameBytes();
+        externalSharedMemory_->write(packet);
     }
 
     if (logger_.isInformationEnable())

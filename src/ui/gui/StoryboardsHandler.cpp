@@ -411,6 +411,7 @@ const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationPara
 
 void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformation)
 {
+    cout << "Setting BITS info" << endl;
     guiDataManager_.setBitsInformation(bitsInformation);
 
     if(currentPage_ == PagesType::BITS_PAGE && bitsPage_)
