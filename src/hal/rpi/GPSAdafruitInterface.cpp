@@ -96,7 +96,7 @@ void GPSAdafruitInterface::dataAcq()
     }
 }
 
-const GPSData &GPSAdafruitInterface::getData() const noexcept
+const GPSData &GPSAdafruitInterface::getData() noexcept
 {
     lock_guard<mutex> lock(gpsDataMutex_);
     return gpsData_;

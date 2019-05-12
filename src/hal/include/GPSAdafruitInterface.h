@@ -39,7 +39,7 @@ namespace gps
         void startAcq();
         void stopAcq();
 
-        const GPSData& getData() const noexcept;
+        const GPSData& getData() noexcept;
 
     private:
         static void interruptCallback(int gpio, int level, uint32_t tick, void *userdata);
