@@ -34,19 +34,21 @@ BOOST_AUTO_TEST_SUITE( nmea_telemetry )
 
         cout << "DONE" << endl;
 
-//        adafruitInterface.startAcq();
+        adafruitInterface.startAcq();
 
-//        while (1)
-//        {
-//            auto data = adafruitInterface.getData();
+        while (1)
+        {
+            auto data = adafruitInterface.getData();
 
-//            cout << (int) data.latitude << endl;
-//            cout << (char) data.latitudeDirection << endl;
-//            cout << (int) data.longitude << endl;
-//            cout << (char) data.longitudeDirection << endl;
-//            cout << (int) data.numberOfSatellites << endl;
-//            cout << (int) data.fixQuality << endl;
-//        }
+            cout << data.latitude << endl;
+            cout << (char) data.latitudeDirection << endl;
+            cout <<  data.longitude << endl;
+            cout << (char) data.longitudeDirection << endl;
+            cout <<  static_cast<int>(data.numberOfSatellites) << endl;
+            cout <<  static_cast<int>(data.fixQuality) << endl;
+
+this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
     }
 
 BOOST_AUTO_TEST_SUITE_END()

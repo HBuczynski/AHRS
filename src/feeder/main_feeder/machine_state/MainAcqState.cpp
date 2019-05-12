@@ -144,6 +144,14 @@ void MainAcqState::runAcquisition()
             data.imuData = planeOrientation_.getImuData();
             data.gpsData = gpsAdafruit_.getData();
 
+            cout << data.gpsData.latitude << endl;
+            cout << (char) data.gpsData.latitudeDirection << endl;
+            cout <<  data.gpsData.longitude << endl;
+            cout << (char) data.gpsData.longitudeDirection << endl;
+            cout <<  static_cast<int>(data.gpsData.numberOfSatellites) << endl;
+            cout <<  static_cast<int>(data.gpsData.fixQuality) << endl;
+
+
             calculateFlightParameters(data);
             writeGeneralData(data);
             save2Database(data);

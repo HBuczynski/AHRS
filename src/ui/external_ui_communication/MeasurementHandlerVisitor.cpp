@@ -89,8 +89,8 @@ void MeasurementHandlerVisitor::visit(FeederData &data)
     if(logger_.isInformationEnable())
     {
         const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
-                string(". Pitch: ") + to_string(data.getMeasurements().imuData.pitch);
-                string(". Latitude: ") + to_string(data.getMeasurements().gpsData.latitude);
+                string(". Pitch: ") + to_string(data.getMeasurements().imuData.pitch) +
+                string(". Latitude: ") + to_string(data.getMeasurements().gpsData.latitude) +
                 string(". Altirude: ") + to_string(data.getMeasurements().gpsData.altitude);
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
@@ -98,8 +98,8 @@ void MeasurementHandlerVisitor::visit(FeederData &data)
     auto frame = data.getFrameBytes();
     writeDataToSharedMemory(frame);
 
-    const auto measurement = data.getMeasurements().flightMeasurements;
-    cockpitDb_->insertFlightMeasurement(measurement);
+//    const auto measurement = data.getMeasurements().flightMeasurements;
+//    cockpitDb_->insertFlightMeasurement(measurement);
 }
 
 void MeasurementHandlerVisitor::writeDataToSharedMemory(std::vector<uint8_t> &rawData)
