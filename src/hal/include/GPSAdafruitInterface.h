@@ -47,6 +47,7 @@ namespace gps
         void dataAcq();
         void interruptHandle();
 
+        static bool initDone_;
         GPSData gpsData_;
         hardware::Switch fixedSwitch_;
 
@@ -58,7 +59,7 @@ namespace gps
         TimePoint end_;
 
         RS232Interface rs232Interface_;
-        static std::atomic<GPSStatus> gpsStatus_;
+        std::atomic<GPSStatus> gpsStatus_;
 
         const uint32_t FIXED_THRESHOLD = 10000;
         const uint8_t SENTENCE_MIN_THRESHOLD = 60;

@@ -8,12 +8,13 @@
 using namespace std;
 using namespace gps;
 
-atomic<GPSStatus> GPSAdafruitInterface::gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED);
+bool GPSAdafruitInterface::initDone_ = false;
 
 GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
     :   fixedSwitch_(hardware::GPIO{23, hardware::GPIOMode::IN, hardware::GPIOPullMode::DOWN}),
         runAcq_(false),
-        rs232Interface_(deviceName)
+        rs232Interface_(deviceName),
+        gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED)
 {}
 
 GPSAdafruitInterface::~GPSAdafruitInterface()
@@ -29,10 +30,13 @@ void GPSAdafruitInterface::initialize()
     vector<uint8_t> intervalUpdateRaw(intervalUpdate.begin(), intervalUpdate.end());
     rs232Interface_.writeData(intervalUpdateRaw);
 
-    gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
+    if( !initDone_)
+    {
+        gpsStatus_ = GPSStatus::SEARCHING_SATELLITES;
 
-    start_ = std::chrono::system_clock::now();
-    fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
+        start_ = std::chrono::system_clock::now();
+        fixedSwitch_.registerHandler(interruptCallback, RISING_EDGE, 0, reinterpret_cast<void *>(this));
+    }
 }
 
 void GPSAdafruitInterface::startAcq()
@@ -116,6 +120,7 @@ void GPSAdafruitInterface::interruptHandle()
     if(duration > FIXED_THRESHOLD)
     {
         gpsStatus_ = GPSStatus::FIXED;
+        initDone_ = true;
     }
     else
     {
