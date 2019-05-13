@@ -1,5 +1,6 @@
 #include "PerformBitState.h"
 
+#include <interfaces/communication_process_feeder/UDPBitsNotification.h>
 #include <interfaces/wireless_responses/BITsResponse.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
@@ -46,6 +47,11 @@ void PerformBitState::runInitEvent()
     runBitsThread_ = thread(&PerformBitState::startBITs, this);
 }
 
+void PerformBitState::approveUDPBits() noexcept
+{
+    bitExecutor_.approveConnection();
+}
+
 void PerformBitState::initializeExternalSharedMemory()
 {
     try
@@ -68,6 +74,11 @@ void PerformBitState::initializeExternalSharedMemory()
     }
 }
 
+void PerformBitState::registerCallbackToExternalComm(std::function<void(std::vector<uint8_t>)> callback)
+{
+    callback_ = callback;
+}
+
 void PerformBitState::startBITs()
 {
     if (logger_.isInformationEnable())
@@ -75,6 +86,11 @@ void PerformBitState::startBITs()
         const std::string message = std::string("-MAIN- PerformBitState :: Run BIT thread.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    // Run UDP msg
+    UDPBitsNotification notification(BITS_ACTION::SEND_DEMAND);
+    auto packet = notification.getFrameBytes();
+    callback_(packet);
 
     while(runBits_)
     {

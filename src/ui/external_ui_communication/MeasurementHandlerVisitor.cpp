@@ -1,8 +1,12 @@
 #include "MeasurementHandlerVisitor.h"
 
 #include <iostream>
+
+#include <interfaces/wireless_commands/UDPBitsCommand.h>
 #include <config_reader/ConfigurationReader.h>
 #include <boost/interprocess/sync/scoped_lock.hpp>
+
+#include "CommunicationManagerUI.h"
 
 using namespace std;
 using namespace config;
@@ -10,8 +14,9 @@ using namespace utility;
 using namespace communication;
 using namespace boost::interprocess;
 
-MeasurementHandlerVisitor::MeasurementHandlerVisitor()
-    : uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+MeasurementHandlerVisitor::MeasurementHandlerVisitor(CommunicationManagerUI* communicationManagerUI)
+    : communicationManagerUI_(communicationManagerUI),
+      uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
 {
     initializeSharedMemory();
@@ -100,6 +105,18 @@ void MeasurementHandlerVisitor::visit(FeederData &data)
 
     const auto measurement = data.getMeasurements().flightMeasurements;
     cockpitDb_->insertFlightMeasurement(measurement);
+}
+
+void MeasurementHandlerVisitor::visit(UDPBitsData& data)
+{
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received UDPBitsData.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    auto dataCommand = make_unique<UDPBitsCommand>();
+    communicationManagerUI_->sendCommands(move(dataCommand));
 }
 
 void MeasurementHandlerVisitor::writeDataToSharedMemory(std::vector<uint8_t> &rawData)

@@ -4,6 +4,7 @@
 #include "CalibrationStatusNotification.h"
 #include "StateNotification.h"
 #include "DbHashNotification.h"
+#include "UDPBitsNotification.h"
 
 namespace communication
 {
@@ -16,6 +17,7 @@ namespace communication
         virtual void visit(const CalibrationStatusNotification& command) = 0;
         virtual void visit(const StateNotification& command) = 0;
         virtual void visit(const DbHashNotification& command) = 0;
+        virtual void visit(const UDPBitsNotification& command) = 0;
     };
 }
 #endif

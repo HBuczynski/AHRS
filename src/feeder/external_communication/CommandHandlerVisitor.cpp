@@ -3,6 +3,7 @@
 #include <interfaces/communication_process_feeder/StateNotification.h>
 #include <interfaces/communication_process_feeder/FeederWirelessWrapperCommand.h>
 #include <interfaces/communication_process_feeder/DbHashNotification.h>
+#include <interfaces/communication_process_feeder/UDPBitsNotification.h>
 #include <interfaces/wireless_responses/DataResponse.h>
 #include <interfaces/wireless_responses/AckResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
@@ -37,9 +38,7 @@ CommandHandlerVisitor::CommandHandlerVisitor()
     : runAcquisition_(false),
       sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
       logger_(Logger::getInstance())
-{
-
-}
+{}
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
 {
@@ -245,6 +244,22 @@ void CommandHandlerVisitor::visit(EndConnectionCommand &command)
                                     std::to_string(currentClient_->getID()) + std::string("-.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void CommandHandlerVisitor::visit(UDPBitsCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID()) + std::string("-.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    auto notification = UDPBitsNotification(BITS_ACTION::RECEIVED_ACQ);
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
 }
 
 void CommandHandlerVisitor::visit(SetHashCommand& command)

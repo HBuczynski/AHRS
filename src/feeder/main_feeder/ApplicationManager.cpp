@@ -394,3 +394,11 @@ void ApplicationManager::restartInternalProcess()
 {
 
 }
+
+void ApplicationManager::sendToExternalCommunicationProcess(std::vector<uint8_t> data)
+{
+    cout << "send" << endl;
+
+
+    externalComMessageQueue->send(data);
+}

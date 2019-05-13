@@ -21,6 +21,7 @@ namespace main_process
         virtual void visit(const communication::CalibrationStatusNotification& command) override;
         virtual void visit(const communication::StateNotification& command) override;
         virtual void visit(const communication::DbHashNotification& command) override;
+        virtual void visit(const communication::UDPBitsNotification& command) override;
 
     private:
         utility::Logger& logger_;

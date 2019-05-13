@@ -9,7 +9,7 @@ class RS232Interface
 public:
     RS232Interface(const std::string& name);
 
-    void initialize();
+    bool initialize();
     void closeSerial();
 
     void writeData(const std::vector<uint8_t>& data);

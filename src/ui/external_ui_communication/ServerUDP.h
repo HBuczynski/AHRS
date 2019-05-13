@@ -16,10 +16,12 @@
 
 namespace communication
 {
+    class CommunicationManagerUI;
+
     class ServerUDP
     {
     public:
-        ServerUDP(uint16_t port);
+        ServerUDP(uint16_t port, CommunicationManagerUI* communicationManagerUI);
         ~ServerUDP();
 
         void startListening();

@@ -14,6 +14,7 @@
 #include "BITSDataBuilder.h"
 #include "StopAcqBuilder.h"
 #include "SetHashBuilder.h"
+#include "UDPBitsBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -71,6 +72,9 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             return move(builder_->create(commandInBytes));
         case CommandType::BITS_DATA :
             builder_ = make_unique<BITSDataBuilder>();
+            return move(builder_->create(commandInBytes));
+        case CommandType::UDP_BITS :
+            builder_ = make_unique<UDPBitsBuilder>();
             return move(builder_->create(commandInBytes));
         case CommandType::END_CONNECTION :
             builder_ = make_unique<EndConnectionBuilder>();

@@ -44,7 +44,7 @@ namespace communication
         std::shared_ptr<ServerTCP> server_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
 
-        InterprocessExtCommunicationVisitor messageVisitor_;
+        InterprocessExtCommunicationVisitor interprocessVisitor_;
         communication::FeederNotificationFactory notificationFactory_;
         communication::FeederCommandFactory commandFactory_;
         

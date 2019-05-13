@@ -2,6 +2,7 @@
 #include "CalibrationStatusNotificationBuilder.h"
 #include "StateBuilder.h"
 #include "DbHashBuilder.h"
+#include "UDPBitsNotifBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -26,6 +27,9 @@ unique_ptr<FeederNotification> FeederNotificationFactory::createNotification(con
             return move(builder_->create(notificationInBytes));
         case FeederNotificationType::DB_HASH:
             builder_ = make_unique<DbHashBuilder>();
+            return move(builder_->create(notificationInBytes));
+        case FeederNotificationType::UDP_BITS_NOTIFY:
+            builder_ = make_unique<UDPBitsNotifBuilder>();
             return move(builder_->create(notificationInBytes));
         default:
             throw invalid_argument("Received Notification does not register in factory.");

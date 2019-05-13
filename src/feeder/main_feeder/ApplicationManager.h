@@ -39,6 +39,8 @@ namespace main_process
         void startFeederSystem();
         void stopFeederSystem();
 
+        void sendToExternalCommunicationProcess(std::vector<uint8_t> data);
+
     private:
         bool initializeMainQueue();
         bool initializeExternalQueue();

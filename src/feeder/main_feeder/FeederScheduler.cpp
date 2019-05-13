@@ -64,8 +64,10 @@ void FeederScheduler::create()
 
 bool FeederScheduler::initialize()
 {
-
+    function<void(std::vector<uint8_t>)> sendToExt = bind(&ApplicationManager::sendToExternalCommunicationProcess, applicationManager_.get(), std::placeholders::_1);
     function<FeederDataContainer&()> dataCallback = bind(&ApplicationManager::getFeederDataContainer, applicationManager_.get());
+
+    static_pointer_cast<PerformBitState, hsm::State>(states_["PerformBitState"])->registerCallbackToExternalComm(sendToExt);
     static_pointer_cast<CalibrationState, hsm::State>(states_["CalibrationState"])->registerDataCallback(dataCallback);
     static_pointer_cast<MainAcqState, hsm::State>(states_["MainAcqState"])->registerDataCallback(dataCallback);
 

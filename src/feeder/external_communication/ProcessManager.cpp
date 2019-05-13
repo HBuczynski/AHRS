@@ -22,6 +22,7 @@ ProcessManager::ProcessManager(const string &name, const hsm::TransitionTable &t
         logger_(Logger::getInstance())
 {
     clientUDPManager_ = make_shared<ClientUDPManager>(name, transitionTable, rootState);
+    interprocessVisitor_.initializeClientUDPManager(clientUDPManager_);
 
     function<void(std::vector<uint8_t>&)> callback = bind(&ProcessManager::sendMessageToMainProcess, this, std::placeholders::_1);
     clientUDPManager_->registerCallbackToMainProc(callback);
@@ -114,12 +115,12 @@ void ProcessManager::start()
             if(frameType == FrameType::COMMAND)
             {
                 const auto command = commandFactory_.createCommand(packet);
-                command->accept(messageVisitor_);
+                command->accept(interprocessVisitor_);
             }
             else if (frameType == FrameType::NOTIFICATION)
             {
                 const auto notification = notificationFactory_.createNotification(packet);
-                notification->accept(messageVisitor_);
+                notification->accept(interprocessVisitor_);
             }
             else
             {

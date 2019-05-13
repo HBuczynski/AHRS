@@ -16,6 +16,7 @@
 #include "BITSDataCommand.h"
 #include "StopAcqCommand.h"
 #include "SetHashCommand.h"
+#include "UDPBitsCommand.h"
 
 namespace communication
 {
@@ -40,6 +41,7 @@ namespace communication
         virtual void visit(BITSDataCommand& command) = 0;
         virtual void visit(StopAcqCommand& command) = 0;
         virtual void visit(SetHashCommand& command) = 0;
+        virtual void visit(UDPBitsCommand& command) = 0;
     };
 }
 #endif

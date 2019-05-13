@@ -57,7 +57,7 @@ void MainAcqState::runInitEvent()
     {
         isSuccess = initializeExternalSharedMemory();
         isSuccess = isSuccess && planeOrientation_.initDataAcquisition(getFeederData_().planeName);
-        gpsAdafruit_.initialize();
+        isSuccess = isSuccess && gpsAdafruit_.initialize();
     }
 
     if(isSuccess)

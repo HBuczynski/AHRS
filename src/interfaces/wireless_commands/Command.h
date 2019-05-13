@@ -23,7 +23,8 @@ namespace communication
         PERFORM_BIT = 90,
         CALIBRATE_DATA = 100,
         BITS_DATA = 110,
-        SET_HASH = 120
+        SET_HASH = 120,
+        UDP_BITS = 130,
     };
 
     class Command : public Frame

@@ -36,6 +36,7 @@ namespace communication
         virtual void visit(BITSDataCommand& command) override;
         virtual void visit(StopAcqCommand& command) override;
         virtual void visit(SetHashCommand& command) override;
+        virtual void visit(UDPBitsCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeExternalSharedMemory();

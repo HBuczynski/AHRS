@@ -11,7 +11,8 @@ namespace communication
     {
         IMU = 10,
         GPS = 20,
-        FLIGHT_DATA = 30
+        FLIGHT_DATA = 30,
+        UDP_BITS_DATA = 40
     };
 
     class MeasuringData : public Frame

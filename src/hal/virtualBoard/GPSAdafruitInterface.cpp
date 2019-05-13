@@ -26,7 +26,7 @@ GPSAdafruitInterface::~GPSAdafruitInterface()
    stopAcq();
 }
 
-void GPSAdafruitInterface::initialize()
+bool GPSAdafruitInterface::initialize()
 {}
 
 void GPSAdafruitInterface::startAcq()

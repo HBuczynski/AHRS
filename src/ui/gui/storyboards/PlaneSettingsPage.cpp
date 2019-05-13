@@ -144,7 +144,6 @@ void PlaneSettingsPage::setupSlots()
 
 void PlaneSettingsPage::lineEditClicked()
 {
-    cout << "Lolo" << endl;
 }
 
 void PlaneSettingsPage::initialize()

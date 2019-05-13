@@ -30,13 +30,13 @@ bool CommunicationManagerUI::initializeServer()
 {
     if(processNumber_ == 1)
     {
-        server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.firstSourcePort);
+        server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.firstSourcePort, this);
         client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress);
     }
     else if(processNumber_ == 2)
     {
         client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress);
-        server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.secondSourcePort);
+        server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.secondSourcePort, this);
     }
     else
     {

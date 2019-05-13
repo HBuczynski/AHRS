@@ -33,7 +33,7 @@ namespace gps
         GPSAdafruitInterface(const std::string& deviceName);
         ~GPSAdafruitInterface();
 
-        void initialize();
+        bool initialize();
         GPSStatus getStatus();
 
         void startAcq();

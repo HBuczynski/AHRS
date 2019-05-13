@@ -6,9 +6,10 @@ using namespace std;
 using namespace utility;
 using namespace communication;
 
-ServerUDP::ServerUDP(uint16_t port)
+ServerUDP::ServerUDP(uint16_t port, CommunicationManagerUI *communicationManagerUI)
     : port_(port),
       runListenThread_(false),
+      dataVisitor_(communicationManagerUI),
       logger_(Logger::getInstance())
 {}
 

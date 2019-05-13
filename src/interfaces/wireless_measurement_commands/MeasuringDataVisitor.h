@@ -4,6 +4,7 @@
 #include "ImuData.h"
 #include "GpsData.h"
 #include "FeederData.h"
+#include "UDPBitsData.h"
 
 namespace communication
 {
@@ -16,6 +17,7 @@ namespace communication
         virtual void visit(ImuData& data) = 0;
         virtual void visit(GpsData& data) = 0;
         virtual void visit(FeederData& data) = 0;
+        virtual void visit(UDPBitsData& data) = 0;
     };
 }
 

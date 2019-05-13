@@ -20,6 +20,7 @@ namespace communication
         virtual void visit(const CalibrationStatusNotification& notification) override;
         virtual void visit(const StateNotification& notification) override;
         virtual void visit(const DbHashNotification& notification) override;
+        virtual void visit(const UDPBitsNotification& notification) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
 

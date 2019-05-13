@@ -4,6 +4,7 @@
 #include <interfaces/wireless_responses/BITsResponse.h>
 #include "GPSAdafruitInterface.h"
 
+#include <atomic>
 #include <thread>
 
 class BITExecutor
@@ -15,9 +16,13 @@ public:
     void checkIMU();
     void checkGPS();
 
+    void approveConnection() noexcept;
+
     const communication::BitsInformation& getBitsInformation() const noexcept;
 
 private:
+    std::atomic<bool> connectionBITS_;
+
     communication::BitsInformation bitsInformation_;
     gps::GPSAdafruitInterface gpsInterface_;
 };

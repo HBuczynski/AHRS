@@ -11,7 +11,8 @@ namespace communication
     {
         CALIBRATION_STATUS_NOTIFY = 0x05,
         STATE = 0x10,
-        DB_HASH = 0x15
+        DB_HASH = 0x15,
+        UDP_BITS_NOTIFY = 0x20,
     };
 
     class FeederNotification : public Frame

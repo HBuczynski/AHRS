@@ -14,13 +14,13 @@ RS232Interface::RS232Interface(const string &name)
       fd_(-2)
 {}
 
-void RS232Interface::initialize()
+bool RS232Interface::initialize()
 {
     fd_ = open(name_.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
 
     if(fd_ < 0)
     {
-        cout << "lol" << endl;
+        return false;
     }
 
     termios options;
@@ -33,6 +33,8 @@ void RS232Interface::initialize()
 
     tcflush(fd_, TCIFLUSH);
     tcsetattr(fd_, TCSANOW, &options);
+
+    return true;
 }
 
 void RS232Interface::writeData(const vector<uint8_t> &data)

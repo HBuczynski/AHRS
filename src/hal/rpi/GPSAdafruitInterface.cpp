@@ -23,9 +23,10 @@ GPSAdafruitInterface::~GPSAdafruitInterface()
    stopAcq();
 }
 
-void GPSAdafruitInterface::initialize()
+bool GPSAdafruitInterface::initialize()
 {
-    rs232Interface_.initialize();
+    if (!rs232Interface_.initialize())
+        return false;
 
     string intervalUpdate(PMTK_SET_NMEA_UPDATE_10HZ);
     vector<uint8_t> intervalUpdateRaw(intervalUpdate.begin(), intervalUpdate.end());
@@ -42,6 +43,8 @@ void GPSAdafruitInterface::initialize()
     {
         gpsStatus_ = GPSStatus::FIXED;
     }
+
+    return true;
 }
 
 void GPSAdafruitInterface::startAcq()

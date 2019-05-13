@@ -3,6 +3,7 @@
 
 #include "machine_state/CalibrationState.h"
 #include "machine_state/MainAcqState.h"
+#include "machine_state/PerformBitState.h"
 #include <interfaces/wireless_commands/CommandFactory.h>
 #include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
@@ -150,5 +151,15 @@ void ExternalCommunicationVisitor::visit(const communication::DbHashNotification
         const string message = string("-MAIN- ExternalCommInterprocessVisitor :: Received - DbHashNotification - Hash: ")
                 + to_string(command.getHash());
         logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void ExternalCommunicationVisitor::visit(const communication::UDPBitsNotification& command)
+{
+    auto currentName = appManager_->getCurrentStateName();
+    if(currentName == string("PerformBitState"))
+    {
+        auto state = appManager_->getState("PerformBitState");
+        static_pointer_cast<PerformBitState, hsm::State>(state)->approveUDPBits();
     }
 }

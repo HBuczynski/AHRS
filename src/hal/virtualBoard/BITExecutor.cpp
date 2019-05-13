@@ -6,15 +6,18 @@ using namespace config;
 using namespace communication;
 
 BITExecutor::BITExecutor()
-    :   gpsInterface_(FEEDER_GPS_DEVICE_FILE)
+    : connectionBITS_(false),
+      gpsInterface_(FEEDER_GPS_DEVICE_FILE)
 {
     gpsInterface_.initialize();
 }
 
 void BITExecutor::checkConnection()
 {
-    bitsInformation_.m_communication = 25;
-    bitsInformation_.progress = 1;
+    if(connectionBITS_)
+        bitsInformation_.m_communication = 25;
+    else
+        bitsInformation_.m_communication = 0;
 }
 
 void BITExecutor::checkIMU()
@@ -30,4 +33,9 @@ void BITExecutor::checkGPS()
 const communication::BitsInformation& BITExecutor::getBitsInformation() const noexcept
 {
     return bitsInformation_;
+}
+
+void BITExecutor::approveConnection() noexcept
+{
+    connectionBITS_ = true;
 }
