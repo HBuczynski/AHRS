@@ -34,7 +34,6 @@ void BITExecutor::checkGPS()
     if(status == gps::GPSStatus::FIXED)
     {    
         bitsInformation_.m_gps = 25;
-        cout << "FIXED GPS. " << endl;
     }
     else
         bitsInformation_.m_gps = 42;
