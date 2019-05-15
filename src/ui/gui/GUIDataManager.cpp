@@ -8,8 +8,6 @@ GUIDataManager::GUIDataManager()
     : bitsInformation_({0}),
       isAHRSActive_(false),
       areBITSActive_(false),
-      masterCallibrationConfiguration_({0}),
-      redundantCallibrationConfiguration_({0}),
       planeName_("")
 {}
 
