@@ -57,7 +57,7 @@ void InformationPage::pageSetup()
 
     ui_->dotsLabel->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel->setFont(labelFont);
-    ui_->dotsLabel->setText("...........................................................................................................................................");
+    ui_->dotsLabel->setText("...................................................................................................................");
 
     ui_->m_comValue->setStyleSheet("QLabel { color : white}");
     ui_->m_comValue->setFont(sqareFont);
@@ -99,7 +99,7 @@ void InformationPage::pageSetup()
 
     ui_->dotsLabel_7->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel_7->setFont(labelFont);
-    ui_->dotsLabel_7->setText("...........................................................................................................................................");
+    ui_->dotsLabel_7->setText(".....................................................................................................................");
 
     ui_->r_comValue->setStyleSheet("QLabel { color : white}");
     ui_->r_comValue->setFont(sqareFont);
