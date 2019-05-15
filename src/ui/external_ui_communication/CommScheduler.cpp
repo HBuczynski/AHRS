@@ -31,15 +31,14 @@ void CommScheduler::create(uint8_t processNumber)
 
     /*Define transition table */
     hsm::TransitionTable transitionTable({
-            {initConnectionState,           hsm::Event{"INIT_MASTER"},          masterState},
-            {initConnectionState,           hsm::Event{"INIT_REDUNDANT"},       redundantState},
-            {initConnectionState,           hsm::Event{"INIT_ERROR"},           errorState},
-            {errorState,                    hsm::Event{"RECONNECTE"},           reconnectedState},
-            {reconnectedState,              hsm::Event{"RECONNECT_MASTER"},     masterState},
-            {reconnectedState,              hsm::Event{"RECONNECT_REDUNDANT"},  redundantState},
-            {masterState,                   hsm::Event{"MASTER_ERROR"},         errorState},
-            {redundantState,                hsm::Event{"REDUNDANT_ERROR"},      errorState},
-
+            make_tuple(initConnectionState,           hsm::Event{"INIT_MASTER"},          masterState),
+            make_tuple(initConnectionState,           hsm::Event{"INIT_REDUNDANT"},       redundantState),
+            make_tuple(initConnectionState,           hsm::Event{"INIT_ERROR"},           errorState),
+            make_tuple(errorState,                    hsm::Event{"RECONNECTE"},           reconnectedState),
+            make_tuple(reconnectedState,              hsm::Event{"RECONNECT_MASTER"},     masterState),
+            make_tuple(reconnectedState,              hsm::Event{"RECONNECT_REDUNDANT"},  redundantState),
+            make_tuple(masterState,                   hsm::Event{"MASTER_ERROR"},         errorState),
+            make_tuple(redundantState,                hsm::Event{"REDUNDANT_ERROR"},      errorState),
     });
 
     procesManagerUI_ = make_shared<communication::ProcessManager>(processNumber, "CommunicationManagerUI", transitionTable, idleCommState);

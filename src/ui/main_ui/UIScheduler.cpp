@@ -43,16 +43,16 @@ void UIScheduler::create()
 
     /*Define transition table */
     hsm::TransitionTable transitionTable({
-            {launchState,                   hsm::Event{"CONNECT"},            connectionState},
-            {connectionState,               hsm::Event{"SET_SETTINGS"},       settingsState},
-            {connectionState,               hsm::Event{"CONN_ERROR"},         faultManagementState},
-            {settingsState,                 hsm::Event{"CALIBRATE"},          calibrationState},
-            {calibrationState,              hsm::Event{"PERFORM_BIT"},        bitState},
-            {bitState,                      hsm::Event{"DATA_ACQUISITION"},   acquisitionState},
-            {acquisitionState,              hsm::Event{"ABORT"},              faultManagementState},
-            {faultManagementState,          hsm::Event{"RESTORE"},            acquisitionState},
-            {faultManagementState,          hsm::Event{"ERROR"},              errorState},
-            {faultManagementState,          hsm::Event{"RECONNECT"},          connectionState},
+            make_tuple(launchState,                   hsm::Event{"CONNECT"},            connectionState),
+            make_tuple(connectionState,               hsm::Event{"SET_SETTINGS"},       settingsState),
+            make_tuple(connectionState,               hsm::Event{"CONN_ERROR"},         faultManagementState),
+            make_tuple(settingsState,                 hsm::Event{"CALIBRATE"},          calibrationState),
+            make_tuple(calibrationState,              hsm::Event{"PERFORM_BIT"},        bitState),
+            make_tuple(bitState,                      hsm::Event{"DATA_ACQUISITION"},   acquisitionState),
+            make_tuple(acquisitionState,              hsm::Event{"ABORT"},              faultManagementState),
+            make_tuple(faultManagementState,          hsm::Event{"RESTORE"},            acquisitionState),
+            make_tuple(faultManagementState,          hsm::Event{"ERROR"},              errorState),
+            make_tuple(faultManagementState,          hsm::Event{"RECONNECT"},          connectionState),
     });
 
     uiApplicationManager_ = make_shared<UIApplicationManager>("UIApplicationManager", transitionTable, idleState);
