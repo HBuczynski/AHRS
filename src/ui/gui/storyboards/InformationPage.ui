@@ -155,13 +155,13 @@
        <widget class="QLabel" name="m_comLabel">
         <property name="minimumSize">
          <size>
-          <width>260</width>
+          <width>285</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>260</width>
+          <width>285</width>
           <height>16777215</height>
          </size>
         </property>
@@ -631,13 +631,13 @@
        <widget class="QLabel" name="r_comLabel">
         <property name="minimumSize">
          <size>
-          <width>260</width>
+          <width>285</width>
           <height>0</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>260</width>
+          <width>285</width>
           <height>16777215</height>
          </size>
         </property>
