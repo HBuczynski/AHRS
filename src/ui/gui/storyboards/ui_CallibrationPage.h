@@ -230,6 +230,7 @@ public:
 
         redundant_leftLabel = new QLabel(verticalFrame);
         redundant_leftLabel->setObjectName(QStringLiteral("redundant_leftLabel"));
+        redundant_leftLabel->setMinimumSize(QSize(280, 0));
 
         horizontalLayout_8->addWidget(redundant_leftLabel);
 
