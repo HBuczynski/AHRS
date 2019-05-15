@@ -57,7 +57,7 @@ void InformationPage::pageSetup()
 
     ui_->dotsLabel->setStyleSheet("QLabel { color : white}");
     ui_->dotsLabel->setFont(labelFont);
-    ui_->dotsLabel->setText("...................................................................................................................");
+    ui_->dotsLabel->setText("...............................................................");
 
     ui_->m_comValue->setStyleSheet("QLabel { color : white}");
     ui_->m_comValue->setFont(sqareFont);
@@ -97,9 +97,9 @@ void InformationPage::pageSetup()
     ui_->r_comLabel->setFont(labelFont);
     ui_->r_comLabel->setText("COMMUNICATION");
 
-    ui_->dotsLabel_7->setStyleSheet("QLabel { color : white}");
-    ui_->dotsLabel_7->setFont(labelFont);
-    ui_->dotsLabel_7->setText(".....................................................................................................................");
+    ui_->dotsLabel_5->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabel_5->setFont(labelFont);
+    ui_->dotsLabel_5->setText("...............................................................");
 
     ui_->r_comValue->setStyleSheet("QLabel { color : white}");
     ui_->r_comValue->setFont(sqareFont);
@@ -109,9 +109,9 @@ void InformationPage::pageSetup()
     ui_->r_imuLabel->setFont(labelFont);
     ui_->r_imuLabel->setText("IMU");
 
-    ui_->dotsLabel_5->setStyleSheet("QLabel { color : white}");
-    ui_->dotsLabel_5->setFont(labelFont);
-    ui_->dotsLabel_5->setText("...........................................................................................................................................");
+    ui_->dotsLabel_7->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabel_7->setFont(labelFont);
+    ui_->dotsLabel_7->setText("...........................................................................................................................................");
 
     ui_->r_imuValue->setStyleSheet("QLabel { color : white}");
     ui_->r_imuValue->setFont(sqareFont);

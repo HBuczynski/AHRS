@@ -100,7 +100,7 @@ void CallibrationPage::setupMaster()
 
     ui_->redundant_centerLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");
     ui_->redundant_centerLabel->setFont(fontTheSmallest);
-    ui_->redundant_centerLabel->setText("...........................................................................................................");
+    ui_->redundant_centerLabel->setText(".............................................................");
     ui_->redundant_centerLabel->setAlignment(Qt::AlignCenter);
 
     ui_->redundant_rightLabel->setStyleSheet("QLabel { color: rgb(105,105, 105)}");

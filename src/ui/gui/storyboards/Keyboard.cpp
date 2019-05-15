@@ -120,7 +120,9 @@ void Keyboard::keypadHandler()
     const auto currentTime = std::chrono::system_clock::now();
     const auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - previousTime_).count();
 
-    if(duration > 50 )
+    previousTime_ = currentTime;
+
+    if(duration > 200 )
     {
         QPushButton* button = qobject_cast<QPushButton*>(sender());
         std::string name = button->text().toStdString();
