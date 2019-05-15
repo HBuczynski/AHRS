@@ -155,8 +155,8 @@ public:
 
         m_comLabel = new QLabel(verticalFrame);
         m_comLabel->setObjectName(QStringLiteral("m_comLabel"));
-        m_comLabel->setMinimumSize(QSize(250, 0));
-        m_comLabel->setMaximumSize(QSize(230, 16777215));
+        m_comLabel->setMinimumSize(QSize(260, 0));
+        m_comLabel->setMaximumSize(QSize(260, 16777215));
 
         horizontalLayout_3->addWidget(m_comLabel);
 
@@ -317,8 +317,8 @@ public:
 
         r_comLabel = new QLabel(verticalFrame);
         r_comLabel->setObjectName(QStringLiteral("r_comLabel"));
-        r_comLabel->setMinimumSize(QSize(250, 0));
-        r_comLabel->setMaximumSize(QSize(230, 16777215));
+        r_comLabel->setMinimumSize(QSize(260, 0));
+        r_comLabel->setMaximumSize(QSize(260, 16777215));
 
         horizontalLayout_8->addWidget(r_comLabel);
 
