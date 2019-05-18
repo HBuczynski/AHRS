@@ -389,6 +389,10 @@ void PlaneSettingsPage::handleSettingsSelect()
             selectIsPresssed = true;
             currentFieldType_ = COMBO_BOX;
             currentItemInComboBox_ = 0;
+
+            for(auto plane : planesLabels_)
+                plane->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+
             planesLabels_[currentItemInComboBox_]->setStyleSheet("background-color: rgb(50,205,50);border: none;");
 
             planesFrame_->show();
