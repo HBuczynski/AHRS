@@ -20,6 +20,10 @@ AHRSPage::AHRSPage(gui::PageController *controller, QWidget *parent)
         :   QWidget(parent),
             uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
             controller_(controller),
+            roll_0(0.0),
+            roll(0.0),
+            pitch_0(0.0),
+            pitch(0.0),
             ui_(new Ui::AHRSPage),
             logger_(Logger::getInstance())
 {
@@ -160,7 +164,8 @@ void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, f
 
 void AHRSPage::calibrateButton()
 {
-    ///TBD
+    pitch_0 = pitch.load();
+    roll_0 = roll.load();
 }
 
 void AHRSPage::menuButton()
@@ -292,8 +297,22 @@ void AHRSPage::acquireFlightData()
 
 void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
 {
-    setRoll(measurements.roll);
-    setPitch(measurements.pitch);
+    float tempPitch, tempRoll;
+    pitch = measurements.pitch;
+    roll = measurements.roll;
+
+    if (pitch > 0)
+        tempPitch = pitch + pitch_0;
+    else
+        tempPitch = pitch - pitch_0;
+
+    if (roll > 0)
+        tempRoll = roll + roll_0;
+    else
+        tempRoll = roll - roll_0;
+
+    setRoll(tempRoll);
+    setPitch(tempPitch);
     setHeading(measurements.heading);
     setSlipSkid(measurements.slipSkid);
     setTurnRate(measurements.turnCoordinator);

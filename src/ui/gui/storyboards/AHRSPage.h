@@ -82,6 +82,11 @@ private:
 
     gui::PageController *controller_;
 
+    std::atomic<float> roll_0;
+    std::atomic<float> roll;
+    std::atomic<float> pitch_0;
+    std::atomic<float> pitch;
+
     std::unique_ptr<Buttons> buttons_;
     std::unique_ptr<WidgetTC> widgetTC_;
     std::unique_ptr<WidgetVSI> widgetVSI_;
