@@ -390,6 +390,6 @@ void CommandHandlerVisitor::runAcq()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(15));
+        this_thread::sleep_for(std::chrono::milliseconds(40));
     }
 }

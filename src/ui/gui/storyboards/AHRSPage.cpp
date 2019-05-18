@@ -301,15 +301,9 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     pitch = measurements.pitch;
     roll = measurements.roll;
 
-    if (pitch > 0)
-        tempPitch = pitch + pitch_0;
-    else
-        tempPitch = pitch - pitch_0;
 
-    if (roll > 0)
-        tempRoll = roll - roll_0;
-    else
-        tempRoll = roll + roll_0;
+    tempPitch = pitch - pitch_0;
+    tempRoll = roll - roll_0;
 
     setRoll(tempRoll);
     setPitch(tempPitch);
