@@ -307,9 +307,9 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
         tempPitch = pitch - pitch_0;
 
     if (roll > 0)
-        tempRoll = roll + roll_0;
-    else
         tempRoll = roll - roll_0;
+    else
+        tempRoll = roll + roll_0;
 
     setRoll(tempRoll);
     setPitch(tempPitch);
