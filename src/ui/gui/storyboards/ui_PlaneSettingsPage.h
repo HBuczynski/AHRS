@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -45,7 +44,7 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QLabel *fromDatabaseDotsLabel;
     QSpacerItem *horizontalSpacer;
-    QComboBox *fromDatabaseComboBox;
+    QLabel *fromDatabaseComboBox;
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout_4;
     QLabel *newPlaneLabel;
@@ -157,7 +156,7 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        fromDatabaseComboBox = new QComboBox(verticalFrame);
+        fromDatabaseComboBox = new QLabel(verticalFrame);
         fromDatabaseComboBox->setObjectName(QStringLiteral("fromDatabaseComboBox"));
         fromDatabaseComboBox->setMinimumSize(QSize(160, 35));
         fromDatabaseComboBox->setMaximumSize(QSize(160, 16777215));
@@ -195,7 +194,7 @@ public:
 
         newPlaneLineEdit = new QLabel(verticalFrame);
         newPlaneLineEdit->setObjectName(QStringLiteral("newPlaneLineEdit"));
-        newPlaneLineEdit->setMinimumSize(QSize(160, 0));
+        newPlaneLineEdit->setMinimumSize(QSize(160, 30));
         newPlaneLineEdit->setMaximumSize(QSize(160, 16777215));
         newPlaneLineEdit->setAutoFillBackground(false);
 
@@ -312,6 +311,7 @@ public:
         planeValueLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         fromDatabaseLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         fromDatabaseDotsLabel->setText(QString());
+        fromDatabaseComboBox->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         newPlaneLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         newPlaneDotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         newPlaneLineEdit->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));

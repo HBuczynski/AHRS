@@ -1,6 +1,8 @@
 #ifndef CALLIBRATIONSETTINGS_H
 #define CALLIBRATIONSETTINGS_H
 
+#include <QVBoxLayout>
+#include <QLabel>
 #include <QWidget>
 #include <memory>
 #include <map>
@@ -58,6 +60,9 @@ private:
     static std::string planeNameTextField;
     static std::string planeName;
 
+    std::shared_ptr<QFrame> planesFrame_;
+    std::shared_ptr<QVBoxLayout> planesLayout_;
+    std::vector<std::shared_ptr<QLabel>> planesLabels_;
     std::shared_ptr<Keyboard> keyboard_;
     gui::PageController *controller_;
     Ui::PlaneSettingsPage *ui_;

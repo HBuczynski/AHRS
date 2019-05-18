@@ -238,7 +238,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QComboBox" name="fromDatabaseComboBox">
+       <widget class="QLabel" name="fromDatabaseComboBox">
         <property name="minimumSize">
          <size>
           <width>160</width>
@@ -250,6 +250,9 @@
           <width>160</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>

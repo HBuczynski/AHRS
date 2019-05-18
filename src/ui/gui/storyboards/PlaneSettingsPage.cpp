@@ -42,14 +42,36 @@ void PlaneSettingsPage::setupPage()
 
     // Title label
     QFont font("Arial", 25, QFont::Bold);
+    QFont labelFont("Arial", 15, QFont::Bold);
+    QFont comboFont("Arial", 15, QFont::Bold);
     ui_->titleLabel->setStyleSheet("QLabel { color : white}");
     ui_->titleLabel->setFont(font);
     ui_->titleLabel->setText("CHOOSE A PLANE");
     ui_->titleLabel->setAlignment(Qt::AlignCenter);
 
-    // PLane Line
-    QFont labelFont("Arial", 15, QFont::Bold);
-    QFont comboFont("Arial", 15, QFont::Bold);
+
+    planesFrame_ = make_shared<QFrame>(this);
+    planesLayout_ = make_shared<QVBoxLayout>(planesFrame_.get());
+
+    for(const auto& plane : planes_)
+    {
+        auto label = make_shared<QLabel>(this);
+
+        label->setStyleSheet("QLabel { color : white}");
+        label->setFont(comboFont);
+        label->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
+        label->setText(plane.c_str());
+        label->setAlignment(Qt::AlignCenter);
+        label->setMinimumWidth(160);
+        label->setMinimumHeight(35);
+
+        planesLayout_->addWidget(label.get());
+        planesLabels_.push_back(label);
+    }
+
+    planesFrame_->move(784, 125);
+    planesFrame_->hide();
+
     ui_->planeLabel->setStyleSheet("QLabel { color : white}");
     ui_->planeLabel->setFont(labelFont);
     ui_->planeLabel->setText("CURRENT PLANE");
@@ -71,15 +93,16 @@ void PlaneSettingsPage::setupPage()
     ui_->fromDatabaseDotsLabel->setFont(labelFont);
     ui_->fromDatabaseDotsLabel->setText("................................................................................................");
 
-    ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+    ui_->fromDatabaseComboBox->setStyleSheet("QLabel { color : white}");
     ui_->fromDatabaseComboBox->setFont(comboFont);
-    ui_->fromDatabaseComboBox->setEnabled(false);
+    ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
+    ui_->fromDatabaseComboBox->setText(planes_[0].c_str());
+    ui_->fromDatabaseComboBox->setAlignment(Qt::AlignCenter);
 
-    for(const auto& plane : planes_)
-    {
-        ui_->fromDatabaseComboBox->addItem(plane.c_str());
-    }
-
+//    ui_->arrowLabel->setStyleSheet("QLabel { color : white}");
+//    ui_->arrowLabel->setFont(comboFont);
+//    ui_->arrowLabel->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
+//    ui_->arrowLabel->setText("#");
     // New plane line
     ui_->newPlaneLabel->setStyleSheet("QLabel { color : white}");
     ui_->newPlaneLabel->setFont(labelFont);
@@ -189,9 +212,8 @@ void PlaneSettingsPage::cancelButton()
     {
         case FieldType::COMBO_BOX :
         {
-            ui_->fromDatabaseComboBox->hidePopup();
             selectIsPresssed = false;
-
+            planesFrame_->hide();
             cout << "In combobox" << endl;
             break;
         }
@@ -252,8 +274,8 @@ void PlaneSettingsPage::selectButton()
     {
         case FieldType::COMBO_BOX :
         {
-            ui_->fromDatabaseComboBox->showPopup();
             selectIsPresssed = true;
+            planesFrame_->show();
             break;
         }
         case FieldType::TEXT_FIELD :
