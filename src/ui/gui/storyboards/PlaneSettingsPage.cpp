@@ -18,11 +18,13 @@ std::string PlaneSettingsPage::planeName = "";
 
 PlaneSettingsPage::PlaneSettingsPage(gui::PageController *controller, const string& planes, QWidget *parent) :
     QWidget(parent),
+    currentFieldType_(FieldType::GENERAL_SETTINGS),
     planes_(splitPlanes(planes)),
     controller_(controller),
     ui_(new Ui::PlaneSettingsPage),
     selectIsPresssed(false),
     currentOption_(0),
+    currentItemInComboBox_(0),
     maxOptionsNumber_(4)
 {
     ui_->setupUi(this);
@@ -99,10 +101,6 @@ void PlaneSettingsPage::setupPage()
     ui_->fromDatabaseComboBox->setText(planes_[0].c_str());
     ui_->fromDatabaseComboBox->setAlignment(Qt::AlignCenter);
 
-//    ui_->arrowLabel->setStyleSheet("QLabel { color : white}");
-//    ui_->arrowLabel->setFont(comboFont);
-//    ui_->arrowLabel->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
-//    ui_->arrowLabel->setText("#");
     // New plane line
     ui_->newPlaneLabel->setStyleSheet("QLabel { color : white}");
     ui_->newPlaneLabel->setFont(labelFont);
@@ -150,6 +148,7 @@ void PlaneSettingsPage::setupPage()
     else
     {
         ui_->planeValueLabel->setText(planeName.c_str());
+        ui_->fromDatabaseComboBox->setText(planeName.c_str());
         ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
         maxOptionsNumber_ = 5;
     }
@@ -205,7 +204,33 @@ void PlaneSettingsPage::highlightCurrentOption(uint8_t newOption)
     currentOption_ = newOption;
 }
 
+void PlaneSettingsPage::highlightCurrentItem(uint8_t newOption)
+{
+    planesLabels_[currentItemInComboBox_]->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+    planesLabels_[newOption]->setStyleSheet("background-color: rgb(50,205,50);border: none;");
+    currentItemInComboBox_ = newOption;
+}
+
 void PlaneSettingsPage::cancelButton()
+{
+    switch (currentFieldType_)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            handleComboBoxCancel();
+            break;
+        }
+        case FieldType::GENERAL_SETTINGS :
+        {
+            handleSettingsCancel();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+void PlaneSettingsPage::handleSettingsCancel()
 {
     const auto type = static_cast<FieldType>(currentOption_);
     switch (type)
@@ -214,7 +239,6 @@ void PlaneSettingsPage::cancelButton()
         {
             selectIsPresssed = false;
             planesFrame_->hide();
-            cout << "In combobox" << endl;
             break;
         }
         case FieldType::TEXT_FIELD :
@@ -228,7 +252,7 @@ void PlaneSettingsPage::cancelButton()
             break;
         }
         case FieldType::NEXT_LABEL :
-        {            
+        {
             break;
         }
         default:
@@ -236,7 +260,33 @@ void PlaneSettingsPage::cancelButton()
     }
 }
 
+void PlaneSettingsPage::handleComboBoxCancel()
+{
+    planesFrame_->hide();
+    currentFieldType_ = GENERAL_SETTINGS;
+    selectIsPresssed = false;
+}
+
 void PlaneSettingsPage::upButton()
+{
+    switch (currentFieldType_)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            handleComboBoxUP();
+            break;
+        }
+        case FieldType::GENERAL_SETTINGS :
+        {
+            handleSettingsUP();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+void PlaneSettingsPage::handleSettingsUP()
 {
     if(selectIsPresssed)
         return;
@@ -251,7 +301,38 @@ void PlaneSettingsPage::upButton()
     highlightCurrentOption(tempNumber);
 }
 
+void PlaneSettingsPage::handleComboBoxUP()
+{
+    int8_t tempNumber = currentItemInComboBox_ + 1;
+
+    if(tempNumber >= planesLabels_.size())
+    {
+        tempNumber = tempNumber % planesLabels_.size();
+    }
+
+    highlightCurrentItem(tempNumber);
+}
+
 void PlaneSettingsPage::downButton()
+{
+    switch (currentFieldType_)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            handleComboBoxDown();
+            break;
+        }
+        case FieldType::GENERAL_SETTINGS :
+        {
+            handleSettingsDown();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+void PlaneSettingsPage::handleSettingsDown()
 {
     if(selectIsPresssed)
         return;
@@ -266,7 +347,38 @@ void PlaneSettingsPage::downButton()
     highlightCurrentOption(tempNumber);
 }
 
+void PlaneSettingsPage::handleComboBoxDown()
+{
+    int8_t tempNumber = currentItemInComboBox_ - 1;
+
+    if(tempNumber<0)
+    {
+        tempNumber += planesLabels_.size();
+    }
+
+    highlightCurrentItem(tempNumber);
+}
+
 void PlaneSettingsPage::selectButton()
+{
+    switch (currentFieldType_)
+    {
+        case FieldType::COMBO_BOX :
+        {
+            handleComboBoxSelect();
+            break;
+        }
+        case FieldType::GENERAL_SETTINGS :
+        {
+            handleSettingsSelect();
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+void PlaneSettingsPage::handleSettingsSelect()
 {
     const auto type = static_cast<FieldType>(currentOption_);
 
@@ -275,6 +387,10 @@ void PlaneSettingsPage::selectButton()
         case FieldType::COMBO_BOX :
         {
             selectIsPresssed = true;
+            currentFieldType_ = COMBO_BOX;
+            currentItemInComboBox_ = 0;
+            planesLabels_[currentItemInComboBox_]->setStyleSheet("background-color: rgb(50,205,50);border: none;");
+
             planesFrame_->show();
             break;
         }
@@ -319,6 +435,20 @@ void PlaneSettingsPage::selectButton()
         default:
             break;
     }
+}
+
+void PlaneSettingsPage::handleComboBoxSelect()
+{
+    selectIsPresssed = false;
+    currentFieldType_ = GENERAL_SETTINGS;
+    planeName = planes_[currentItemInComboBox_];
+
+    ui_->fromDatabaseComboBox->setText(planeName.c_str());
+    ui_->planeValueLabel->setText(planeName.c_str());
+    planesFrame_->hide();
+
+    ui_->nextLabel->setStyleSheet("QLabel { color: rgb(0,0,0); background: rgb(255,255,255);}");
+    maxOptionsNumber_ = 5;
 }
 
 void PlaneSettingsPage::setKeyClicked(string name)

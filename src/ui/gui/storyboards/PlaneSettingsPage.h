@@ -25,7 +25,8 @@ class PlaneSettingsPage : public QWidget
         TEXT_FIELD,
         CONFIRM_LABEL,
         MENU_LABEL,
-        NEXT_LABEL
+        NEXT_LABEL,
+        GENERAL_SETTINGS
     };
 
 public:
@@ -46,16 +47,30 @@ private:
     void setupSlots();
 
     void highlightCurrentOption(uint8_t newOption);
+    void highlightCurrentItem(uint8_t newOption);
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
     void cancelButton();
+    void handleSettingsCancel();
+    void handleComboBoxCancel();
+
     void upButton();
+    void handleSettingsUP();
+    void handleComboBoxUP();
+
     void downButton();
+    void handleSettingsDown();
+    void handleComboBoxDown();
+
     void selectButton();
+    void handleSettingsSelect();
+    void handleComboBoxSelect();
+
 
     void setKeyClicked(std::string name);
     std::vector<std::string> splitPlanes(const std::string& name) const noexcept;
 
+    FieldType currentFieldType_;
     std::vector<std::string> planes_;
     static std::string planeNameTextField;
     static std::string planeName;
@@ -69,6 +84,7 @@ private:
 
     bool selectIsPresssed;
     uint8_t currentOption_;
+    int8_t currentItemInComboBox_;
     uint8_t maxOptionsNumber_;
 
     std::map<FieldType, QWidget*> labels_;
