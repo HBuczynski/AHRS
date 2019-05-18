@@ -19,7 +19,6 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -53,7 +52,7 @@ public:
     QSpacerItem *horizontalSpacer_4;
     QLabel *newPlaneDotsLabel;
     QSpacerItem *horizontalSpacer_3;
-    QLineEdit *newPlaneLineEdit;
+    QLabel *newPlaneLineEdit;
     QSpacerItem *verticalSpacer_4;
     QFrame *keyboardFrame;
     QWidget *gridLayoutWidget;
@@ -194,10 +193,11 @@ public:
 
         horizontalLayout_4->addItem(horizontalSpacer_3);
 
-        newPlaneLineEdit = new QLineEdit(verticalFrame);
+        newPlaneLineEdit = new QLabel(verticalFrame);
         newPlaneLineEdit->setObjectName(QStringLiteral("newPlaneLineEdit"));
         newPlaneLineEdit->setMinimumSize(QSize(160, 0));
         newPlaneLineEdit->setMaximumSize(QSize(160, 16777215));
+        newPlaneLineEdit->setAutoFillBackground(false);
 
         horizontalLayout_4->addWidget(newPlaneLineEdit);
 
@@ -314,6 +314,7 @@ public:
         fromDatabaseDotsLabel->setText(QString());
         newPlaneLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         newPlaneDotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
+        newPlaneLineEdit->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         dotsLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         confirmLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));
         menuLabel->setText(QApplication::translate("PlaneSettingsPage", "TextLabel", 0));

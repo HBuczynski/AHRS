@@ -89,7 +89,7 @@ void PlaneSettingsPage::setupPage()
     ui_->newPlaneDotsLabel->setFont(labelFont);
     ui_->newPlaneDotsLabel->setText("................................................................................................");
 
-    QFont newPlaneFont("Arial", 15, QFont::Bold);
+    QFont newPlaneFont("Arial", 19, QFont::Bold);
     ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(255,255,255);border: none; ");
     ui_->newPlaneLineEdit->setFont(newPlaneFont);
     ui_->newPlaneLineEdit->setText(planeNameTextField.c_str());

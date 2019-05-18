@@ -332,11 +332,11 @@
        </spacer>
       </item>
       <item>
-       <widget class="QLineEdit" name="newPlaneLineEdit">
+       <widget class="QLabel" name="newPlaneLineEdit">
         <property name="minimumSize">
          <size>
           <width>160</width>
-          <height>0</height>
+          <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -344,6 +344,12 @@
           <width>160</width>
           <height>16777215</height>
          </size>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
         </property>
        </widget>
       </item>
