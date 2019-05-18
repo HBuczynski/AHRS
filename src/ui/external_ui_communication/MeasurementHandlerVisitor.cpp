@@ -103,8 +103,8 @@ void MeasurementHandlerVisitor::visit(FeederData &data)
     auto frame = data.getFrameBytes();
     writeDataToSharedMemory(frame);
 
-    const auto measurement = data.getMeasurements().flightMeasurements;
-    cockpitDb_->insertFlightMeasurement(measurement);
+//    const auto measurement = data.getMeasurements().flightMeasurements;
+//    cockpitDb_->insertFlightMeasurement(measurement);
 }
 
 void MeasurementHandlerVisitor::visit(UDPBitsData& data)

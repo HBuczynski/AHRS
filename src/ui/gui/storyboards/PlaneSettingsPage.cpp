@@ -49,6 +49,7 @@ void PlaneSettingsPage::setupPage()
 
     // PLane Line
     QFont labelFont("Arial", 15, QFont::Bold);
+    QFont comboFont("Arial", 15, QFont::Bold);
     ui_->planeLabel->setStyleSheet("QLabel { color : white}");
     ui_->planeLabel->setFont(labelFont);
     ui_->planeLabel->setText("CURRENT PLANE");
@@ -61,8 +62,6 @@ void PlaneSettingsPage::setupPage()
     ui_->planeValueLabel->setStyleSheet("QLabel { color : white}");
     ui_->planeValueLabel->setFont(sqareFont);
 
-
-
     // Plane from database line
     ui_->fromDatabaseLabel->setStyleSheet("QLabel { color : white}");
     ui_->fromDatabaseLabel->setFont(labelFont);
@@ -73,6 +72,8 @@ void PlaneSettingsPage::setupPage()
     ui_->fromDatabaseDotsLabel->setText("................................................................................................");
 
     ui_->fromDatabaseComboBox->setStyleSheet("background-color: rgb(255,255,255);border: none;");
+    ui_->fromDatabaseComboBox->setFont(comboFont);
+    ui_->fromDatabaseComboBox->setEnabled(false);
 
     for(const auto& plane : planes_)
     {

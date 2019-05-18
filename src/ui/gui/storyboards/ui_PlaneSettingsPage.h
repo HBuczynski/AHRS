@@ -160,7 +160,7 @@ public:
 
         fromDatabaseComboBox = new QComboBox(verticalFrame);
         fromDatabaseComboBox->setObjectName(QStringLiteral("fromDatabaseComboBox"));
-        fromDatabaseComboBox->setMinimumSize(QSize(160, 26));
+        fromDatabaseComboBox->setMinimumSize(QSize(160, 35));
         fromDatabaseComboBox->setMaximumSize(QSize(160, 16777215));
 
         horizontalLayout->addWidget(fromDatabaseComboBox);

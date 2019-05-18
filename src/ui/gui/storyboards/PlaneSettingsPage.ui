@@ -242,7 +242,7 @@
         <property name="minimumSize">
          <size>
           <width>160</width>
-          <height>26</height>
+          <height>35</height>
          </size>
         </property>
         <property name="maximumSize">
