@@ -60,7 +60,6 @@ add_subdirectory("src/database_manager"                                 database
 add_subdirectory("src/packet"                                           packet                          )
 add_subdirectory("src/hal"                                              hal                             )
 add_subdirectory("src/switches"                                         switches                        )
-add_subdirectory("src/peripheral_handler"                               peripheral_handler              )
 add_subdirectory("src/interfaces/frame"                                 frame                           )
 add_subdirectory("src/interfaces/communication_process_ui"              communication_process_ui        )
 add_subdirectory("src/interfaces/communication_process_feeder"          communication_process_feeder    )

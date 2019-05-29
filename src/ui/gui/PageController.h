@@ -24,7 +24,7 @@ namespace gui
         virtual void setPlaneSettingPage() = 0;
         virtual void setRestartPage() = 0;
         virtual void setExitPage() = 0;
-        virtual void setLogsPage() = 0;
+        virtual void setGpsPage() = 0;
         virtual void setMenuPage() = 0;
         virtual void setConnectingPage() = 0;
         virtual void setCallibrationPage() = 0;

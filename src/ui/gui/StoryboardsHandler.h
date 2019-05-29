@@ -24,6 +24,7 @@
 #include "storyboards/ExitPage.h"
 #include "storyboards/AHRSPage.h"
 #include "storyboards/LogsPage.h"
+#include "storyboards/GpsPage.h"
 #include "storyboards/MainPage.h"
 #include "storyboards/WelcomePage.h"
 #include "storyboards/SystemSetupPage.h"
@@ -53,7 +54,7 @@ public slots:
     void setRestartPage() override;
     void setExitPage() override;
     void setAHRSPage() override;
-    void setLogsPage() override;
+    void setGpsPage() override;
     void setMenuPage() override;
     void setConnectingPage() override;
     void setCallibrationPage() override;
@@ -94,7 +95,7 @@ private:
 
     AHRSPage* ahrsPage_;
     ExitPage* exitPage_;
-    LogsPage* logsPage_;
+    GpsPage* gpsPage_;
     MainPage* mainPage_;
     RestartPage* restartPage_;
     WelcomePage* welcomePage_;

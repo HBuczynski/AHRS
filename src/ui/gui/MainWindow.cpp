@@ -51,9 +51,9 @@ void MainWindow::setExitPage()
     storyboardsHandler_->setExitPage();
 }
 
-void MainWindow::setLogsPage()
+void MainWindow::setGpsPage()
 {
-    storyboardsHandler_->setLogsPage();
+    storyboardsHandler_->setGpsPage();
 }
 
 void MainWindow::setMenuPage()

@@ -20,7 +20,7 @@ enum PagesType : uint8_t
     RESTART_PAGE,
     EXIT_PAGE,
     AHRS_PAGE,
-    LOGS_PAGE,
+    GPS_PAGE,
     MENU_PAGE,
     CONNECTING_PAGE,
     BITS_PAGE

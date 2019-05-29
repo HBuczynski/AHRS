@@ -52,13 +52,13 @@ public:
 private slots:
     void acquireFlightData();
     void changeONExitPage();
-    void changeONLogsPage();
+    void changeONGpsPage();
     void changeONMainPage();
 
 
 signals:
     void signalEXITPage();
-    void signalLOGSPage();
+    void signalGPSPage();
     void signalMENUPage();
 
 private:
@@ -68,7 +68,7 @@ private:
 
     void calibrateButton();
     void menuButton();
-    void logsButton();
+    void gpsButton();
     void exitButton();
 
     void startAcqTimer();

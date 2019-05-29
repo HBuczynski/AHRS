@@ -105,7 +105,7 @@ public:
 
         buttonFrame = new QFrame(AHRSPage);
         buttonFrame->setObjectName(QStringLiteral("buttonFrame"));
-        buttonFrame->setGeometry(QRect(512, 562, 512, 40));
+        buttonFrame->setGeometry(QRect(512, 558, 512, 40));
         buttonFrame->setStyleSheet(QStringLiteral(""));
         buttonFrame->setLineWidth(0);
         horizontalButtons = new QHBoxLayout(buttonFrame);

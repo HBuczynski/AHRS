@@ -85,7 +85,7 @@ void StoryboardsHandler::initializeStoryboardsContainer()
     storyboardsContainer_[PagesType::PLANE_SETTING_PAGE] =  bind(&StoryboardsHandler::setPlaneSettingPage, this);
     storyboardsContainer_[PagesType::CONNECTING_PAGE] =  bind(&StoryboardsHandler::setConnectingPage, this);
     storyboardsContainer_[PagesType::EXIT_PAGE] =  bind(&StoryboardsHandler::setExitPage, this);
-    storyboardsContainer_[PagesType::LOGS_PAGE] =  bind(&StoryboardsHandler::setLogsPage, this);
+    storyboardsContainer_[PagesType::GPS_PAGE] =  bind(&StoryboardsHandler::setGpsPage, this);
     storyboardsContainer_[PagesType::MENU_PAGE] =  bind(&StoryboardsHandler::setMenuPage, this);
     storyboardsContainer_[PagesType::RESTART_PAGE] =  bind(&StoryboardsHandler::setRestartPage, this);
     storyboardsContainer_[PagesType::SYSTEM_SETUP_PAGE] =  bind(&StoryboardsHandler::setSystemSetupPage, this);
@@ -242,23 +242,23 @@ void StoryboardsHandler::setExitPage()
     previousWidget_ = exitPage_;
 }
 
-void StoryboardsHandler::setLogsPage()
+void StoryboardsHandler::setGpsPage()
 {
     if(previousWidget_)
     {
         previousPage_ = currentPage_;
-        currentPage_ = PagesType::LOGS_PAGE;
+        currentPage_ = PagesType::GPS_PAGE;
 
         gridLayout_2->removeWidget(previousWidget_);
         delete previousWidget_;
     }
 
-    logsPage_ = new LogsPage(this);
-    logsPage_->resize(QSize(1024, 600));
-    logsPage_->initialize();
+    gpsPage_ = new GpsPage(this);
+    gpsPage_->resize(QSize(1024, 600));
+    gpsPage_->initialize();
 
-    gridLayout_2->addWidget(logsPage_);
-    previousWidget_ = logsPage_;
+    gridLayout_2->addWidget(gpsPage_);
+    previousWidget_ = gpsPage_;
 }
 
 void StoryboardsHandler::setMenuPage()

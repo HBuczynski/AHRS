@@ -584,7 +584,7 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
                 buttonNames[SwitchCode::FIRST_SWITCH] = " ";
                 buttonNames[SwitchCode::SECOND_SWITCH] = " ";
                 buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
-                buttonNames[SwitchCode::FOURTH_SWITCH] = "BITS";
+                buttonNames[SwitchCode::FOURTH_SWITCH] = "AHRS";
             }
             else
             {

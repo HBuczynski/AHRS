@@ -137,20 +137,20 @@ void AHRSPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
     buttonNames[SwitchCode::FIRST_SWITCH] = "CALIBRATE";
-    buttonNames[SwitchCode::SECOND_SWITCH] = "LOGS";
+    buttonNames[SwitchCode::SECOND_SWITCH] = "GPS";
     buttonNames[SwitchCode::THIRD_SWITCH] = "MENU";
     buttonNames[SwitchCode::FOURTH_SWITCH] = "EXIT";
 
     map<SwitchCode, function<void()> > callbackFunctions;
     callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&AHRSPage::calibrateButton, this);
-    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&AHRSPage::logsButton, this);
+    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&AHRSPage::gpsButton, this);
     callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&AHRSPage::menuButton, this);
     callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&AHRSPage::exitButton, this);
 
     initializeButtons(buttonNames, callbackFunctions);
 
     QObject::connect(this, SIGNAL(signalEXITPage()), controller_, SLOT(setExitPage()));
-    QObject::connect(this, SIGNAL(signalLOGSPage()), controller_, SLOT(setLogsPage()));
+    QObject::connect(this, SIGNAL(signalGPSPage()), controller_, SLOT(setGpsPage()));
     QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
 }
 
@@ -179,15 +179,15 @@ void AHRSPage::changeONMainPage()
     emit signalMENUPage();
 }
 
-void AHRSPage::logsButton()
+void AHRSPage::gpsButton()
 {
     stopAcqTimer();
-    QTimer::singleShot(50, this, SLOT(changeONLogsPage()));
+    QTimer::singleShot(50, this, SLOT(changeONGpsPage()));
 }
 
-void AHRSPage::changeONLogsPage()
+void AHRSPage::changeONGpsPage()
 {
-    emit signalLOGSPage();
+    emit signalGPSPage();
 }
 
 void AHRSPage::exitButton()

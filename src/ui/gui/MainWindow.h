@@ -29,7 +29,7 @@ public slots:
     void setSystemSetupPage();
     void setRestartPage();
     void setExitPage();
-    void setLogsPage();
+    void setGpsPage();
     void setMenuPage();
     void setConnectingPage();
 
