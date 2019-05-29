@@ -259,6 +259,10 @@ void StoryboardsHandler::setGpsPage()
 
     gridLayout_2->addWidget(gpsPage_);
     previousWidget_ = gpsPage_;
+
+    StartAcquisitionCommand command;
+    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    sendToMainProcess(response.getFrameBytes());
 }
 
 void StoryboardsHandler::setMenuPage()

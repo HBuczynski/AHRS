@@ -1,21 +1,47 @@
 #include "GpsPage.h"
 #include "ui_GpsPage.h"
+#include <string>
+
+#include <config_reader/ConfigurationReader.h>
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
+#include <interfaces/wireless_measurement_commands/FeederData.h>
+#include <interfaces/wireless_commands/StopAcqCommand.h>
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
+#include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 
 using namespace std;
+using namespace utility;
 using namespace peripherals;
+using namespace config;
+using namespace communication;
+using namespace boost::interprocess;
 
-GpsPage::GpsPage(gui::PageController* controller, QWidget *parent) :
-    QWidget(parent),
-    ui_(new Ui::GpsPage),
-    controller_(controller)
+GpsPage::GpsPage(gui::PageController* controller, QWidget *parent)
+    :   QWidget(parent),
+        uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
+        ui_(new Ui::GpsPage),
+        controller_(controller),
+        logger_(Logger::getInstance())
 {
     ui_->setupUi(this);
     setupPage();
+
+    initializeSharedMemory();
+    startAcqTimer();
 }
 
 GpsPage::~GpsPage()
 {
-    delete ui_;
+    if(ui_)
+    {
+        delete ui_;
+    }
+
+    stopAcqTimer();
+
+    StopAcqCommand command;
+    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    controller_->sendToMainProcess(response.getFrameBytes());
 }
 
 void GpsPage::setupPage()
@@ -67,7 +93,7 @@ void GpsPage::setupPage()
 
     ui_->satnumValue->setStyleSheet("QLabel { color : white}");
     ui_->satnumValue->setFont(labelFont);
-    ui_->satnumValue->setText("0.000000");
+    ui_->satnumValue->setText("0");
 
 
     ui_->fixLabel->setStyleSheet("QLabel { color : white}");
@@ -80,7 +106,7 @@ void GpsPage::setupPage()
 
     ui_->fixValue->setStyleSheet("QLabel { color : white}");
     ui_->fixValue->setFont(labelFont);
-    ui_->fixValue->setText("0.000000");
+    ui_->fixValue->setText("0");
 
 
     ui_->warningLabel->setStyleSheet("QLabel { color : white}");
@@ -93,8 +119,24 @@ void GpsPage::setupPage()
 
     ui_->warningValue->setStyleSheet("QLabel { color : white}");
     ui_->warningValue->setFont(labelFont);
-    ui_->warningValue->setText("0.00000000000");
+    ui_->warningValue->setText("V");
 
+}
+
+void GpsPage::initializeSharedMemory()
+{
+    try
+    {
+        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("AHRSPage :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
 }
 
 void GpsPage::initialize()
@@ -142,4 +184,64 @@ void GpsPage::thirdButton()
 void GpsPage::fourthButton()
 {
     emit signalBackPage();
+}
+
+void GpsPage::acquireGpsData()
+{
+    communication::MeasuringDataFactory dataFactory_;
+
+    cout << "Lolo" << endl;
+    try
+    {
+        const auto  frame = sharedMemory_->read();
+
+        if(frame.size() != 0)
+        {
+            auto flightData = static_pointer_cast<communication::FeederData, communication::MeasuringData>(
+                    dataFactory_.createCommand(frame));
+
+            const auto measurements = flightData->getMeasurements();
+            handleGpsData(measurements.gpsData);
+        }
+    }
+    catch (exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-GUI- AHRSPage :: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+}
+
+void GpsPage::handleGpsData(const GPSData& measurements)
+{
+    string value = to_string(measurements.latitude) + string(" ") + measurements.latitudeDirection;
+    ui_->latitudeValue->setText(value.c_str());
+
+    value = to_string(measurements.longitude) + string(" ") + measurements.longitudeDirection;
+    ui_->longitudeValue->setText(value.c_str());
+
+    value = to_string(measurements.numberOfSatellites);
+    ui_->satnumValue->setText(value.c_str());
+
+    value = to_string(measurements.fixQuality);
+    ui_->fixValue->setText(value.c_str());
+
+    value = measurements.receiverWarning;
+    ui_->warningValue->setText(value.c_str());
+}
+
+void GpsPage::startAcqTimer()
+{
+    connect(&acqTimer_, SIGNAL(timeout()), this, SLOT(acquireGpsData()));
+    acqTimer_.start(20);
+}
+
+void GpsPage::stopAcqTimer()
+{
+    while(acqTimer_.isActive())
+    {
+        acqTimer_.stop();
+    }
 }

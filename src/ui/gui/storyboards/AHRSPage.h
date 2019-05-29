@@ -11,7 +11,7 @@
 #include <config_reader/UIParameters.h>
 #include "../../../common/Measurements.h"
 
-    #include "../PageController.h"
+#include "../PageController.h"
 #include "WidgetPFD.h"
 #include "WidgetTC.h"
 #include "WidgetVSI.h"
