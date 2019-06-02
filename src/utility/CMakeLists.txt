@@ -19,6 +19,7 @@ target_include_directories(
 )
 
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC frame)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC boost_regex)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC config_reader)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
