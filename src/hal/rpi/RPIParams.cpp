@@ -11,13 +11,15 @@ using namespace std;
 
 float RPIParams::getTemp()
 {
-    std::ifstream in("vcgencmd measure_temp");
-    
-    std::string line;
-    std::getline(in, line)
+    std::string cmd("vcgencmd measure_temp");
 
-    cout << line << endl;
+    std::string file_name = "result.txt" ;
+    std::system( (cmd + " > " + file_name ).c_str() ) ; // redirect output to file
 
-    return 67.0;
+    // open file for input, return string containing characters in the file
+    std::ifstream file(file_name) ;
+    string result{ std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>() } ;
+
+    return stof(result.substr(5,4));
 }
 

@@ -13,7 +13,8 @@ BOOST_AUTO_TEST_SUITE( params )
     BOOST_AUTO_TEST_CASE( temp )
     {
         RPIParams param;
-        cout << param.getTemp() << endl;
+	while(1)
+        	cout << param.getTemp() << endl;
     }
 
 BOOST_AUTO_TEST_SUITE_END()
