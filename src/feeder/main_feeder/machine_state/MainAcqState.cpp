@@ -168,8 +168,8 @@ void MainAcqState::runAcquisition()
 
 void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
 {
-    generalData.flightMeasurements.pitch = generalData.imuData.pitch;
-    generalData.flightMeasurements.roll = generalData.imuData.roll;
+    generalData.flightMeasurements.pitch = 0;// generalData.imuData.pitch;
+    generalData.flightMeasurements.roll = 0;//generalData.imuData.roll;
     generalData.flightMeasurements.heading = generalData.imuData.yaw;
 
     generalData.flightMeasurements.altitude = generalData.gpsData.altitude;
@@ -181,11 +181,11 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
     generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
 
     //TODO:
-    generalData.flightMeasurements.machNo = generalData.gpsData.groundSpeed  / 360.0f;
+    generalData.flightMeasurements.machNo = 4;//generalData.gpsData.groundSpeed  / 360.0f;
     generalData.flightMeasurements.pressure = 3;
-    generalData.flightMeasurements.slipSkid = 2;
-    generalData.flightMeasurements.turnCoordinator = sin(generalData.imuData.pitch / 23.0f)*4;
-    generalData.flightMeasurements.verticalSpeed = 5.0f + sin(33.0f * generalData.imuData.pitch / 238.098f)*15.0f;
+    generalData.flightMeasurements.slipSkid = 0;
+    generalData.flightMeasurements.turnCoordinator = 0;//sin(generalData.imuData.pitch / 23.0f)*4;
+    generalData.flightMeasurements.verticalSpeed = 5;//5.0f + sin(33.0f * generalData.imuData.pitch / 238.098f)*15.0f;
 }
 
 void MainAcqState::writeGeneralData(FeederGeneralData& generalData)

@@ -2,6 +2,8 @@
 #include "ui_GpsPage.h"
 #include <string>
 
+#include <iomanip>
+#include <sstream>
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 #include <interfaces/wireless_measurement_commands/FeederData.h>
@@ -81,6 +83,20 @@ void GpsPage::setupPage()
     ui_->longitudeValue->setStyleSheet("QLabel { color : white}");
     ui_->longitudeValue->setFont(labelFont);
     ui_->longitudeValue->setText("0.0000000000");
+
+
+    ui_->headingLabel->setStyleSheet("QLabel { color : white}");
+    ui_->headingLabel->setFont(labelFont);
+    ui_->headingLabel->setText("HEADING");
+
+    ui_->dotsLabelHead->setStyleSheet("QLabel { color : white}");
+    ui_->dotsLabelHead->setFont(labelFont);
+    ui_->dotsLabelHead->setText(".............................................................................................................................................");
+
+    ui_->headingValue->setStyleSheet("QLabel { color : white}");
+    ui_->headingValue->setFont(labelFont);
+    ui_->headingValue->setText("0.0000000000");
+
 
 
     ui_->satnumbLabel->setStyleSheet("QLabel { color : white}");
@@ -190,7 +206,6 @@ void GpsPage::acquireGpsData()
 {
     communication::MeasuringDataFactory dataFactory_;
 
-    cout << "Lolo" << endl;
     try
     {
         const auto  frame = sharedMemory_->read();
@@ -230,6 +245,11 @@ void GpsPage::handleGpsData(const GPSData& measurements)
 
     value = measurements.receiverWarning;
     ui_->warningValue->setText(value.c_str());
+
+    stringstream stream;
+    stream << fixed << setprecision(2) << measurements.course;
+    value = stream.str() + string("\u00B0");
+    ui_->headingValue->setText(value.c_str());
 }
 
 void GpsPage::startAcqTimer()

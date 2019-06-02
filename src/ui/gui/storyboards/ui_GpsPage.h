@@ -50,6 +50,15 @@ public:
     QLabel *longitudeValue;
     QSpacerItem *horizontalSpacer_18;
     QSpacerItem *verticalSpacer_5;
+    QHBoxLayout *horizontalLayout_10;
+    QSpacerItem *horizontalSpacer_23;
+    QLabel *headingLabel;
+    QSpacerItem *horizontalSpacer_24;
+    QLabel *dotsLabelHead;
+    QSpacerItem *horizontalSpacer_25;
+    QLabel *headingValue;
+    QSpacerItem *horizontalSpacer_26;
+    QSpacerItem *verticalSpacer_8;
     QHBoxLayout *horizontalLayout_7;
     QSpacerItem *horizontalSpacer_5;
     QLabel *satnumbLabel;
@@ -195,6 +204,52 @@ public:
         verticalSpacer_5 = new QSpacerItem(20, 15, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_5);
+
+        horizontalLayout_10 = new QHBoxLayout();
+        horizontalLayout_10->setObjectName(QStringLiteral("horizontalLayout_10"));
+        horizontalSpacer_23 = new QSpacerItem(140, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_10->addItem(horizontalSpacer_23);
+
+        headingLabel = new QLabel(verticalFrame);
+        headingLabel->setObjectName(QStringLiteral("headingLabel"));
+        headingLabel->setMinimumSize(QSize(160, 0));
+        headingLabel->setMaximumSize(QSize(200, 16777215));
+
+        horizontalLayout_10->addWidget(headingLabel);
+
+        horizontalSpacer_24 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_10->addItem(horizontalSpacer_24);
+
+        dotsLabelHead = new QLabel(verticalFrame);
+        dotsLabelHead->setObjectName(QStringLiteral("dotsLabelHead"));
+        dotsLabelHead->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout_10->addWidget(dotsLabelHead);
+
+        horizontalSpacer_25 = new QSpacerItem(10, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_10->addItem(horizontalSpacer_25);
+
+        headingValue = new QLabel(verticalFrame);
+        headingValue->setObjectName(QStringLiteral("headingValue"));
+        headingValue->setMinimumSize(QSize(160, 0));
+        headingValue->setMaximumSize(QSize(240, 16777215));
+        headingValue->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter);
+
+        horizontalLayout_10->addWidget(headingValue);
+
+        horizontalSpacer_26 = new QSpacerItem(35, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+
+        horizontalLayout_10->addItem(horizontalSpacer_26);
+
+
+        verticalLayout->addLayout(horizontalLayout_10);
+
+        verticalSpacer_8 = new QSpacerItem(20, 15, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout->addItem(verticalSpacer_8);
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
@@ -365,6 +420,9 @@ public:
         longitudeLabel->setText(QApplication::translate("GpsPage", "TextLabel", 0));
         dotsLabel_2->setText(QString());
         longitudeValue->setText(QApplication::translate("GpsPage", "TextLabel", 0));
+        headingLabel->setText(QApplication::translate("GpsPage", "TextLabel", 0));
+        dotsLabelHead->setText(QString());
+        headingValue->setText(QApplication::translate("GpsPage", "TextLabel", 0));
         satnumbLabel->setText(QApplication::translate("GpsPage", "TextLabel", 0));
         dotsLabel_3->setText(QString());
         satnumValue->setText(QApplication::translate("GpsPage", "TextLabel", 0));
