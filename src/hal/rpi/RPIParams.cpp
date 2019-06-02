@@ -7,6 +7,8 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
 float RPIParams::getTemp()
 {
     std::ifstream in("vcgencmd measure_temp");
@@ -15,5 +17,7 @@ float RPIParams::getTemp()
     std::getline(in, line)
 
     cout << line << endl;
+
+    return 67.0;
 }
 
