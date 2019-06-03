@@ -17,11 +17,11 @@ SharedMemoryWrapper::SharedMemoryWrapper(std::string name, uint32_t size)
 {
     // Creating shared memory's mutex.
     named_mutex::remove(name_.c_str());
-    sharedMemoryMutex_ = std::make_unique<named_mutex>(create_only, name_.c_str());
+    sharedMemoryMutex_ = std::make_unique<named_mutex>(open_or_create, name_.c_str());
 
     // Creating shared memory.
     shared_memory_object::remove(name_.c_str());
-    sharedMemory_ = std::make_unique<shared_memory_object>(create_only, name_.c_str(), read_write);
+    sharedMemory_ = std::make_unique<shared_memory_object>(open_or_create, name_.c_str(), read_write);
 
     // Resize shared memory.
     sharedMemory_->truncate(size_);
@@ -33,9 +33,9 @@ SharedMemoryWrapper::SharedMemoryWrapper(std::string name)
         size_(0)
 {
     // Creating shared memory's mutex.
-    sharedMemoryMutex_ = make_unique<named_mutex>(open_only, name_.c_str());
+    sharedMemoryMutex_ = make_unique<named_mutex>(open_or_create, name_.c_str());
     // Creating shared memory.
-    sharedMemory_ = make_unique<shared_memory_object>(open_only, name_.c_str(), read_write);
+    sharedMemory_ = make_unique<shared_memory_object>(open_or_create, name_.c_str(), read_write);
     // Mapped shared memory.
     mappedMemoryRegion_ = make_unique<mapped_region>(*sharedMemory_, read_write);
 }

@@ -22,6 +22,7 @@ namespace database
     private:
         const std::string FLIGHT_MEASUREMENT_TABLE = "CREATE TABLE FLIGHT_MEASUREMENT ("
                                                             "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                                            "TIMESTAMP              NUMERIC, "
                                                             "ROLL                   DOUBLE  NOT NULL, "
                                                             "PITCH                  DOUBLE  NOT NULL, "
                                                             "YAW                    DOUBLE  NOT NULL, "
@@ -38,27 +39,30 @@ namespace database
                                                             "SLIP_SKID              DOUBLE  NOT NULL"
                                                      ");";
 
-        const std::string FLIGHT_MEASUREMENT_INSERT = "INSERT INTO FLIGHT_MEASUREMENT (ROLL,PITCH,YAW,ALTITUDE,PRESSURE,"
+        const std::string FLIGHT_MEASUREMENT_INSERT = "INSERT INTO FLIGHT_MEASUREMENT (TIMESTAMP,ROLL,PITCH,YAW,ALTITUDE,PRESSURE,"
                                                       "MACH_NO,GROUND_SPEED,VERTICAL_SPEED,LATITUDE,LATITUDE_DIRECTION,LONGITUDE,"
                                                       "LONGITUDE_DIRECTION,TURN_COORDINATOR,SLIP_SKID) "
                                                       "VALUES";
 
         const std::string COCKPIT_PROPERTIES_TABLE = "CREATE TABLE COCKPIT_PROPERTIES ("
                                                           "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                                          "TIMESTAMP              TEXT    NOT NULL, "
-                                                          "RPI_TEMPERATURE    NUMERIC, "
-                                                          "POWER              NUMERIC, "
-                                                          "PROCESSOR          NUMERIC "
+                                                          "TIMESTAMP          NUMERIC, "
+                                                          "RPI_TEMPERATURE    DOUBLE, "
+                                                          "POWER              DOUBLE, "
+                                                          "COREA              DOUBLE, "
+                                                          "COREB              DOUBLE, "
+                                                          "COREC              DOUBLE, "
+                                                          "CORED              DOUBLE "
                                                       ");";
 
-        const std::string COCKPIT_PROPERTIES_INSERT = "INSERT INTO COCKPIT_PROPERTIES (TIMESTAMP,RPI_TEMPERATURE,POWER,PROCESSOR) VALUES";
+        const std::string COCKPIT_PROPERTIES_INSERT = "INSERT INTO COCKPIT_PROPERTIES (TIMESTAMP,RPI_TEMPERATURE,POWER,COREA,COREB,COREC,CORED) VALUES";
 
 
         const std::string COCKPIT_NETWORK_TABLE = "CREATE TABLE NETWORK ("
                                                           "ID                     INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                                          "TIMESTAMP              TEXT    NOT NULL, "
-                                                          "NUMBER                 INTEGER    NOT NULL, "
-                                                          "MODE                   TEXT    NOT NULL, "
+                                                          "TIMESTAMP              NUMERIC, "
+                                                          "NUMBER                 NUMERIC, "
+                                                          "MODE                   NUMERIC, "
                                                           "BANDWITH               DOUBLE"
                                                   ");";
 

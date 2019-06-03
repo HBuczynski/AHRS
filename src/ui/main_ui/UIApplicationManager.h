@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <atomic>
 #include <memory>
+#include <thread>
 
 #include <interfaces/communication_process_ui/UINotificationFactory.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
@@ -41,12 +42,16 @@ namespace main_process
         uint32_t getDbHash() const noexcept;
         const std::string& getDbName() const noexcept;
 
+        void saveMeasurements2DB();
+        void stopMeasurements2DB();
+
     private:
         bool initializeMainProcessMessageQueue();
         bool initializeSharedMemory();
         bool initializeDb();
 
         void handleMessage(const std::vector<uint8_t>& packet);
+        void saveGeneral2DB();
 
         std::shared_ptr<database::CockpitDb> cockpitDb_;
 
@@ -67,6 +72,11 @@ namespace main_process
         
         communication::GUIResponseFactory guiResponseFactory_;
         communication::GUICommandFactory guiCommandFactory_;
+
+        std::atomic<bool> runSavingMeasurements_;
+        std::thread dbMeasurementThread_;
+        std::atomic<bool> runDbThread_;
+        std::thread dbThread_;
 
         std::atomic<bool> runSystem_;
         utility::Logger& logger_;

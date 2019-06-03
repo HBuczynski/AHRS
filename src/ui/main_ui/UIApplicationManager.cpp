@@ -1,10 +1,15 @@
 #include "UIApplicationManager.h"
 
 #include <functional>
+#include <utility/Utility.h>
+#include <hal/include/RPIParams.h>
 #include <interfaces/gui/GUIBITSCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/gui/GUIWindowCommand.h>
+
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
+#include <interfaces/wireless_measurement_commands/FeederData.h>
 
 using namespace std;
 using namespace config;
@@ -129,6 +134,9 @@ bool UIApplicationManager::initializeDb()
     uint32_t hashed = hasher(dbName);
     cockpitDb_->insertHASH(hashed);
 
+    runDbThread_ = true;
+    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
+
     return isSuccess;
 }
 
@@ -214,6 +222,11 @@ void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
 
 void UIApplicationManager::stopUISystem()
 {
+    runDbThread_ = false;
+
+    if(dbThread_.joinable())
+        dbThread_.join();
+
     runSystem_ = false;
 }
 
@@ -225,4 +238,76 @@ void UIApplicationManager::sendToGUIProcess(vector<uint8_t> data)
 void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> data, UICommunicationMode mode)
 {
     communicationProcessesHandler_.sendMessage(data, mode);
+}
+
+void UIApplicationManager::saveGeneral2DB()
+{
+    CockpitProperties properties = {0};
+    CockpitNetwork network = {0};
+    RPIParams params;
+
+    while(runDbThread_)
+    {
+        auto cores = utility::Utility::getCPU(400);
+
+        properties.core1 = cores[0] * 100.f;
+        properties.core2 = cores[1] * 100.f;
+        properties.core3 = cores[2] * 100.f;
+        properties.core4 = cores[3] * 100.f;
+
+        properties.temperature = params.getTemp();
+
+        network.bandwith = 2.4;
+        network.networkMode = 1;
+        network.networkNumber = 1;
+
+        network.timestamp = properties.timestamp = TimeManager::getImeSinceEpoch();
+
+        cockpitDb_->insertCockpitNetwork(network);
+        cockpitDb_->insertCockpitProperties(properties);
+
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+}
+
+void UIApplicationManager::saveMeasurements2DB()
+{
+    runSavingMeasurements_ = true;
+
+    while (runSavingMeasurements_)
+    {
+        communication::MeasuringDataFactory dataFactory_;
+
+        try
+        {
+            const auto frame = sharedMemory_->read();
+
+            if(frame.size() != 0)
+            {
+                auto flightData = static_pointer_cast<communication::FeederData, communication::MeasuringData>(
+                        dataFactory_.createCommand(frame));
+
+                const auto measurements = flightData->getMeasurements();
+                cockpitDb_->insertFlightMeasurement(measurements.flightMeasurements);
+            }
+        }
+        catch (exception &ex)
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("-MAIN- UIApplicationManager :: ") + ex.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+
+        this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+}
+
+void UIApplicationManager::stopMeasurements2DB()
+{
+    runSavingMeasurements_ = false;
+
+    if(dbMeasurementThread_.joinable())
+        dbMeasurementThread_.join();
 }

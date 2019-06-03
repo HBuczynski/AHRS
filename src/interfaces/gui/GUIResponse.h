@@ -12,6 +12,8 @@ namespace communication
         SET_PLANE = 0x01,
         WINDOWS_TYPE = 0x02,
         WRAPPER = 0x03,
+        GUI_START_ACQ = 0x04,
+        GUI_STOP_ACQ = 0x05
     };
 
     class GUIResponse : public Frame

@@ -5,20 +5,23 @@
 
 struct CockpitProperties
 {
-    std::string timestamp;
+    uint64_t timestamp;
 
     double temperature;
     double power;
 
-    double processorConsumption;
+    double core1;
+    double core2;
+    double core3;
+    double core4;
 };
 
 struct CockpitNetwork
 {
-    std::string timestamp;
+    uint64_t timestamp;
 
-    std::string networkNumber;
-    std::string networkMode;
+    uint32_t networkNumber;
+    uint32_t networkMode;
 
     double bandwith;
 };

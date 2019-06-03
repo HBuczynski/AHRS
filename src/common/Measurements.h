@@ -5,6 +5,8 @@
 
 struct FlightMeasurements
 {
+    uint64_t timestamp;
+
     float roll;
     float pitch;
     float altitude;

@@ -10,6 +10,7 @@
 #include <interfaces/wireless_commands/StopAcqCommand.h>
 #include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+#include <interfaces/gui/GUIStopAcqResponse.h>
 
 using namespace std;
 using namespace utility;
@@ -40,6 +41,9 @@ GpsPage::~GpsPage()
     }
 
     stopAcqTimer();
+
+    GUIStopAcqResponse stopAcq;
+    controller_->sendToMainProcess(stopAcq.getFrameBytes());
 
     StopAcqCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());

@@ -2,7 +2,7 @@
 
 #include "GUIResponseVisitor.h"
 
-using namespace std;;
+using namespace std;
 using namespace communication;
 
 GUIWindowResponse::GUIWindowResponse(PagesType pageType)

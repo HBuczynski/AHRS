@@ -4,6 +4,7 @@
 #include <interfaces/wireless_commands/StopAcqCommand.h>
 #include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+#include <interfaces/gui/GUIStopAcqResponse.h>
 #include <time_manager/TimeManager.h>
 
 #include "AHRSPage.h"
@@ -42,6 +43,9 @@ AHRSPage::~AHRSPage()
     }
 
     stopAcqTimer();
+
+    GUIStopAcqResponse stopAcq;
+    controller_->sendToMainProcess(stopAcq.getFrameBytes());
 
     StopAcqCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());

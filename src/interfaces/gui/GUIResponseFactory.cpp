@@ -3,6 +3,8 @@
 #include "GUIPlaneBuilder.h"
 #include "GUIWindowResponseBuilder.h"
 #include "GUIWirelessComWrapperBuilder.h"
+#include "GUIStartAcqBuilder.h"
+#include "GUIStopAcqBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -22,12 +24,23 @@ unique_ptr<GUIResponse> GUIResponseFactory::createCommand(const vector<uint8_t> 
         case GUIResponseType::SET_PLANE :
             builder_ = make_unique<GUIPlaneBuilder>();
             return move(builder_->create(commandInBytes));
+
         case GUIResponseType::WINDOWS_TYPE :
             builder_ = make_unique<GUIWindowResponseBuilder>();
             return move(builder_->create(commandInBytes));
+
         case GUIResponseType::WRAPPER :
             builder_ = make_unique<GUIWirelessComWrapperBuilder>();
             return move(builder_->create(commandInBytes));
+
+        case GUIResponseType::GUI_START_ACQ :
+            builder_ = make_unique<GUIStartAcqBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case GUIResponseType::GUI_STOP_ACQ :
+            builder_ = make_unique<GUIStopAcqBuilder>();
+            return move(builder_->create(commandInBytes));
+
         default:
             throw invalid_argument("Received command does not register in factory.");
     }

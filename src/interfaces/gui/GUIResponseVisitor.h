@@ -4,6 +4,8 @@
 #include "GUIPlaneResponse.h"
 #include "GUIWindowResponse.h"
 #include "GUIWirelessComWrapperResponse.h"
+#include "GUIStartAcqResponse.h"
+#include "GUIStopAcqResponse.h"
 
 namespace communication
 {
@@ -16,6 +18,8 @@ namespace communication
         virtual void visit(GUIPlaneResponse& data) = 0;
         virtual void visit(GUIWindowResponse& data) = 0;
         virtual void visit(GUIWirelessComWrapperResponse& data) = 0;
+        virtual void visit(GUIStartAcqResponse& data) = 0;
+        virtual void visit(GUIStopAcqResponse& data) = 0;
     };
 }
 

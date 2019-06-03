@@ -31,7 +31,8 @@ bool CockpitDb::createTable()
 void CockpitDb::insertFlightMeasurement(const FlightMeasurements &measurements)
 {
     stringstream stream;
-    stream << FLIGHT_MEASUREMENT_INSERT << "("               << measurements.roll << SEMICOLON
+    stream << FLIGHT_MEASUREMENT_INSERT << "("               << measurements.timestamp << SEMICOLON
+                                                             << measurements.roll << SEMICOLON
                                                              << measurements.pitch << SEMICOLON
                                                              << measurements.heading << SEMICOLON
                                                              << measurements.altitude << SEMICOLON
@@ -53,10 +54,13 @@ void CockpitDb::insertFlightMeasurement(const FlightMeasurements &measurements)
 void CockpitDb::insertCockpitProperties(const CockpitProperties &properties)
 {
     stringstream stream;
-    stream << COCKPIT_PROPERTIES_INSERT << "(" << APOSTROPHE  << properties.timestamp << APOSTROPHE  << SEMICOLON
+    stream << COCKPIT_PROPERTIES_INSERT << "("                << properties.timestamp << SEMICOLON
                                                               << properties.temperature << SEMICOLON
                                                               << properties.power << SEMICOLON
-                                                              << properties.processorConsumption << ");";
+                                                              << properties.core1 << SEMICOLON
+                                                              << properties.core2 << SEMICOLON
+                                                              << properties.core3 << SEMICOLON
+                                                              << properties.core4 << ");";
     const auto command = stream.str();
     executeCommand(command);
 }
@@ -64,9 +68,9 @@ void CockpitDb::insertCockpitProperties(const CockpitProperties &properties)
 void CockpitDb::insertCockpitNetwork(const CockpitNetwork &network)
 {
     stringstream stream;
-    stream << COCKPIT_NETWORK_INSERT << "(" << APOSTROPHE << network.timestamp << APOSTROPHE << SEMICOLON
+    stream << COCKPIT_NETWORK_INSERT << "("               << network.timestamp << SEMICOLON
                                                           << network.networkNumber << SEMICOLON
-                                            << APOSTROPHE << network.networkMode << APOSTROPHE << SEMICOLON
+                                                          << network.networkMode << SEMICOLON
                                                           << network.bandwith << ");";
     const auto command = stream.str();
     executeCommand(command);

@@ -74,3 +74,12 @@ void GUIInterprocessVisitor::visit(communication::GUIWirelessComWrapperResponse&
     }
 }
 
+void GUIInterprocessVisitor::visit(GUIStartAcqResponse& data)
+{
+    uiApplicationManager_->saveMeasurements2DB();
+}
+
+void GUIInterprocessVisitor::visit(GUIStopAcqResponse& data)
+{
+    uiApplicationManager_->stopMeasurements2DB();
+}

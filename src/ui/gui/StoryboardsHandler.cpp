@@ -5,6 +5,7 @@
 
 #include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
+#include <interfaces/gui/GUIStartAcqResponse.h>
 
 using namespace std;
 using namespace gui;
@@ -143,6 +144,9 @@ void StoryboardsHandler::setAHRSPage()
     gridLayout_2->addWidget(ahrsPage_);
     previousWidget_ = ahrsPage_;
 
+    GUIStartAcqResponse startAcq;
+    sendToMainProcess(startAcq.getFrameBytes());
+
     StartAcquisitionCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());
     sendToMainProcess(response.getFrameBytes());
@@ -259,6 +263,9 @@ void StoryboardsHandler::setGpsPage()
 
     gridLayout_2->addWidget(gpsPage_);
     previousWidget_ = gpsPage_;
+
+    GUIStartAcqResponse startAcq;
+    sendToMainProcess(startAcq.getFrameBytes());
 
     StartAcquisitionCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());

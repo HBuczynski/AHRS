@@ -168,6 +168,7 @@ void MainAcqState::runAcquisition()
 
 void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
 {
+    generalData.flightMeasurements.timestamp = generalData.gpsData.timestamp;
     generalData.flightMeasurements.pitch = 0;// generalData.imuData.pitch;
     generalData.flightMeasurements.roll = 0;//generalData.imuData.roll;
     generalData.flightMeasurements.heading = generalData.imuData.yaw;
