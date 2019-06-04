@@ -1,6 +1,7 @@
 #include "MainAcqState.h"
 #include <math.h>
 
+#include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 #include <interfaces/wireless_measurement_commands/FeederData.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
@@ -63,8 +64,12 @@ void MainAcqState::runInitEvent()
     if(isSuccess)
     {
         runAcq_ = true;
+        runDB_ = true;
+
         gpsAdafruit_.startAcq();
         acqThread_ = thread(&MainAcqState::runAcquisition, this);
+
+        dbThread_ = thread(&MainAcqState::save2Database, this);
 
         if (logger_.isInformationEnable())
         {
@@ -120,11 +125,13 @@ void MainAcqState::stopAcq()
     gpsAdafruit_.stopAcq();
 
     runAcq_ = false;
+    runDB_ = false;
+
+    if(dbThread_.joinable())
+        dbThread_.join();
 
     if(acqThread_.joinable())
-    {
         acqThread_.join();
-    }
 
     if (logger_.isInformationEnable())
     {
@@ -146,8 +153,6 @@ void MainAcqState::runAcquisition()
             data.gpsData = gpsAdafruit_.getData();
 
             calculateFlightParameters(data);
-            writeGeneralData(data);
-            save2Database(data);
 
             FeederData dataCommand(data);
             auto packet = dataCommand.getFrameBytes();
@@ -162,7 +167,7 @@ void MainAcqState::runAcquisition()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+        this_thread::sleep_for(std::chrono::milliseconds(3));
     }
 }
 
@@ -189,13 +194,34 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
     generalData.flightMeasurements.verticalSpeed = 5;//5.0f + sin(33.0f * generalData.imuData.pitch / 238.098f)*15.0f;
 }
 
-void MainAcqState::writeGeneralData(FeederGeneralData& generalData)
+void MainAcqState::save2Database()
 {
+    communication::MeasuringDataFactory dataFactory_;
+    while(runDB_)
+    {
+        try
+        {
+            const auto  frame = externalSharedMemory_->read();
+            if(frame.size() != 0)
+            {
+                auto flightData = static_pointer_cast<communication::FeederData, communication::MeasuringData>(
+                        dataFactory_.createCommand(frame));
 
-}
+                const auto measurements = flightData->getMeasurements();
 
-void MainAcqState::save2Database(FeederGeneralData& generalData)
-{
-    feederDb_->insertGPS(generalData.gpsData);
-    feederDb_->insertIMU(generalData.imuData);
+                feederDb_->insertGPS(measurements.gpsData);
+                feederDb_->insertIMU(measurements.imuData);
+            }
+
+            this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        catch (exception &ex)
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("-GUI- AHRSPage :: ") + ex.what();
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
 }

@@ -41,10 +41,10 @@ bool Database::executeCommand(const std::string& command)
 
     if (exit != SQLITE_OK)
     {
-        if(logger_.isErrorEnable())
+        if(logger_.isWarningEnable())
         {
-            const string message = string("Database :: Cannot execute command. Error: ") + string(messageError);
-            logger_.writeLog(LogType::ERROR_LOG, message);
+            const string message = string("Database :: Cannot execute command. Warning: ") + string(messageError);
+            logger_.writeLog(LogType::WARNING_LOG, message);
         }
 
         sqlite3_free(messageError);

@@ -60,6 +60,10 @@ namespace main_process
 
         void runProcessing();
         void handleCommand(const std::vector<uint8_t>& packet);
+        void saveGeneralData2DB();
+
+        std::atomic<bool> runDbThread_;
+        std::thread dbThread_;
 
         std::thread processingThread_;
         FeederDataContainer dataContainer_;

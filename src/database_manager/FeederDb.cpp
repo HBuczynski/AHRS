@@ -62,11 +62,14 @@ void FeederDb::insertFeederProperties(const FeederProperties& feederProperties)
 {
     stringstream stream;
     stream << INSERT_FEEDER << "("               << feederProperties.timestamp << SEMICOLON
-                                   << APOSTROPHE << feederProperties.mode << APOSTROPHE << SEMICOLON
+                                                 << static_cast<int>(feederProperties.mode) << SEMICOLON
                                                  << feederProperties.bandwith << SEMICOLON
                                                  << feederProperties.temperature << SEMICOLON
                                                  << feederProperties.power << SEMICOLON
-                                                 << feederProperties.processorConsumption << ");";
+                                                 << feederProperties.core1 << SEMICOLON
+                                                 << feederProperties.core2 << SEMICOLON
+                                                 << feederProperties.core3 << SEMICOLON
+                                                 << feederProperties.core4 << ");";
     const auto command = stream.str();
     executeCommand(command);
 }

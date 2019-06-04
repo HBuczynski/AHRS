@@ -66,12 +66,14 @@ struct FeederProperties
     double temperature;
     double power;
 
-    double processorConsumption;
+    double core1;
+    double core2;
+    double core3;
+    double core4;
 };
 
 struct FeederGeneralData
 {
-    FeederProperties feederProperties;
     FlightMeasurements flightMeasurements;
     GPSData gpsData;
     IMUData imuData;

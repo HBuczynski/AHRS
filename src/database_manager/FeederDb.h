@@ -57,14 +57,17 @@ namespace database
         const std::string FEEDER_PROPERTIES = "CREATE TABLE FEEDER_PROPERTIES ("
                                               "ID                 INTEGER PRIMARY KEY AUTOINCREMENT, "
                                               "TIMESTAMP          NUMERIC, "
-                                              "MODE               TEXT    NOT NULL, "
-                                              "BANDWITH           NUMERIC, "
-                                              "RPI_TEMPERATURE    NUMERIC, "
-                                              "POWER              NUMERIC, "
-                                              "PROCESSOR          NUMERIC "
+                                              "MODE               NUMERIC, "
+                                              "BANDWITH           DOUBLE, "
+                                              "RPI_TEMPERATURE    DOUBLE, "
+                                              "POWER              DOUBLE, "
+                                              "COREA              DOUBLE, "
+                                              "COREB              DOUBLE, "
+                                              "COREC              DOUBLE, "
+                                              "CORED              DOUBLE "
                                               ");";
 
-        const std::string INSERT_FEEDER = "INSERT INTO FEEDER_PROPERTIES (TIMESTAMP,MODE,BANDWITH,RPI_TEMPERATURE,POWER,PROCESSOR) "
+        const std::string INSERT_FEEDER = "INSERT INTO FEEDER_PROPERTIES (TIMESTAMP,MODE,BANDWITH,RPI_TEMPERATURE,POWER,COREA,COREB,COREC,CORED) "
                                           "VALUES";
     };
 }

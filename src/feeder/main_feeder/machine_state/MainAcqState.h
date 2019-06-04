@@ -32,9 +32,7 @@ private:
     void runAcquisition();
 
     void calculateFlightParameters(FeederGeneralData& generalData);
-    void writeGeneralData(FeederGeneralData& generalData);
-    void save2Database(FeederGeneralData& generalData);
-
+    void save2Database();
 
     std::shared_ptr<database::FeederDb> feederDb_;
 
@@ -44,6 +42,10 @@ private:
 
     std::thread acqThread_;
     std::atomic<bool> runAcq_;
+
+    std::thread dbThread_;
+    std::atomic<bool> runDB_;
+
     static bool initialization_;
 
     config::FeederSharedMemory sharedMemoryParameters_;

@@ -3,6 +3,7 @@
 #include <machine_state/MainAcqState.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
+#include <utility/Utility.h>
 
 using namespace std;
 using namespace config;
@@ -294,11 +295,20 @@ bool ApplicationManager::createInternalCommunicationProcess()
 void ApplicationManager::startFeederSystem()
 {
     processingThread_ = thread(&ApplicationManager::runProcessing, this);
+
+    runDbThread_ = true;
+    dbThread_ = thread(&ApplicationManager::saveGeneralData2DB, this);
 }
 
 void ApplicationManager::stopFeederSystem()
 {
     runFeederSystem_ = false;
+    if(processingThread_.joinable())
+        processingThread_.join();
+
+    runDbThread_ = false;
+    if(dbThread_.joinable())
+        dbThread_.join();
 }
 
 void ApplicationManager::runProcessing()
@@ -398,4 +408,28 @@ void ApplicationManager::restartInternalProcess()
 void ApplicationManager::sendToExternalCommunicationProcess(std::vector<uint8_t> data)
 {
     externalComMessageQueue->send(data);
+}
+
+
+void ApplicationManager::saveGeneralData2DB()
+{
+    FeederProperties data = {0};
+
+    while (runDbThread_)
+    {
+        const auto cores = Utility::getCPU(400);
+
+        data.bandwith = 2.4;
+        data.mode = 24;
+        data.power = 100;
+        data.timestamp = TimeManager::getImeSinceEpoch();
+        data.core1 = cores[0] * 100.0f;
+        data.core2 = cores[1] * 100.0f;
+        data.core3 = cores[2] * 100.0f;
+        data.core4 = cores[3] * 100.0f;
+
+        feederDb_->insertFeederProperties(data);
+
+        this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
 }
