@@ -11,6 +11,7 @@
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <interfaces/gui/GUIResponseFactory.h>
 #include <interfaces/gui/GUICommandFactory.h>
+#include <time_manager/TimerInterrupt.h>
 #include <config_reader/UIParameters.h>
 #include <logger/Logger.h>
 #include <hsm/HSM.h>
@@ -25,7 +26,7 @@
 
 namespace main_process
 {
-    class UIApplicationManager : public hsm::HSM
+    class UIApplicationManager : public hsm::HSM, public utility::TimerInterruptNotification
     {
     public:
         UIApplicationManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
@@ -47,8 +48,12 @@ namespace main_process
 
     private:
         bool initializeMainProcessMessageQueue();
+        bool initializeHMMessageQueue();
         bool initializeSharedMemory();
         bool initializeDb();
+        bool initializeHM();
+
+        void interruptNotification(timer_t timerID) override;
 
         void handleMessage(const std::vector<uint8_t>& packet);
         void saveGeneral2DB();
@@ -60,6 +65,7 @@ namespace main_process
         config::UISharedMemory uiSharedMemoryParameters_;
         config::UICommunicationSystemParameters uiCommunicationSystemParameters_;
 
+        std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::shared_ptr<communication::MessageQueueWrapper> mainMessageQueue_;
         std::unique_ptr<communication::SharedMemoryWrapper> sharedMemory_;
 
@@ -79,6 +85,8 @@ namespace main_process
         std::thread dbThread_;
 
         std::atomic<bool> runSystem_;
+
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;
     };
 }

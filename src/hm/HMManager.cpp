@@ -41,16 +41,29 @@ bool HMManager::initialize(const string &name)
 
     if (name == "UI") {
         const auto msgProperties = ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str());
-        isSuccess &= initializeHMQueue(msgProperties.mainProcessQueueName, msgProperties.messageQueueNumber, msgProperties.messageSize);
+        isSuccess &= initializeHMQueue(msgProperties.hmQueueName, msgProperties.messageQueueNumber, msgProperties.messageSize);
+
+        if (logger_.isInformationEnable())
+        {
+            const std::string message = "-HM- HMManager:: " + msgProperties.hmQueueName + " massage queue initialized correctly.";
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
+
     } else if (name == "FEEDER"){
         const auto msgProperties = ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH.c_str());
-        isSuccess &= initializeHMQueue(msgProperties.mainProcessQueueName, msgProperties.messageQueueNumber, msgProperties.messageSize);
+        isSuccess &= initializeHMQueue(msgProperties.hmQueueName, msgProperties.messageQueueNumber, msgProperties.messageSize);
+
+        if (logger_.isInformationEnable())
+        {
+            const std::string message = "-HM- HMManager:: " + msgProperties.hmQueueName + " massage queue initialized correctly.";
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
     }
 
     runHM_ = isSuccess;
 
     if (isSuccess)
-         timerInterrupt_.startPeriodic(USER_UPDATE_INTERVAL_MS, this);
+         timerInterrupt_.startPeriodic(HM_THRESHOLD_MS, this);
 
     return isSuccess;
 }
@@ -97,12 +110,6 @@ bool HMManager::initializeHMQueue(string name, uint32_t queueNumber, uint32_t si
         return false;
     }
 
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = "-HM- HMManager:: Main massage queue initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
     return true;
 }
 
@@ -140,19 +147,19 @@ void HMManager::interruptNotification(timer_t timerID)
         for(auto &node : nodesContainer_)
         {
             auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - node.second);
-            if ( delay.count() > HM_THRESHOLD_MS )
+
+            if (delay.count() > 1.1 * HM_THRESHOLD_MS)
             {
-                cout << "Blad" << endl;
+
+
+                if (logger_.isInformationEnable())
+                {
+                    const std::string message = "-HM- HMManager:: Error interrupt.";
+                    logger_.writeLog(LogType::INFORMATION_LOG, message);
+                }
             }
         }
     }
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = "-HM- HMManager:: Interrupt.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
-    }
-
 }
 
 void HMManager::visit(const HMRegisterNotification& command)

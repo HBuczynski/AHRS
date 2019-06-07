@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+#define HM_INTERVAL_MS 15000
+
 enum class HMNodes : uint8_t
 {
     MAIN_UI,

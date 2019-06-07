@@ -49,8 +49,7 @@ namespace hm
         utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;
 
-        const uint16_t HM_THRESHOLD_MS = 15000;
-        const uint16_t USER_UPDATE_INTERVAL_MS = 30000;
+        const uint16_t HM_THRESHOLD_MS = HM_INTERVAL_MS;
     };
 }
 

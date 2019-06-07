@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <utility/Utility.h>
+#include <common/HMNodes.h>
 #include <hal/include/RPIParams.h>
 #include <interfaces/gui/GUIBITSCommand.h>
 #include <boost/interprocess/sync/named_mutex.hpp>
@@ -10,6 +11,8 @@
 
 #include <interfaces/wireless_measurement_commands/MeasuringDataFactory.h>
 #include <interfaces/wireless_measurement_commands/FeederData.h>
+#include <interfaces/hm/HMRegisterMainNotification.h>
+#include <interfaces/hm/HMHeartbeatNotification.h>
 
 using namespace std;
 using namespace config;
@@ -34,14 +37,17 @@ UIApplicationManager::~UIApplicationManager()
 {
     named_mutex::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
     shared_memory_object::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
+    timerInterrupt_.stop();
 }
 
 bool UIApplicationManager::initialize()
 {
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
+    isSuccess = isSuccess & initializeHMMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & initializeDb();
+    isSuccess = isSuccess & initializeHM();
     isSuccess = isSuccess & communicationProcessesHandler_.initialize();
     isSuccess = isSuccess & guiProcessHandler_.initialize();
 
@@ -61,6 +67,32 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
         if(logger_.isErrorEnable())
         {
             const string message = string("-MAIN- UIApplicationManager:: Main message queue has not been initialized correctly - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
+bool UIApplicationManager::initializeHMMessageQueue()
+{
+    try
+    {
+        hmMessageQueue_ = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: ") + uiMessageQueuesParameters_.hmQueueName + (" queue has not been initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -138,6 +170,26 @@ bool UIApplicationManager::initializeDb()
     dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
 
     return isSuccess;
+}
+
+bool UIApplicationManager::initializeHM()
+{
+    HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
+
+    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+
+    return true;
+}
+
+void UIApplicationManager::interruptNotification(timer_t timerID)
+{
+    HMHeartbeatNotification notification(HMNodes::MAIN_UI);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
 }
 
 uint32_t UIApplicationManager::getDbHash() const noexcept
