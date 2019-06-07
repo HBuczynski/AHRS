@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_SUITE( test )
         BOOST_CHECK( commandFromVec->getNotificationType() == notification.getNotificationType());
         BOOST_CHECK( commandFromVec->getHMNode() == notification.getHMNode());
         BOOST_CHECK( commandFromVec->getQueueName() == notification.getQueueName());
-        BOOST_CHECK( commandFromVec->getSize() == notification.getSize());
+        BOOST_CHECK( commandFromVec->getQueueSize() == notification.getQueueSize());
         BOOST_CHECK( commandFromVec->getSystemVersion() == notification.getSystemVersion());
     }
 

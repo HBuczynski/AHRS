@@ -61,12 +61,12 @@ void HMRegisterMainNotification::setQueueName(const std::string& queueName)
     queueName_ = queueName;
 }
 
-uint32_t HMRegisterMainNotification::getSize() const noexcept
+uint32_t HMRegisterMainNotification::getQueueSize() const noexcept
 {
     return size_;
 }
 
-void HMRegisterMainNotification::setSize(uint32_t size)
+void HMRegisterMainNotification::setQueueSize(uint32_t size)
 {
     size_ = size;
 }

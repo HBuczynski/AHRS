@@ -3,19 +3,21 @@
 
 #include <interfaces/hm/HMNotificationVisitor.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
+#include <time_manager/TimerInterrupt.h>
 
 #include <logger/Logger.h>
 #include <common/HMNodes.h>
 #include <unordered_map>
 
+#include <mutex>
 #include <string>
 #include <chrono>
 
 namespace hm
 {
-    using TimePoint = std::chrono::system_clock::time_point;
+    using TimePoint = std::chrono::steady_clock::time_point;
 
-    class HMManager : public communication::HMNotificationVisitor
+    class HMManager final : public communication::HMNotificationVisitor, public utility::TimerInterruptNotification
     {
     public:
         HMManager();
@@ -29,16 +31,26 @@ namespace hm
         virtual void visit(const communication::HMRegisterMainNotification& command) override;
 
     private:
+        void interruptNotification(timer_t timerID) override;
+
         bool initializeMainQueue(std::string name, uint32_t size);
         bool initializeHMQueue(std::string name, uint32_t queueNumber, uint32_t size);
 
-        std::unordered_map<HMNodes, TimePoint> nodesContainer_;
+        void updateTable();
+
+        std::map<HMNodes, TimePoint> nodesContainer_;
 
         std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::shared_ptr<communication::MessageQueueWrapper> mainMessageQueue_;
 
         bool runHM_;
+        std::mutex containerMutex_;
+
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;
+
+        const uint16_t HM_THRESHOLD_MS = 15000;
+        const uint16_t USER_UPDATE_INTERVAL_MS = 30000;
     };
 }
 

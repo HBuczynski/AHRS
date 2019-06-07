@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_SUITE( hmInterface )
         BOOST_CHECK( HMNotificationType::MAIN_REGISTER == notification.getNotificationType());
         BOOST_CHECK( HMNodes::GUI == notification.getHMNode());
         BOOST_CHECK( name == notification.getQueueName());
-        BOOST_CHECK( size == notification.getSize());
+        BOOST_CHECK( size == notification.getQueueSize());
         BOOST_CHECK( 1 == notification.getSystemVersion());
         BOOST_CHECK( (sizeof(HMNotificationType::MAIN_REGISTER) + sizeof(HMNodes::GUI) + sizeof(size) + name.size() + 1) == notification.getDataSize());
         BOOST_CHECK( "HMRegisterMainNotification" == notification.getName());

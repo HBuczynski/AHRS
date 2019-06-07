@@ -24,8 +24,8 @@ namespace communication
         const std::string &getQueueName() const noexcept;
         void setQueueName(const std::string& queueName);
 
-        uint32_t getSize() const noexcept;
-        void setSize(uint32_t size);
+        uint32_t getQueueSize() const noexcept;
+        void setQueueSize(uint32_t size);
 
     private:
         virtual void initializeDataSize() override;
