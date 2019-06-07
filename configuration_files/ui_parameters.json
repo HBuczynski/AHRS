@@ -20,6 +20,7 @@
       "firstCommunicationQueueName" : "FirstCommunicationQueueName",
       "secondCommunicationQueueName": "SecondCommunicationQueueName",
       "guiProcessQueueName" : "GuiProcessQueue",
+      "hmProcessQueueName" : "UIHMProcessQueue",
 
       "messageQueueNumber" : 200,
       "messageSize": 400

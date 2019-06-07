@@ -11,7 +11,7 @@ FeederNotification::FeederNotification(uint8_t dataSizeIn, FeederNotificationTyp
 FeederNotification::~FeederNotification()
 {}
 
-const FeederNotificationType &FeederNotification::getNotificationType() const
+const communication::FeederNotificationType &FeederNotification::getNotificationType() const
 {
     return notificationType_;
 }

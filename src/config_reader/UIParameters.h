@@ -41,6 +41,7 @@ namespace config
         std::string firstCommunicationQueueName;
         std::string secondCommunicationQueueName;
         std::string guiProcessQueueName;
+        std::string hmQueueName;
 
         uint16_t messageQueueNumber;
         uint16_t messageSize;

@@ -21,6 +21,7 @@
       "mainProcessQueueName" : "MainProcessQueue",
       "externalCommunicationQueueName" : "ExternalCommunicationQueue",
       "internalCommunicationQueueName": "InternalCommunicationQueue",
+      "hmProcessQueueName" : "FeederHMProcessQueue",
       "messageQueueNumber" : 20,
       "messageSize": 400
     },

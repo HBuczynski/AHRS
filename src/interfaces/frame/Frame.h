@@ -24,6 +24,7 @@ namespace communication
         GUI = 4,
         COMMUNICATION_PROCESS_UI = 5,
         WIRELESS = 6,
+        HM = 7
     };
 
     class Frame

@@ -12,8 +12,7 @@
 #include <interfaces/communication_process_ui/UICommandFactory.h>
 #include <interfaces/communication_process_ui/UICommandVisitor.h>
 
-#include <common/UIStates.h>
-#include <logger/Logger.h>
+#include <common/UIStates.h>#include <logger/Logger.h>
 
 namespace communication
 {

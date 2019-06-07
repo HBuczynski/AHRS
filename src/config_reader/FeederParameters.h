@@ -37,6 +37,7 @@ namespace config
         std::string mainProcessQueueName;
         std::string externalCommunicationQueueName;
         std::string internalCommunicationQueueName;
+        std::string hmQueueName;
         uint16_t messageQueueNumber;
         uint16_t messageSize;
     };

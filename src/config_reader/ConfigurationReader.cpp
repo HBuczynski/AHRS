@@ -101,6 +101,10 @@ UIMessageQueues ConfigurationReader::getUIMessageQueues(const string &filePath)
     jsonParser.getString(configNames, uiMessageQueues.guiProcessQueueName);
 
     configNames.pop_back();
+    configNames.push_back("hmProcessQueueName");
+    jsonParser.getString(configNames, uiMessageQueues.hmQueueName);
+
+    configNames.pop_back();
     configNames.push_back("messageQueueNumber");
     jsonParser.getUINT16t(configNames, uiMessageQueues.messageQueueNumber);
 
@@ -388,6 +392,10 @@ FeederMessageQueues ConfigurationReader::getFeederMessageQueues(const string &fi
     configNames.pop_back();
     configNames.push_back("internalCommunicationQueueName");
     jsonParser.getString(configNames, feederMessageQueues.internalCommunicationQueueName);
+
+    configNames.pop_back();
+    configNames.push_back("hmProcessQueueName");
+    jsonParser.getString(configNames, feederMessageQueues.hmQueueName);
 
     configNames.pop_back();
     configNames.push_back("messageQueueNumber");
