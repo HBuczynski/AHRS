@@ -29,6 +29,7 @@ namespace hm
         virtual void visit(const communication::HMRegisterNotification& command) override;
         virtual void visit(const communication::HMHeartbeatNotification& command) override;
         virtual void visit(const communication::HMRegisterMainNotification& command) override;
+        virtual void visit(const communication::HMErrorNotification& command) override;
 
     private:
         void interruptNotification(timer_t timerID) override;

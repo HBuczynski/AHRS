@@ -152,10 +152,10 @@ void HMManager::interruptNotification(timer_t timerID)
             {
 
 
-                if (logger_.isInformationEnable())
+                if (logger_.isErrorEnable())
                 {
                     const std::string message = "-HM- HMManager:: Error interrupt.";
-                    logger_.writeLog(LogType::INFORMATION_LOG, message);
+                    logger_.writeLog(LogType::ERROR_LOG, message);
                 }
             }
         }
@@ -211,6 +211,18 @@ void HMManager::visit(const HMRegisterMainNotification& command)
     if(logger_.isInformationEnable())
     {
         const string message = string("-HM- HMManager:: Received - HMRegisterMainNotification");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void HMManager::visit(const HMErrorNotification& command)
+{
+
+    //TODO: Handle error.
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-HM- HMManager:: Received - HMErrorNotification");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

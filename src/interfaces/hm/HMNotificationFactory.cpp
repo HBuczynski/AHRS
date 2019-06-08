@@ -1,7 +1,9 @@
 #include "HMNotificationFactory.h"
+
 #include "HMRegisterBuilder.h"
 #include "HMHeartbeatBuilder.h"
 #include "HMRegisterMainBuilder.h"
+#include "HMErrorBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -28,6 +30,10 @@ unique_ptr<HMNotification> HMNotificationFactory::createNotification(const std::
 
         case HMNotificationType::MAIN_REGISTER:
             builder_ = make_unique<HMRegisterMainBuilder>();
+            return move(builder_->create(notificationInBytes));
+
+        case HMNotificationType::ERROR:
+            builder_ = make_unique<HMErrorBuilder>();
             return move(builder_->create(notificationInBytes));
 
         default:

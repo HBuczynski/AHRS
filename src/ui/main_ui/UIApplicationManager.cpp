@@ -29,6 +29,7 @@ UIApplicationManager::UIApplicationManager(const string &name, const hsm::Transi
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
       externalCommunicationVisitor_(make_unique<ExternalCommInterprocessVisitor>(this)),
       guiInterprocessVisitor_(make_unique<GUIInterprocessVisitor>(this)),
+      hmVisitor_(make_unique<HMVisitor>(this)),
       runSystem_(true),
       logger_(Logger::getInstance())
 {}
@@ -258,6 +259,24 @@ void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
             if(logger_.isErrorEnable())
             {
                 const string message = string("UIApplicationManager :: Received wrong type of COMMUNICATION_PROCESS_UI's message.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
+    }
+    else if (interfaceType == InterfaceType::HM)
+    {
+        const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+        if(frameType == FrameType::COMMAND)
+        {
+            auto command = hmCommandFactory_.createCommand(packet);
+            command->accept(*(hmVisitor_.get()));
+        }
+        else
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("UIApplicationManager :: Received wrong type of HM's message.");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }

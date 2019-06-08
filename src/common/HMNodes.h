@@ -17,4 +17,10 @@ enum class HMNodes : uint8_t
     INTERNAL_FEEDER_COMM
 };
 
+enum HMErrorType
+{
+    ERROR_1 = 0x05,
+};
+
+
 #endif // HMNODES_H

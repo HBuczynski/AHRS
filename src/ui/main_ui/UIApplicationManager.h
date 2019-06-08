@@ -11,6 +11,7 @@
 #include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <interfaces/gui/GUIResponseFactory.h>
 #include <interfaces/gui/GUICommandFactory.h>
+#include <interfaces/hm/HMCommandFactory.h>
 #include <time_manager/TimerInterrupt.h>
 #include <config_reader/UIParameters.h>
 #include <logger/Logger.h>
@@ -21,6 +22,7 @@
 
 #include "ExternalCommInterprocessVisitor.h"
 #include "GUIInterprocessVisitor.h"
+#include "HMVisitor.h"
 
 #include <database_manager/CockpitDb.h>
 
@@ -75,6 +77,9 @@ namespace main_process
         std::unique_ptr<ExternalCommInterprocessVisitor> externalCommunicationVisitor_;
         communication::UINotificationFactory uiNotificationFactory_;
         std::unique_ptr<GUIInterprocessVisitor> guiInterprocessVisitor_;
+
+        std::unique_ptr<main_process::HMVisitor> hmVisitor_;
+        communication::HMCommandFactory hmCommandFactory_;
         
         communication::GUIResponseFactory guiResponseFactory_;
         communication::GUICommandFactory guiCommandFactory_;
