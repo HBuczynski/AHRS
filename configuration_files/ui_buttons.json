@@ -3,28 +3,28 @@
   {
     "FirstButton" :
     {
-        "PinNumber" : 14,
+        "PinNumber" : 17,
         "GPIOMode" : "IN",
         "GPIOPullMode" : "UP"
     },
 
     "SecondButton" :
     {
-        "PinNumber" : 15,
+        "PinNumber" : 4,
         "GPIOMode" : "IN",
         "GPIOPullMode" : "UP"
     },
 
     "ThirdButton" :
     {
-        "PinNumber" : 18,
+        "PinNumber" : 27,
         "GPIOMode" : "IN",
         "GPIOPullMode" : "UP"
     },
 
     "FourthButton" :
     {
-        "PinNumber" : 23,
+        "PinNumber" : 22,
         "GPIOMode" : "IN",
         "GPIOPullMode" : "UP"
     }
