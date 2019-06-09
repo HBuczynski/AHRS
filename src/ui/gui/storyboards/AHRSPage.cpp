@@ -309,9 +309,6 @@ void AHRSPage::handleFlightDataCommand(const FlightMeasurements& measurements)
     tempPitch = pitch - pitch_0;
     tempRoll = roll - roll_0;
 
-    cout << "P: " << pitch << " " << roll << endl;
-    cout << "T: " << tempPitch << " " << tempRoll << endl;
-
     setRoll(tempRoll);
     setPitch(tempPitch);
     setHeading(measurements.heading);
