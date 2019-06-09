@@ -2,6 +2,9 @@
 #include "GUIApplicationManager.h"
 #include "MainWindow.h"
 
+#include <interfaces/hm/HMRegisterMainNotification.h>
+#include <interfaces/hm/HMHeartbeatNotification.h>
+
 #include <boost/interprocess/sync/scoped_lock.hpp>
 #include <boost/interprocess/creation_tags.hpp>
 
@@ -26,6 +29,7 @@ GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWin
 GUIApplicationManager::~GUIApplicationManager()
 {
     stopGUI();
+    timerInterrupt_.stop();
 }
 
 bool GUIApplicationManager::initialize()
@@ -33,6 +37,9 @@ bool GUIApplicationManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeGUIMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
+
+    initializeHMMessageQueue();
+    initializeHM();
 
     return isSuccess;
 }
@@ -81,6 +88,55 @@ bool GUIApplicationManager::initializeSharedMemory()
     }
 
     return true;
+}
+
+bool GUIApplicationManager::initializeHMMessageQueue()
+{
+    try
+    {
+        hmMessageQueue_ = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: ") + uiMessageQueuesParameters_.hmQueueName + (" queue has not been initialized correctly - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
+bool GUIApplicationManager::initializeHM()
+{
+    if (!hmMessageQueue_)
+        return true;
+
+    HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
+
+    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+
+    return true;
+}
+
+void GUIApplicationManager::interruptNotification(timer_t timerID)
+{
+    HMHeartbeatNotification notification(HMNodes::MAIN_UI);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
 }
 
 void GUIApplicationManager::startGUI()

@@ -45,12 +45,13 @@ bool UIApplicationManager::initialize()
 {
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainProcessMessageQueue();
-    isSuccess = isSuccess & initializeHMMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & initializeDb();
-    isSuccess = isSuccess & initializeHM();
     isSuccess = isSuccess & communicationProcessesHandler_.initialize();
     isSuccess = isSuccess & guiProcessHandler_.initialize();
+
+    initializeHMMessageQueue();
+    initializeHM();
 
     return isSuccess;
 }
@@ -175,6 +176,9 @@ bool UIApplicationManager::initializeDb()
 
 bool UIApplicationManager::initializeHM()
 {
+    if (!hmMessageQueue_)
+        return true;
+
     HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
 
     auto packet = notification.getFrameBytes();
