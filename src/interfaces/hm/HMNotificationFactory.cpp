@@ -5,6 +5,8 @@
 #include "HMRegisterMainBuilder.h"
 #include "HMErrorBuilder.h"
 
+#include <iostream>
+
 using namespace std;
 using namespace communication;
 
@@ -37,7 +39,7 @@ unique_ptr<HMNotification> HMNotificationFactory::createNotification(const std::
             return move(builder_->create(notificationInBytes));
 
         default:
-            throw invalid_argument("Received Notification does not register in factory.");
+            throw invalid_argument("Received HM notification does not register in factory.");
 
     }
 }

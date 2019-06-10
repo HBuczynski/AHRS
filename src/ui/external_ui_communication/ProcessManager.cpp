@@ -5,6 +5,9 @@
 #include <interfaces/communication_process_ui/DatabaseNameNotification.h>
 #include <config_reader/ConfigurationReader.h>
 
+#include <interfaces/hm/HMRegisterNotification.h>
+#include <interfaces/hm/HMHeartbeatNotification.h>
+
 using namespace std;
 using namespace config;
 using namespace utility;
@@ -24,7 +27,9 @@ ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, c
 {}
 
 ProcessManager::~ProcessManager()
-{ }
+{
+    timerInterrupt_.stop();
+}
 
 bool ProcessManager::initialize()
 {
@@ -36,6 +41,9 @@ bool ProcessManager::initialize()
     isSuccess = isSuccess & initializeCommunicationProcessMessageQueue();
     isSuccess = isSuccess & initializeSharedMemory();
     isSuccess = isSuccess & initializeWirelessCommunication();
+
+    initializeHMMessageQueue();
+    initializeHM();
 
     return isSuccess;
 }
@@ -60,6 +68,32 @@ bool ProcessManager::initializeMainMessageQueue()
     if (logger_.isInformationEnable())
     {
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Main massage queue initialized correctly.";
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
+bool ProcessManager::initializeHMMessageQueue()
+{
+    try
+    {
+        hmMessageQueue_ = make_shared<MessageQueueWrapper>(uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: ") + uiMessageQueuesParameters_.hmQueueName + (" queue has not been initialized correctly - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -225,6 +259,41 @@ void ProcessManager::initInformation()
 
     auto packet = notif.getFrameBytes();
     sendMessageToMainProcess(packet);
+}
+
+bool ProcessManager::initializeHM()
+{
+    if (!hmMessageQueue_)
+        return true;
+
+    HMNodes node;
+    if (processNumber_ == 1)
+        node = HMNodes::EXTERNAL_UI_COMM_1;
+    else
+        node = HMNodes::EXTERNAL_UI_COMM_2;
+
+    HMRegisterNotification notification(node);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
+
+    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+
+    return true;
+}
+
+void ProcessManager::interruptNotification(timer_t timerID)
+{
+    HMNodes node;
+    if (processNumber_ == 1)
+        node = HMNodes::EXTERNAL_UI_COMM_1;
+    else
+        node = HMNodes::EXTERNAL_UI_COMM_2;
+
+    HMHeartbeatNotification notification(node);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
 }
 
 void ProcessManager::setState(UIExternalComCode code)

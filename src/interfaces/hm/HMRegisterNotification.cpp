@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 HMRegisterNotification::HMRegisterNotification(HMNodes code)
-        : HMNotification(10, HMNotificationType::HEARTBEAT),
+        : HMNotification(10, HMNotificationType::REGISTER),
           code_(code)
 { }
 

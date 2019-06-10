@@ -4,6 +4,7 @@
 #include <ctime>
 #include <chrono>
 
+#include <interfaces/hm/HMErrorCommand.h>
 #include <interfaces/hm/HMNotificationFactory.h>
 #include <config_reader/ConfigurationReader.h>
 
@@ -150,7 +151,10 @@ void HMManager::interruptNotification(timer_t timerID)
 
             if (delay.count() > 1.1 * HM_THRESHOLD_MS)
             {
+                HMErrorCommand command(node.first, HMErrorType::ERROR_1);
+                auto packet = command.getFrameBytes();
 
+                mainMessageQueue_->send(packet);
 
                 if (logger_.isErrorEnable())
                 {
@@ -166,7 +170,6 @@ void HMManager::visit(const HMRegisterNotification& command)
 {
     TimePoint time = std::chrono::steady_clock::now();
     HMNodes node = command.getHMNode();
-
     {
         lock_guard<mutex> lock(containerMutex_);
         nodesContainer_.insert({node, time});
@@ -174,7 +177,7 @@ void HMManager::visit(const HMRegisterNotification& command)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("-HM- HMManager:: Received - HMRegisterNotification");
+        const string message = string("-HM- HMManager:: Received - HMRegisterNotification, node: ") + to_string( static_cast<int>(node));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

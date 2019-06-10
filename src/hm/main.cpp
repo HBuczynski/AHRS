@@ -22,6 +22,17 @@ int main(int argc, char *argv[])
 
     HMManager hm;
 
+    if (argc < 2)
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("-HM- :: Wrong arg !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return 0;
+    }
+
     if(hm.initialize(argv[1]))
     {
         hm.run();

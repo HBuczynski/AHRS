@@ -12,11 +12,13 @@
 #include <interfaces/communication_process_ui/UICommandFactory.h>
 #include <interfaces/communication_process_ui/UICommandVisitor.h>
 
-#include <common/UIStates.h>#include <logger/Logger.h>
+#include <time_manager/TimerInterrupt.h>
+#include <common/UIStates.h>
+#include <logger/Logger.h>
 
 namespace communication
 {
-    class ProcessManager final
+    class ProcessManager final : public utility::TimerInterruptNotification
     {
     public:
         ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
@@ -32,11 +34,15 @@ namespace communication
      private:
 
         bool initializeMainMessageQueue();
+        bool initializeHMMessageQueue();
         bool initializeCommunicationProcessMessageQueue();
         bool initializeSharedMemory();
         bool initializeWirelessCommunication();
 
         void initInformation();
+        bool initializeHM();
+
+        void interruptNotification(timer_t timerID);
 
         void handleMessageQueue(const std::vector<uint8_t> &data);
         void sendMessageToMainProcess(std::vector<uint8_t > &data);
@@ -52,6 +58,7 @@ namespace communication
         std::shared_ptr<CommunicationManagerUI> communicationManagerUI_;
         std::unique_ptr<MainProcessHandlerVisitor> mainProcessHandlerVisitor_;
 
+        std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
         std::unique_ptr<communication::MessageQueueWrapper> receivingMessageQueue_;
 
@@ -60,6 +67,7 @@ namespace communication
         std::unique_ptr<boost::interprocess::mapped_region> mappedMemoryRegion_;
 
         std::atomic<bool> runCommunicationProcess_;
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;
     };
 }

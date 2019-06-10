@@ -2,7 +2,7 @@
 #include "GUIApplicationManager.h"
 #include "MainWindow.h"
 
-#include <interfaces/hm/HMRegisterMainNotification.h>
+#include <interfaces/hm/HMRegisterNotification.h>
 #include <interfaces/hm/HMHeartbeatNotification.h>
 
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -121,7 +121,7 @@ bool GUIApplicationManager::initializeHM()
     if (!hmMessageQueue_)
         return true;
 
-    HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+    HMRegisterNotification notification(HMNodes::GUI);
 
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);
@@ -133,7 +133,7 @@ bool GUIApplicationManager::initializeHM()
 
 void GUIApplicationManager::interruptNotification(timer_t timerID)
 {
-    HMHeartbeatNotification notification(HMNodes::MAIN_UI);
+    HMHeartbeatNotification notification(HMNodes::GUI);
 
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);

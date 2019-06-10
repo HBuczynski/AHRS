@@ -42,19 +42,19 @@ Qt::Key KeyboardHandler::getKey() const noexcept
 {
     switch(gpio_.pinNumber)
     {
-        case 14 :
+        case 17 :
         {
             return Qt::Key_Q;
         }
-        case 15 :
+        case 4 :
         {
             return Qt::Key_W;
         }
-        case 18 :
+        case 27 :
         {
             return Qt::Key_E;
         }
-        case 23 :
+        case 22 :
         {
             return Qt::Key_R;
         }

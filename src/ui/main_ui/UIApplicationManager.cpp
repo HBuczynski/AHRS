@@ -179,7 +179,7 @@ bool UIApplicationManager::initializeHM()
     if (!hmMessageQueue_)
         return true;
 
-    HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.hmQueueName, uiMessageQueuesParameters_.messageSize);
+    HMRegisterMainNotification notification(HMNodes::MAIN_UI, uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize);
 
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);

@@ -9,7 +9,7 @@ namespace communication
 
     enum HMCommandType : uint8_t
     {
-        COMMAND_ERROR = 0x01,
+        COMMAND_ERROR = 0x03,
     };
 
     class HMCommand : public Frame
