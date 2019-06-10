@@ -32,6 +32,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC shared_memory_wrapper)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_process_feeder)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hm_interface)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
 install(FILES ${header_list} DESTINATION include OPTIONAL)

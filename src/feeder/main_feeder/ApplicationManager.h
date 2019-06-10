@@ -9,6 +9,7 @@
 #include <atomic>
 
 #include <hsm/HSM.h>
+#include <time_manager/TimerInterrupt.h>
 #include <database_manager/FeederDb.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
@@ -16,15 +17,18 @@
 
 #include <interfaces/communication_process_feeder/FeederNotificationFactory.h>
 #include <interfaces/communication_process_feeder/FeederCommandFactory.h>
+#include <interfaces/hm/HMCommandFactory.h>
 
+#include <interfaces/hm/HMCommandFactory.h>
 #include "ExternalCommunicationVisitor.h"
 #include "InternalCommunicationVisitor.h"
+#include "HMFeederVisitor.h"
 
 #include "FeederDataContainer.h"
 
 namespace main_process
 {
-    class ApplicationManager : public hsm::HSM
+    class ApplicationManager : public hsm::HSM,  public utility::TimerInterruptNotification
     {
     public:
         ApplicationManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
@@ -45,6 +49,7 @@ namespace main_process
         bool initializeMainQueue();
         bool initializeExternalQueue();
         bool initializeInternalQueue();
+        bool initializeHMMessageQueue();
         bool initializeCalibrationSharedMemory();
 
         bool initializeFeederDB();
@@ -54,6 +59,9 @@ namespace main_process
 
         bool createExternalCommunicationProcess();
         bool createInternalCommunicationProcess();
+
+        bool initializeHM();
+        void interruptNotification(timer_t timerID) override;
 
         void restartExternalProcess();
         void restartInternalProcess();
@@ -73,6 +81,7 @@ namespace main_process
         std::shared_ptr<communication::MessageQueueWrapper> externalComMessageQueue;
         std::shared_ptr<communication::MessageQueueWrapper> internalComMessageQueue;
         std::shared_ptr<communication::MessageQueueWrapper> mainComMessageQueue;
+        std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
 
         std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;
         std::unique_ptr<communication::SharedMemoryWrapper> internalSharedMemory_;
@@ -83,14 +92,17 @@ namespace main_process
 
         ExternalCommunicationVisitor externalVisitor_;
         InternalCommunicationVisitor internalVisitor_;
+        std::unique_ptr<main_process::HMFeederVisitor> hmVisitor_;
 
         communication::FeederNotificationFactory externalNotificationFactory_;
         communication::FeederCommandFactory externalCommandFactory_;
+        communication::HMCommandFactory hmCommandFactory_;
 
         pid_t externalProcess_;
         pid_t internalProcess_;
 
         std::atomic<bool> runFeederSystem_;
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger &logger_;
     };
 }

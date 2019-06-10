@@ -14,6 +14,7 @@
 #include <mutex>
 #include <atomic>
 
+#include <time_manager/TimerInterrupt.h>
 #include <logger/Logger.h>
 #include <config_reader/FeederParameters.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
@@ -21,10 +22,11 @@
 
 namespace communication
 {
-    class ProcessManager
+    class ProcessManager final : public utility::TimerInterruptNotification
     {
     public:
         ProcessManager(const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
+        ~ProcessManager();
 
         bool initialize();
         void start();
@@ -33,6 +35,10 @@ namespace communication
     private:
         bool initializeWirelesslCommunication();
         bool initializeMessageQueueCommunication();
+        bool initializeHMMessageQueue();
+
+        bool initializeHM();
+        void interruptNotification(timer_t timerID);
 
         void sendMessageToMainProcess(std::vector<uint8_t> &data);
 
@@ -48,11 +54,12 @@ namespace communication
         communication::FeederNotificationFactory notificationFactory_;
         communication::FeederCommandFactory commandFactory_;
         
-
+        std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::shared_ptr<communication::MessageQueueWrapper> receivingMessageQueue_;
         std::shared_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
 
         std::atomic<bool> runConfigurationProcess_;
+        utility::TimerInterrupt timerInterrupt_;
         utility::Logger &logger_;
     };
 }

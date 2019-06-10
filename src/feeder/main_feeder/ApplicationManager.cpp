@@ -5,6 +5,9 @@
 #include <config_reader/ConfigurationReader.h>
 #include <utility/Utility.h>
 
+#include <interfaces/hm/HMRegisterMainNotification.h>
+#include <interfaces/hm/HMHeartbeatNotification.h>
+
 using namespace std;
 using namespace config;
 using namespace utility;
@@ -19,6 +22,7 @@ ApplicationManager::ApplicationManager(const string &name, const hsm::Transition
         sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         executableFilesNames_(ConfigurationReader::getFeederExecutableFiles(FEEDER_PARAMETERS_FILE_PATH)),
+        hmVisitor_(make_unique<HMFeederVisitor>(this)),
         runFeederSystem_(true),
         logger_(Logger::getInstance())
 {
@@ -31,6 +35,8 @@ ApplicationManager::~ApplicationManager()
     {
         processingThread_.join();
     }
+
+    timerInterrupt_.stop();
 }
 
 bool ApplicationManager::initialize()
@@ -48,6 +54,9 @@ bool ApplicationManager::initialize()
 
     isSuccess &= createExternalCommunicationProcess();
     isSuccess &= createInternalCommunicationProcess();
+
+    initializeHMMessageQueue();
+    initializeHM();
 
     return isSuccess;
 }
@@ -130,6 +139,32 @@ bool ApplicationManager::initializeInternalQueue()
     if (logger_.isInformationEnable())
     {
         const std::string message = std::string("-MAIN- ApplicationManager :: Internal queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
+bool ApplicationManager::initializeHMMessageQueue()
+{
+    try
+    {
+        hmMessageQueue_ = make_shared<MessageQueueWrapper>(messageQueuesParameters_.hmQueueName, messageQueuesParameters_.messageSize);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-MAIN- UIApplicationManager:: ") + messageQueuesParameters_.hmQueueName + (" queue has not been initialized correctly - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -220,6 +255,29 @@ bool ApplicationManager::initializeInternalSharedMemory()
     }
 
     return true;
+}
+
+bool ApplicationManager::initializeHM()
+{
+    if (!hmMessageQueue_)
+        return true;
+
+    HMRegisterMainNotification notification(HMNodes::MAIN_FEEDER, messageQueuesParameters_.mainProcessQueueName, messageQueuesParameters_.messageSize);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
+
+    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+
+    return true;
+}
+
+void ApplicationManager::interruptNotification(timer_t timerID)
+{
+    HMHeartbeatNotification notification(HMNodes::MAIN_FEEDER);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
 }
 
 bool ApplicationManager::createExternalCommunicationProcess()
@@ -369,6 +427,24 @@ void ApplicationManager::handleCommand(const std::vector<uint8_t>& packet)
     else if (interfaceType == InterfaceType::ETHERNET_FEEDER)
     {
         //TODO
+    }
+    else if (interfaceType == InterfaceType::HM)
+    {
+        const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+        if(frameType == FrameType::COMMAND)
+        {
+            auto command = hmCommandFactory_.createCommand(packet);
+            command->accept(*(hmVisitor_.get()));
+        }
+        else
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("UIApplicationManager :: Received wrong type of HM's message.");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+        }
     }
     else
     {

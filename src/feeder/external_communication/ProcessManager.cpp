@@ -5,6 +5,9 @@
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <config_reader/ConfigurationReader.h>
 
+#include <interfaces/hm/HMRegisterNotification.h>
+#include <interfaces/hm/HMHeartbeatNotification.h>
+
 #include <functional>
 #include <iostream>
 
@@ -28,12 +31,20 @@ ProcessManager::ProcessManager(const string &name, const hsm::TransitionTable &t
     clientUDPManager_->registerCallbackToMainProc(callback);
 }
 
+ProcessManager::~ProcessManager()
+{
+    timerInterrupt_.stop();
+}
+
 bool ProcessManager::initialize()
 {
     bool isSuccess = true;
 
     isSuccess = isSuccess & initializeMessageQueueCommunication();
     isSuccess = isSuccess & initializeWirelesslCommunication();
+
+    initializeHMMessageQueue();
+    initializeHM();
 
     // Send information to Main Process
     auto notification = StateNotification(FeederStateCode::REGISTERED_USERS);
@@ -99,6 +110,55 @@ bool ProcessManager::initializeMessageQueueCommunication()
     }
 
     return true;
+}
+
+bool ProcessManager::initializeHMMessageQueue()
+{
+    try
+    {
+        hmMessageQueue_ = make_shared<MessageQueueWrapper>(messageQueuesParameters_.hmQueueName, messageQueuesParameters_.messageSize);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if(logger_.isErrorEnable())
+        {
+            const string message = string("-EXTCOM- ProcessManager:: ") + messageQueuesParameters_.hmQueueName + (" queue has not been initialized correctly - ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- ProcessManager:: HM message queue has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
+bool ProcessManager::initializeHM()
+{
+    if (!hmMessageQueue_)
+        return true;
+
+    HMRegisterNotification notification(HMNodes::EXTERNAL_FEEDER_COMM);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
+
+    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+
+    return true;
+}
+
+void ProcessManager::interruptNotification(timer_t timerID)
+{
+    HMHeartbeatNotification notification(HMNodes::EXTERNAL_FEEDER_COMM);
+
+    auto packet = notification.getFrameBytes();
+    hmMessageQueue_->send(packet);
 }
 
 void ProcessManager::start()

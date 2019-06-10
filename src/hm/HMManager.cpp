@@ -194,7 +194,7 @@ void HMManager::visit(const HMHeartbeatNotification& command)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("-HM- HMManager:: Received - HMHeartbeatNotification");
+        const string message = string("-HM- HMManager:: Received - HMHeartbeatNotification, node: ") + to_string( static_cast<int>(command.getHMNode()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -213,7 +213,7 @@ void HMManager::visit(const HMRegisterMainNotification& command)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("-HM- HMManager:: Received - HMRegisterMainNotification");
+        const string message = string("-HM- HMManager:: Received - HMRegisterMainNotification, node: ") + to_string( static_cast<int>(command.getHMNode()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
