@@ -20,10 +20,20 @@ int main(int argc , char *argv[])
     logger.initLogger(struc);
 
     communication::InterManager interManager;
-    interManager.launchTimer();
 
-    while(true)
-        this_thread::sleep_for(chrono::milliseconds(1));
+    if(interManager.initialize())
+    {
+        interManager.startCommunication();
+    }
+    else
+    {
+        if(logger.isErrorEnable())
+        {
+            const string message = string("-INTCOM- Initialization failed !!");
+            logger.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
 
     return 0;
 }

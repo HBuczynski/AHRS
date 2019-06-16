@@ -1,6 +1,8 @@
 #ifndef INTERMANAGER_H
 #define INTERMANAGER_H
 
+#include <message_queue_wrapper/MessageQueueWrapper.h>
+
 #include <time_manager/TimerInterrupt.h>
 #include <config_reader/FeederParameters.h>
 #include <logger/Logger.h>
@@ -15,20 +17,42 @@ namespace communication
         InterManager();
         ~InterManager();
 
-        void launchTimer();
+        bool initialize();
+
+        void startCommunication();
+        void stopCommunication();
+
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
 
     private:
+        bool initializeMainMessageQueue();
+        bool initializeHMMessageQueue();
+        bool initializeCommunicationProcessMessageQueue();
+
+        void initInformation();
+        bool initializeHM();
+
+        void launchTimer();
         bool connectToFeeder();
 
         void interruptNotification(timer_t timerID);
+        void sendHeartbeat();
+        void initConnection();
 
+        config::FeederMessageQueues feederQueuesParameters_;
         config::FeederInternalWireless internalCommunicationParameters_;
         utility::TimerInterrupt connectionEstablishingInterrupt_;
 
         std::unique_ptr<InterClientTCP> client_;
 
+        std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> mainMessageQueue_;
+        std::unique_ptr<communication::MessageQueueWrapper> receivingMessageQueue_;
+
+        std::atomic<bool> runCommunicationProcess_;
         std::atomic<bool> connectionEstablished_;
+
+        utility::TimerInterrupt hmTimerInterrupt_;
         utility::Logger& logger_;
     };
 }
