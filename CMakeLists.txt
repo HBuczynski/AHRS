@@ -70,7 +70,7 @@ add_subdirectory("src/interfaces/wireless_responses"                    wireless
 add_subdirectory("src/interfaces/gui"                                   gui_interface                   )
 add_subdirectory("src/interfaces/hm"                                    hm_interface                    )
 add_subdirectory("src/telemetry"                                        telemetry                       )
-add_subdirectory("src/hsm"                                                      hsm                     )
+add_subdirectory("src/hsm"                                              hsm                             )
 if((${TARGET_PLATFROM} STREQUAL feeder) OR (${TARGET_PLATFROM} STREQUAL virtualBoard))
     add_subdirectory("src/feeder/main_feeder"                           main_feeder                     )
     add_subdirectory("src/feeder/external_communication"                external_feeder_communication   )

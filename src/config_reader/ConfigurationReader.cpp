@@ -355,20 +355,20 @@ FeederInternalWireless ConfigurationReader::getFeederInternalWireless(const stri
     configNames.push_back("Feeder");
     configNames.push_back("InternalWireless");
 
-    configNames.push_back("firstPort");
-    jsonParser.getUINT16t(configNames, feederInternalWireless.firstPort);
+    configNames.push_back("sourcePort");
+    jsonParser.getUINT16t(configNames, feederInternalWireless.sourcePort);
 
     configNames.pop_back();
-    configNames.push_back("secondPort");
-    jsonParser.getUINT16t(configNames, feederInternalWireless.secondPort);
+    configNames.push_back("destinationPort");
+    jsonParser.getUINT16t(configNames, feederInternalWireless.destinationPort);
 
     configNames.pop_back();
-    configNames.push_back("firstAddress");
-    jsonParser.getString(configNames, feederInternalWireless.firstAddress);
+    configNames.push_back("sourceAddress");
+    jsonParser.getString(configNames, feederInternalWireless.sourceAddress);
 
     configNames.pop_back();
-    configNames.push_back("secondAddress");
-    jsonParser.getString(configNames, feederInternalWireless.secondAddress);
+    configNames.push_back("destinationAddress");
+    jsonParser.getString(configNames, feederInternalWireless.destinationAddress);
 
     return feederInternalWireless;
 }

@@ -10,10 +10,10 @@
 
     "InternalWireless" :
     {
-      "firstPort": 4000,
-      "secondPort": 5000,
-      "firstAddress": "127.0.0.1",
-      "secondAddress": "127.0.0.1"
+      "destinationPort": 4000,
+      "sourcePort": 5000,
+      "destinationAddress": "127.0.0.1",
+      "sourceAddress": "127.0.0.1"
     },
 
     "MessageQueues" :

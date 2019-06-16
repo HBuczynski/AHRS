@@ -1,8 +1,6 @@
-#include <chrono>
-#include <thread>
 #include <logger/Logger.h>
-#include <unistd.h>
 
+#include "InterManager.h"
 
 using namespace std;
 using namespace utility;
@@ -21,16 +19,11 @@ int main(int argc , char *argv[])
     struc.writeOnConsole = true;
     logger.initLogger(struc);
 
-    if(logger.isInformationEnable())
-    {
-        const string message = "-INTCOM- Main: Inititialized process. Process id: " + to_string(getpid()) + ". Parent process id: " + to_string(getppid()) + ".";
-        logger.writeLog(LogType::INFORMATION_LOG, message);
-    }
+    communication::InterManager interManager;
+    interManager.launchTimer();
 
     while(true)
-    {
         this_thread::sleep_for(chrono::milliseconds(1));
-    }
 
     return 0;
 }

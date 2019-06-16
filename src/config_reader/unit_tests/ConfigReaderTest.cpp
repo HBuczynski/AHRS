@@ -72,10 +72,10 @@ BOOST_AUTO_TEST_SUITE( parser )
         const string filePath("../../src/config_reader/unit_tests/test_files/feeder_parameters.json");
         const auto feederInternalWireless = ConfigurationReader::getFeederInternalWireless(filePath);
 
-        BOOST_CHECK(feederInternalWireless.secondAddress == "127.0.0.1" );
-        BOOST_CHECK(feederInternalWireless.firstAddress == "127.0.0.1" );
-        BOOST_CHECK(feederInternalWireless.secondPort == 5000);
-        BOOST_CHECK(feederInternalWireless.firstPort == 4000);
+        BOOST_CHECK(feederInternalWireless.destinationAddress == "127.0.0.1" );
+        BOOST_CHECK(feederInternalWireless.sourceAddress == "127.0.0.1" );
+        BOOST_CHECK(feederInternalWireless.destinationPort == 5000);
+        BOOST_CHECK(feederInternalWireless.sourcePort == 4000);
     }
 
     BOOST_AUTO_TEST_CASE( uiButtons )

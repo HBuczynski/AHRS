@@ -26,10 +26,10 @@ namespace config
 
     struct FeederInternalWireless
     {
-        uint16_t firstPort;
-        uint16_t secondPort;
-        std::string firstAddress;
-        std::string secondAddress;
+        uint16_t sourcePort;
+        uint16_t destinationPort;
+        std::string sourceAddress;
+        std::string destinationAddress;
     };
 
     struct FeederMessageQueues
