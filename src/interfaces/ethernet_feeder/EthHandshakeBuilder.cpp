@@ -6,7 +6,9 @@ using namespace communication;
 
 unique_ptr<EthFeederCommand> EthHandshakeBuilder::create(const vector<uint8_t> &commandInBytes)
 {
-    auto command = make_unique<EthHandshakeCommand>();
+    const auto mode = static_cast<config::FeederMode>(commandInBytes[Frame::INITIAL_DATA_POSITION]);
+
+    auto command = make_unique<EthHandshakeCommand>(mode);
 
     return move(command);
 }

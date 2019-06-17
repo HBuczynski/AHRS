@@ -4,8 +4,9 @@
 using namespace std;
 using namespace communication;
 
-EthChangeStateCommand::EthChangeStateCommand()
-    : EthFeederCommand(10, EthCommandType::ETH_CHANGE_STATE)
+EthChangeStateCommand::EthChangeStateCommand(FeederStateCode feederState)
+    : EthFeederCommand(10, EthCommandType::ETH_CHANGE_STATE),
+      feederState_(feederState)
 {}
 
 EthChangeStateCommand::~EthChangeStateCommand()
@@ -17,6 +18,7 @@ vector<uint8_t> EthChangeStateCommand::getFrameBytes()
 
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(commandType_));
+    frame.push_back(static_cast<uint8_t>(feederState_));
 
     return frame;
 }
@@ -33,5 +35,15 @@ void EthChangeStateCommand::accept(EthFeederCommandVisitor &visitor)
 
 void EthChangeStateCommand::initializeDataSize()
 {
-    setDataSize(sizeof(commandType_));
+    setDataSize(sizeof(commandType_) + sizeof(feederState_));
+}
+
+FeederStateCode EthChangeStateCommand::getFeederState() const
+{
+    return feederState_;
+}
+
+void EthChangeStateCommand::setFeederState(const FeederStateCode &feederState)
+{
+    feederState_ = feederState;
 }

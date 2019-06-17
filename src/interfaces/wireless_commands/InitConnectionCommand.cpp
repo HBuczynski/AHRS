@@ -58,7 +58,7 @@ void InitConnectionCommand::initializeDataSize()
     dataSize += serverAddress_.size() + sizeof(END_STRING_IN_FRAME);
     dataSize += sizeof(serverListenUDPPort_);
 
-    setDataSize(dataSize);;
+    setDataSize(dataSize);
 }
 
 
