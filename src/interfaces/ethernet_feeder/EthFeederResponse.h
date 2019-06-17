@@ -9,7 +9,7 @@ namespace communication
 
     enum EthResponseType : uint8_t
     {
-
+        ETH_ACK = 10
     };
 
     class EthFeederResponse : public Frame
@@ -28,7 +28,6 @@ namespace communication
         virtual void initializeDataSize() = 0;
 
         EthResponseType responseType_;
-
     };
 }
 

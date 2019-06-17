@@ -1,5 +1,7 @@
 #include "EthFeederResponseFactory.h"
 
+#include "EthAckFeederBuilder.h"
+
 using namespace std;
 using namespace communication;
 
@@ -15,6 +17,10 @@ unique_ptr<EthFeederResponse> EthFeederResponseFactory::createCommand(const vect
 
     switch (type)
     {
+        case EthResponseType::ETH_ACK :
+            builder_ = make_unique<EthAckFeederBuilder>();
+            return move(builder_->create(commandInBytes));
+
         default:
             throw invalid_argument("Received command does not register in factory.");
     }
