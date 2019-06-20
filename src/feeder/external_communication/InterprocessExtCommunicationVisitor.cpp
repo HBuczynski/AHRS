@@ -14,29 +14,19 @@ InterprocessExtCommunicationVisitor::~InterprocessExtCommunicationVisitor()
 {}
 
 void InterprocessExtCommunicationVisitor::visit(const CalibrateMgnDemandCommand &command)
-{
-
-}
+{}
 
 void InterprocessExtCommunicationVisitor::visit(const communication::FeederWirelessWrapperCommand& command)
-{
-
-}
+{}
 
 void InterprocessExtCommunicationVisitor::visit(const CalibrationStatusNotification& notification)
-{
-
-}
+{}
 
 void InterprocessExtCommunicationVisitor::visit(const StateNotification &notification)
-{
-
-}
+{}
 
 void InterprocessExtCommunicationVisitor::visit(const DbHashNotification& notification)
-{
-
-}
+{}
 
 void InterprocessExtCommunicationVisitor::visit(const UDPBitsNotification& notification)
 {

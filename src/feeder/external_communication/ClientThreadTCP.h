@@ -4,6 +4,8 @@
 #include <packet/SendStreamTCP.h>
 #include <interfaces/wireless_commands/CommandFactory.h>
 #include <feeder/external_communication/CommandHandlerVisitor.h>
+#include <interfaces/ethernet_feeder/EthFeederCommandFactory.h>
+#include <feeder/external_communication/EthCommandHandlerVisitor.h>
 #include <logger/Logger.h>
 
 #include <thread>
@@ -37,8 +39,12 @@ namespace communication
         uint32_t id_;
 
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
+
         CommandFactory commandFactory_;
         CommandHandlerVisitor commandHandler_;
+
+        EthFeederCommandFactory ethCommandFactory_;
+        EthCommandHandlerVisitor ethCommandHanlder_;
 
         utility::Logger& logger_;
 

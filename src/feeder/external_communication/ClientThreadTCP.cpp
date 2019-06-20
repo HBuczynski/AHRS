@@ -27,6 +27,10 @@ void ClientThreadTCP::initializeCommandHandler()
     commandHandler_.initializeClientUDPManager(clientUDPManager_);
     commandHandler_.initializeCurrentClient(this);
     commandHandler_.initializeExternalSharedMemory();
+
+    ethCommandHanlder_.initializeClientUDPManager(clientUDPManager_);
+    ethCommandHanlder_.initializeCurrentClient(this);
+    ethCommandHanlder_.initializeMainMsgQueue();
 }
 
 void ClientThreadTCP::setID(uint32_t id)
@@ -49,15 +53,12 @@ void ClientThreadTCP::startListen()
 void ClientThreadTCP::stopListen()
 {
     if(socket_.get() != nullptr)
-    {
         socket_.reset();
-    }
+
     runListenThread_ = false;
 
     if(listenThread_.joinable())
-    {
         listenThread_.join();
-    }
 }
 
 void ClientThreadTCP::runListen()
@@ -74,21 +75,25 @@ void ClientThreadTCP::runListen()
         try
         {
             const auto frame = socket_->receivePacket();
+            const auto frameType = static_cast<InterfaceType>(frame[Frame::INTERFACE_TYPE]);
 
-//            cout << "\nFrame: " << endl;
-//            for(auto a : frame)
-//                cout << static_cast<int>(a);
-//            cout << endl;
-
-            const auto command = commandFactory_.createCommand(frame);
-            command->accept(commandHandler_);
-
-            const auto response = commandHandler_.getResponse();
-            socket_->sendData(response->getFrameBytes());
+            if (frameType == InterfaceType::WIRELESS)
+            {
+                const auto command = commandFactory_.createCommand(frame);
+                command->accept(commandHandler_);
+                const auto response = commandHandler_.getResponse();
+                socket_->sendData(response->getFrameBytes());
+            }
+            else if(frameType == InterfaceType::ETHERNET_FEEDER)
+            {
+                const auto ethCommand = ethCommandFactory_.createCommand(frame);
+                ethCommand->accept(ethCommandHanlder_);
+                const auto ethResponse = ethCommandHanlder_.getResponse();
+                socket_->sendData(ethResponse->getFrameBytes());
+            }
         }
         catch (exception &e)
         {
-
             if(logger_.isErrorEnable() && runListenThread_ && (e.what()) == string("Cannot receive packet."))
             {
                 const string message = string("-EXTCOM- ClientThreadTCP (runListenThread) :: ClientdID -") + to_string(getID()) +
@@ -100,11 +105,8 @@ void ClientThreadTCP::runListen()
                 logger_.writeLog(LogType::ERROR_LOG, message2);
 
                 runListenThread_ = false;
-
                 if(socket_.get() != nullptr)
-                {
                     socket_.reset();
-                }
             }
 
             if(logger_.isErrorEnable() && runListenThread_ )
@@ -114,7 +116,6 @@ void ClientThreadTCP::runListen()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
-
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
