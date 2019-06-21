@@ -152,6 +152,7 @@ void StoryboardsHandler::setAHRSPage()
     sendToMainProcess(response.getFrameBytes());
 
     setSystemActivation();
+    setBITSActive();
 }
 
 void StoryboardsHandler::setSystemSetupPage()

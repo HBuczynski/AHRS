@@ -44,12 +44,12 @@ AHRSPage::~AHRSPage()
 
     stopAcqTimer();
 
-    GUIStopAcqResponse stopAcq;
-    controller_->sendToMainProcess(stopAcq.getFrameBytes());
-
     StopAcqCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());
     controller_->sendToMainProcess(response.getFrameBytes());
+
+    GUIStopAcqResponse stopAcq;
+    controller_->sendToMainProcess(stopAcq.getFrameBytes());
 }
 
 void AHRSPage::setup()

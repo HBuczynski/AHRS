@@ -40,7 +40,6 @@ namespace config
         static FeederType getFeederType(const std::string &filePath);
         // Setters
         static void setFeederSystemValue(const std::string &filePath, FeederMode mode);
-        //static void addAircraftToDatabase(const std::string &filePath, AircraftParameters plane);
 
     private:
         static hardware::GPIOMode getGPIOMode(std::string mode);
