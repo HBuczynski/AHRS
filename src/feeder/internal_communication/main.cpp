@@ -11,9 +11,9 @@ int main(int argc , char *argv[])
     Logger &logger = Logger::getInstance("FD_Internal_comm");
 
     InitLogStructure struc;
-    struc.debugLog = true;
-    struc.errroLog = true;
-    struc.informationLog = true;
+    struc.debugLog = false;
+    struc.errroLog = false;
+    struc.informationLog = false;
     struc.warningLog = true;
     struc.writeLogsInSeparetFiles = true;
     struc.writeOnConsole = true;

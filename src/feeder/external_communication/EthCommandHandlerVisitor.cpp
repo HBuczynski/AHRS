@@ -1,5 +1,7 @@
 #include "EthCommandHandlerVisitor.h"
 
+#include <config_reader/ConfigurationReader.h>
+
 #include "ClientThreadTCP.h"
 #include "ClientUDPManager.h"
 
@@ -9,7 +11,8 @@ using namespace communication;
 using namespace boost::interprocess;
 
 EthCommandHandlerVisitor::EthCommandHandlerVisitor()
-    : logger_(Logger::getInstance())
+    : msgQueuesParametes_(config::ConfigurationReader::getFeederMessageQueues(config::FEEDER_PARAMETERS_FILE_PATH)),
+      logger_(Logger::getInstance())
 {}
 
 EthCommandHandlerVisitor::~EthCommandHandlerVisitor()
@@ -38,6 +41,7 @@ void EthCommandHandlerVisitor::initializeMainMsgQueue()
             const string message = string("-INTCOM- EthCommandHandlerVisitor:: ") + msgQueuesParametes_.mainProcessQueueName + (" queue has not been initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
+        return;
     }
 
     if (logger_.isInformationEnable())

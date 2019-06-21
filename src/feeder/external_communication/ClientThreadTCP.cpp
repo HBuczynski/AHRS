@@ -81,6 +81,7 @@ void ClientThreadTCP::runListen()
             {
                 const auto command = commandFactory_.createCommand(frame);
                 command->accept(commandHandler_);
+
                 const auto response = commandHandler_.getResponse();
                 socket_->sendData(response->getFrameBytes());
             }

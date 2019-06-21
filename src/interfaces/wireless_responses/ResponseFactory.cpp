@@ -4,7 +4,7 @@
 #include "AckResponseBuilder.h"
 #include "CalibratingStatusBuilder.h"
 #include "PlanesDatasetBuilder.h"
-#include "CurrentStateBuilder.h"
+#include "FeederStateCodeBuilder.h".h"
 #include "BITsResponseBuilder.h"
 #include "CalibrateAccelerometerResBuilder.h"
 
@@ -38,8 +38,8 @@ unique_ptr<Response> ResponseFactory::createCommand(const vector<uint8_t> &comma
         case ResponseType::PLANES_DATASET:
             builder_ = make_unique<PlanesDatasetBuilder>();
             return move(builder_->create(commandInBytes));
-        case ResponseType::CURRENT_STATE_RES:
-            builder_ = make_unique<CurrentStateBuilder>();
+        case ResponseType::FEEDER_STATE_CODE_RES:
+            builder_ = make_unique<FeederStateCodeBuilder>();
             return move(builder_->create(commandInBytes));
         case ResponseType::ACCEL_STATUS:
             builder_ = make_unique<CalibrateAccelerometerResBuilder>();

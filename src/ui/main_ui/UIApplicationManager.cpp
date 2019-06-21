@@ -168,8 +168,8 @@ bool UIApplicationManager::initializeDb()
     uint32_t hashed = hasher(dbName);
     cockpitDb_->insertHASH(hashed);
 
-    runDbThread_ = true;
-    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
+//    runDbThread_ = true;
+//    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
 
     return isSuccess;
 }
@@ -214,6 +214,7 @@ void UIApplicationManager::startUISystem()
         try
         {
             const auto packet = mainMessageQueue_->receive();
+            cout << "Main received packet " << endl;
             handleMessage(packet);
         }
         catch(interprocess_exception &ex)

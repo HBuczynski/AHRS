@@ -12,9 +12,9 @@ int main(int argc, char *argv[])
     Logger &logger = Logger::getInstance("HM");
 
     InitLogStructure struc;
-    struc.debugLog = true;
+    struc.debugLog = false;
     struc.errroLog = true;
-    struc.informationLog = true;
+    struc.informationLog = false;
     struc.warningLog = true;
     struc.writeLogsInSeparetFiles = true;
     struc.writeOnConsole = true;

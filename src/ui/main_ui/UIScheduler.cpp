@@ -45,6 +45,7 @@ void UIScheduler::create()
     hsm::TransitionTable transitionTable({
             make_tuple(launchState,                   hsm::Event{"CONNECT"},            connectionState),
             make_tuple(connectionState,               hsm::Event{"SET_SETTINGS"},       settingsState),
+            make_tuple(connectionState,               hsm::Event{"BACK_2_ACQ"},         acquisitionState),
             make_tuple(connectionState,               hsm::Event{"CONN_ERROR"},         faultManagementState),
             make_tuple(settingsState,                 hsm::Event{"CALIBRATE"},          calibrationState),
             make_tuple(calibrationState,              hsm::Event{"PERFORM_BIT"},        bitState),

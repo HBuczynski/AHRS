@@ -17,6 +17,7 @@ namespace communication
 
         virtual void visit(const CalibrateMgnDemandCommand& command) override ;
         virtual void visit(const communication::FeederWirelessWrapperCommand& command) override;
+        virtual void visit(const communication::FeederCodeDemandCommand& command) override;
         virtual void visit(const CalibrationStatusNotification& notification) override;
         virtual void visit(const StateNotification& notification) override;
         virtual void visit(const DbHashNotification& notification) override;

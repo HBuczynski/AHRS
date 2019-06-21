@@ -25,9 +25,7 @@ ApplicationManager::ApplicationManager(const string &name, const hsm::Transition
         hmVisitor_(make_unique<HMFeederVisitor>(this)),
         runFeederSystem_(true),
         logger_(Logger::getInstance())
-{
-    externalVisitor_.registerApplicationManager(this);
-}
+{}
 
 ApplicationManager::~ApplicationManager()
 {
@@ -57,6 +55,8 @@ bool ApplicationManager::initialize()
 
     initializeHMMessageQueue();
     initializeHM();
+
+    externalVisitor_.registerApplicationManager(this);
 
     return isSuccess;
 }

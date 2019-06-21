@@ -1,16 +1,16 @@
-#ifndef AHRS_CURRENTSTATERESPONSE_H
-#define AHRS_CURRENTSTATERESPONSE_H
+#ifndef AHRS_FeederStateCodeResponse_H
+#define AHRS_FeederStateCodeResponse_H
 
 #include "Response.h"
 #include <common/FeederStates.h>
 
 namespace communication
 {
-    class CurrentStateResponse final : public Response
+    class FeederStateCodeResponse final : public Response
     {
     public:
-        CurrentStateResponse(FeederStateCode code);
-        ~CurrentStateResponse();
+        FeederStateCodeResponse(FeederStateCode code);
+        ~FeederStateCodeResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;

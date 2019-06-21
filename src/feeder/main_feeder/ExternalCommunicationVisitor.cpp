@@ -8,14 +8,22 @@
 #include <interfaces/wireless_commands/CalibrateAccelerometerCommand.h>
 #include <interfaces/wireless_commands/CallibrateMagnetometerCommand.h>
 #include <interfaces/wireless_commands/SetPlaneCommand.h>
+#include <interfaces/wireless_responses/FeederStateCodeResponse.h>
+
+#include <config_reader/ConfigurationReader.h>
 
 using namespace std;
+using namespace config;
 using namespace main_process;
 using namespace utility;
 using namespace communication;
+using namespace boost::interprocess;
+
+extern char **environ;
 
 ExternalCommunicationVisitor::ExternalCommunicationVisitor()
-    : logger_(Logger::getInstance())
+    : sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH)),
+      logger_(Logger::getInstance())
 {}
 
 ExternalCommunicationVisitor::~ExternalCommunicationVisitor()
@@ -24,6 +32,30 @@ ExternalCommunicationVisitor::~ExternalCommunicationVisitor()
 void ExternalCommunicationVisitor::registerApplicationManager(ApplicationManager *appManager)
 {
     appManager_ = appManager;
+    initializeSharedMemory();
+}
+
+
+void ExternalCommunicationVisitor::initializeSharedMemory()
+{
+    try
+    {
+        externalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.externalMemoryName);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if (logger_.isErrorEnable())
+        {
+            const std::string message = std::string("-EXTCOMM- CommandHandlerVisitor:: External SharedMemory: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOMM- CommandHandlerVisitor :: External shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
 }
 
 void ExternalCommunicationVisitor::visit(const CalibrateMgnDemandCommand &command)
@@ -75,6 +107,13 @@ void ExternalCommunicationVisitor::visit(const FeederWirelessWrapperCommand& com
         const string message = string("-MAIN- ExternalCommInterprocessVisitor :: Received - FeederWirelessWrapperCommand.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void ExternalCommunicationVisitor::visit(const communication::FeederCodeDemandCommand& command)
+{
+    FeederStateCodeResponse codeCommand(getCode());
+    auto packet = codeCommand.getFrameBytes();
+    externalSharedMemory_->write(packet);
 }
 
 void ExternalCommunicationVisitor::visit(const CalibrationStatusNotification &command)
@@ -162,4 +201,30 @@ void ExternalCommunicationVisitor::visit(const communication::UDPBitsNotificatio
         auto state = appManager_->getState("PerformBitState");
         static_pointer_cast<PerformBitState, hsm::State>(state)->approveUDPBits();
     }
+}
+
+FeederStateCode ExternalCommunicationVisitor::getCode()
+{
+    const auto name = appManager_->getCurrentStateName();
+
+    if ( name == "Idle")
+        return FeederStateCode::IDLE;
+    else if ( name == "CalibrationState")
+        return FeederStateCode::CALLIBATION;
+    else if ( name == "ConnectionState")
+        return FeederStateCode::CONNECTION;
+    else if ( name == "MainAcqState")
+        return FeederStateCode::MAIN_ACQ;
+    else if ( name == "MainErrorState")
+        return FeederStateCode::ERROR;
+    else if ( name == "MainFaultManagementState")
+        return FeederStateCode::FAULT_MANAGEMENT;
+    else if ( name == "PerformBitState")
+        return FeederStateCode::PERFORM_BIT;
+    else if ( name == "RedundantAcqState")
+        return FeederStateCode::REDUNDANT_ACQ;
+    else if ( name == "RegisterUserState")
+        return FeederStateCode::REGISTERED_USERS;
+    else if ( name == "SettingsState")
+        return FeederStateCode::SETTINNG;
 }

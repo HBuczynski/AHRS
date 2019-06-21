@@ -36,6 +36,7 @@ void GUIInterprocessCommandVisitor::initializeSignalsAndSlots()
     QObject::connect(this, SIGNAL(signalBITSPage(communication::BitsInformation)), mainWindow_.get(), SLOT(setBITSPage(communication::BitsInformation)));
     QObject::connect(this, SIGNAL(signalPlanesDataset(QString)), mainWindow_.get(), SLOT(setPlanesDataset(QString)));
     QObject::connect(this, SIGNAL(signalCallibrationMode(uint8_t, communication::CalibrationConfiguration)), mainWindow_.get(), SLOT(setCallibrationMode(uint8_t, communication::CalibrationConfiguration)));
+    QObject::connect(this, SIGNAL(signalAHRSPage()), mainWindow_.get(), SLOT(setAHRSPage()));
 }
 
 void GUIInterprocessCommandVisitor::visit(GUIWindowCommand &command)
@@ -113,7 +114,7 @@ void GUIInterprocessCommandVisitor::launchMainPage()
 
 void GUIInterprocessCommandVisitor::launchAHRSWindow()
 {
-
+    emit signalAHRSPage();
 }
 
 void GUIInterprocessCommandVisitor::launchRestartWindow()

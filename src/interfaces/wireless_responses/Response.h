@@ -13,7 +13,7 @@ namespace communication
         ACK = 20,
         CALIBRATING_STATUS = 30,
         PLANES_DATASET = 40,
-        CURRENT_STATE_RES = 50,
+        FEEDER_STATE_CODE_RES = 50,
         BITs_STATUS = 60,
         ACCEL_STATUS = 70,
     };

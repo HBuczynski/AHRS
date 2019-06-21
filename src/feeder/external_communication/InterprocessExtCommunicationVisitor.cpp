@@ -19,6 +19,9 @@ void InterprocessExtCommunicationVisitor::visit(const CalibrateMgnDemandCommand 
 void InterprocessExtCommunicationVisitor::visit(const communication::FeederWirelessWrapperCommand& command)
 {}
 
+void InterprocessExtCommunicationVisitor::visit(const communication::FeederCodeDemandCommand& command)
+{}
+
 void InterprocessExtCommunicationVisitor::visit(const CalibrationStatusNotification& notification)
 {}
 

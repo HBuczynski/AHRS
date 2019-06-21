@@ -150,6 +150,8 @@ void StoryboardsHandler::setAHRSPage()
     StartAcquisitionCommand command;
     GUIWirelessComWrapperResponse response(command.getFrameBytes());
     sendToMainProcess(response.getFrameBytes());
+
+    setSystemActivation();
 }
 
 void StoryboardsHandler::setSystemSetupPage()

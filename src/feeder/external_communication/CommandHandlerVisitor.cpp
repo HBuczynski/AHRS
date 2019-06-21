@@ -4,12 +4,13 @@
 #include <interfaces/communication_process_feeder/FeederWirelessWrapperCommand.h>
 #include <interfaces/communication_process_feeder/DbHashNotification.h>
 #include <interfaces/communication_process_feeder/UDPBitsNotification.h>
+#include <interfaces/communication_process_feeder/FeederCodeDemandCommand.h>
 #include <interfaces/wireless_responses/DataResponse.h>
 #include <interfaces/wireless_responses/AckResponse.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_responses/CalibratingStatusResponse.h>
 #include <interfaces/wireless_measurement_commands/ImuData.h>
-#include <interfaces/wireless_responses/CurrentStateResponse.h>
+#include <interfaces/wireless_responses/FeederStateCodeResponse.h>
 #include <interfaces/wireless_responses/BITsResponse.h>
 #include <interfaces/wireless_responses/ResponseFactory.h>
 
@@ -274,6 +275,54 @@ void CommandHandlerVisitor::visit(SetHashCommand& command)
     }
 
     auto notification = DbHashNotification(command.getHash());
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
+}
+
+void CommandHandlerVisitor::visit(HandshakeCommand& command)
+{
+    bool waitOnData = true;
+    ResponseFactory responseFactory;
+
+    auto feederCommand = FeederCodeDemandCommand(FeederStateCode::MAIN_ACQ);
+    auto packet = feederCommand.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    while (waitOnData)
+    {
+        try
+        {
+            auto frame = externalSharedMemory_->read();
+            response_ = move(responseFactory.createCommand(frame));
+            waitOnData = false;
+        }
+        catch (exception &e)
+        {}
+
+        this_thread::sleep_for(std::chrono::milliseconds(40));
+    }
+}
+
+void CommandHandlerVisitor::visit(ChangeStateCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    //Send information to main process
+    auto notification = StateNotification(FeederStateCode::MAIN_ACQ);
     auto packet = notification.getFrameBytes();
     clientUDPManager_->sendToMainProcess(packet);
 }

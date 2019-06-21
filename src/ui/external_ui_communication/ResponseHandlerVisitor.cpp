@@ -67,11 +67,14 @@ void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
     }
 }
 
-void ResponseHandlerVisitor::visit(CurrentStateResponse &data)
+void ResponseHandlerVisitor::visit(FeederStateCodeResponse &data)
 {
+    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    sendMessageToMain(dataNotification.getFrameBytes());
+
     if(logger_.isInformationEnable())
     {
-        const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received CurrentStateResponse.");
+        const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received FeederStateCodeResponse.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

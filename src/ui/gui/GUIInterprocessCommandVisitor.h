@@ -26,6 +26,7 @@ namespace gui
 
     signals:
         void signalWelcomePage();
+        void signalAHRSPage();
         void signalEstablishingConnection();
         void signalSettingPage();
         void signalMenuPage();

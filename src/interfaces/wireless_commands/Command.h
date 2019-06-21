@@ -10,6 +10,7 @@ namespace communication
     enum CommandType : uint8_t
     {
         INIT_CONNECTION = 10,
+        HANDSHAKE = 11,
         CALIBRATE_MAGNETOMETER = 20,
         CALIBRATE_ACCELEROMETER = 21,
         REMOVE_PLANE_DATA = 25,
@@ -20,6 +21,7 @@ namespace communication
         START_ACQ = 70,
         STOP_ACQ = 75,
         CURRENT_STATE = 80,
+        CHANGE_FEEDER_STATE = 81,
         PERFORM_BIT = 90,
         CALIBRATE_DATA = 100,
         BITS_DATA = 110,

@@ -17,7 +17,7 @@ namespace communication
         virtual void visit(DataResponse& data) override;
         virtual void visit(CalibratingStatusResponse& data) override;
         virtual void visit(PlanesDatasetResponse& data) override;
-        virtual void visit(CurrentStateResponse& data) override ;
+        virtual void visit(FeederStateCodeResponse& data) override ;
         virtual void visit(BITsResponse& data) override;
         virtual void visit(CalibrateAccelerometerResponse& data) override;
 

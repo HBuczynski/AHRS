@@ -6,8 +6,8 @@
 #include <interfaces/wireless_responses/Response.h>
 
 #include "FlightDataManager.h"
-#include <config_reader/FeederParameters.h>
-#include <shared_memory_wrapper/SharedMemoryWrapper.h>
+    #include <config_reader/FeederParameters.h>
+    #include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <logger/Logger.h>
 #include <memory>
 
@@ -37,6 +37,8 @@ namespace communication
         virtual void visit(StopAcqCommand& command) override;
         virtual void visit(SetHashCommand& command) override;
         virtual void visit(UDPBitsCommand& command) override;
+        virtual void visit(HandshakeCommand& command) override;
+        virtual void visit(ChangeStateCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeExternalSharedMemory();
