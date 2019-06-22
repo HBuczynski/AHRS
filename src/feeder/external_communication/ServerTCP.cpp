@@ -18,6 +18,7 @@ ServerTCP::ServerTCP(uint16_t port,  uint8_t maxClientNumber, shared_ptr<ClientU
           maxClientNumber_(maxClientNumber),
           runUserActivation_(false),
           clientUDPManager_(clientUDPManager),
+          timerInterrupt_("ServerTCP"),
           logger_(Logger::getInstance())
 { }
 

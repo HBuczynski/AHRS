@@ -16,6 +16,7 @@ using namespace communication;
 
 InformationPage::InformationPage(gui::PageController *controller, QWidget *parent) :
     QWidget(parent),
+    timerInterrupt_("GUIInfo"),
     controller_(controller),
     ui_(new Ui::InformationPage)
 {

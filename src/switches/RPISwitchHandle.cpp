@@ -14,6 +14,8 @@ RPISwitchHandle::RPISwitchHandle(hardware::GPIO gpioProperties, SwitchCode code)
        code_(code),
        state_(SwitchState::HIGH_STATE),
        errorInterruptCounter_(0),
+       debounceTimerID_("SwitchDebaunce"),
+       criticalDelayTimerID_("SwitchCritical"),
        logger_(Logger::getInstance())
 {
     initializeGPIOInterrupts();

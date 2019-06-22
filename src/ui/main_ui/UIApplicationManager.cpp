@@ -31,6 +31,7 @@ UIApplicationManager::UIApplicationManager(const string &name, const hsm::Transi
       guiInterprocessVisitor_(make_unique<GUIInterprocessVisitor>(this)),
       hmVisitor_(make_unique<HMVisitor>(this)),
       runSystem_(true),
+      timerInterrupt_("MainUI"),
       logger_(Logger::getInstance())
 {}
 

@@ -20,7 +20,9 @@ using namespace boost::interprocess;
 InterManager::InterManager()
     : feederQueuesParameters_(config::ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
       internalCommunicationParameters_(config::ConfigurationReader::getFeederInternalWireless(FEEDER_PARAMETERS_FILE_PATH)),
+      connectionEstablishingInterrupt_("FeederInternal"),
       connectionEstablished_(false),
+      hmTimerInterrupt_("FeederInternalHM"),
       logger_(Logger::getInstance())
 {
     client_ = make_unique<InterClientTCP>(internalCommunicationParameters_.destinationPort, internalCommunicationParameters_.destinationAddress);

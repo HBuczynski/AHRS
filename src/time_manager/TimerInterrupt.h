@@ -17,7 +17,7 @@ namespace utility
     class TimerInterrupt
     {
     public:
-        TimerInterrupt();
+        TimerInterrupt(std::string name);
         ~TimerInterrupt();
 
         void startPeriodic(uint32_t periodInMilliseconds, TimerInterruptNotification* objectToNotify);
@@ -35,6 +35,7 @@ namespace utility
 
         static void handleInterrupt(int sigNumb, siginfo_t *si, void *uc);
 
+        std::string name_;
         InterruptObject interruptObject_;
         timer_t timerID_;
         std::atomic<bool> isInitialized_;

@@ -22,6 +22,7 @@ ProcessManager::ProcessManager(const string &name, const hsm::TransitionTable &t
         messageQueuesParameters_(ConfigurationReader::getFeederMessageQueues(FEEDER_PARAMETERS_FILE_PATH)),
         feederType_(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH)),
         runConfigurationProcess_(true),
+        timerInterrupt_("FeederExternal"),
         logger_(Logger::getInstance())
 {
     clientUDPManager_ = make_shared<ClientUDPManager>(name, transitionTable, rootState);

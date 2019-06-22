@@ -17,6 +17,7 @@ using namespace boost::interprocess;
 
 HMManager::HMManager()
     :  runHM_(false),
+       timerInterrupt_("HM"),
        logger_(Logger::getInstance())
 {}
 

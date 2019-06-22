@@ -24,6 +24,7 @@ ApplicationManager::ApplicationManager(const string &name, const hsm::Transition
         executableFilesNames_(ConfigurationReader::getFeederExecutableFiles(FEEDER_PARAMETERS_FILE_PATH)),
         hmVisitor_(make_unique<HMFeederVisitor>(this)),
         runFeederSystem_(true),
+        timerInterrupt_("MainFeeder"),
         logger_(Logger::getInstance())
 {}
 

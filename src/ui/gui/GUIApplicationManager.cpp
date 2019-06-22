@@ -20,6 +20,7 @@ GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWin
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
       runCommunicationThread_(false),
+      timerInterrupt_("UIGUI"),
       logger_(Logger::getInstance()),
       WELCOME_PAGE_DURATION_MS(3000)
 {

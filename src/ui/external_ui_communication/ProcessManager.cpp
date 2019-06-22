@@ -23,6 +23,7 @@ ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, c
       communicationManagerUI_(make_shared<CommunicationManagerUI>(mode_, name, transitionTable, rootState)),
       mainProcessHandlerVisitor_(make_unique<MainProcessHandlerVisitor>(communicationManagerUI_)),
       runCommunicationProcess_(true),
+      timerInterrupt_("UIExternal"),
       logger_(Logger::getInstance())
 {}
 

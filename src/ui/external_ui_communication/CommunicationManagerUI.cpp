@@ -19,6 +19,7 @@ CommunicationManagerUI::CommunicationManagerUI(UICommunicationMode mode, const s
     : HSM(name, transitionTable, rootState),
       mode_(mode),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
+      connectionEstablishingInterrupt_("UICommunicationManager"),
       connectionEstablished_(false),
       logger_(Logger::getInstance())
 {}
