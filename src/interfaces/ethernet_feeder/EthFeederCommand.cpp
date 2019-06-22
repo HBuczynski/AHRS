@@ -4,7 +4,7 @@ using namespace std;
 using namespace communication;
 
 EthFeederCommand::EthFeederCommand(uint8_t dataSizeIn, EthCommandType ethCommandTypeIn)
-    : Frame(FrameType::COMMAND, InterfaceType::WIRELESS, dataSizeIn),
+    : Frame(FrameType::COMMAND, InterfaceType::ETHERNET_FEEDER, dataSizeIn),
       commandType_(ethCommandTypeIn)
 
 {}

@@ -22,7 +22,7 @@ unique_ptr<EthFeederResponse> EthFeederResponseFactory::createCommand(const vect
             return move(builder_->create(commandInBytes));
 
         default:
-            throw invalid_argument("Received command does not register in factory.");
+            throw invalid_argument("Received eth response does not register in factory.");
     }
 }
 

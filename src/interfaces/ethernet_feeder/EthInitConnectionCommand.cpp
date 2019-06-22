@@ -8,7 +8,7 @@ using namespace utility;
 using namespace communication;
 
 EthInitConnectionCommand::EthInitConnectionCommand(uint16_t port, std::string address)
-    : EthFeederCommand(10, EthCommandType::ETH_CHANGE_STATE),
+    : EthFeederCommand(10, EthCommandType::ETH_INIT_CONNECTION),
       serverListenUDPPort_(port),
       serverAddress_(address)
 {}

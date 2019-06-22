@@ -5,7 +5,7 @@ using namespace std;
 using namespace communication;
 
 EthHandshakeCommand::EthHandshakeCommand(config::FeederMode mode)
-    : EthFeederCommand(10, EthCommandType::ETH_CHANGE_STATE),
+    : EthFeederCommand(10, EthCommandType::ETH_HANDSHAKE),
       mode_(mode)
 {}
 
