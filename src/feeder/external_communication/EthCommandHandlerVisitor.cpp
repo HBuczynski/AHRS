@@ -43,7 +43,7 @@ void EthCommandHandlerVisitor::initializeSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = std::string("-EXTCOMM- CommandHandlerVisitor:: External SharedMemory: ") + ex.what();
+            const std::string message = std::string("-INTCOM- CommandHandlerVisitor:: External SharedMemory: ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
     }
@@ -148,7 +148,7 @@ void EthCommandHandlerVisitor::startDataSending()
         {
             if(logger_.isErrorEnable() )
             {
-                const string message = string("-EXTCOM- FlightDataManager:: In catch function.");
+                const string message = string("-INTCOM- FlightDataManager:: In catch function.");
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
