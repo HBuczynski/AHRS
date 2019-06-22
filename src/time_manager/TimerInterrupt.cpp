@@ -176,7 +176,7 @@ void TimerInterrupt::stop()
         {
             if ( logger_.isDebugEnable())
             {
-                const string message = string("TimerInterrupt :: Stopped timer correctly - ") + to_string(++counter);
+                const string message = string("TimerInterrupt :: Stopped timer correctly - ") + to_string(counter);
                 logger_.writeLog(LogType::DEBUG_LOG, message);
             }
         }

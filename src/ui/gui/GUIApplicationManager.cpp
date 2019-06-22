@@ -28,6 +28,11 @@ GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWin
 
 GUIApplicationManager::~GUIApplicationManager()
 {
+    if (logger_.isDebugEnable())
+    {
+        const std::string message = std::string("-GUI- UIApplicationManager :: Destructor.");
+        logger_.writeLog(LogType::DEBUG_LOG, message);
+    }
     stopGUI();
     timerInterrupt_.stop();
 }
@@ -125,6 +130,12 @@ bool GUIApplicationManager::initializeHM()
 
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);
+
+    if (logger_.isDebugEnable())
+    {
+        const std::string message = std::string("-GUI- UIApplicationManager :: Init timer.");
+        logger_.writeLog(LogType::DEBUG_LOG, message);
+    }
 
     timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
 

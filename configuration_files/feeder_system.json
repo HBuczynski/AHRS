@@ -1,7 +1,9 @@
 {
-  "FeederSystem" :
-  {
-    "mode" : "MASTER",
-    "processNumber" : 1
+	"FeederSystem" : 
+	{
+		"mode" : "MASTER",
+		"processNumber" : 1
+	}
+}
   }
 }
