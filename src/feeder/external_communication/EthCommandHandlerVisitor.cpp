@@ -119,11 +119,6 @@ void EthCommandHandlerVisitor::visit(EthInitConnectionCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    //Send information to main process
-    auto notification = StateNotification(FeederStateCode::SETTINNG);
-    auto packet = notification.getFrameBytes();
-    clientUDPManager_->sendToMainProcess(packet);
-
     response_ = std::make_unique<EthAckFeederResponse>();
 }
 
