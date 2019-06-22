@@ -27,6 +27,7 @@ InterManager::InterManager()
 {
     client_ = make_unique<InterClientTCP>(internalCommunicationParameters_.destinationPort, internalCommunicationParameters_.destinationAddress);
     server_ = make_unique<EthServerUDP>(internalCommunicationParameters_.sourcePort);
+    server_->initializeSharedMemory();
 }
 
 InterManager::~InterManager()

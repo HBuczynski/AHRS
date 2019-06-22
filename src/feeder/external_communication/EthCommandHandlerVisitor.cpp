@@ -59,6 +59,12 @@ void EthCommandHandlerVisitor::visit(EthChangeStateCommand& command)
 {
     const auto stateType = command.getFeederState();
 
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-INTCOM- EthCommandHandlerVisitor :: Received EthChangeStateCommand - state: ") + to_string(static_cast<int>(stateType));
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     switch (stateType) {
         case FeederStateCode::REGISTERED_USERS :
         case FeederStateCode::SETTINNG :
@@ -94,12 +100,6 @@ void EthCommandHandlerVisitor::visit(EthChangeStateCommand& command)
         }
         default:
             break;
-    }
-
-    if (logger_.isInformationEnable())
-    {
-        const std::string message = std::string("-INTCOM- EthCommandHandlerVisitor :: Received EthChangeStateCommand - state: ") + to_string(static_cast<int>(stateType));
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
     response_ = std::make_unique<EthAckFeederResponse>();
