@@ -133,13 +133,22 @@ void EthCommandHandlerVisitor::startDataSending()
 {
     MeasuringDataFactory dataFactory;
 
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-INTCOM- EthCommandHandlerVisitor :: Start data sending.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
     while (runAcq_)
     {
         try
         {
+            cout << "log1" << endl;
             auto frame = internalSharedMemory_->read();
+            cout << "log2" << endl;
             auto dataCommand = static_pointer_cast<FeederData, MeasuringData>(dataFactory.createCommand(frame));
 
+            cout << "log3" << endl;
             if(dataCommand->getMeasuringType() != MeasuringType::FLIGHT_DATA)
                 break;
             clientUDP_->sendData(frame);
