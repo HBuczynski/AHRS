@@ -5,6 +5,7 @@
 #include <interfaces/ethernet_feeder/EthFeederCommandVisitor.h>
 #include <interfaces/ethernet_feeder/EthFeederResponse.h>
 
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <message_queue_wrapper/MessageQueueWrapper.h>
 #include <config_reader/FeederParameters.h>
 
@@ -24,17 +25,24 @@ namespace communication
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);
-        void initializeMainMsgQueue();
+        void initializeSharedMemory();
 
         std::unique_ptr<EthFeederResponse> getResponse();
 
     private:
+        void startDataSending();
+        void stopDataSending();
+
         ClientThreadTCP *currentClient_;
+        std::unique_ptr<ClientUDP> clientUDP_;
         std::shared_ptr<ClientUDPManager> clientUDPManager_;
         std::unique_ptr<EthFeederResponse> response_;
 
-        config::FeederMessageQueues msgQueuesParametes_;
-        std::shared_ptr<MessageQueueWrapper> mainMsgQueue_;
+        std::atomic<bool> runAcq_;
+        std::thread acqThread_;
+
+        config::FeederSharedMemory sharedMemoryParameters_;
+        std::unique_ptr<communication::SharedMemoryWrapper> internalSharedMemory_;
 
         utility::Logger& logger_;
     };

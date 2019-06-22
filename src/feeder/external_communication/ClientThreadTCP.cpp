@@ -30,7 +30,7 @@ void ClientThreadTCP::initializeCommandHandler()
 
     ethCommandHanlder_.initializeClientUDPManager(clientUDPManager_);
     ethCommandHanlder_.initializeCurrentClient(this);
-    ethCommandHanlder_.initializeMainMsgQueue();
+    ethCommandHanlder_.initializeSharedMemory();
 }
 
 void ClientThreadTCP::setID(uint32_t id)

@@ -15,9 +15,9 @@ using namespace config;
 using namespace utility;
 using namespace communication;
 
-CommunicationManagerUI::CommunicationManagerUI(uint8_t processNumber, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+CommunicationManagerUI::CommunicationManagerUI(UICommunicationMode mode, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     : HSM(name, transitionTable, rootState),
-      processNumber_(processNumber),
+      mode_(mode),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
       connectionEstablished_(false),
       logger_(Logger::getInstance())
@@ -28,12 +28,12 @@ CommunicationManagerUI::~CommunicationManagerUI()
 
 bool CommunicationManagerUI::initializeServer()
 {
-    if(processNumber_ == 1)
+    if(mode_ == UICommunicationMode::MASTER)
     {
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.firstSourcePort, this);
         client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress);
     }
-    else if(processNumber_ == 2)
+    else if(mode_ == UICommunicationMode::REDUNDANT)
     {
         client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress);
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.secondSourcePort, this);
@@ -42,7 +42,7 @@ bool CommunicationManagerUI::initializeServer()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -54,7 +54,7 @@ bool CommunicationManagerUI::initializeServer()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) + ". Server initialized correctly.";
+        const std::string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) + ". Server initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -81,12 +81,12 @@ void CommunicationManagerUI::interruptNotification(timer_t timerID)
             {
                 connectionEstablished_ = true;
 
-                auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getProcessNumber());
+                auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getUIMode());
                 auto packet = notification.getFrameBytes();
 
                 if(logger_.isInformationEnable())
                 {
-                    const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Send to main: "
+                    const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) +". Send to main: "
                             + notification.getName();
                     logger_.writeLog(LogType::INFORMATION_LOG, message);
                 }
@@ -105,11 +105,11 @@ bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
 
-    if(processNumber_ == 1)
+    if(mode_ == UICommunicationMode::MASTER)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);
     }
-    else if(processNumber_ == 2)
+    else if(mode_ == UICommunicationMode::REDUNDANT)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.secondSourcePort, wirelessCommunicationParameters_.secondSourceAddress);
     }
@@ -117,7 +117,7 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Wrong process number";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) +". Wrong process number";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -133,7 +133,7 @@ bool CommunicationManagerUI::connectToFeeder()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(processNumber_) +". Cannot connect to server.";
+            const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) +". Cannot connect to server.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -153,9 +153,9 @@ void CommunicationManagerUI::sendCommands(unique_ptr<Command> command)
     client_->sendCommand(move(command));
 }
 
-uint8_t CommunicationManagerUI::getProcessNumber() const
+UICommunicationMode CommunicationManagerUI::getUIMode() const
 {
-    return processNumber_;
+    return mode_;
 }
 
 void CommunicationManagerUI::setDBParameters(uint32_t hash, const std::string& name)

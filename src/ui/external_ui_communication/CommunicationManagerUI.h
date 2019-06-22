@@ -15,7 +15,7 @@ namespace communication
     class CommunicationManagerUI : public hsm::HSM, public utility::TimerInterruptNotification
     {
     public:
-        CommunicationManagerUI(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
+        CommunicationManagerUI(config::UICommunicationMode mode, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~CommunicationManagerUI();
 
         bool initializeServer();
@@ -25,7 +25,7 @@ namespace communication
         void registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback);
 
         void sendCommands(std::unique_ptr<communication::Command> commandIn);
-        uint8_t getProcessNumber() const ;
+        config::UICommunicationMode getUIMode() const ;
 
         void setDBParameters(uint32_t hash, const std::string& name);
 
@@ -33,7 +33,7 @@ namespace communication
         void launchTimer();
         void interruptNotification(timer_t timerID);
 
-        uint8_t processNumber_;
+        config::UICommunicationMode mode_;
         config::UIWirelessCommunication wirelessCommunicationParameters_;
         utility::TimerInterrupt connectionEstablishingInterrupt_;
 

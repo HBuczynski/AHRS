@@ -14,13 +14,13 @@ BOOST_AUTO_TEST_SUITE( notification )
     BOOST_AUTO_TEST_CASE( communicationStatusNotification )
     {
             UIExternalComCode code = UIExternalComCode::ERROR;
-            uint8_t processNumber = 1;
+            config::UICommunicationMode processNumber = config::UICommunicationMode::MASTER;
 
             CommunicationStatusNotification command(code, processNumber);
             command.getFrameBytes();
 
             BOOST_CHECK( code == command.getState());
-            BOOST_CHECK( processNumber == command.getProcessNumber());
+            BOOST_CHECK( processNumber == command.getUIMode());
             BOOST_CHECK( FrameType::NOTIFICATION == command.getFrameType());
             BOOST_CHECK( UINotificationType::COMMMUNICATION_PROCESS_STATUS == command.getCommandType());
             BOOST_CHECK( 1 == command.getSystemVersion());

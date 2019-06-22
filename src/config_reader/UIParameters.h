@@ -10,10 +10,10 @@ namespace config
     const std::string UI_BUTTONS_PARAMETERS_PATH = "../../configuration_files/ui_buttons.json";
 
 
-    enum class UICommunicationMode : uint8_t
+    enum UICommunicationMode : uint8_t
     {
         MASTER = 0x05,
-        REDUNDANT = 0x10
+        REDUNDANT = 0x0A
     };
 
     struct UICommunicationProcess

@@ -284,6 +284,8 @@ void CommandHandlerVisitor::visit(HandshakeCommand& command)
     bool waitOnData = true;
     ResponseFactory responseFactory;
 
+    ConfigurationReader::setFeederSystemValue(FEEDER_TYPE_FILE_PATH, command.getMode());
+
     auto feederCommand = FeederCodeDemandCommand(FeederStateCode::MAIN_ACQ);
     auto packet = feederCommand.getFrameBytes();
     clientUDPManager_->sendToMainProcess(packet);

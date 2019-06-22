@@ -77,7 +77,6 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
             const auto feederState = stateResponse->getStateCode();
 
             handleFeederState(feederState);
-
             break;
         }
         default :
@@ -88,6 +87,7 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
 void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& command)
 {
     const auto status = command.getState();
+    const auto mode = command.getUIMode();
 
     switch(status)
     {
@@ -95,13 +95,21 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
         {
             auto hashCommand = SetHashCommand(uiApplicationManager_->getDbHash());
             auto commandWrapper = SendingDataCommand(hashCommand.getFrameBytes());
-            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), mode);
 
-            this_thread::sleep_for(std::chrono::milliseconds(50));
+            if (mode == config::UICommunicationMode::MASTER)
+            {
+                auto masterHandshake = HandshakeCommand(config::FeederMode::MASTER);
+                auto masterHandshakeWrapper = SendingDataCommand(masterHandshake.getFrameBytes());
+                uiApplicationManager_->sendToExternalCommunicationProcess(masterHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+            }
+            else
+            {
+                auto redHandshake = HandshakeCommand(config::FeederMode::REDUNDANT);
+                auto redHandshakeWrapper = SendingDataCommand(redHandshake.getFrameBytes());
+                uiApplicationManager_->sendToExternalCommunicationProcess(redHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
+            }
 
-            auto handshake = HandshakeCommand();
-            auto handshakeWrapper = SendingDataCommand(handshake.getFrameBytes());
-            uiApplicationManager_->sendToExternalCommunicationProcess(handshakeWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
             break;
         }
         case UIExternalComCode::MASTER :
@@ -128,8 +136,6 @@ void ExternalCommInterprocessVisitor::visit(DatabaseNameNotification& command)
 
 void ExternalCommInterprocessVisitor::handleFeederState(FeederStateCode feederCode)
 {
-    cout << "FeederCode: " << static_cast<int>(feederCode) << endl;
-    cout << "State: " << uiApplicationManager_->getCurrentStateName() << endl;
 
     if(uiApplicationManager_->getCurrentStateName() == "AcquisitionState")
     {

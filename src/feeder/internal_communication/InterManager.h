@@ -8,6 +8,7 @@
 #include <logger/Logger.h>
 
 #include "InterClientTCP.h"
+#include "EthServerUDP.h"
 
 namespace communication
 {
@@ -44,6 +45,7 @@ namespace communication
         utility::TimerInterrupt connectionEstablishingInterrupt_;
 
         std::unique_ptr<InterClientTCP> client_;
+        std::unique_ptr<EthServerUDP> server_;
 
         std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::unique_ptr<communication::MessageQueueWrapper> mainMessageQueue_;

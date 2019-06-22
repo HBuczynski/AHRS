@@ -15,12 +15,12 @@ using namespace communication;
 using namespace boost::interprocess;
 
 ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
-    : processNumber_(processNumber),
+    : mode_(static_cast<config::UICommunicationMode>(processNumber)),
       communicationState_(UIExternalComCode::IDLE),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
-      communicationManagerUI_(make_shared<CommunicationManagerUI>(processNumber_, name, transitionTable, rootState)),
+      communicationManagerUI_(make_shared<CommunicationManagerUI>(mode_, name, transitionTable, rootState)),
       mainProcessHandlerVisitor_(make_unique<MainProcessHandlerVisitor>(communicationManagerUI_)),
       runCommunicationProcess_(true),
       logger_(Logger::getInstance())
@@ -58,7 +58,7 @@ bool ProcessManager::initializeMainMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) +". During openning main queue - " + ex.what();
+            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) +". During openning main queue - " + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -67,7 +67,7 @@ bool ProcessManager::initializeMainMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Main massage queue initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Main massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -104,11 +104,11 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
 {
     try
     {
-        if(processNumber_ == 1)
+        if(mode_ == UICommunicationMode::MASTER)
         {
             receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.firstCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
-        else if(processNumber_ == 2)
+        else if(mode_ == UICommunicationMode::REDUNDANT)
         {
             receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.secondCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
@@ -116,7 +116,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". False process number.";
+                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". False process number.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -128,7 +128,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) +". During openning communication queue ::" + ex.what();
+            const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) +". During openning communication queue ::" + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -137,7 +137,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication massage queue initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Communication massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -158,7 +158,7 @@ bool ProcessManager::initializeSharedMemory()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has not been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Shared memory has not been initialized correctly.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -167,7 +167,7 @@ bool ProcessManager::initializeSharedMemory()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Shared memory has been initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Shared memory has been initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -180,7 +180,7 @@ bool ProcessManager::initializeWirelessCommunication()
     {
         if (logger_.isInformationEnable())
         {
-            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Communication Manager UI has been initialized correctly.";
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
 
@@ -190,7 +190,7 @@ bool ProcessManager::initializeWirelessCommunication()
     {
         if (logger_.isErrorEnable())
         {
-            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication Manager UI has not been initialized correctly.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Communication Manager UI has not been initialized correctly.";
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
@@ -220,7 +220,7 @@ void ProcessManager::startCommunication()
         {
             if ( logger_.isErrorEnable())
             {
-                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Receiving data ::" + ex.what();
+                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Receiving data ::" + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
@@ -243,20 +243,14 @@ void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Send msg to main process.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Send msg to main process.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
 
 void ProcessManager::initInformation()
 {
-    //TODO
-    DatabaseNameNotification notif(config::UICommunicationMode::MASTER);
-    if(processNumber_ == 1)
-        notif.setMode(config::UICommunicationMode::MASTER);
-    else
-        notif.setMode(config::UICommunicationMode::REDUNDANT);
-
+    DatabaseNameNotification notif(mode_);
     auto packet = notif.getFrameBytes();
     sendMessageToMainProcess(packet);
 }
@@ -267,7 +261,7 @@ bool ProcessManager::initializeHM()
         return true;
 
     HMNodes node;
-    if (processNumber_ == 1)
+    if (mode_ == UICommunicationMode::MASTER)
         node = HMNodes::EXTERNAL_UI_COMM_1;
     else
         node = HMNodes::EXTERNAL_UI_COMM_2;
@@ -285,7 +279,7 @@ bool ProcessManager::initializeHM()
 void ProcessManager::interruptNotification(timer_t timerID)
 {
     HMNodes node;
-    if (processNumber_ == 1)
+    if (mode_ == UICommunicationMode::MASTER)
         node = HMNodes::EXTERNAL_UI_COMM_1;
     else
         node = HMNodes::EXTERNAL_UI_COMM_2;

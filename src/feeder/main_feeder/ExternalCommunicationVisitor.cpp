@@ -35,7 +35,6 @@ void ExternalCommunicationVisitor::registerApplicationManager(ApplicationManager
     initializeSharedMemory();
 }
 
-
 void ExternalCommunicationVisitor::initializeSharedMemory()
 {
     try
@@ -157,14 +156,12 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
         case FeederStateCode::MAIN_ACQ :
         {
             auto currentName = appManager_->getCurrentStateName();
+
             if(currentName == string("MainAcqState"))
-            {
                 appManager_->handleEvent("RELAUNCH_ACQ");
-            }
             else
-            {
                 appManager_->handleEvent("START_MAIN_ACQ");
-            }
+
             break;
         }
         case FeederStateCode::STOP_ACQ :

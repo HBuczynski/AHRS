@@ -47,7 +47,7 @@ namespace communication
         void handleMessageQueue(const std::vector<uint8_t> &data);
         void sendMessageToMainProcess(std::vector<uint8_t > &data);
 
-        uint8_t processNumber_;
+        config::UICommunicationMode mode_;
 
         UIExternalComCode communicationState_;
         config::UIMessageQueues uiMessageQueuesParameters_;

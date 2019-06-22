@@ -57,6 +57,7 @@ void MainAcqState::runInitEvent()
     if(!initialization_)
     {
         isSuccess = initializeExternalSharedMemory();
+        isSuccess = isSuccess && initializeInternalSharedMemory();
         isSuccess = isSuccess && planeOrientation_.initDataAcquisition(getFeederData_().planeName);
         isSuccess = isSuccess && gpsAdafruit_.initialize();
     }
@@ -113,6 +114,33 @@ bool MainAcqState::initializeExternalSharedMemory()
     return true;
 }
 
+
+bool MainAcqState::initializeInternalSharedMemory()
+{
+    try
+    {
+        internalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.internalMemoryName);
+    }
+    catch(interprocess_exception &ex)
+    {
+        if (logger_.isErrorEnable())
+        {
+            const std::string message = std::string("-MAIN- MainAcqState:: Internal SharedMemory: ") + ex.what();
+            logger_.writeLog(LogType::ERROR_LOG, message);
+        }
+
+        return false;
+    }
+
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- MainAcqState:: Internal shared memory has been initialized correctly.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    return true;
+}
+
 bool MainAcqState::initializeDb(const std::string& name)
 {
     feederDb_ = make_shared<database::FeederDb>(name);
@@ -143,6 +171,8 @@ void MainAcqState::stopAcq()
 void MainAcqState::runAcquisition()
 {
     FeederGeneralData data;
+    FeederMode feederMode = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
+
     while(runAcq_)
     {
         try
@@ -156,7 +186,11 @@ void MainAcqState::runAcquisition()
 
             FeederData dataCommand(data);
             auto packet = dataCommand.getFrameBytes();
-            externalSharedMemory_->write(packet);
+
+            if (feederMode == FeederMode::MASTER)
+                externalSharedMemory_->write(packet);
+            else
+                internalSharedMemory_->write(packet);
         }
         catch(interprocess_exception &ex)
         {

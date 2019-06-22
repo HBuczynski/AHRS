@@ -29,6 +29,7 @@ public:
 
 private:
     bool initializeExternalSharedMemory();
+    bool initializeInternalSharedMemory();
     void runAcquisition();
 
     void calculateFlightParameters(FeederGeneralData& generalData);
@@ -50,6 +51,7 @@ private:
 
     config::FeederSharedMemory sharedMemoryParameters_;
     std::unique_ptr<communication::SharedMemoryWrapper> externalSharedMemory_;
+    std::unique_ptr<communication::SharedMemoryWrapper> internalSharedMemory_;
 };
 
 #endif // MAINACQSTATE_H

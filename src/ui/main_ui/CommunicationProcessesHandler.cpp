@@ -100,7 +100,7 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
 bool CommunicationProcessesHandler::launchFirstProcess()
 {
     char *firstArg1 = const_cast<char*>(uiExecutableFiles_.externalCommunicationProcess.c_str());
-    string processNumber = to_string(1);
+    string processNumber = to_string(static_cast<uint8_t>(config::UICommunicationMode::MASTER));
     char *firstArg2 = const_cast<char*>(processNumber.c_str());
     char *arguments[] = {firstArg1, firstArg2, NULL};
 
@@ -149,7 +149,7 @@ bool CommunicationProcessesHandler::launchFirstProcess()
 bool CommunicationProcessesHandler::launchSecondProcess()
 {
     char *secondArg1 = const_cast<char*>(uiExecutableFiles_.externalCommunicationProcess.c_str());
-    string processNumber = to_string(2);
+    string processNumber = to_string(static_cast<uint8_t>(config::UICommunicationMode::REDUNDANT));
     char *secondArg2 = const_cast<char*>(processNumber.c_str());
     char *arguments[] = {secondArg1, secondArg2, NULL};
 

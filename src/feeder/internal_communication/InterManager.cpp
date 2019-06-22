@@ -24,6 +24,7 @@ InterManager::InterManager()
       logger_(Logger::getInstance())
 {
     client_ = make_unique<InterClientTCP>(internalCommunicationParameters_.destinationPort, internalCommunicationParameters_.destinationAddress);
+    server_ = make_unique<EthServerUDP>(internalCommunicationParameters_.sourcePort);
 }
 
 InterManager::~InterManager()
@@ -36,6 +37,8 @@ bool InterManager::initialize()
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainMessageQueue();
     isSuccess = isSuccess & initializeCommunicationProcessMessageQueue();
+
+    server_->startListening();
 
     initializeHMMessageQueue();
     initializeHM();

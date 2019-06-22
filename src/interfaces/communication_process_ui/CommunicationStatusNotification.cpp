@@ -4,9 +4,10 @@
 using namespace std;
 using namespace communication;
 
-CommunicationStatusNotification::CommunicationStatusNotification(const UIExternalComCode &state, uint8_t processNumber)
+CommunicationStatusNotification::CommunicationStatusNotification(const UIExternalComCode &state, config::UICommunicationMode mode)
     : UINotification(10, UINotificationType::COMMMUNICATION_PROCESS_STATUS),
-      state_(state)
+      state_(state),
+      mode_(mode)
 { }
 
 CommunicationStatusNotification::~CommunicationStatusNotification()
@@ -19,6 +20,7 @@ vector<uint8_t> CommunicationStatusNotification::getFrameBytes()
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(uiNotificationType));
     frame.push_back(static_cast<uint8_t>(state_));
+    frame.push_back(static_cast<uint8_t>(mode_));
 
     return frame;
 }
@@ -43,20 +45,21 @@ void CommunicationStatusNotification::setState(UIExternalComCode mode)
     state_ = mode;
 }
 
-uint8_t CommunicationStatusNotification::getProcessNumber() const
+config::UICommunicationMode CommunicationStatusNotification::getUIMode() const
 {
-    return processNumber_;
+    return mode_;
 }
 
-void CommunicationStatusNotification::setProcessNumber(uint8_t processNumber)
+void CommunicationStatusNotification::setUIMode(config::UICommunicationMode mode)
 {
-    processNumber_ = processNumber;
+    mode_ = mode;
 }
 
 void CommunicationStatusNotification::initializeDataSize()
 {
     uint16_t dataSize = sizeof(uiNotificationType);
     dataSize += sizeof(state_);
+    dataSize += sizeof(mode_);
 
     setDataSize(dataSize);
 }
