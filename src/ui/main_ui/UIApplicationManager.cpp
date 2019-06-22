@@ -214,7 +214,6 @@ void UIApplicationManager::startUISystem()
         try
         {
             const auto packet = mainMessageQueue_->receive();
-            cout << "Main received packet " << endl;
             handleMessage(packet);
         }
         catch(interprocess_exception &ex)

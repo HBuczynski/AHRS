@@ -38,6 +38,7 @@ namespace utility
         InterruptObject interruptObject_;
         timer_t timerID_;
         std::atomic<bool> isInitialized_;
+        static int counter;
 
         utility::Logger &logger_;
     };

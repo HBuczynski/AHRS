@@ -10,6 +10,8 @@
 using namespace std;
 using namespace utility;
 
+int TimerInterrupt::counter = 0;
+
 TimerInterrupt::TimerInterrupt()
     :   isInitialized_(false),
         logger_(Logger::getInstance())
@@ -83,10 +85,9 @@ void TimerInterrupt::startPeriodic(uint32_t periodInMilliseconds, TimerInterrupt
         return;
     }
 
-
     if(logger_.isDebugEnable())
     {
-        const string message = string("TimerInterrupt :: Has been initialized.");
+        const string message = string("TimerInterrupt :: Has been initialized - timerID: ") + to_string(++counter);
         logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
@@ -156,11 +157,13 @@ void TimerInterrupt::startSingleInterrupt(uint32_t inMilliseconds, TimerInterrup
         return;
     }
 
-    if ( logger_.isDebugEnable())
+
+    if(logger_.isDebugEnable())
     {
-        const string message = string("TimerInterrupt :: Has been initialized.");
+        const string message = string("TimerInterrupt :: Has been initialized - timerID: ") + to_string(++counter);
         logger_.writeLog(LogType::DEBUG_LOG, message);
     }
+
 
     isInitialized_ = true;
 }
@@ -173,7 +176,7 @@ void TimerInterrupt::stop()
         {
             if ( logger_.isDebugEnable())
             {
-                const string message = string("TimerInterrupt :: Stopped timer correctly.");
+                const string message = string("TimerInterrupt :: Stopped timer correctly - ") + to_string(++counter);
                 logger_.writeLog(LogType::DEBUG_LOG, message);
             }
         }
