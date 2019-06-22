@@ -6,8 +6,8 @@
 #include <interfaces/wireless_responses/Response.h>
 
 #include "FlightDataManager.h"
-    #include <config_reader/FeederParameters.h>
-    #include <shared_memory_wrapper/SharedMemoryWrapper.h>
+#include <config_reader/FeederParameters.h>
+#include <shared_memory_wrapper/SharedMemoryWrapper.h>
 #include <logger/Logger.h>
 #include <memory>
 

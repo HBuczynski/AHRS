@@ -19,6 +19,9 @@ BOOST_AUTO_TEST_SUITE( parser )
 
         BOOST_CHECK( feederType.mode == FeederMode::MASTER);
         BOOST_CHECK( feederType.processNumber == 1);
+
+        ConfigurationReader::setFeederSystemValue(filePath, FeederMode::MASTER);
+        ConfigurationReader::setFeederSystemValue(filePath, FeederMode::REDUNDANT);
     }
 
     BOOST_AUTO_TEST_CASE( feederMessageQueues )

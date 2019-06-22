@@ -23,7 +23,7 @@ namespace communication
         void startCommunication();
         void stopCommunication();
 
-        void sendCommands(std::unique_ptr<communication::Command> commandIn);
+        void sendCommands(std::unique_ptr<communication::EthFeederCommand> commandIn);
 
     private:
         bool initializeMainMessageQueue();

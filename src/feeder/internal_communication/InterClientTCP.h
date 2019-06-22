@@ -9,8 +9,10 @@
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
 
-#include <interfaces/wireless_commands/Command.h>
-#include <interfaces/wireless_responses/ResponseFactory.h>
+#include <interfaces/ethernet_feeder/EthFeederCommand.h>
+#include <interfaces/ethernet_feeder/EthFeederResponseFactory.h>
+
+#include "InterResponseVisitor.h"
 
 namespace communication
 {
@@ -25,11 +27,11 @@ namespace communication
         void stopCommandSending();
         void startCommandSending();
 
-        void sendCommand(std::unique_ptr<Command> command);
+        void sendCommand(std::unique_ptr<EthFeederCommand> command);
 
     private:
         bool isCommandQueueEmpty();
-        std::unique_ptr<Command> getFromCommandQueue();
+        std::unique_ptr<EthFeederCommand> getFromCommandQueue();
 
         void executeCommands();
         void catchExceptions(std::string exception, bool isEndConnectionSent, uint8_t commandSendingCounter);
@@ -43,9 +45,10 @@ namespace communication
         std::thread executeCommandThread_;
 
         std::mutex commandQueueMutex_;
-        std::queue<std::unique_ptr<Command>> commandQueue_;
+        std::queue<std::unique_ptr<EthFeederCommand>> commandQueue_;
 
-        ResponseFactory responseFactory_;
+        EthFeederResponseFactory responseFactory_;
+        InterResponseVisitor responseHandler_;
 
         const uint8_t COMMAND_SENDING_REPETITION = 5;
 

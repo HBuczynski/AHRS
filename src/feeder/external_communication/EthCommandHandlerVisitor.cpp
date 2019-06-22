@@ -82,8 +82,6 @@ void EthCommandHandlerVisitor::visit(EthChangeStateCommand& command)
             auto packet = notification.getFrameBytes();
             clientUDPManager_->sendToMainProcess(packet);
 
-            cout << "In MAIN_ACQ" << endl;
-
             runAcq_ = true;
             acqThread_ = thread(&EthCommandHandlerVisitor::startDataSending, this);
 
@@ -106,9 +104,7 @@ void EthCommandHandlerVisitor::visit(EthChangeStateCommand& command)
 }
 
 void EthCommandHandlerVisitor::visit(EthHandshakeCommand& command)
-{
-
-}
+{}
 
 void EthCommandHandlerVisitor::visit(EthInitConnectionCommand& command)
 {

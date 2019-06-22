@@ -1,7 +1,8 @@
 #include "InterClientTCP.h"
 
 #include <iostream>
-#include <interfaces/wireless_responses/AckResponse.h>
+#include <interfaces/ethernet_feeder/EthFeederResponse.h>
+#include <interfaces/ethernet_feeder/EthAckFeederResponse.h>
 
 using namespace std;
 using namespace utility;
@@ -45,7 +46,7 @@ bool InterClientTCP::connectToServer()
 void InterClientTCP::startCommandSending()
 {
     executeCommandsFlag_ = true;
-    queue<std::unique_ptr<Command>> emptyCommandQueue;
+    queue<std::unique_ptr<EthFeederCommand>> emptyCommandQueue;
 
     // Clear elements in queue.
     commandQueue_.swap(emptyCommandQueue);
@@ -77,7 +78,7 @@ void InterClientTCP::stopCommandSending()
     }
 }
 
-void InterClientTCP::sendCommand(unique_ptr<Command> command)
+void InterClientTCP::sendCommand(unique_ptr<EthFeederCommand> command)
 {
     lock_guard<mutex> lock(commandQueueMutex_);
     commandQueue_.push(move(command));
@@ -89,7 +90,7 @@ bool InterClientTCP::isCommandQueueEmpty()
     return commandQueue_.empty();
 }
 
-unique_ptr<Command> InterClientTCP::getFromCommandQueue()
+unique_ptr<EthFeederCommand> InterClientTCP::getFromCommandQueue()
 {
     lock_guard<mutex> lock(commandQueueMutex_);
 
@@ -106,13 +107,8 @@ void InterClientTCP::executeCommands()
         if(!isCommandQueueEmpty())
         {
             const auto command = getFromCommandQueue();
-            const auto commandType = command->getFrameBytes()[Frame::COMMAND_TYPE_POSITION];
             bool isEndConnectionSent = false;
 
-            if(commandType == END_CONNECTION)
-            {
-                isEndConnectionSent = true;
-            }
 
             bool isSuccess = false;
             uint8_t commandSendingCounter;
@@ -126,7 +122,7 @@ void InterClientTCP::executeCommands()
 
                     if(logger_.isInformationEnable())
                     {
-                        const string message = string("-ExtCOMM- InterClientTCP :: Client data: ") + address_ + string(" and port: ") +
+                        const string message = string("-INTCOMM- InterClientTCP :: Client data: ") + address_ + string(" and port: ") +
                                                to_string(port_) + string(". Send command: ") +
                                                command->getName();
                         logger_.writeLog(LogType::INFORMATION_LOG, message);
@@ -134,8 +130,8 @@ void InterClientTCP::executeCommands()
 
                     const auto responseFrame = socket_->receivePacket();
 
-                    unique_ptr<Response> response = responseFactory_.createCommand(responseFrame);
-//                    response->accept(responseHandler_);
+                    unique_ptr<EthFeederResponse> response = responseFactory_.createCommand(responseFrame);
+                    response->accept(responseHandler_);
 
                     isSuccess = true;
                 }
@@ -169,7 +165,7 @@ void InterClientTCP::catchExceptions(string exception, bool isEndConnectionSent,
     // Command was not sent by 5 times, end connection
     if (commandSendingCounter == (COMMAND_SENDING_REPETITION - 1))
     {
-        unique_ptr<Response> response = make_unique<AckResponse>(AckType::FAIL);
+        unique_ptr<EthFeederResponse> response = make_unique<EthAckFeederResponse>();
 //        insertToResponseQueue(move(response));
 
         if(logger_.isErrorEnable())
@@ -186,9 +182,7 @@ void InterClientTCP::catchExceptions(string exception, bool isEndConnectionSent,
     // End Connection was sent.
     if(isEndConnectionSent)
     {
-        unique_ptr<Response> response = make_unique<AckResponse>(AckType::CONNECTION_ENDED);
-//        insertToResponseQueue(move(response));
-
+        unique_ptr<EthFeederResponse> response = make_unique<EthAckFeederResponse>();
         if(logger_.isWarningEnable())
         {
             const string message =

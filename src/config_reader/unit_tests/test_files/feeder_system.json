@@ -1,7 +1,7 @@
 {
 	"FeederSystem" : 
 	{
-		"mode" : "MASTER",
+		"mode" : "REDUNDANT",
 		"processNumber" : 1
 	}
 }

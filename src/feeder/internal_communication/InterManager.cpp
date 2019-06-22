@@ -1,7 +1,7 @@
 #include "InterManager.h"
 
 #include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
-#include <interfaces/wireless_commands/InitConnectionCommand.h>
+#include <interfaces/ethernet_feeder/EthInitConnectionCommand.h>
 
 #include <interfaces/hm/HMRegisterNotification.h>
 #include <interfaces/hm/HMHeartbeatNotification.h>
@@ -146,7 +146,7 @@ bool InterManager::initializeHM()
 
 bool InterManager::connectToFeeder()
 {
-    auto command = make_unique<InitConnectionCommand>(internalCommunicationParameters_.sourcePort, internalCommunicationParameters_.sourceAddress);
+    auto command = make_unique<EthInitConnectionCommand>(internalCommunicationParameters_.sourcePort, internalCommunicationParameters_.sourceAddress);
 
     if(client_->connectToServer())
     {
@@ -235,7 +235,7 @@ void InterManager::initConnection()
     }
 }
 
-void InterManager::sendCommands(unique_ptr<Command> command)
+void InterManager::sendCommands(unique_ptr<EthFeederCommand> command)
 {
     client_->sendCommand(move(command));
 }
