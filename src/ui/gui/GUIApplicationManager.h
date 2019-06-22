@@ -18,8 +18,9 @@
 
 namespace gui
 {
-    class GUIApplicationManager : public utility::TimerInterruptNotification
+    class GUIApplicationManager : public QObject
     {
+        Q_OBJECT
     public:
         GUIApplicationManager(std::shared_ptr<MainWindow> mainWindow);
         ~GUIApplicationManager();
@@ -28,13 +29,14 @@ namespace gui
         void startGUI();
         void stopGUI();
 
+    private slots:
+        void hmNotification();
+
     private:
         bool initializeGUIMessageQueue();
         bool initializeSharedMemory();
         bool initializeHMMessageQueue();
         bool initializeHM();
-
-        void interruptNotification(timer_t timerID) override;
 
         void interprocessCommunication();
         void handleCommand(const std::vector<uint8_t>& packet);
@@ -55,7 +57,7 @@ namespace gui
 
         communication::GUICommandFactory commandFactory_;
 
-        utility::TimerInterrupt timerInterrupt_;
+        QTimer timerInterrupt_;
         utility::Logger& logger_;
         const uint32_t WELCOME_PAGE_DURATION_MS;
     };

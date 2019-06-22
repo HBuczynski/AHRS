@@ -20,7 +20,6 @@ GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWin
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH)),
       runCommunicationThread_(false),
-      timerInterrupt_("UIGUI"),
       logger_(Logger::getInstance()),
       WELCOME_PAGE_DURATION_MS(3000)
 {
@@ -29,13 +28,10 @@ GUIApplicationManager::GUIApplicationManager(std::shared_ptr<MainWindow> mainWin
 
 GUIApplicationManager::~GUIApplicationManager()
 {
-    if (logger_.isDebugEnable())
-    {
-        const std::string message = std::string("-GUI- UIApplicationManager :: Destructor.");
-        logger_.writeLog(LogType::DEBUG_LOG, message);
-    }
     stopGUI();
-    timerInterrupt_.stop();
+
+    while(timerInterrupt_.isActive())
+        timerInterrupt_.stop();
 }
 
 bool GUIApplicationManager::initialize()
@@ -132,18 +128,13 @@ bool GUIApplicationManager::initializeHM()
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);
 
-    if (logger_.isDebugEnable())
-    {
-        const std::string message = std::string("-GUI- UIApplicationManager :: Init timer.");
-        logger_.writeLog(LogType::DEBUG_LOG, message);
-    }
-
-    timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
+    connect(&timerInterrupt_, SIGNAL(timeout()), this, SLOT(hmNotification()));
+    timerInterrupt_.start(HM_INTERVAL_MS);
 
     return true;
 }
 
-void GUIApplicationManager::interruptNotification(timer_t timerID)
+void GUIApplicationManager::hmNotification()
 {
     HMHeartbeatNotification notification(HMNodes::GUI);
 
@@ -154,7 +145,7 @@ void GUIApplicationManager::interruptNotification(timer_t timerID)
 void GUIApplicationManager::startGUI()
 {
     runCommunicationThread_ = true;
-    interprocessCommunicationThread_ = thread(&GUIApplicationManager::interprocessCommunication, this);
+    interprocessCommunicationThread_ = std::thread(&GUIApplicationManager::interprocessCommunication, this);
 
     mainWindow_->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     mainWindow_->show();

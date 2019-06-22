@@ -37,12 +37,6 @@ UIApplicationManager::UIApplicationManager(const string &name, const hsm::Transi
 
 UIApplicationManager::~UIApplicationManager()
 {
-    if (logger_.isDebugEnable())
-    {
-        const std::string message = std::string("-MAIN- UIApplicationManager :: Destructor.");
-        logger_.writeLog(LogType::DEBUG_LOG, message);
-    }
-
     named_mutex::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
     shared_memory_object::remove(uiSharedMemoryParameters_.sharedMemoryName.c_str());
     timerInterrupt_.stop();
@@ -190,12 +184,6 @@ bool UIApplicationManager::initializeHM()
 
     auto packet = notification.getFrameBytes();
     hmMessageQueue_->send(packet);
-
-    if (logger_.isDebugEnable())
-    {
-        const std::string message = std::string("-MAIN- UIApplicationManager :: Timer init.");
-        logger_.writeLog(LogType::DEBUG_LOG, message);
-    }
     timerInterrupt_.startPeriodic(HM_INTERVAL_MS, this);
 
     return true;
