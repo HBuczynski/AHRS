@@ -44,6 +44,7 @@ namespace main_process
         void stopFeederSystem();
 
         void sendToExternalCommunicationProcess(std::vector<uint8_t> data);
+        void sendToInternalCommunicationProcess(std::vector<uint8_t> data);
 
     private:
         bool initializeMainQueue();

@@ -10,6 +10,8 @@
 #include <interfaces/wireless_commands/SetPlaneCommand.h>
 #include <interfaces/wireless_responses/FeederStateCodeResponse.h>
 
+#include <interfaces/communication_process_feeder/FeederCodeDemandCommand.h>
+
 #include <config_reader/ConfigurationReader.h>
 
 using namespace std;
@@ -176,6 +178,10 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
         default:
             break;
     }
+
+    FeederCodeDemandCommand demandCommand(type);
+    auto packet = demandCommand.getFrameBytes();
+    appManager_->sendToInternalCommunicationProcess(packet);
 }
 
 void ExternalCommunicationVisitor::visit(const communication::DbHashNotification& command)

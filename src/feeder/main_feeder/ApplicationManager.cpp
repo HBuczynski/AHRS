@@ -487,6 +487,10 @@ void ApplicationManager::sendToExternalCommunicationProcess(std::vector<uint8_t>
     externalComMessageQueue->send(data);
 }
 
+void ApplicationManager::sendToInternalCommunicationProcess(std::vector<uint8_t> data)
+{
+    internalComMessageQueue->send(data);
+}
 
 void ApplicationManager::saveGeneralData2DB()
 {
