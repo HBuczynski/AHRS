@@ -9,6 +9,7 @@
 
 #include "InterClientTCP.h"
 #include "EthServerUDP.h"
+#include "InterCommunicationVisitor.h"
 
 namespace communication
 {
@@ -46,6 +47,7 @@ namespace communication
 
         std::unique_ptr<InterClientTCP> client_;
         std::unique_ptr<EthServerUDP> server_;
+        InterCommunicationVisitor communicationVisitor_;
 
         std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;
         std::unique_ptr<communication::MessageQueueWrapper> mainMessageQueue_;

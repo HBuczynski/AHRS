@@ -1,7 +1,7 @@
 #include "InterManager.h"
 
-#include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
 #include <interfaces/ethernet_feeder/EthInitConnectionCommand.h>
+#include <interfaces/communication_process_feeder/FeederCommandFactory.h>
 
 #include <interfaces/hm/HMRegisterNotification.h>
 #include <interfaces/hm/HMHeartbeatNotification.h>
@@ -167,13 +167,16 @@ bool InterManager::connectToFeeder()
 
 void InterManager::startCommunication()
 {
+    FeederCommandFactory commandFactory;
+
     while(runCommunicationProcess_)
     {
         try
         {
             const auto packet = receivingMessageQueue_->receive();
+            const auto command = commandFactory.createCommand(packet);
 
-            //todo
+            command->accept(communicationVisitor_);
         }
         catch(interprocess_exception &ex)
         {

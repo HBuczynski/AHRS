@@ -21,6 +21,7 @@ target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC hm_interface)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_measurement_commands)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC wireless_responses)
+target_link_libraries(${PROJECT_NAME} LINK_PUBLIC communication_process_feeder)
 target_link_libraries(${PROJECT_NAME} LINK_PUBLIC ethernet_feeder)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib OPTIONAL)
