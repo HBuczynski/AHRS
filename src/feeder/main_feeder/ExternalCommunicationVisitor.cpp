@@ -129,6 +129,7 @@ void ExternalCommunicationVisitor::visit(const CalibrationStatusNotification &co
 void ExternalCommunicationVisitor::visit(const communication::StateNotification& command)
 {
     const auto type = static_cast<FeederStateCode>(command.getStateCode());
+    const auto feederType = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
 
     if(logger_.isInformationEnable())
     {
@@ -179,9 +180,12 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
             break;
     }
 
-    FeederCodeDemandCommand demandCommand(type);
-    auto packet = demandCommand.getFrameBytes();
-    appManager_->sendToInternalCommunicationProcess(packet);
+    if (feederType == FeederMode::MASTER)
+    {
+        FeederCodeDemandCommand demandCommand(type);
+        auto packet = demandCommand.getFrameBytes();
+        appManager_->sendToInternalCommunicationProcess(packet);
+    }
 }
 
 void ExternalCommunicationVisitor::visit(const communication::DbHashNotification& command)

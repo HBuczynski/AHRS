@@ -26,8 +26,11 @@ InterManager::InterManager()
       logger_(Logger::getInstance())
 {
     client_ = make_unique<InterClientTCP>(internalCommunicationParameters_.destinationPort, internalCommunicationParameters_.destinationAddress);
+
     server_ = make_unique<EthServerUDP>(internalCommunicationParameters_.sourcePort);
     server_->initializeSharedMemory();
+
+    interCommunicationVisitor_.initializeInterManager(this);
 }
 
 InterManager::~InterManager()
@@ -176,7 +179,7 @@ void InterManager::startCommunication()
             const auto packet = receivingMessageQueue_->receive();
             const auto command = commandFactory.createCommand(packet);
 
-            command->accept(communicationVisitor_);
+            command->accept(interCommunicationVisitor_);
         }
         catch(interprocess_exception &ex)
         {

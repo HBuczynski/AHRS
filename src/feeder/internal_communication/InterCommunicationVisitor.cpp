@@ -12,7 +12,7 @@ InterCommunicationVisitor::InterCommunicationVisitor()
 InterCommunicationVisitor::~InterCommunicationVisitor()
 {}
 
-void InterCommunicationVisitor::initializeCurrentClient(InterManager *manager)
+void InterCommunicationVisitor::initializeInterManager(InterManager *manager)
 {
     interManager_ = manager;
 }

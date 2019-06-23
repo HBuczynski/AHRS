@@ -17,7 +17,7 @@ namespace communication
         virtual void visit(const FeederWirelessWrapperCommand& command) override;
         virtual void visit(const FeederCodeDemandCommand& command) override;
 
-        void initializeCurrentClient(InterManager *manager);
+        void initializeInterManager(InterManager *manager);
 
     private:
         InterManager *interManager_;
