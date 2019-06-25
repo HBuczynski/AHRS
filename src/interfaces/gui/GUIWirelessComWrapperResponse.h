@@ -2,13 +2,14 @@
 #define GUIWIRELESSCOMWRAPPERCMMAND_H
 
 #include "GUIResponse.h"
+#include <config_reader/UIParameters.h>
 
 namespace communication
 {
     class GUIWirelessComWrapperResponse : public GUIResponse
     {
     public:
-        GUIWirelessComWrapperResponse(const std::vector<uint8_t> &data);
+        GUIWirelessComWrapperResponse(config::UICommunicationMode mode, const std::vector<uint8_t> &data);
         ~GUIWirelessComWrapperResponse();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -17,9 +18,13 @@ namespace communication
 
         const std::vector<uint8_t>& getDataFrame() const;
         void setDataFrame(const std::vector<uint8_t>& data);
+        config::UICommunicationMode getMode() const;
+        void setMode(const config::UICommunicationMode &mode);
+
     private:
         virtual void initializeDataSize() override;
 
+        config::UICommunicationMode mode_;
         std::vector<uint8_t> data_;
     };
 }

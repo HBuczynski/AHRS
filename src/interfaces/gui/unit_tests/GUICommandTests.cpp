@@ -29,8 +29,8 @@ BOOST_AUTO_TEST_SUITE( command )
     BOOST_AUTO_TEST_CASE( informationWindow )
     {
             BitsInformation info;
-            info.device = 23;
-            info.m_communication = 43;
+            info.mode = 23;
+            info.communication = 43;
 
             GUIBITSCommand command(info);
             command.getFrameBytes();
@@ -40,8 +40,8 @@ BOOST_AUTO_TEST_SUITE( command )
             BOOST_CHECK( FrameType::COMMAND == command.getFrameType());
             BOOST_CHECK( GUICommandType::INFORMATION_WINDOW == command.getCommandType());
             BOOST_CHECK( 1 == command.getSystemVersion());
-            BOOST_CHECK( info.device == temp.device);
-            BOOST_CHECK( info.m_communication == temp.m_communication);
+            BOOST_CHECK( info.mode == temp.mode);
+            BOOST_CHECK( info.communication == temp.communication);
             BOOST_CHECK( ((sizeof(GUICommandType::INFORMATION_WINDOW) + sizeof(info)) == command.getDataSize()));
             BOOST_CHECK( "GUIBITSCommand" == command.getName());
     }

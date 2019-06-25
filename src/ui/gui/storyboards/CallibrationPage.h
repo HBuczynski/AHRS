@@ -9,7 +9,7 @@
 #include "Buttons.h"
 #include "../PageController.h"
 
-#include <config_reader/FeederParameters.h>
+#include <config_reader/UIParameters.h>
 #include <interfaces/gui/GUICallibrationCommand.h>
 
 namespace Ui {
@@ -35,7 +35,7 @@ public:
     ~CallibrationPage();
 
     void initialize();
-    void setupPage(config::FeederMode mode);
+    void setupPage(config::UICommunicationMode mode);
 
 signals:
     void signalBackPage();
@@ -76,7 +76,7 @@ private:
     std::string getAxisName(uint8_t axis);
     std::string getCallibrationStatus(communication::CalibrationStatus status);
 
-    config::FeederMode mode_;
+    config::UICommunicationMode mode_;
     communication::CalibrationConfiguration currentConfiguration_;
 
     CalibrationMode currentMode_;

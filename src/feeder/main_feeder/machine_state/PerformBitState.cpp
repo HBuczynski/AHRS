@@ -99,9 +99,9 @@ void PerformBitState::startBITs()
         bitExecutor_.checkIMU();
 
         auto bitsInfo = bitExecutor_.getBitsInformation();
-        bool condition = (bitsInfo.m_communication == 25)
-                         && (bitsInfo.m_gps == 25)
-                         && (bitsInfo.m_imu == 25);
+        bool condition = (bitsInfo.communication == 25)
+                         && (bitsInfo.gps == 25)
+                         && (bitsInfo.imu == 25);
 
         if(condition)
         {

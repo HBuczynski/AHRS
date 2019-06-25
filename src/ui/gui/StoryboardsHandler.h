@@ -73,7 +73,8 @@ public slots:
     const communication::CalibrationConfiguration& getRedundantCallibrationParameters() override;
 
     void setBitsInformation(const communication::BitsInformation &bitsInformation) override;
-    const communication::BitsInformation& getBitsInformation() override;
+    const communication::BitsInformation& getMainBitsInformation() override;
+    const communication::BitsInformation &getRedundantBitsInformation() const override;
 
     bool isSystemActive() override;
     void setSystemActivation() override;

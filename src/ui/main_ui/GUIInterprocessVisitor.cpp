@@ -72,7 +72,7 @@ void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)
 void GUIInterprocessVisitor::visit(communication::GUIWirelessComWrapperResponse& data)
 {
     auto commandWrapper = SendingDataCommand(data.getDataFrame());
-    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), data.getMode());
 
     if(logger_.isInformationEnable())
     {

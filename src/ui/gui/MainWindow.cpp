@@ -78,7 +78,8 @@ void MainWindow::setPlanesDataset(QString planes)
 
 void MainWindow::setCallibrationMode(uint8_t mode, communication::CalibrationConfiguration parameters)
 {
-    if(mode)
+    config::UICommunicationMode mod = static_cast<config::UICommunicationMode>(mode);
+    if(mod == config::UICommunicationMode::MASTER)
     {
         storyboardsHandler_->setMainCallibrationParameters(parameters);
     }

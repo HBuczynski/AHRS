@@ -4,8 +4,9 @@
 using namespace std;
 using namespace communication;
 
-GUIWirelessComWrapperResponse::GUIWirelessComWrapperResponse(const vector<uint8_t> &data)
+GUIWirelessComWrapperResponse::GUIWirelessComWrapperResponse(config::UICommunicationMode mode, const vector<uint8_t> &data)
     : GUIResponse(10, GUIResponseType::WRAPPER),
+      mode_(mode),
       data_(data)
 {}
 
@@ -18,6 +19,7 @@ vector<uint8_t> GUIWirelessComWrapperResponse::getFrameBytes()
 
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(responseType_));
+    frame.push_back(static_cast<uint8_t>(mode_));
     frame.insert(frame.end(), data_.begin(), data_.end());
 
     return frame;
@@ -45,8 +47,18 @@ void GUIWirelessComWrapperResponse::setDataFrame(const vector<uint8_t> &data)
 
 void GUIWirelessComWrapperResponse::initializeDataSize()
 {
-    uint16_t dataSize = sizeof(responseType_);
+    uint16_t dataSize = sizeof(responseType_) + sizeof(mode_);
     dataSize += data_.size();
 
     setDataSize(dataSize);
+}
+
+config::UICommunicationMode GUIWirelessComWrapperResponse::getMode() const
+{
+    return mode_;
+}
+
+void GUIWirelessComWrapperResponse::setMode(const config::UICommunicationMode &mode)
+{
+    mode_ = mode;
 }

@@ -25,10 +25,6 @@ void UIBitState::runInitEvent()
         const string message = string("-MAIN- UIBitState:: Invoke procedure for - ") + getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
-
-    PerformBITsCommand command;
-    auto commandWrapper = SendingDataCommand(command.getFrameBytes());
-    callback_(commandWrapper.getFrameBytes(), UICommunicationMode::MASTER);
 }
 
  void UIBitState::registerCallbackToExternalComm(function<void(vector<uint8_t>, UICommunicationMode)> callback)

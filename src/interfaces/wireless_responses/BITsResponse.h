@@ -8,16 +8,12 @@ namespace communication
 {
     struct BitsInformation
     {
-        uint8_t device;
+        uint8_t mode;
         uint8_t progress;
 
-        uint8_t m_communication;
-        uint8_t m_imu;
-        uint8_t m_gps;
-
-        uint8_t r_communication;
-        uint8_t r_imu;
-        uint8_t r_gps;
+        uint8_t communication;
+        uint8_t imu;
+        uint8_t gps;
     };
 
     class BITsResponse final : public Response

@@ -59,7 +59,8 @@ private:
     void fourthButton();
 
     utility::TimerInterrupt timerInterrupt_;
-    communication::BitsInformation bitsInformation_;
+    communication::BitsInformation masterBitsInformation_;
+    communication::BitsInformation redundantBitsInformation_;
 
     gui::PageController *controller_;
     std::unique_ptr<Buttons> buttons_;

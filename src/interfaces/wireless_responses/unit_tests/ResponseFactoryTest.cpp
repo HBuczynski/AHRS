@@ -121,8 +121,8 @@ BOOST_AUTO_TEST_SUITE( test )
     {
         ResponseFactory factory;
         BitsInformation info;
-        info.m_communication = 98;
-        info.m_gps = 123;
+        info.communication = 98;
+        info.gps = 123;
 
         BITsResponse command(info);
         auto commandFromVec = static_pointer_cast<BITsResponse, Response>(factory.createCommand(command.getFrameBytes()));
@@ -135,8 +135,8 @@ BOOST_AUTO_TEST_SUITE( test )
         BOOST_CHECK( commandFromVec->getSystemVersion() == command.getSystemVersion());
         BOOST_CHECK( commandFromVec->getDataSize() == command.getDataSize());
         BOOST_CHECK( commandFromVec->getName() == command.getName());
-        BOOST_CHECK(info.m_communication == tempInfo.m_communication);
-        BOOST_CHECK(info.m_gps == tempInfo.m_gps);
+        BOOST_CHECK(info.communication == tempInfo.communication);
+        BOOST_CHECK(info.gps == tempInfo.gps);
     }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -138,7 +138,7 @@ void InformationPage::initialize()
 {
     map<SwitchCode, string> buttonNames;
 
-    if(bitsInformation_.progress == 1)
+    if(masterBitsInformation_.progress == 1 && redundantBitsInformation_.progress == 1)
     {
         buttonNames[SwitchCode::FIRST_SWITCH] = "";
         buttonNames[SwitchCode::SECOND_SWITCH] = "";
@@ -176,37 +176,37 @@ void InformationPage::initializeButtons(map<SwitchCode, string> name, map<Switch
 
 void InformationPage::update()
 {
+    masterBitsInformation_ = controller_->getMainBitsInformation();
+    redundantBitsInformation_ = controller_->getRedundantBitsInformation();
 
-    bitsInformation_ = controller_->getBitsInformation();
-
-    if(bitsInformation_.progress)
+    if(masterBitsInformation_.progress)
         timerInterrupt_.stop();
 
-    if (bitsInformation_.m_communication == PASSED)
+    if (masterBitsInformation_.communication == PASSED)
         setMasterConnectionEstablished();
-    if (bitsInformation_.m_communication == FAILED)
+    if (masterBitsInformation_.communication == FAILED)
         setMasterConnectionFailed();
-    if (bitsInformation_.r_communication == PASSED)
+    if (redundantBitsInformation_.communication == PASSED)
         setSecondaryConnectionEstablished();
-    if (bitsInformation_.r_communication == FAILED)
+    if (redundantBitsInformation_.communication == FAILED)
         setSecondaryConnectionFailed();
 
-    if (bitsInformation_.m_gps == PASSED)
+    if (masterBitsInformation_.gps == PASSED)
         setGPSMaster();
-    if (bitsInformation_.m_gps == FAILED)
+    if (masterBitsInformation_.gps == FAILED)
         setGPSMasterFailed();
-    if (bitsInformation_.r_gps == PASSED)
+    if (redundantBitsInformation_.gps == PASSED)
         setGPSRedundant();
-    if (bitsInformation_.r_gps == FAILED)
+    if (redundantBitsInformation_.gps == FAILED)
         setGPSRedundantFailed();
 
-    if (bitsInformation_.m_imu == PASSED)
+    if (masterBitsInformation_.imu == PASSED)
         setIMUMaster();
-    if (bitsInformation_.m_imu == FAILED)
+    if (masterBitsInformation_.imu == FAILED)
         setIMUSMasterFailed();
-    if (bitsInformation_.r_imu == PASSED)
+    if (redundantBitsInformation_.imu == PASSED)
         setIMURedundant();
-    if (bitsInformation_.r_imu == FAILED)
+    if (redundantBitsInformation_.imu == FAILED)
         setIMURedundantFailed();
 
     initialize();
@@ -215,8 +215,11 @@ void InformationPage::update()
 void InformationPage::interruptNotification(timer_t timerID)
 {
     BITSDataCommand dataCommand;
-    GUIWirelessComWrapperResponse response(dataCommand.getFrameBytes());
+    GUIWirelessComWrapperResponse response(config::UICommunicationMode::MASTER, dataCommand.getFrameBytes());
     controller_->sendToMainProcess(response.getFrameBytes());
+
+    GUIWirelessComWrapperResponse response2(config::UICommunicationMode::REDUNDANT, dataCommand.getFrameBytes());
+    controller_->sendToMainProcess(response2.getFrameBytes());
 }
 
 void InformationPage::setMasterConnectionEstablished()
@@ -336,7 +339,7 @@ void InformationPage::secondButton()
 
 void InformationPage::thirdButton()
 {
-    if( bitsInformation_.progress == 1)
+    if( masterBitsInformation_.progress == 1)
     {
         emit signalMainPage();
     }
@@ -344,7 +347,7 @@ void InformationPage::thirdButton()
 
 void InformationPage::fourthButton()
 {
-    if( bitsInformation_.progress == 1)
+    if( masterBitsInformation_.progress == 1 && redundantBitsInformation_.progress == 1)
     {
         controller_->setSystemActivation();
 

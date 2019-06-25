@@ -46,7 +46,7 @@ GpsPage::~GpsPage()
     controller_->sendToMainProcess(stopAcq.getFrameBytes());
 
     StopAcqCommand command;
-    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    GUIWirelessComWrapperResponse response(UICommunicationMode::MASTER, command.getFrameBytes());
     controller_->sendToMainProcess(response.getFrameBytes());
 }
 

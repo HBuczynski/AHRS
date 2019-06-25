@@ -43,7 +43,8 @@ namespace gui
         virtual const communication::CalibrationConfiguration& getRedundantCallibrationParameters() = 0;
 
         virtual void setBitsInformation(const communication::BitsInformation& bitsInformation) = 0;
-        virtual const communication::BitsInformation& getBitsInformation() = 0;
+        virtual const communication::BitsInformation& getMainBitsInformation() = 0;
+        virtual const communication::BitsInformation& getRedundantBitsInformation() const = 0;
 
         virtual bool isSystemActive() = 0;
         virtual void setSystemActivation() = 0;

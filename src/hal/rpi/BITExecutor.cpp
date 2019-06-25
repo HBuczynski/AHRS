@@ -1,7 +1,9 @@
 #include "../include/BITExecutor.h"
 
 #include <iostream>
+#include <config_reader/ConfigurationReader.h>
 #include <config_reader/FeederParameters.h>
+
 
 using namespace std;
 using namespace config;
@@ -12,19 +14,20 @@ BITExecutor::BITExecutor()
       gpsInterface_(FEEDER_GPS_DEVICE_FILE)
 {
     gpsInterface_.initialize();
+    bitsInformation_.mode = static_cast<int>(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode);
 }
 
 void BITExecutor::checkConnection()
 {
     if(connectionBITS_)
-        bitsInformation_.m_communication = 25;
+        bitsInformation_.communication = 25;
     else
-        bitsInformation_.m_communication = 0;
+        bitsInformation_.communication = 0;
 }
 
 void BITExecutor::checkIMU()
 {
-    bitsInformation_.m_imu = 25;
+    bitsInformation_.imu = 25;
 }
 
 void BITExecutor::checkGPS()
@@ -33,10 +36,10 @@ void BITExecutor::checkGPS()
 
     if(status == gps::GPSStatus::FIXED)
     {    
-        bitsInformation_.m_gps = 25;
+        bitsInformation_.gps = 25;
     }
     else
-        bitsInformation_.m_gps = 42;
+        bitsInformation_.gps = 42;
 }
 
 const communication::BitsInformation& BITExecutor::getBitsInformation() const noexcept

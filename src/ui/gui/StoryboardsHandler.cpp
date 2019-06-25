@@ -148,7 +148,7 @@ void StoryboardsHandler::setAHRSPage()
     sendToMainProcess(startAcq.getFrameBytes());
 
     StartAcquisitionCommand command;
-    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    GUIWirelessComWrapperResponse response(UICommunicationMode::MASTER, command.getFrameBytes());
     sendToMainProcess(response.getFrameBytes());
 
     setSystemActivation();
@@ -271,7 +271,7 @@ void StoryboardsHandler::setGpsPage()
     sendToMainProcess(startAcq.getFrameBytes());
 
     StartAcquisitionCommand command;
-    GUIWirelessComWrapperResponse response(command.getFrameBytes());
+    GUIWirelessComWrapperResponse response(UICommunicationMode::MASTER, command.getFrameBytes());
     sendToMainProcess(response.getFrameBytes());
 }
 
@@ -398,7 +398,7 @@ void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfigur
 
     if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
     {
-        callibrationPage_->setupPage(config::FeederMode::MASTER);
+        callibrationPage_->setupPage(config::UICommunicationMode::MASTER);
     }
 }
 
@@ -409,7 +409,7 @@ void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationCon
 
     if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
     {
-        callibrationPage_->setupPage(config::FeederMode::REDUNDANT);
+        callibrationPage_->setupPage(config::UICommunicationMode::REDUNDANT);
     }
 }
 
@@ -425,7 +425,10 @@ const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationPara
 
 void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformation)
 {
-    guiDataManager_.setBitsInformation(bitsInformation);
+    if (static_cast<FeederMode>(bitsInformation.mode) == FeederMode::MASTER)
+        guiDataManager_.setMainBitsInformation(bitsInformation);
+    else
+        guiDataManager_.setRedundantBitsInformation(bitsInformation);
 
     if(currentPage_ == PagesType::BITS_PAGE && bitsPage_)
     {
@@ -433,9 +436,14 @@ void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformati
     }
 }
 
-const BitsInformation &StoryboardsHandler::getBitsInformation()
+const BitsInformation &StoryboardsHandler::getMainBitsInformation()
 {
-    return guiDataManager_.getBitsInformation();
+    return guiDataManager_.getMainBitsInformation();
+}
+
+const BitsInformation &StoryboardsHandler::getRedundantBitsInformation() const
+{
+    return guiDataManager_.getRedundantBitsInformation();
 }
 
 bool StoryboardsHandler::isSystemActive()

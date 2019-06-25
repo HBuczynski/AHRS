@@ -5,20 +5,20 @@ using namespace std;
 using namespace communication;
 
 GUIDataManager::GUIDataManager()
-    : bitsInformation_({0}),
+    : mainBitsInformation_({0}),
       isAHRSActive_(false),
       areBITSActive_(false),
       planeName_("")
 {}
 
-void GUIDataManager::setBitsInformation(const BitsInformation& bitsInformation) noexcept
+void GUIDataManager::setMainBitsInformation(const BitsInformation& bitsInformation) noexcept
 {
-    bitsInformation_ = bitsInformation;
+    mainBitsInformation_ = bitsInformation;
 }
 
-const BitsInformation& GUIDataManager::getBitsInformation() const noexcept
+const BitsInformation& GUIDataManager::getMainBitsInformation() const noexcept
 {
-    return bitsInformation_;
+    return mainBitsInformation_;
 }
 
 void GUIDataManager::setPlaneName(const string& name) noexcept
@@ -69,6 +69,16 @@ bool GUIDataManager::getIsMasterCalibrated() const
 void GUIDataManager::setIsMasterCalibrated(bool isMasterCalibrated)
 {
     isMasterCalibrated_ = isMasterCalibrated;
+}
+
+communication::BitsInformation GUIDataManager::getRedundantBitsInformation() const
+{
+    return redundantBitsInformation_;
+}
+
+void GUIDataManager::setRedundantBitsInformation(const communication::BitsInformation &redundantBitsInformation)
+{
+    redundantBitsInformation_ = redundantBitsInformation;
 }
 
 void GUIDataManager::setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept
