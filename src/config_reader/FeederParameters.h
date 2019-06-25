@@ -14,7 +14,7 @@ namespace config
     enum class FeederMode : uint8_t
     {
         MASTER = 0x05,
-        REDUNDANT = 0x10
+        REDUNDANT = 0x0A
     };
 
     struct FeederExternalWireless

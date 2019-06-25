@@ -50,6 +50,8 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
         {
             const auto calibratingStatus = static_pointer_cast<CalibratingStatusResponse, Response>(responseFactory.createCommand(command.getData()));
 
+            cout << static_cast<int>(calibratingStatus->getMode()) << endl;
+
             GUICallibrationCommand command(calibratingStatus->getCalibrationConfiguration(), calibratingStatus->getMode());
             uiApplicationManager_->sendToGUIProcess(command.getFrameBytes());
             break;

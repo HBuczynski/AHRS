@@ -402,7 +402,6 @@ void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfigur
     }
 }
 
-//TODO - change master
 void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationConfiguration& paramteres)
 {
     guiDataManager_.setRedundantCallibrationParameters(paramteres);
