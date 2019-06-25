@@ -165,6 +165,12 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
             else
                 appManager_->handleEvent("START_MAIN_ACQ");
 
+            if (feederType == FeederMode::MASTER)
+            {
+                FeederCodeDemandCommand demandCommand(type);
+                auto packet = demandCommand.getFrameBytes();
+                appManager_->sendToInternalCommunicationProcess(packet);
+            }
             break;
         }
         case FeederStateCode::STOP_ACQ :
@@ -175,16 +181,17 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
                 auto state = appManager_->getState("MainAcqState");
                 static_pointer_cast<MainAcqState, hsm::State>(state)->stopAcq();
             }
+
+            if (feederType == FeederMode::MASTER)
+            {
+                FeederCodeDemandCommand demandCommand(type);
+                auto packet = demandCommand.getFrameBytes();
+                appManager_->sendToInternalCommunicationProcess(packet);
+            }
+            break;
         }
         default:
             break;
-    }
-
-    if (feederType == FeederMode::MASTER)
-    {
-        FeederCodeDemandCommand demandCommand(type);
-        auto packet = demandCommand.getFrameBytes();
-        appManager_->sendToInternalCommunicationProcess(packet);
     }
 }
 
