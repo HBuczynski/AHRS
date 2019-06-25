@@ -25,8 +25,10 @@ CallibrationPage::CallibrationPage(gui::PageController* controller, QWidget *par
     controller_(controller)
 {
     ui_->setupUi(this);
+
+    if ( controller_->getMainCallibrationParameters().status == IS_CALIBRATED)
+        mode_ = config::UICommunicationMode::REDUNDANT;
     setupPage(mode_);
-    startAcqTimer();
 }
 
 CallibrationPage::~CallibrationPage()
@@ -45,6 +47,10 @@ void CallibrationPage::sendNotificaion()
 void CallibrationPage::setupPage(config::UICommunicationMode mode)
 {
     mode_ = mode;
+    stopAcqTimer();
+    startAcqTimer();
+
+    cout << "Mode: " << static_cast<int>(mode_) << endl;
 
     ui_->verticalFrame->resize(QSize(1024, 600));
     this->setStyleSheet("background-color:black;");

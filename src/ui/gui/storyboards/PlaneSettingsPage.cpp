@@ -418,6 +418,7 @@ void PlaneSettingsPage::handleSettingsSelect()
 
             communication::GUIWindowResponse calibrationCommand(PagesType::CALLIBRATION_PAGE);
             controller_->sendToMainProcess(calibrationCommand.getFrameBytes());
+            controller_->setPlaneName(planeName);
 
             emit signalCallibrationPage();
             break;
