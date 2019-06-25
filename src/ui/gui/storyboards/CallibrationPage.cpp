@@ -7,6 +7,7 @@
 #include <interfaces/wireless_commands/CalibrateDataCommand.h>
 #include <interfaces/gui/GUIWirelessComWrapperResponse.h>
 #include <interfaces/gui/GUIWindowResponse.h>
+#include <interfaces/gui/GUIPlaneResponse.h>
 
 #define FIRST_STEP 0x01
 #define SECOND_STEP 0x02
@@ -18,7 +19,7 @@ using namespace peripherals;
 
 CallibrationPage::CallibrationPage(gui::PageController* controller, QWidget *parent) :
     QWidget(parent),
-    mode_(1),
+    mode_(config::FeederMode::MASTER),
     currentMode_(CalibrationMode::IDLE),
     ui_(new Ui::CallibrationPage),
     controller_(controller)
@@ -41,14 +42,14 @@ void CallibrationPage::sendNotificaion()
     controller_->sendToMainProcess(response2.getFrameBytes());
 }
 
-void CallibrationPage::setupPage(uint8_t mode)
+void CallibrationPage::setupPage(config::FeederMode mode)
 {
     mode_ = mode;
 
     ui_->verticalFrame->resize(QSize(1024, 600));
     this->setStyleSheet("background-color:black;");
 
-    if(mode_)
+    if(mode_ == config::FeederMode::MASTER)
     {
         currentConfiguration_ = controller_->getMainCallibrationParameters();
         setupMaster();
@@ -529,6 +530,7 @@ void CallibrationPage::initialize()
 
     QObject::connect(this, SIGNAL(signalBackPage()), controller_, SLOT(backToPreviousPage()));
     QObject::connect(this, SIGNAL(signalBITSPage()), controller_, SLOT(setBITSPage()));
+    QObject::connect(this, SIGNAL(signalReloadPage()), controller_, SLOT(setCallibrationPage()));
 }
 
 map<SwitchCode, string> CallibrationPage::configureButtons()
@@ -579,12 +581,12 @@ map<SwitchCode, string> CallibrationPage::configureButtons()
         }
         case CalibrationMode::ELLIPSOID_DONE :
         {
-            if(mode_)
+            if(mode_ == config::FeederMode::MASTER)
             {
                 buttonNames[SwitchCode::FIRST_SWITCH] = " ";
                 buttonNames[SwitchCode::SECOND_SWITCH] = " ";
                 buttonNames[SwitchCode::THIRD_SWITCH] = "< BACK";
-                buttonNames[SwitchCode::FOURTH_SWITCH] = "AHRS";
+                buttonNames[SwitchCode::FOURTH_SWITCH] = "RDT";
             }
             else
             {
@@ -753,10 +755,21 @@ void CallibrationPage::fourthButton()
         }
         case CalibrationMode::ELLIPSOID_DONE :
         {
-            GUIWindowResponse bitsCommand(PagesType::BITS_PAGE);
-            controller_->sendToMainProcess(bitsCommand.getFrameBytes());
+            if (mode_ == config::FeederMode::REDUNDANT)
+            {
+                GUIWindowResponse bitsCommand(PagesType::BITS_PAGE);
+                controller_->sendToMainProcess(bitsCommand.getFrameBytes());
 
-            emit signalBITSPage();
+                emit signalBITSPage();
+            }
+            else
+            {
+                communication::GUIPlaneResponse planeResponse(config::UICommunicationMode::REDUNDANT, controller_->getPlaneName());
+                controller_->sendToMainProcess(planeResponse.getFrameBytes());
+
+                emit signalReloadPage();
+            }
+
             break;
         }
         case CalibrationMode::MAGNETOMETER :

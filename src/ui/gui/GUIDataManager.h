@@ -36,11 +36,16 @@ namespace gui
         void setBITSActivation() noexcept;
         bool areBITSActive() noexcept;
 
+        bool getIsMasterCalibrated() const;
+        void setIsMasterCalibrated(bool isMasterCalibrated);
+
     private:
         communication::BitsInformation bitsInformation_;
 
         std::atomic<bool> isAHRSActive_;
         std::atomic<bool> areBITSActive_;
+
+        std::atomic<bool> isMasterCalibrated_;
 
         communication::CalibrationConfiguration masterCallibrationConfiguration_;
         communication::CalibrationConfiguration redundantCallibrationConfiguration_;

@@ -5,6 +5,7 @@
 #include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_commands/SetPlaneCommand.h>
+#include <interfaces/wireless_commands/CalibrateDataCommand.h>
 
 #include "UIApplicationManager.h"
 
@@ -32,7 +33,13 @@ void GUIInterprocessVisitor::visit(GUIPlaneResponse &data)
 
     auto planeCommand = SetPlaneCommand(data.getPlane());
     auto commandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
-    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), data.getMode());
+
+    this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    CalibrateDataCommand calibrateDataCommand;
+    auto commandWrapper2 = SendingDataCommand(calibrateDataCommand.getFrameBytes());
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper2.getFrameBytes(), data.getMode());
 }
 
 void GUIInterprocessVisitor::visit(communication::GUIWindowResponse &data)

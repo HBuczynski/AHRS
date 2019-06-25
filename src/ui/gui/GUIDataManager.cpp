@@ -61,6 +61,16 @@ bool GUIDataManager::areBITSActive() noexcept
     return areBITSActive_;
 }
 
+bool GUIDataManager::getIsMasterCalibrated() const
+{
+    return isMasterCalibrated_;
+}
+
+void GUIDataManager::setIsMasterCalibrated(bool isMasterCalibrated)
+{
+    isMasterCalibrated_ = isMasterCalibrated;
+}
+
 void GUIDataManager::setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept
 {
     masterCallibrationConfiguration_ = paramteres;

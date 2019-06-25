@@ -136,12 +136,9 @@ void EthCommandHandlerVisitor::startDataSending()
     {
         try
         {
-            cout << "log1" << endl;
             auto frame = internalSharedMemory_->read();
-            cout << "log2" << endl;
             auto dataCommand = static_pointer_cast<FeederData, MeasuringData>(dataFactory.createCommand(frame));
 
-            cout << "log3" << endl;
             if(dataCommand->getMeasuringType() != MeasuringType::FLIGHT_DATA)
                 break;
             clientUDP_->sendData(frame);

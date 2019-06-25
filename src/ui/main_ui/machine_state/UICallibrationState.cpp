@@ -25,10 +25,6 @@ void UICallibrationState::runInitEvent()
         const string message = string("-MAIN- UICallibrationState:: Invoke procedure for - ") + getName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
-
-    communication::CalibrateDataCommand calibrateDataCommand;
-    auto commandWrapper = SendingDataCommand(calibrateDataCommand.getFrameBytes());
-    callback_(commandWrapper.getFrameBytes(), UICommunicationMode::MASTER);
 }
 
  void UICallibrationState::registerCallbackToExternalComm(function<void(vector<uint8_t>, UICommunicationMode)> callback)

@@ -180,7 +180,9 @@ void CalibrationManager::run()
 
 void CalibrationManager::saveInMemory(const communication::CalibrationConfiguration& config)
 {
-    CalibratingStatusResponse response(config, 1);
+    FeederMode mode = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
+
+    CalibratingStatusResponse response(config, static_cast<int>(mode));
     auto packet = response.getFrameBytes();
 
     externalSharedMemory_->write(packet);

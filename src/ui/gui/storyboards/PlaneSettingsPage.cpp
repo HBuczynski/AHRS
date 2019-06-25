@@ -411,7 +411,7 @@ void PlaneSettingsPage::handleSettingsSelect()
         }
         case FieldType::NEXT_LABEL :
         {
-            communication::GUIPlaneResponse planeResponse(planeName);
+            communication::GUIPlaneResponse planeResponse(config::UICommunicationMode::MASTER, planeName);
             controller_->sendToMainProcess(planeResponse.getFrameBytes());
 
             this_thread::sleep_for(std::chrono::milliseconds(200));

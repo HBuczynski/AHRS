@@ -398,7 +398,7 @@ void StoryboardsHandler::setMainCallibrationParameters(const CalibrationConfigur
 
     if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
     {
-        callibrationPage_->setupPage(1);
+        callibrationPage_->setupPage(config::FeederMode::MASTER);
     }
 }
 
@@ -409,7 +409,7 @@ void StoryboardsHandler::setRedundantCallibrationParameters(const CalibrationCon
 
     if(currentPage_ == PagesType::CALLIBRATION_PAGE && callibrationPage_)
     {
-        callibrationPage_->setupPage(1);
+        callibrationPage_->setupPage(config::FeederMode::REDUNDANT);
     }
 }
 

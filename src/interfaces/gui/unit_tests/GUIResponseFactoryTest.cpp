@@ -14,13 +14,15 @@ BOOST_AUTO_TEST_SUITE( responseFactory )
         BOOST_AUTO_TEST_CASE( windowSet )
         {
             GUIResponseFactory factory;
-            std::string plane = "Lololo";
+            config::UICommunicationMode mode = config::UICommunicationMode::MASTER;
 
-            GUIPlaneResponse command(plane);
+            std::string plane = "Lololo";
+            GUIPlaneResponse command(mode, plane);
 
             auto commandFromVec = static_pointer_cast<GUIPlaneResponse, GUIResponse>(factory.createCommand(command.getFrameBytes()));
 
             BOOST_CHECK( commandFromVec->getPlane() == command.getPlane());
+            BOOST_CHECK( commandFromVec->getMode() == command.getMode());
             BOOST_CHECK( commandFromVec->getFrameBytes() == command.getFrameBytes());
             BOOST_CHECK( commandFromVec->getResponseType() == command.getResponseType());
             BOOST_CHECK( commandFromVec->getSystemVersion() == 1);
