@@ -43,7 +43,8 @@ CommandHandlerVisitor::CommandHandlerVisitor()
 
 CommandHandlerVisitor::~CommandHandlerVisitor()
 {
-    stopAcq();
+    if(runAcquisition_)
+        stopAcq();
 }
 
 void CommandHandlerVisitor::visit(InitConnectionCommand &command)
