@@ -11,16 +11,6 @@ GUIDataManager::GUIDataManager()
       planeName_("")
 {}
 
-void GUIDataManager::setMainBitsInformation(const BitsInformation& bitsInformation) noexcept
-{
-    mainBitsInformation_ = bitsInformation;
-}
-
-const BitsInformation& GUIDataManager::getMainBitsInformation() const noexcept
-{
-    return mainBitsInformation_;
-}
-
 void GUIDataManager::setPlaneName(const string& name) noexcept
 {
     planeName_ = name;
@@ -71,14 +61,24 @@ void GUIDataManager::setIsMasterCalibrated(bool isMasterCalibrated)
     isMasterCalibrated_ = isMasterCalibrated;
 }
 
-communication::BitsInformation GUIDataManager::getRedundantBitsInformation() const
+void GUIDataManager::setMainBitsInformation(const BitsInformation& bitsInformation) noexcept
 {
-    return redundantBitsInformation_;
+    mainBitsInformation_ = bitsInformation;
+}
+
+const BitsInformation& GUIDataManager::getMainBitsInformation() const noexcept
+{
+    return mainBitsInformation_;
 }
 
 void GUIDataManager::setRedundantBitsInformation(const communication::BitsInformation &redundantBitsInformation)
 {
     redundantBitsInformation_ = redundantBitsInformation;
+}
+
+const BitsInformation &GUIDataManager::getRedundantBitsInformation() const
+{
+    return redundantBitsInformation_;
 }
 
 void GUIDataManager::setMainCallibrationParameters(const communication::CalibrationConfiguration& paramteres) noexcept

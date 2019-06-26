@@ -15,9 +15,6 @@ namespace gui
     public:
         GUIDataManager();
 
-        void setMainBitsInformation(const communication::BitsInformation& bitsInformation) noexcept;
-        const communication::BitsInformation& getMainBitsInformation() const noexcept;
-
         void setPlaneName(const std::string& name) noexcept;
         const std::string& getPlaneName() const noexcept;
 
@@ -39,7 +36,10 @@ namespace gui
         bool getIsMasterCalibrated() const;
         void setIsMasterCalibrated(bool isMasterCalibrated);
 
-        communication::BitsInformation getRedundantBitsInformation() const;
+        void setMainBitsInformation(const communication::BitsInformation& bitsInformation) noexcept;
+        const communication::BitsInformation& getMainBitsInformation() const noexcept;
+
+        const communication::BitsInformation& getRedundantBitsInformation() const;
         void setRedundantBitsInformation(const communication::BitsInformation &redundantBitsInformation);
 
     private:

@@ -44,7 +44,7 @@ namespace gui
 
         virtual void setBitsInformation(const communication::BitsInformation& bitsInformation) = 0;
         virtual const communication::BitsInformation& getMainBitsInformation() = 0;
-        virtual const communication::BitsInformation& getRedundantBitsInformation() const = 0;
+        virtual const communication::BitsInformation& getRedundantBitsInformation() = 0;
 
         virtual bool isSystemActive() = 0;
         virtual void setSystemActivation() = 0;

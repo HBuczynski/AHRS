@@ -74,7 +74,7 @@ public slots:
 
     void setBitsInformation(const communication::BitsInformation &bitsInformation) override;
     const communication::BitsInformation& getMainBitsInformation() override;
-    const communication::BitsInformation &getRedundantBitsInformation() const override;
+    const communication::BitsInformation& getRedundantBitsInformation() override;
 
     bool isSystemActive() override;
     void setSystemActivation() override;

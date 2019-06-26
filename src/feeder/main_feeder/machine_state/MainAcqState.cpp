@@ -230,11 +230,18 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
 void MainAcqState::save2Database()
 {
     communication::MeasuringDataFactory dataFactory_;
+    FeederMode feederMode = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
+    vector<uint8_t> frame;
+
     while(runDB_)
     {
         try
         {
-            const auto  frame = externalSharedMemory_->read();
+            if (feederMode == FeederMode::MASTER)
+                frame = externalSharedMemory_->read();
+            else
+                frame = internalSharedMemory_->read();
+
             if(frame.size() != 0)
             {
                 auto flightData = static_pointer_cast<communication::FeederData, communication::MeasuringData>(
@@ -245,16 +252,16 @@ void MainAcqState::save2Database()
                 feederDb_->insertGPS(measurements.gpsData);
                 feederDb_->insertIMU(measurements.imuData);
             }
-
-            this_thread::sleep_for(std::chrono::milliseconds(100));
         }
         catch (exception &ex)
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("-GUI- AHRSPage :: ") + ex.what();
+                const string message = string("-MAIN- MainAcqState:: Saving into Database - ") + ex.what();
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
+
+        this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }

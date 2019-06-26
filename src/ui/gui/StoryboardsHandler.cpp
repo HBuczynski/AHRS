@@ -440,7 +440,7 @@ const BitsInformation &StoryboardsHandler::getMainBitsInformation()
     return guiDataManager_.getMainBitsInformation();
 }
 
-const BitsInformation &StoryboardsHandler::getRedundantBitsInformation() const
+const BitsInformation &StoryboardsHandler::getRedundantBitsInformation()
 {
     return guiDataManager_.getRedundantBitsInformation();
 }
