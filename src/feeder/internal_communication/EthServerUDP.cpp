@@ -25,7 +25,7 @@ void EthServerUDP::initializeSharedMemory()
 {
     try
     {
-        internalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.externalMemoryName);
+        internalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.internalMemoryName);
     }
     catch(interprocess_exception &ex)
     {
