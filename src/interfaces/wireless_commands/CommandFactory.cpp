@@ -16,6 +16,7 @@
 #include "SetHashBuilder.h"
 #include "UDPBitsBuilder.h"
 #include "HandshakeBuilder.h"
+#include "KeepAliveBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -101,6 +102,10 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
 
         case CommandType::SET_HASH :
             builder_ = make_unique<SetHashBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case CommandType::KEEP_ALIVE :
+            builder_ = make_unique<KeepAliveBuilder>();
             return move(builder_->create(commandInBytes));
 
         default:

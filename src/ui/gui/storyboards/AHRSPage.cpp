@@ -57,13 +57,13 @@ void AHRSPage::setup()
     // SETUP avionic devices
     this->setStyleSheet("background-color:black;");
 
-    widgetPFD_ = make_unique<WidgetPFD>();
+    widgetPFD_ = unique_ptr<WidgetPFD>(new WidgetPFD());
     ui_->pfdLayout->addWidget(widgetPFD_.get());
 
-    widgetTC_ = make_unique<WidgetTC>();
+    widgetTC_ = unique_ptr<WidgetTC>(new WidgetTC());
     ui_->devicesLayout->addWidget(widgetTC_.get());
 
-    widgetVSI_ = make_unique<WidgetVSI>();
+    widgetVSI_ = unique_ptr<WidgetVSI>(new WidgetVSI());
     widgetVSI_->setClimbRate(10.0);
     ui_->devicesLayout->addWidget(widgetVSI_.get());
 
@@ -125,7 +125,7 @@ void AHRSPage::initializeSharedMemory()
 {
     try
     {
-        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
+        sharedMemory_ = unique_ptr<SharedMemoryWrapper>(new SharedMemoryWrapper(uiSharedMemoryParameters_.sharedMemoryName));
     }
     catch(interprocess_exception &ex)
     {
@@ -160,7 +160,7 @@ void AHRSPage::initialize()
 
 void AHRSPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>(this);
+    buttons_ = unique_ptr<Buttons>(new Buttons(this));
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

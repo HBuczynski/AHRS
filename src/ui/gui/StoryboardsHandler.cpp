@@ -40,33 +40,33 @@ void StoryboardsHandler::setupUi(QMainWindow *MainWindow)
     MainWindow->setLocale(QLocale(QLocale::English, QLocale::UnitedStates));
     MainWindow->setPalette(pal);
 
-    centralWidget = make_unique<QWidget>(MainWindow);
+    centralWidget = unique_ptr<QWidget>(new QWidget(MainWindow));
     centralWidget->setObjectName(QStringLiteral("centralWidget"));
     centralWidget->setMaximumSize(QSize(1024, 600));
 
-    gridLayout_5 = make_unique<QGridLayout>(centralWidget.get());
+    gridLayout_5 = unique_ptr<QGridLayout>( new QGridLayout(centralWidget.get()));
     gridLayout_5->setSpacing(2);
     gridLayout_5->setContentsMargins(2, 2, 2, 2);
     gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
 
-    splitter = make_unique<QSplitter>(centralWidget.get());
+    splitter = unique_ptr<QSplitter>(new QSplitter(centralWidget.get()));
     splitter->setObjectName(QStringLiteral("splitter"));
     splitter->setEnabled(true);
     splitter->setMaximumSize(QSize(1024, 600));
     splitter->setOrientation(Qt::Horizontal);
-    frame_2 = make_unique<QFrame>(splitter.get());
+    frame_2 = unique_ptr<QFrame>(new QFrame(splitter.get()));
     frame_2->setObjectName(QStringLiteral("frame_2"));
     frame_2->setMaximumSize(QSize(1024, 600));
     frame_2->setFrameShape(QFrame::StyledPanel);
     frame_2->setFrameShadow(QFrame::Raised);
 
-    gridLayout_4 = make_unique<QGridLayout>(frame_2.get());
+    gridLayout_4 = unique_ptr<QGridLayout>(new QGridLayout(frame_2.get()));
     gridLayout_4->setSpacing(2);
     gridLayout_4->setContentsMargins(2, 2, 2, 2);
     gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
     gridLayout_4->setSizeConstraint(QLayout::SetMaximumSize);
     gridLayout_4->setContentsMargins(0, 3, 0, 3);
-    gridLayout_2 = make_unique<QGridLayout>();
+    gridLayout_2 = unique_ptr<QGridLayout>(new QGridLayout());
     gridLayout_2->setSpacing(2);
     gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
     gridLayout_2->setSizeConstraint(QLayout::SetMaximumSize);
@@ -347,7 +347,7 @@ void StoryboardsHandler::inititalizeMessageQueue()
 {
     try
     {
-        sendingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize);
+        sendingMessageQueue_ = unique_ptr<MessageQueueWrapper>(new MessageQueueWrapper(uiMessageQueuesParameters_.mainProcessQueueName, uiMessageQueuesParameters_.messageSize));
     }
     catch(interprocess_exception &ex)
     {

@@ -147,7 +147,7 @@ void GpsPage::initializeSharedMemory()
 {
     try
     {
-        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
+        sharedMemory_ = unique_ptr<SharedMemoryWrapper>(new SharedMemoryWrapper(uiSharedMemoryParameters_.sharedMemoryName));
     }
     catch(interprocess_exception &ex)
     {
@@ -180,7 +180,7 @@ void GpsPage::initialize()
 
 void GpsPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>(this);
+    buttons_ = unique_ptr<Buttons>(new Buttons(this));
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

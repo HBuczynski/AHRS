@@ -19,6 +19,7 @@
 #include "UDPBitsCommand.h"
 #include "HandshakeCommand.h"
 #include "ChangeStateCommand.h"
+#include "KeepAliveCommand.h"
 
 namespace communication
 {
@@ -46,6 +47,7 @@ namespace communication
         virtual void visit(UDPBitsCommand& command) = 0;
         virtual void visit(HandshakeCommand& command) = 0;
         virtual void visit(ChangeStateCommand& command) = 0;
+        virtual void visit(KeepAliveCommand& command) = 0;
     };
 }
 #endif

@@ -12,7 +12,7 @@
 #include <csignal>
 #include <atomic>
 
-#include <bits/siginfo.h>
+//#include <bits/siginfo.h>
 
 #include "SwitchHandle.h"
 

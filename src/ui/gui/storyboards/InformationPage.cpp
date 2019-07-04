@@ -130,7 +130,7 @@ void InformationPage::pageSetup()
     ui_->r_gpsValue->setFont(sqareFont);
     ui_->r_gpsValue->setText("\u25FB\u25FB\u25FB");
 
-    buttons_ = make_unique<Buttons>(this);
+    buttons_ = unique_ptr<Buttons>(new Buttons(this));
     ui_->buttonLayout->addWidget(buttons_.get());
 }
 
@@ -168,7 +168,7 @@ void InformationPage::initialize()
 
 void InformationPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>(this);
+    buttons_ = unique_ptr<Buttons>(new Buttons(this));
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

@@ -129,7 +129,7 @@ void MainPage::highlightCurrentOption(uint8_t newOption)
 
 void MainPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
-    buttons_ = make_unique<Buttons>(this);
+    buttons_ = unique_ptr<Buttons>(new Buttons(this));
     buttons_->initialize(name, callbackFunctions);
 
     ui_->buttonLayout->addWidget(buttons_.get());

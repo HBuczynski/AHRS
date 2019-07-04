@@ -78,7 +78,7 @@ void Buttons::initializeSwitches(const map<SwitchCode, function<void()> > &callb
         {
 
 #ifdef VIRTUAL_BOARD
-            switches_[callbackIter.first] = make_unique<KeyboardHandler>(this, (*iterSwitchesGPIO), callbackIter.first);
+            switches_[callbackIter.first] = unique_ptr<KeyboardHandler>(new KeyboardHandler(this, (*iterSwitchesGPIO), callbackIter.first));
 #else
             switches_[callbackIter.first] = make_unique<RPISwitchHandle>((*iterSwitchesGPIO), callbackIter.first);
 #endif

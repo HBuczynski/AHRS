@@ -330,6 +330,18 @@ void CommandHandlerVisitor::visit(ChangeStateCommand& command)
     clientUDPManager_->sendToMainProcess(packet);
 }
 
+void CommandHandlerVisitor::visit(KeepAliveCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
 }

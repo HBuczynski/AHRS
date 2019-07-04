@@ -5,7 +5,7 @@
 #include <string>
 #include <cstring>
 #include <csignal>
-#include <bits/siginfo.h>
+//#include <bits/siginfo.h>
 #include <atomic>
 
 #include <logger/Logger.h>

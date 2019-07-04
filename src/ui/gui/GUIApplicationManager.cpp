@@ -50,7 +50,7 @@ bool GUIApplicationManager::initializeGUIMessageQueue()
 {
     try
     {
-        communicationMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.guiProcessQueueName, uiMessageQueuesParameters_.messageSize);
+        communicationMessageQueue_ = unique_ptr<MessageQueueWrapper>(new MessageQueueWrapper(uiMessageQueuesParameters_.guiProcessQueueName, uiMessageQueuesParameters_.messageSize));
     }
     catch(interprocess_exception &ex)
     {
@@ -76,7 +76,7 @@ bool GUIApplicationManager::initializeSharedMemory()
 {
     try
     {
-        sharedMemory_ = make_unique<SharedMemoryWrapper>(uiSharedMemoryParameters_.sharedMemoryName);
+        sharedMemory_ = unique_ptr<SharedMemoryWrapper>( new SharedMemoryWrapper(uiSharedMemoryParameters_.sharedMemoryName));
     }
     catch(interprocess_exception &ex)
     {
