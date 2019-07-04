@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <interfaces/wireless_responses/AckResponse.h>
+#include <interfaces/wireless_commands/KeepAliveCommand.h>
 
 using namespace std;
 using namespace utility;
@@ -11,12 +12,14 @@ ClientTCP::ClientTCP(uint16_t portIn, string addressIn)
     : port_(portIn),
       address_(addressIn),
       executeCommandsFlag_(false),
+      keepAliveTimer_("KeepAliveTimer"),
       logger_(Logger::getInstance())
 {}
 
 ClientTCP::~ClientTCP()
 {
     stopCommandSending();
+    keepAliveTimer_.stop();
 }
 
 bool ClientTCP::connectToServer()
@@ -55,6 +58,9 @@ void ClientTCP::startCommandSending()
     {
         executeCommandThread_.join();
     }
+
+    keepAliveTimer_.stop();
+    keepAliveTimer_.startPeriodic(KEEP_ALIVE_INTERVAL_MS, this);
 
     executeCommandThread_ = thread(&ClientTCP::executeCommands, this);
 }
@@ -169,8 +175,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     // Command was not sent by 5 times, end connection
     if (commandSendingCounter == (COMMAND_SENDING_REPETITION - 1))
     {
-        unique_ptr<Response> response = make_unique<AckResponse>(AckType::FAIL);
-//        insertToResponseQueue(move(response));
+        //Send info to main process
 
         if(logger_.isErrorEnable())
         {
@@ -201,7 +206,11 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     }
 }
 
-
+void ClientTCP::interruptNotification(timer_t timerID)
+{
+    auto keepAliveCommand= make_unique<KeepAliveCommand>();
+    sendCommand(move(keepAliveCommand));
+}
 
 
 

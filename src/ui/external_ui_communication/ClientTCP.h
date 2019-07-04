@@ -10,11 +10,13 @@
 #include <packet/SendStreamTCP.h>
 #include <interfaces/wireless_commands/Command.h>
 #include <interfaces/wireless_responses/ResponseFactory.h>
+
+#include <time_manager/TimerInterrupt.h>
 #include "ResponseHandlerVisitor.h"
 
 namespace communication
 {
-    class ClientTCP
+    class ClientTCP final : public utility::TimerInterruptNotification
     {
     public:
         ClientTCP(uint16_t portIn, std::string addressIn);
@@ -34,6 +36,8 @@ namespace communication
         void executeCommands();
         void catchExceptions(std::string exception, bool isEndConnectionSent, uint8_t commandSendingCounter);
 
+        void interruptNotification(timer_t timerID);
+
         uint16_t port_;
         std::string address_;
 
@@ -48,7 +52,9 @@ namespace communication
         ResponseHandlerVisitor responseHandler_;
         ResponseFactory responseFactory_;
 
-        const uint8_t COMMAND_SENDING_REPETITION = 5;
+        utility::TimerInterrupt keepAliveTimer_;
+        const uint8_t COMMAND_SENDING_REPETITION = 3;
+        const uint16_t KEEP_ALIVE_INTERVAL_MS = 5000;
 
         utility::Logger& logger_;
     };
