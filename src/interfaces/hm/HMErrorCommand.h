@@ -3,13 +3,14 @@
 
 #include "HMCommand.h"
 #include <common/HMNodes.h>
+#include <config_reader/UIParameters.h>
 
 namespace communication
 {
     class HMErrorCommand final : public HMCommand
     {
     public:
-        HMErrorCommand(HMNodes node, HMErrorType error);
+        HMErrorCommand(HMNodes node, HMErrorType error, config::UICommunicationMode mode);
         ~HMErrorCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -22,11 +23,15 @@ namespace communication
         HMErrorType getHMError() const;
         void setHMError(HMErrorType error);
 
+        config::UICommunicationMode getMode() const;
+        void setMode(const config::UICommunicationMode &mode);
+
     private:
         virtual void initializeDataSize() override;
 
         HMNodes node_;
         HMErrorType error_;
+        config::UICommunicationMode mode_;
     };
 }
 

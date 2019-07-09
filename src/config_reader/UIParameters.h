@@ -10,6 +10,10 @@ namespace config
     const std::string UI_BUTTONS_PARAMETERS_PATH = "../../configuration_files/ui_buttons.json";
 
 
+    static const uint8_t FIRST_PROCESS = 50;
+    static const uint8_t SECOND_PROCESS = 80;
+
+
     enum UICommunicationMode : uint8_t
     {
         MASTER = 0x05,

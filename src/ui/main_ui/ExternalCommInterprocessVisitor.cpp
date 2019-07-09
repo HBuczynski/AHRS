@@ -118,6 +118,14 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
         case UIExternalComCode::RECONNECTED :
         case UIExternalComCode::REDUNDANT :
         case UIExternalComCode::ERROR :
+        {
+            if(logger_.isErrorEnable())
+            {
+                const string message = string("-MAIN- ExternalCommInterprocessVisitor:: Received - ERROR");
+                logger_.writeLog(LogType::ERROR_LOG, message);
+            }
+            break;
+        }
         case UIExternalComCode::IDLE :
         default:
             break;

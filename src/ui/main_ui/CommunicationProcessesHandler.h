@@ -14,7 +14,7 @@
 
 namespace main_process
 {
-    using ProcessID = std::pair<pid_t, config::UICommunicationMode>;
+    using ProcessID = std::tuple<pid_t, config::UICommunicationMode, uint8_t>;
 
     class CommunicationProcessesHandler
     {
@@ -26,17 +26,16 @@ namespace main_process
 
         void sendMessage(std::vector<uint8_t>& message, config::UICommunicationMode mode);
 
-        void resetProcess(uint8_t processNumber);
+        void resetProcess(config::UICommunicationMode mode);
         void switchProcesses();
 
     private:
         bool initializeFirstProcessMessageQueue();
         bool initializeSecondProcessMessageQueue();
 
-        bool launchFirstProcess();
-        bool launchSecondProcess();
+        bool launchCommunicationProcess(config::UICommunicationMode mode, uint8_t processNumber);
 
-        void waitOnProcess(pid_t &pid, posix_spawn_file_actions_t &action);
+        void waitOnProcess(pid_t &pid);
 
         config::UIMessageQueues uiMessageQueuesParameters_;
         config::UIExecutableFiles uiExecutableFiles_;
@@ -46,7 +45,7 @@ namespace main_process
         std::shared_ptr<communication::MessageQueueWrapper> secondCommunicationMessageQueue;
 
         utility::Logger& logger_;
-        std::map<uint8_t, ProcessID> externallProcessess_;
+        std::vector<ProcessID> communicationPIDs_;
     };
 }
 

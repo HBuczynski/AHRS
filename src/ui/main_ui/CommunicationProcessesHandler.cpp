@@ -34,9 +34,9 @@ bool CommunicationProcessesHandler::initialize()
 
     isSuccess = isSuccess & initializeFirstProcessMessageQueue();
     isSuccess = isSuccess & initializeSecondProcessMessageQueue();
-    isSuccess = isSuccess & launchFirstProcess();
+    isSuccess = isSuccess & launchCommunicationProcess(UICommunicationMode::MASTER, FIRST_PROCESS);
     std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    isSuccess = isSuccess & launchSecondProcess();
+    isSuccess = isSuccess & launchCommunicationProcess(UICommunicationMode::REDUNDANT, SECOND_PROCESS);
 
     return isSuccess;
 }
@@ -97,27 +97,33 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
     return true;
 }
 
-bool CommunicationProcessesHandler::launchFirstProcess()
+bool CommunicationProcessesHandler::launchCommunicationProcess(UICommunicationMode mode, uint8_t processNumber)
 {
-    char *firstArg1 = const_cast<char*>(uiExecutableFiles_.externalCommunicationProcess.c_str());
-    string processNumber = to_string(static_cast<uint8_t>(config::UICommunicationMode::MASTER));
-    char *firstArg2 = const_cast<char*>(processNumber.c_str());
-    char *arguments[] = {firstArg1, firstArg2, NULL};
+    char *arg1 = const_cast<char*>(uiExecutableFiles_.externalCommunicationProcess.c_str());
 
-    ProcessID firstProcess;
+    string modeNumber = to_string(static_cast<uint8_t>(mode));
+    char *arg2 = const_cast<char*>(modeNumber.c_str());
+
+    string processNumberString = to_string(processNumber);
+    char *arg3 = const_cast<char*>(processNumberString.c_str());
+
+    char *arguments[] = {arg1, arg2, arg3, NULL};
+
+    ProcessID processID;
+    pid_t pid;
 
     int status;
     // This attribute is responsible for file descriptors.
     posix_spawn_file_actions_t action;
     posix_spawn_file_actions_init(&action);
 
-    status = posix_spawn(&firstProcess.first, arguments[0], &action, NULL, arguments, environ);
+    status = posix_spawn(&pid, arguments[0], &action, NULL, arguments, environ);
 
     if(status == 0)
     {
         if(logger_.isInformationEnable())
         {
-            const string message = string("-MAIN- CommunicationProcessesHandler :: First process was initialized, process ID: ") + to_string(firstProcess.first);
+            const string message = string("-MAIN- CommunicationProcessesHandler :: Process was initialized, process ID: ") + to_string(pid);
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }
@@ -125,78 +131,20 @@ bool CommunicationProcessesHandler::launchFirstProcess()
     {
         if(logger_.isErrorEnable())
         {
-            const string message = string("CommunicationProcessesHandler :: First process was not initialized correctly, process ID: ") + to_string(firstProcess.first);
+            const string message = string("CommunicationProcessesHandler :: Process was not initialized correctly, process ID: ") + to_string(pid);
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
 
         return false;
     }
 
-    if(uiCommunicationSystemParameters_.firstProcess.mode == UICommunicationMode::MASTER)
-    {
-        firstProcess.second = UICommunicationMode::MASTER;
-    }
-    else
-    {
-        firstProcess.second = UICommunicationMode::REDUNDANT;
-    }
-
-    externallProcessess_[1] = firstProcess;
+    processID = make_tuple(pid, mode, processNumber);
+    communicationPIDs_.push_back(processID);
 
     return true;
 }
 
-bool CommunicationProcessesHandler::launchSecondProcess()
-{
-    char *secondArg1 = const_cast<char*>(uiExecutableFiles_.externalCommunicationProcess.c_str());
-    string processNumber = to_string(static_cast<uint8_t>(config::UICommunicationMode::REDUNDANT));
-    char *secondArg2 = const_cast<char*>(processNumber.c_str());
-    char *arguments[] = {secondArg1, secondArg2, NULL};
-
-    ProcessID secondProcess;
-
-    int status;
-
-    // This attribute is responsible for file descriptors.
-    posix_spawn_file_actions_t action;
-    posix_spawn_file_actions_init(&action);
-
-    status = posix_spawn(&secondProcess.first, arguments[0], &action, NULL, arguments, environ);
-
-    if(status == 0)
-    {
-        if(logger_.isInformationEnable())
-        {
-            const string message = string("-MAIN- CommunicationProcessesHandler:: Second process was initialized, process ID: ") + to_string(secondProcess.first);
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
-        }
-    }
-    else
-    {
-        if(logger_.isErrorEnable())
-        {
-            const string message = string("-MAIN- CommunicationProcessesHandler:: Second process was not initialized correctly, process ID: ") + to_string(secondProcess.first);
-            logger_.writeLog(LogType::ERROR_LOG, message);
-        }
-
-        return false;
-    }
-
-    if(uiCommunicationSystemParameters_.firstProcess.mode == UICommunicationMode::MASTER)
-    {
-        secondProcess.second = UICommunicationMode::MASTER;
-    }
-    else
-    {
-        secondProcess.second = UICommunicationMode::REDUNDANT;
-    }
-
-    externallProcessess_[2] = secondProcess;
-
-    return true;
-}
-
-void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_actions_t &action)
+void CommunicationProcessesHandler::waitOnProcess(pid_t &pid)
 {
     int status;
     if (waitpid(pid, &status, 0) < 0)
@@ -229,13 +177,30 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid, posix_spawn_file_a
             }
         }
     }
-
-    posix_spawn_file_actions_destroy(&action);
 }
 
-void CommunicationProcessesHandler::resetProcess(uint8_t processNumber)
+void CommunicationProcessesHandler::resetProcess(UICommunicationMode mode)
 {
+    // Kill process
+    const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [&mode](decltype(*communicationPIDs_.begin()) &iter)
+    {
+        return std::get<1>(iter) == mode;
+    });
 
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-MAIN- ") + to_string(std::get<0>(*processIter)) +"\t"+ to_string(std::get<1>(*processIter)) + "\t" + to_string(std::get<2>(*processIter));
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    const auto command = "sudo kill -9 " + to_string(std::get<0>(*processIter));
+    system(command.c_str());
+    waitOnProcess(std::get<0>(*processIter));
+
+    uint8_t processNumber = get<2>(*processIter);
+    communicationPIDs_.erase(processIter);
+
+    launchCommunicationProcess(mode, processNumber);
 }
 
 void CommunicationProcessesHandler::switchProcesses()
@@ -245,12 +210,12 @@ void CommunicationProcessesHandler::switchProcesses()
 
 void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, config::UICommunicationMode mode)
 {
-    const auto processNumber = std::find_if(externallProcessess_.begin(), externallProcessess_.end(), [&mode](decltype(*externallProcessess_.begin()) &iter)
+    const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [&mode](decltype(*communicationPIDs_.begin()) &iter)
     {
-        return iter.second.second == mode;
+        return std::get<1>(iter) == mode;
     });
 
-    if((*processNumber).first == 1)
+    if(std::get<2>(*processIter) == FIRST_PROCESS)
     {
         firstCommunicationMessageQueue->send(message);
     }

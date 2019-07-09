@@ -30,6 +30,7 @@ namespace hm
         virtual void visit(const communication::HMHeartbeatNotification& command) override;
         virtual void visit(const communication::HMRegisterMainNotification& command) override;
         virtual void visit(const communication::HMErrorNotification& command) override;
+        virtual void visit(const communication::HMRemoveNodeNotification& command) override;
 
     private:
         void interruptNotification(timer_t timerID) override;
@@ -38,6 +39,7 @@ namespace hm
         bool initializeHMQueue(std::string name, uint32_t queueNumber, uint32_t size);
 
         void updateTable();
+        void sendToMainProcess(std::function<void(std::vector<uint8_t>&)> callback);
 
         std::map<HMNodes, TimePoint> nodesContainer_;
 

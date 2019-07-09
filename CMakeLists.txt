@@ -69,6 +69,7 @@ add_subdirectory("src/interfaces/wireless_measurement_commands"         wireless
 add_subdirectory("src/interfaces/wireless_responses"                    wireless_responses              )
 add_subdirectory("src/interfaces/gui"                                   gui_interface                   )
 add_subdirectory("src/interfaces/hm"                                    hm_interface                    )
+add_subdirectory("src/interfaces/fm"                                    fm_interface                    )
 add_subdirectory("src/interfaces/ethernet_feeder"                       ethernet_feeder                 )
 add_subdirectory("src/telemetry"                                        telemetry                       )
 add_subdirectory("src/hsm"                                              hsm                             )

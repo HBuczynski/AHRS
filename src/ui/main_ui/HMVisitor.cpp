@@ -14,12 +14,18 @@ HMVisitor::HMVisitor(UIApplicationManager *uiApplicationManager)
 HMVisitor::~HMVisitor()
 {}
 
+void HMVisitor::initialize()
+{
+    faultManagement_.initialize();
+}
+
 void HMVisitor::visit(const HMErrorCommand& command)
 {
+    faultManagement_.handeError(command);
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("-MAIN-HMVisitor:: Received - HMErrorCommand");
+        const string message = string("-MAIN-HMVisitor:: Received - HMErrorCommand") + to_string(static_cast<int>(command.getHMError()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

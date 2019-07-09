@@ -14,13 +14,14 @@ using namespace utility;
 using namespace communication;
 using namespace boost::interprocess;
 
-ProcessManager::ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
-    : mode_(static_cast<config::UICommunicationMode>(processNumber)),
+ProcessManager::ProcessManager(uint8_t mode, uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+    : mode_(static_cast<config::UICommunicationMode>(mode)),
+      processNumber_(processNumber),
       communicationState_(UIExternalComCode::IDLE),
       uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
       uiSharedMemoryParameters_(config::ConfigurationReader::getUISharedMemory(UI_PARAMETERS_FILE_PATH.c_str())),
       uiCommunicationSystemParameters_(config::ConfigurationReader::getUICommunicationProcessSystemParameters(UI_COMMUNICATION_PROCESS_PARAMETERS_PATH.c_str())),
-      communicationManagerUI_(make_shared<CommunicationManagerUI>(mode_, name, transitionTable, rootState)),
+      communicationManagerUI_(make_shared<CommunicationManagerUI>(mode_, processNumber_, name, transitionTable, rootState)),
       mainProcessHandlerVisitor_(make_unique<MainProcessHandlerVisitor>(communicationManagerUI_)),
       runCommunicationProcess_(true),
       timerInterrupt_("UIExternal"),
@@ -35,7 +36,10 @@ ProcessManager::~ProcessManager()
 bool ProcessManager::initialize()
 {
     function<void(std::vector<uint8_t>&)> mainProcCallback = bind(&ProcessManager::sendMessageToMainProcess, this, std::placeholders::_1);
+    function<void(std::vector<uint8_t>&)> hmCallback = bind(&ProcessManager::sendMessageToHMProcess, this, std::placeholders::_1);
+
     communicationManagerUI_->registerCallbackToMainProc(mainProcCallback);
+    communicationManagerUI_->registerCallbackToHM(hmCallback);
 
     bool isSuccess = true;
     isSuccess = isSuccess & initializeMainMessageQueue();
@@ -98,6 +102,7 @@ bool ProcessManager::initializeHMMessageQueue()
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
+
     return true;
 }
 
@@ -105,11 +110,11 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
 {
     try
     {
-        if(mode_ == UICommunicationMode::MASTER)
+        if(processNumber_ == FIRST_PROCESS)
         {
             receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.firstCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
-        else if(mode_ == UICommunicationMode::REDUNDANT)
+        else if(processNumber_ == SECOND_PROCESS)
         {
             receivingMessageQueue_ = make_unique<MessageQueueWrapper>(uiMessageQueuesParameters_.secondCommunicationQueueName, uiMessageQueuesParameters_.messageSize);
         }
@@ -117,7 +122,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
         {
             if(logger_.isErrorEnable())
             {
-                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". False process number.";
+                const string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". False process number.";
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
 
@@ -138,7 +143,7 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Communication massage queue initialized correctly.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication massage queue initialized correctly.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
@@ -246,6 +251,20 @@ void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
     {
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Send msg to main process.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void ProcessManager::sendMessageToHMProcess(std::vector<uint8_t > &data)
+{
+    if (hmMessageQueue_.get())
+    {
+        hmMessageQueue_->send(data);
+
+        if (logger_.isInformationEnable())
+        {
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Send msg to hm process.";
+            logger_.writeLog(LogType::INFORMATION_LOG, message);
+        }
     }
 }
 

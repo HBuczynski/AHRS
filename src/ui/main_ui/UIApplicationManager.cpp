@@ -13,6 +13,7 @@
 #include <interfaces/wireless_measurement_commands/FeederData.h>
 #include <interfaces/hm/HMRegisterMainNotification.h>
 #include <interfaces/hm/HMHeartbeatNotification.h>
+#include <interfaces/fm/FMCommandFactory.h>
 
 using namespace std;
 using namespace config;
@@ -53,6 +54,10 @@ bool UIApplicationManager::initialize()
 
     initializeHMMessageQueue();
     initializeHM();
+
+    hmVisitor_->initialize();
+    fmVisitor_.initializeCommunicationProcess(&communicationProcessesHandler_);
+    fmVisitor_.initializeGuiProcess(&guiProcessHandler_);
 
     return isSuccess;
 }
@@ -284,6 +289,13 @@ void UIApplicationManager::handleMessage(const std::vector<uint8_t> &packet)
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
+    }
+    else if (interfaceType == InterfaceType::FM)
+    {
+        FMCommandFactory fmCommandFactory;
+
+        auto command = fmCommandFactory.createCommand(packet);
+        command->accept(fmVisitor_);
     }
     else
     {

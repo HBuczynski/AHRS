@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     struc.debugLog = false;
     struc.errroLog = true;
     struc.informationLog = false;
-    struc.warningLog = true;
+    struc.warningLog = false;
     struc.writeLogsInSeparetFiles = true;
     struc.writeOnConsole = true;
     logger.initLogger(struc);

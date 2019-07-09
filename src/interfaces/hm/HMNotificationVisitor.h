@@ -5,6 +5,7 @@
 #include "HMRegisterNotification.h"
 #include "HMRegisterMainNotification.h"
 #include "HMErrorNotification.h"
+#include "HMRemoveNodeNotification.h"
 
 namespace communication
 {
@@ -18,6 +19,7 @@ namespace communication
         virtual void visit(const HMHeartbeatNotification& command) = 0;
         virtual void visit(const HMRegisterMainNotification& command) = 0;
         virtual void visit(const HMErrorNotification& command) = 0;
+        virtual void visit(const HMRemoveNodeNotification& command) = 0;
     };
 }
 #endif

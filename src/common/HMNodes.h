@@ -19,7 +19,8 @@ enum class HMNodes : uint8_t
 
 enum HMErrorType
 {
-    ERROR_1 = 0x05,
+    OUT_HEARTBEAT = 0x05,
+    LOST_CONNECTION_COKCPIT_2_FEEDER = 0x10
 };
 
 

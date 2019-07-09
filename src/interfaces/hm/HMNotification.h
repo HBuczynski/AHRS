@@ -12,7 +12,8 @@ namespace communication
         REGISTER = 0x05,
         HEARTBEAT = 0x10,
         MAIN_REGISTER = 0x15,
-        ERROR = 0x20
+        ERROR = 0x20,
+        REMOVE_NODE = 0x25,
     };
 
     class HMNotification : public Frame

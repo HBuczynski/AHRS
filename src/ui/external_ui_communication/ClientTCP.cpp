@@ -3,23 +3,38 @@
 #include <iostream>
 #include <interfaces/wireless_responses/AckResponse.h>
 #include <interfaces/wireless_commands/KeepAliveCommand.h>
+#include <interfaces/hm/HMErrorNotification.h>
 
 using namespace std;
 using namespace utility;
 using namespace communication;
 
-ClientTCP::ClientTCP(uint16_t portIn, string addressIn)
+ClientTCP::ClientTCP(uint16_t portIn, string addressIn, config::UICommunicationMode mode)
     : port_(portIn),
       address_(addressIn),
       executeCommandsFlag_(false),
+      mode_(mode),
       keepAliveTimer_("KeepAliveTimer"),
       logger_(Logger::getInstance())
 {}
 
 ClientTCP::~ClientTCP()
 {
+    if(logger_.isErrorEnable())
+    {
+        const string message =
+                string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                string("-. Stopped Client Thread.");
+        logger_.writeLog(LogType::ERROR_LOG, message);
+    }
+
     stopCommandSending();
     keepAliveTimer_.stop();
+}
+
+void ClientTCP::registerCallbackToHMProc(std::function<void(std::vector<uint8_t>&)> callback)
+{
+    hmProcCallback_ = callback;
 }
 
 bool ClientTCP::connectToServer()
@@ -67,6 +82,7 @@ void ClientTCP::startCommandSending()
 
 void ClientTCP::stopCommandSending()
 {
+    keepAliveTimer_.stop();
     if(executeCommandsFlag_)
     {
         executeCommandsFlag_ = false;
@@ -123,12 +139,11 @@ void ClientTCP::executeCommands()
             bool isSuccess = false;
             uint8_t commandSendingCounter;
 
-            try
+            //for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
             {
-                for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
+                try
                 {
                     socket_->sendData(command->getFrameBytes());
-
 
                     if(logger_.isInformationEnable())
                     {
@@ -144,15 +159,29 @@ void ClientTCP::executeCommands()
                     response->accept(responseHandler_);
 
                     isSuccess = true;
+
+                }
+                catch (exception &e)
+                {
+                    cout << "In exception" << endl;
+                    catchExceptions(e.what(), isEndConnectionSent, commandSendingCounter);
+                    this_thread::sleep_for(std::chrono::milliseconds(200));
                 }
             }
-            catch (exception &e)
-            {
-                cout << "In exception" << endl;
-                catchExceptions(e.what(), isEndConnectionSent, commandSendingCounter);
-            }
-            this_thread::sleep_for(std::chrono::milliseconds(2));
         }
+        this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    cout << "Finished !" << endl;
+    if (mode_ == config::UICommunicationMode::MASTER) {
+        HMErrorNotification hmErrorNotification(HMNodes::EXTERNAL_UI_COMM_1, HMErrorType::LOST_CONNECTION_COKCPIT_2_FEEDER, mode_);
+        auto packet = hmErrorNotification.getFrameBytes();
+        hmProcCallback_(packet);
+    }
+    else {
+        HMErrorNotification hmErrorNotification(HMNodes::EXTERNAL_UI_COMM_2, HMErrorType::LOST_CONNECTION_COKCPIT_2_FEEDER, mode_);
+        auto packet = hmErrorNotification.getFrameBytes();
+        hmProcCallback_(packet);
     }
 }
 
@@ -168,8 +197,12 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     {
         const string message =
                 string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
-                string("-. Received exception: ") + exception;
+                string("-. Received exception 1: ") + exception;
         logger_.writeLog(LogType::ERROR_LOG, message);
+
+        executeCommandsFlag_ = false;
+        keepAliveTimer_.stop();
+        socket_.reset();
     }
 
     // Command was not sent by 5 times, end connection

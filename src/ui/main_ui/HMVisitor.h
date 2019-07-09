@@ -3,6 +3,7 @@
 
 #include <interfaces/hm/HMCommandVisitor.h>
 #include <logger/Logger.h>
+#include "FM.h"
 
 namespace main_process
 {
@@ -14,9 +15,11 @@ namespace main_process
         HMVisitor(UIApplicationManager *uiApplicationManager);
         ~HMVisitor();
 
+        void initialize();
         void visit(const communication::HMErrorCommand& command);
 
     private:
+        redundancy::FM faultManagement_;
         UIApplicationManager* uiApplicationManager_;
         utility::Logger& logger_;
     };

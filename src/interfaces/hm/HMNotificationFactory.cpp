@@ -4,6 +4,7 @@
 #include "HMHeartbeatBuilder.h"
 #include "HMRegisterMainBuilder.h"
 #include "HMErrorBuilder.h"
+#include "HMRemoveNodeBuilder.h"
 
 #include <iostream>
 
@@ -36,6 +37,10 @@ unique_ptr<HMNotification> HMNotificationFactory::createNotification(const std::
 
         case HMNotificationType::ERROR:
             builder_ = make_unique<HMErrorBuilder>();
+            return move(builder_->create(notificationInBytes));
+
+        case HMNotificationType::REMOVE_NODE:
+            builder_ = make_unique<HMRemoveNodeBuilder>();
             return move(builder_->create(notificationInBytes));
 
         default:

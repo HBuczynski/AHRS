@@ -10,13 +10,13 @@
 class CommScheduler
 {
 public:
-    CommScheduler(uint8_t processNumber);
+    CommScheduler(uint8_t mode, uint8_t processNumber);
 
     bool initialize();
     void run();
 
 private:
-    void create(uint8_t processNumber);
+    void create(uint8_t mode, uint8_t processNumber);
 
     std::map<std::string, std::shared_ptr<hsm::State>> states_;
     std::shared_ptr<communication::ProcessManager> procesManagerUI_;

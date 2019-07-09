@@ -152,7 +152,7 @@ void HMManager::interruptNotification(timer_t timerID)
 
             if (delay.count() > 1.1 * HM_THRESHOLD_MS)
             {
-                HMErrorCommand command(node.first, HMErrorType::ERROR_1);
+                HMErrorCommand command(node.first, HMErrorType::OUT_HEARTBEAT, config::UICommunicationMode::MASTER);
                 auto packet = command.getFrameBytes();
 
                 mainMessageQueue_->send(packet);
@@ -221,12 +221,30 @@ void HMManager::visit(const HMRegisterMainNotification& command)
 
 void HMManager::visit(const HMErrorNotification& command)
 {
-
-    //TODO: Handle error.
+    HMErrorCommand hmCommand(command.getHMNode(), command.getHMError(), command.getMode());
+    auto packet = hmCommand.getFrameBytes();
+    mainMessageQueue_->send(packet);
 
     if(logger_.isInformationEnable())
     {
         const string message = string("-HM- HMManager:: Received - HMErrorNotification");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+}
+
+void HMManager::visit(const communication::HMRemoveNodeNotification& command)
+{
+    HMNodes node = command.getHMNode();
+    {
+        lock_guard<mutex> lock(containerMutex_);
+        auto iter = nodesContainer_.find(node);
+        if (iter != nodesContainer_.end())
+            nodesContainer_.erase(iter);
+    }
+
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-HM- HMManager:: Received - HMRemoveNodeNotification, node: ") + to_string( static_cast<int>(node));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

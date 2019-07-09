@@ -21,7 +21,7 @@ namespace communication
     class ProcessManager final : public utility::TimerInterruptNotification
     {
     public:
-        ProcessManager(uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
+        ProcessManager(uint8_t mode, uint8_t processNumber, const std::string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState);
         ~ProcessManager();
 
         bool initialize();
@@ -46,8 +46,11 @@ namespace communication
 
         void handleMessageQueue(const std::vector<uint8_t> &data);
         void sendMessageToMainProcess(std::vector<uint8_t > &data);
+        void sendMessageToHMProcess(std::vector<uint8_t > &data);
+
 
         config::UICommunicationMode mode_;
+        uint8_t processNumber_;
 
         UIExternalComCode communicationState_;
         config::UIMessageQueues uiMessageQueuesParameters_;

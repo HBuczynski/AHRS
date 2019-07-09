@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 
+#include <functional>
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
 #include <interfaces/wireless_commands/Command.h>
@@ -19,9 +20,10 @@ namespace communication
     class ClientTCP final : public utility::TimerInterruptNotification
     {
     public:
-        ClientTCP(uint16_t portIn, std::string addressIn);
+        ClientTCP(uint16_t portIn, std::string addressIn, config::UICommunicationMode mode);
         ~ClientTCP();
 
+        void registerCallbackToHMProc(std::function<void(std::vector<uint8_t>&)> callback);
         bool connectToServer();
 
         void stopCommandSending();
@@ -45,6 +47,7 @@ namespace communication
 
         std::atomic<bool> executeCommandsFlag_;
         std::thread executeCommandThread_;
+        config::UICommunicationMode mode_;
 
         std::mutex commandQueueMutex_;
         std::queue<std::unique_ptr<Command>> commandQueue_;
@@ -55,6 +58,8 @@ namespace communication
         utility::TimerInterrupt keepAliveTimer_;
         const uint8_t COMMAND_SENDING_REPETITION = 3;
         const uint16_t KEEP_ALIVE_INTERVAL_MS = 5000;
+
+        std::function<void(std::vector<uint8_t>&)> hmProcCallback_;
 
         utility::Logger& logger_;
     };

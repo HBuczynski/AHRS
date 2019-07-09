@@ -23,6 +23,7 @@
 #include "ExternalCommInterprocessVisitor.h"
 #include "GUIInterprocessVisitor.h"
 #include "HMVisitor.h"
+#include "FMVisitor.h"
 
 #include <database_manager/CockpitDb.h>
 
@@ -80,6 +81,7 @@ namespace main_process
 
         std::unique_ptr<main_process::HMVisitor> hmVisitor_;
         communication::HMCommandFactory hmCommandFactory_;
+        FMVisitor fmVisitor_;
         
         communication::GUIResponseFactory guiResponseFactory_;
         communication::GUICommandFactory guiCommandFactory_;

@@ -9,12 +9,12 @@
 
 using namespace std;
 
-CommScheduler::CommScheduler(uint8_t processNumber)
+CommScheduler::CommScheduler(uint8_t mode, uint8_t processNumber)
 {
-    create(processNumber);
+    create(mode, processNumber);
 }
 
-void CommScheduler::create(uint8_t processNumber)
+void CommScheduler::create(uint8_t mode, uint8_t processNumber)
 {
     auto initConnectionState = make_shared<UIInitConnectionState>("InitConnectionState");
     states_["InitConnectionState"] = initConnectionState;
@@ -41,7 +41,7 @@ void CommScheduler::create(uint8_t processNumber)
             make_tuple(redundantState,                hsm::Event{"REDUNDANT_ERROR"},      errorState),
     });
 
-    procesManagerUI_ = make_shared<communication::ProcessManager>(processNumber, "CommunicationManagerUI", transitionTable, idleCommState);
+    procesManagerUI_ = make_shared<communication::ProcessManager>(mode, processNumber, "CommunicationManagerUI", transitionTable, idleCommState);
 }
 
 bool CommScheduler::initialize()

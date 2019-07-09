@@ -15,9 +15,10 @@ using namespace config;
 using namespace utility;
 using namespace communication;
 
-CommunicationManagerUI::CommunicationManagerUI(UICommunicationMode mode, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
+CommunicationManagerUI::CommunicationManagerUI(UICommunicationMode mode, uint8_t processNumber, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     : HSM(name, transitionTable, rootState),
       mode_(mode),
+      processNumber_(processNumber),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
       connectionEstablishingInterrupt_("UICommunicationManager"),
       connectionEstablished_(false),
@@ -29,15 +30,17 @@ CommunicationManagerUI::~CommunicationManagerUI()
 
 bool CommunicationManagerUI::initializeServer()
 {
-    if(mode_ == UICommunicationMode::MASTER)
+    if(processNumber_ == FIRST_PROCESS)
     {
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.firstSourcePort, this);
-        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress);
+        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.firstDestinationPort, wirelessCommunicationParameters_.firstDestinationAddress, mode_);
+        client_->registerCallbackToHMProc(hmCallback_);
     }
-    else if(mode_ == UICommunicationMode::REDUNDANT)
+    else if(processNumber_ == SECOND_PROCESS)
     {
-        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress);
+        client_ = make_unique<ClientTCP>(wirelessCommunicationParameters_.secondDestinationPort, wirelessCommunicationParameters_.secondDestinationAddress, mode_);
         server_ = make_unique<ServerUDP>(wirelessCommunicationParameters_.secondSourcePort, this);
+        client_->registerCallbackToHMProc(hmCallback_);
     }
     else
     {
@@ -65,6 +68,11 @@ bool CommunicationManagerUI::initializeServer()
 void CommunicationManagerUI::registerCallbackToMainProc(std::function<void(std::vector<uint8_t>&)> callback)
 {
     mainProcCallback_ = callback;
+}
+
+void CommunicationManagerUI::registerCallbackToHM(std::function<void(std::vector<uint8_t>&)> callback)
+{
+    hmCallback_ = callback;
 }
 
 void CommunicationManagerUI::launchTimer()

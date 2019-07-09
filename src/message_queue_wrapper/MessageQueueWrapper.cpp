@@ -22,7 +22,7 @@ MessageQueueWrapper::MessageQueueWrapper(string name, uint32_t messageQueueNumbe
         messageQueueSize_(messageQueueSize)
 {
     message_queue::remove(name.c_str());
-    messageQueue_ = make_shared<message_queue>(create_only, name.c_str(),
+    messageQueue_ = make_shared<message_queue>(open_or_create, name.c_str(),
                             messageQueueNumber,
                             messageQueueSize);
 }
