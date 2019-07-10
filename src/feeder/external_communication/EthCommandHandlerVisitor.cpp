@@ -21,7 +21,9 @@ EthCommandHandlerVisitor::EthCommandHandlerVisitor()
 {}
 
 EthCommandHandlerVisitor::~EthCommandHandlerVisitor()
-{}
+{
+    stopDataSending();
+}
 
 void EthCommandHandlerVisitor::initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager)
 {
