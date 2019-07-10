@@ -4,7 +4,7 @@
 using namespace std;
 using namespace communication;
 
-UIChangeModeCommand::UIChangeModeCommand(const CommunicationProcessMode &mode)
+UIChangeModeCommand::UIChangeModeCommand(config::UICommunicationMode mode)
     : UICommand(10, UICommandType::CHANGE_STATE),
       mode_(mode)
 {
@@ -27,12 +27,12 @@ vector<uint8_t> UIChangeModeCommand::getFrameBytes()
     return frame;
 }
 
-CommunicationProcessMode UIChangeModeCommand::getMode() const
+config::UICommunicationMode UIChangeModeCommand::getMode() const
 {
     return mode_;
 }
 
-void UIChangeModeCommand::setMode(CommunicationProcessMode mode)
+void UIChangeModeCommand::setMode(config::UICommunicationMode mode)
 {
     mode_ = mode;
 }

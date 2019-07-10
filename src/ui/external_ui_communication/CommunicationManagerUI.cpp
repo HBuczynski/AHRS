@@ -56,10 +56,10 @@ bool CommunicationManagerUI::initializeServer()
     server_->startListening();
     launchTimer();
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) + ". Server initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -93,11 +93,11 @@ void CommunicationManagerUI::interruptNotification(timer_t timerID)
                 auto notification = CommunicationStatusNotification(UIExternalComCode::INIT_CONNECTION, getUIMode());
                 auto packet = notification.getFrameBytes();
 
-                if(logger_.isInformationEnable())
+                if(logger_.isDebugEnable())
                 {
                     const string message = string("-ExtCOMM- CommunicationManagerUI:: Process - ") + to_string(mode_) +". Send to main: "
                             + notification.getName();
-                    logger_.writeLog(LogType::INFORMATION_LOG, message);
+                    logger_.writeLog(LogType::DEBUG_LOG, message);
                 }
 
                 mainProcCallback_(packet);
@@ -170,4 +170,9 @@ UICommunicationMode CommunicationManagerUI::getUIMode() const
 void CommunicationManagerUI::setDBParameters(uint32_t hash, const std::string& name)
 {
     server_->registerDbParameters(hash, name);
+}
+
+void CommunicationManagerUI::setMode(config::UICommunicationMode mode)
+{
+    mode_ = mode;
 }

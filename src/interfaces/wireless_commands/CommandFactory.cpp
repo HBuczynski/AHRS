@@ -17,6 +17,8 @@
 #include "UDPBitsBuilder.h"
 #include "HandshakeBuilder.h"
 #include "KeepAliveBuilder.h"
+#include "ChangeFeederModeBuilder.h"
+#include "ChangeStateBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -106,6 +108,14 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
 
         case CommandType::KEEP_ALIVE :
             builder_ = make_unique<KeepAliveBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case CommandType::CHANGE_FEEDER_MODE :
+            builder_ = make_unique<ChangeFeederModeBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case CommandType::CHANGE_FEEDER_STATE :
+            builder_ = make_unique<ChangeStateBuilder>();
             return move(builder_->create(commandInBytes));
 
         default:

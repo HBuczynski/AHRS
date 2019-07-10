@@ -78,8 +78,6 @@ void EthServerUDP::listen()
         {
             auto frame = socket_->receivePacket();
             internalSharedMemory_->write(frame);
-
-            cout << "received" << endl;
         }
         catch (exception &e)
         {

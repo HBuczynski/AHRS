@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE( factory )
     BOOST_AUTO_TEST_CASE( uiChangeModeCommand )
     {
             UICommandFactory factory;
-            CommunicationProcessMode mode = MAIN;
+            config::UICommunicationMode mode = config::UICommunicationMode::MASTER;
 
             UIChangeModeCommand command(mode);
 

@@ -3,32 +3,27 @@
 
 #include "UICommand.h"
 #include <string>
+#include <config_reader/UIParameters.h>
 
 namespace communication
 {
-    enum CommunicationProcessMode : uint8_t
-    {
-        MAIN,
-        REDUNDANT,
-    };
-
     class UIChangeModeCommand : public UICommand
     {
     public:
-        UIChangeModeCommand(const CommunicationProcessMode &name);
+        UIChangeModeCommand(config::UICommunicationMode mode);
         ~UIChangeModeCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(UICommandVisitor& visitor) override;
 
-        CommunicationProcessMode getMode() const;
-        void setMode(CommunicationProcessMode mode);
+        config::UICommunicationMode getMode() const;
+        void setMode(config::UICommunicationMode mode);
 
     private:
         virtual void initializeDataSize() override;
 
-        CommunicationProcessMode mode_;
+        config::UICommunicationMode mode_;
     };
 }
 #endif

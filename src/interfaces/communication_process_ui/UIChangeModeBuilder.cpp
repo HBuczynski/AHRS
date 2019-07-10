@@ -16,7 +16,7 @@ UIChangeModeBuilder::~UIChangeModeBuilder()
 
 unique_ptr<UICommand> UIChangeModeBuilder::create(const vector<uint8_t> &commandInBytes)
 {
-    const auto mode = static_cast<CommunicationProcessMode>(commandInBytes[Frame::INITIAL_DATA_POSITION]);
+    const auto mode = static_cast<config::UICommunicationMode>(commandInBytes[Frame::INITIAL_DATA_POSITION]);
     auto command = make_unique<UIChangeModeCommand>(mode);
 
     return move(command);

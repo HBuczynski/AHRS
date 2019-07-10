@@ -70,10 +70,10 @@ bool ProcessManager::initializeMainMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Main massage queue initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -96,10 +96,10 @@ bool ProcessManager::initializeHMMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
 
@@ -141,10 +141,10 @@ bool ProcessManager::initializeCommunicationProcessMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(processNumber_) + ". Communication massage queue initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -171,10 +171,10 @@ bool ProcessManager::initializeSharedMemory()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Shared memory has been initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -184,10 +184,10 @@ bool ProcessManager::initializeWirelessCommunication()
 {
     if(communicationManagerUI_->initializeServer())
     {
-        if (logger_.isInformationEnable())
+        if (logger_.isDebugEnable())
         {
             const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Communication Manager UI has been initialized correctly.";
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            logger_.writeLog(LogType::DEBUG_LOG, message);
         }
 
         return true;

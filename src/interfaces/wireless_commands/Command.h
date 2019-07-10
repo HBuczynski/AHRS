@@ -22,6 +22,7 @@ namespace communication
         STOP_ACQ = 75,
         CURRENT_STATE = 80,
         CHANGE_FEEDER_STATE = 81,
+        CHANGE_FEEDER_MODE = 82,
         PERFORM_BIT = 90,
         CALIBRATE_DATA = 100,
         BITS_DATA = 110,

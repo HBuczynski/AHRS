@@ -20,6 +20,7 @@
 #include "HandshakeCommand.h"
 #include "ChangeStateCommand.h"
 #include "KeepAliveCommand.h"
+#include "ChangeFeederModeCommand.h"
 
 namespace communication
 {
@@ -48,6 +49,7 @@ namespace communication
         virtual void visit(HandshakeCommand& command) = 0;
         virtual void visit(ChangeStateCommand& command) = 0;
         virtual void visit(KeepAliveCommand& command) = 0;
+        virtual void visit(ChangeFeederModeCommand& command) = 0;
     };
 }
 #endif

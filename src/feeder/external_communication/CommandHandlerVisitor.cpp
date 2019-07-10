@@ -325,7 +325,7 @@ void CommandHandlerVisitor::visit(ChangeStateCommand& command)
     }
 
     //Send information to main process
-    auto notification = StateNotification(FeederStateCode::MAIN_ACQ);
+    auto notification = StateNotification(command.getFeederStateCode());
     auto packet = notification.getFrameBytes();
     clientUDPManager_->sendToMainProcess(packet);
 }
@@ -340,6 +340,26 @@ void CommandHandlerVisitor::visit(KeepAliveCommand& command)
                                     std::to_string(currentClient_->getID());
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void CommandHandlerVisitor::visit(ChangeFeederModeCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    ConfigurationReader::setFeederSystemValue(FEEDER_TYPE_FILE_PATH, command.getMode());
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    this_thread::sleep_for(std::chrono::milliseconds(40));
+    //Send information to main process
+    auto notification = StateNotification(FeederStateCode::MAIN_ACQ);
+    auto packet = notification.getFrameBytes();
+    clientUDPManager_->sendToMainProcess(packet);
 }
 
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)

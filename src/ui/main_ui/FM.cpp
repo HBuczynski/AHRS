@@ -5,6 +5,7 @@
 #include <config_reader/ConfigurationReader.h>
 #include <interfaces/fm/FMResetCommunicationProcessCommand.h>
 #include <interfaces/hm/HMRemoveNodeNotification.h>
+#include <interfaces/fm/FMRestartChangeMasterCommand.h>
 
 using namespace redundancy;
 using namespace std;
@@ -41,10 +42,10 @@ void FM::initializeHMMessageQueue()
 
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- FM::Communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 }
 
@@ -64,10 +65,10 @@ void FM::initializeMainMessageQueue()
 
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- FM::Communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 }
 
@@ -89,7 +90,9 @@ void FM::lostConnection(config::UICommunicationMode mode)
 {
     if (mode == UICommunicationMode::MASTER)
     {
-
+        FMRestartChangeMasterCommand command;
+        auto packet = command.getFrameBytes();
+        mainMessageQueue_->send(packet);
     }
     else
     {       

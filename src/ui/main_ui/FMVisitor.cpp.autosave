@@ -31,7 +31,7 @@ void FMVisitor::visit(const FMResetCommunicationProcessCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
-
+    
 void FMVisitor::visit(const FMRestartChangeMasterCommand& command)
 {
     communicationProcessesHandler_->restartMasterProcessAndChange();

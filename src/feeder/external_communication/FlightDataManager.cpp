@@ -77,7 +77,6 @@ void FlightDataManager::sendMeasurements()
     {
         try
         {
-            cout << "Before read" << endl;
             auto frame = externalSharedMemory_->read();
             auto dataCommand = static_pointer_cast<FeederData, MeasuringData>(dataFactory.createCommand(frame));
 
@@ -105,8 +104,6 @@ void FlightDataManager::sendMeasurements()
 
         this_thread::sleep_for(std::chrono::milliseconds(2));
     }
-
-    cout << "OUT " << endl;
 }
 
 void FlightDataManager::initializeExternalSharedMemory()

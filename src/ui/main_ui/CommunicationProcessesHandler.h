@@ -27,7 +27,7 @@ namespace main_process
         void sendMessage(std::vector<uint8_t>& message, config::UICommunicationMode mode);
 
         void resetProcess(config::UICommunicationMode mode);
-        void switchProcesses();
+        void restartMasterProcessAndChange();
 
     private:
         bool initializeFirstProcessMessageQueue();

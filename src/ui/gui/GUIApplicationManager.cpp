@@ -63,10 +63,10 @@ bool GUIApplicationManager::initializeGUIMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = string("-GUI- ApplicationManager:: ") + " GUI massage queue initialized correctly.";
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -109,10 +109,10 @@ bool GUIApplicationManager::initializeHMMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;

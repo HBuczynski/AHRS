@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE( command )
 
     BOOST_AUTO_TEST_CASE( uiChangeModeCommand )
     {
-            CommunicationProcessMode mode = MAIN;
+            config::UICommunicationMode mode = config::UICommunicationMode::MASTER;
 
             UIChangeModeCommand command(mode);
             command.getFrameBytes();

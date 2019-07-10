@@ -81,10 +81,10 @@ bool UIApplicationManager::initializeMainProcessMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -107,10 +107,10 @@ bool UIApplicationManager::initializeHMMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: Main message queue has been initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -133,10 +133,10 @@ bool UIApplicationManager::initializeSharedMemory()
         return false;
     }
 
-    if(logger_.isInformationEnable())
+    if(logger_.isDebugEnable())
     {
         const string message = string("-MAIN- UIApplicationManager:: Shared Memory has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;

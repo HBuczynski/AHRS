@@ -32,10 +32,10 @@ void MeasurementHandlerVisitor::initializeDB(uint32_t hash, const std::string& n
 
     if(cockpitDb_->openDb())
     {
-        if(logger_.isInformationEnable())
+        if(logger_.isDebugEnable())
         {
             const string message = string("-ExtCOMM- MeasurementHandlerVisitor :: Opened DB, name: ") + name;
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            logger_.writeLog(LogType::DEBUG_LOG, message);
         }
     }
     else

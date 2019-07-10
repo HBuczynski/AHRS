@@ -176,13 +176,9 @@ void InformationPage::initializeButtons(map<SwitchCode, string> name, map<Switch
 
 void InformationPage::update()
 {
-    cout << "LOG 1" << endl;
-
     masterBitsInformation_ = controller_->getMainBitsInformation();
-    cout << "LOG 1a" << endl;
     redundantBitsInformation_ = controller_->getRedundantBitsInformation();
 
-    cout << "LOG 2" << endl;
 
     if(masterBitsInformation_.progress && redundantBitsInformation_.progress)
         timerInterrupt_.stop();

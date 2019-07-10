@@ -18,6 +18,7 @@ namespace main_process
         void initializeGuiProcess(GuiProcessHandler *guiProcessHandler);
 
         virtual void visit(const communication::FMResetCommunicationProcessCommand& command) override;
+        virtual void visit(const communication::FMRestartChangeMasterCommand& command) override;
 
     private:
         CommunicationProcessesHandler *communicationProcessesHandler_;

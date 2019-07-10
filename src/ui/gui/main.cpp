@@ -18,7 +18,7 @@ int main( int argc, char *argv[] )
     Logger &logger = Logger::getInstance("UI_GUI");
 
     InitLogStructure struc;
-    struc.debugLog = true;
+    struc.debugLog = false;
     struc.errroLog = true;
     struc.informationLog = true;
     struc.warningLog = true;
@@ -26,10 +26,10 @@ int main( int argc, char *argv[] )
     struc.writeOnConsole = true;
     logger.initLogger(struc);
 
-    if(logger.isInformationEnable())
+    if(logger.isDebugEnable())
     {
         const string message = string("-GUI- :: Initialization!!");
-        logger.writeLog(LogType::INFORMATION_LOG, message);
+        logger.writeLog(LogType::DEBUG_LOG, message);
     }
 
     QApplication app( argc, argv );

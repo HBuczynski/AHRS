@@ -29,6 +29,7 @@ namespace communication
         config::UICommunicationMode getUIMode() const ;
 
         void setDBParameters(uint32_t hash, const std::string& name);
+        void setMode(config::UICommunicationMode mode);
 
     private:
         void launchTimer();

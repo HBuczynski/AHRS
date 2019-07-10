@@ -5,6 +5,9 @@
 #include <cstring>
 #include <algorithm>
 #include <config_reader/ConfigurationReader.h>
+#include <interfaces/communication_process_ui/SendingDataCommand.h>
+#include <interfaces/communication_process_ui/UIChangeModeCommand.h>
+#include <interfaces/wireless_commands/ChangeFeederModeCommand.h>
 
 using namespace std;
 using namespace config;
@@ -60,10 +63,10 @@ bool CommunicationProcessesHandler::initializeFirstProcessMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: First communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -88,10 +91,10 @@ bool CommunicationProcessesHandler::initializeSecondProcessMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("-MAIN- UIApplicationManager:: Second communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -203,9 +206,39 @@ void CommunicationProcessesHandler::resetProcess(UICommunicationMode mode)
     launchCommunicationProcess(mode, processNumber);
 }
 
-void CommunicationProcessesHandler::switchProcesses()
+void CommunicationProcessesHandler::restartMasterProcessAndChange()
 {
+    const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
+    {
+        return std::get<1>(iter) == UICommunicationMode::MASTER;
+    });
 
+    const auto command = "sudo kill -9 " + to_string(std::get<0>(*processIter));
+    system(command.c_str());
+    waitOnProcess(std::get<0>(*processIter));
+
+    uint8_t processNumber = get<2>(*processIter);
+    communicationPIDs_.erase(processIter);
+
+    // Change REDUNDANT Process to master.
+    const auto redundantIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
+    {
+        return std::get<1>(iter) == UICommunicationMode::REDUNDANT;
+    });
+
+    std::get<1>(*redundantIter) = UICommunicationMode::MASTER;
+
+    UIChangeModeCommand changeCommand(UICommunicationMode::MASTER);
+    auto packet = changeCommand.getFrameBytes();
+    sendMessage(packet, UICommunicationMode::MASTER);
+
+    ChangeFeederModeCommand modeCommand(FeederMode::MASTER);
+    auto commandWrapper = SendingDataCommand(modeCommand.getFrameBytes());
+    auto commandPacket = commandWrapper.getFrameBytes();
+    sendMessage(commandPacket, UICommunicationMode::MASTER);
+
+    // Relaunch new redundant process
+    launchCommunicationProcess(UICommunicationMode::REDUNDANT, processNumber);
 }
 
 void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, config::UICommunicationMode mode)

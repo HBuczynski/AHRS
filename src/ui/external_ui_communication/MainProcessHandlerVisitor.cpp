@@ -15,18 +15,20 @@ MainProcessHandlerVisitor::~MainProcessHandlerVisitor()
 
 void MainProcessHandlerVisitor::visit(UIChangeModeCommand &command)
 {
+    communicationManager_->setMode(command.getMode());
 
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-ExtCOMM- MainProcessHandlerVisitor :: Received ") + command.getName() + " " + to_string(static_cast<int>(command.getMode()));
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    };
 }
 
 void MainProcessHandlerVisitor::visit(ShutdownCommand &command)
-{
-
-}
+{}
 
 void MainProcessHandlerVisitor::visit(ReconnectCommand &command)
-{
-
-}
+{}
 
 void MainProcessHandlerVisitor::visit(SendingDataCommand &command)
 {

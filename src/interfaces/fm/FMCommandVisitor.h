@@ -2,6 +2,7 @@
 #define FMCOMMANDVISITOR_H
 
 #include "FMResetCommunicationProcessCommand.h"
+#include "FMRestartChangeMasterCommand.h"
 
 namespace communication
 {
@@ -12,6 +13,7 @@ namespace communication
         virtual ~FMCommandVisitor(){};
 
         virtual void visit(const FMResetCommunicationProcessCommand& command) = 0;
+        virtual void visit(const FMRestartChangeMasterCommand& command) = 0;
     };
 }
 

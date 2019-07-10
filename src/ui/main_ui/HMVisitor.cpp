@@ -21,11 +21,12 @@ void HMVisitor::initialize()
 
 void HMVisitor::visit(const HMErrorCommand& command)
 {
-    faultManagement_.handeError(command);
-
     if(logger_.isInformationEnable())
     {
-        const string message = string("-MAIN-HMVisitor:: Received - HMErrorCommand") + to_string(static_cast<int>(command.getHMError()));
+        const string message = string("-MAIN-HMVisitor:: Received - HMErrorCommand: ") + to_string(static_cast<int>(command.getHMError()))
+                                + " mode: " + to_string(static_cast<int>(command.getMode()));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+
+    faultManagement_.handeError(command);
 }

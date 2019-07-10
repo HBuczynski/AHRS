@@ -50,8 +50,6 @@ void CallibrationPage::setupPage(config::UICommunicationMode mode)
     stopAcqTimer();
     startAcqTimer();
 
-    cout << "Mode: " << static_cast<int>(mode_) << endl;
-
     ui_->verticalFrame->resize(QSize(1024, 600));
     this->setStyleSheet("background-color:black;");
 

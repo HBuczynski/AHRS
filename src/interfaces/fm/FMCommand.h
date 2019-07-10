@@ -10,7 +10,7 @@ namespace communication
     enum FMCommandType : uint8_t
     {
         RESET_COMMUNICATION_PROCESS = 0x03,
-        CHANGE_COMMUNICATION_MODES = 0x06,
+        RESTART_MASTER_WITH_CHANGE = 0x06,
     };
 
     class FMCommand : public Frame

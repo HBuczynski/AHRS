@@ -60,10 +60,10 @@ bool GuiProcessHandler::initializeMessageQueue()
         return false;
     }
 
-    if (logger_.isInformationEnable())
+    if (logger_.isDebugEnable())
     {
         const std::string message = std::string("GuiProcessHandler::Communication message queue has initialized correctly.");
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     return true;
@@ -83,10 +83,10 @@ bool GuiProcessHandler::launchProcess()
 
     if(status == 0)
     {
-        if(logger_.isInformationEnable())
+        if(logger_.isDebugEnable())
         {
             const string message = string("-MAIN- GuiProcessHandler:: GUI process was initialized.");
-            logger_.writeLog(LogType::INFORMATION_LOG, message);
+            logger_.writeLog(LogType::DEBUG_LOG, message);
         }
     }
     else
