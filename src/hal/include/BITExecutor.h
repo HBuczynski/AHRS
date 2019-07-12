@@ -18,7 +18,7 @@ public:
 
     void approveConnection() noexcept;
 
-    const communication::BitsInformation& getBitsInformation() const noexcept;
+    const communication::BitsInformation& getBitsInformation() noexcept;
 
 private:
     std::atomic<bool> connectionBITS_;

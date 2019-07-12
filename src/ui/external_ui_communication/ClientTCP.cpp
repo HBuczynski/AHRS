@@ -60,6 +60,11 @@ bool ClientTCP::connectToServer()
     }
 }
 
+void ClientTCP::setMode(config::UICommunicationMode mode)
+{
+    mode_ = mode;
+}
+
 void ClientTCP::startCommandSending()
 {
     executeCommandsFlag_ = true;

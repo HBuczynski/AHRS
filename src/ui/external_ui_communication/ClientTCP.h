@@ -31,6 +31,8 @@ namespace communication
 
         void sendCommand(std::unique_ptr<Command> command);
 
+        void setMode(config::UICommunicationMode mode);
+
     private:
         bool isCommandQueueEmpty();
         std::unique_ptr<Command> getFromCommandQueue();
