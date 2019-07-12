@@ -298,6 +298,7 @@ void CommandHandlerVisitor::visit(HandshakeCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
+    externalSharedMemory_->clear();
     while (waitOnData)
     {
         try

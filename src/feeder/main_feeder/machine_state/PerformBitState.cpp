@@ -118,8 +118,6 @@ void PerformBitState::startBITs()
         externalSharedMemory_->write(packet);
     }
 
-    externalSharedMemory_->clear();
-
     if (logger_.isInformationEnable())
     {
         const std::string message = std::string("-MAIN- PerformBitState :: STOP BIT thread.");

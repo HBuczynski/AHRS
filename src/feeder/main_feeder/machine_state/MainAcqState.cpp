@@ -203,9 +203,6 @@ void MainAcqState::runAcquisition()
 
         this_thread::sleep_for(std::chrono::milliseconds(3));
     }
-
-    externalSharedMemory_->clear();
-    internalSharedMemory_->clear();
 }
 
 void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
