@@ -14,7 +14,6 @@ BITExecutor::BITExecutor()
       gpsInterface_(FEEDER_GPS_DEVICE_FILE)
 {
     gpsInterface_.initialize();
-    bitsInformation_.mode = static_cast<int>(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode);
 }
 
 void BITExecutor::checkConnection()
@@ -42,10 +41,16 @@ void BITExecutor::checkGPS()
         bitsInformation_.gps = 42;
 }
 
-const communication::BitsInformation& BITExecutor::getBitsInformation() const noexcept
+const communication::BitsInformation& BITExecutor::getBitsInformation() noexcept
 {
+    FeederMode mode = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
+    bitsInformation_.mode = static_cast<int>(mode);
+
+    cout << "\nMode: " << to_string(static_cast<int>(mode)) << endl;
+
     return bitsInformation_;
 }
+
 
 void BITExecutor::approveConnection() noexcept
 {
