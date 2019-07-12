@@ -86,7 +86,7 @@ void ResponseHandlerVisitor::visit(BITsResponse& data)
 
     if(logger_.isInformationEnable())
     {
-        const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received BITsResponse.");
+        const string message = string("-ExtCOMM-ResponseHandlerVisitor :: Received BITsResponse, mode: ") + to_string(static_cast<int>(data.getBits().mode));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }

@@ -424,6 +424,8 @@ const CalibrationConfiguration& StoryboardsHandler::getRedundantCallibrationPara
 
 void StoryboardsHandler::setBitsInformation(const BitsInformation& bitsInformation)
 {
+
+    cout << "\nGUI: >> mode: " << static_cast<int>(bitsInformation.mode) <<"\n" << endl;
     if (static_cast<FeederMode>(bitsInformation.mode) == FeederMode::MASTER)
         guiDataManager_.setMainBitsInformation(bitsInformation);
     else

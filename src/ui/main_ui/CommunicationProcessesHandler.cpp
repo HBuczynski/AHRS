@@ -8,6 +8,7 @@
 #include <interfaces/communication_process_ui/SendingDataCommand.h>
 #include <interfaces/communication_process_ui/UIChangeModeCommand.h>
 #include <interfaces/wireless_commands/ChangeFeederModeCommand.h>
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 
 using namespace std;
 using namespace config;
@@ -236,6 +237,11 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange()
     auto commandWrapper = SendingDataCommand(modeCommand.getFrameBytes());
     auto commandPacket = commandWrapper.getFrameBytes();
     sendMessage(commandPacket, UICommunicationMode::MASTER);
+
+    StartAcquisitionCommand startAcqCommand;
+    auto startWrapper = SendingDataCommand(startAcqCommand.getFrameBytes());
+    auto startWrapperPacket = startWrapper.getFrameBytes();
+    sendMessage(startWrapperPacket, UICommunicationMode::MASTER);
 
     // Relaunch new redundant process
     launchCommunicationProcess(UICommunicationMode::REDUNDANT, processNumber);
