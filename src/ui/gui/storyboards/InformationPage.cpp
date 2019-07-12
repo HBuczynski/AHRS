@@ -219,6 +219,8 @@ void InformationPage::interruptNotification(timer_t timerID)
     GUIWirelessComWrapperResponse response(config::UICommunicationMode::MASTER, dataCommand.getFrameBytes());
     controller_->sendToMainProcess(response.getFrameBytes());
 
+    this_thread::sleep_for(std::chrono::milliseconds(30));
+
     GUIWirelessComWrapperResponse response2(config::UICommunicationMode::REDUNDANT, dataCommand.getFrameBytes());
     controller_->sendToMainProcess(response2.getFrameBytes());
 }

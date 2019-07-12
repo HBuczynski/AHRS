@@ -93,3 +93,10 @@ void SharedMemoryWrapper::checksum(std::vector<uint8_t> &msg)
         throw logic_error("Checksum is incorrect.");
     }
 }
+
+void SharedMemoryWrapper::clear()
+{
+    vector<uint8_t> emptyPacket(100, 0);
+
+    write(emptyPacket);
+}

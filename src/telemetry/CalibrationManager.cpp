@@ -176,6 +176,8 @@ void CalibrationManager::run()
 
         this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+
+    externalSharedMemory_->clear();
 }
 
 void CalibrationManager::saveInMemory(const communication::CalibrationConfiguration& config)

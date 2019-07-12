@@ -163,7 +163,8 @@ void ExternalCommInterprocessVisitor::handleFeederState(FeederStateCode feederCo
             auto guiPacket = guiWindow.getFrameBytes();
             uiApplicationManager_->sendToGUIProcess(guiPacket);
         }
-        else
+        else {
             uiApplicationManager_->handleEvent("SET_SETTINGS");
+        }
     }
 }

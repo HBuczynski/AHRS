@@ -19,6 +19,8 @@ namespace communication
         void write(std::vector<uint8_t>& msg);
         std::vector<uint8_t> read();
 
+        void clear();
+
     private:
         void checksum(std::vector<uint8_t> &msg);
 
