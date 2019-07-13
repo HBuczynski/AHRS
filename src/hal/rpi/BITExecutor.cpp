@@ -46,8 +46,6 @@ const communication::BitsInformation& BITExecutor::getBitsInformation() noexcept
     FeederMode mode = ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode;
     bitsInformation_.mode = static_cast<int>(mode);
 
-    cout << "\nMode: " << to_string(static_cast<int>(mode)) << endl;
-
     return bitsInformation_;
 }
 

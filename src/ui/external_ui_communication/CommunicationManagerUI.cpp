@@ -175,4 +175,6 @@ void CommunicationManagerUI::setDBParameters(uint32_t hash, const std::string& n
 void CommunicationManagerUI::setMode(config::UICommunicationMode mode)
 {
     mode_ = mode;
+
+    client_->setMode(mode);
 }

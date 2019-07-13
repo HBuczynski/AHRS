@@ -59,7 +59,7 @@ namespace communication
 
         utility::TimerInterrupt keepAliveTimer_;
         const uint8_t COMMAND_SENDING_REPETITION = 3;
-        const uint16_t KEEP_ALIVE_INTERVAL_MS = 5000;
+        const uint16_t KEEP_ALIVE_INTERVAL_MS = 1000;
 
         std::function<void(std::vector<uint8_t>&)> hmProcCallback_;
 

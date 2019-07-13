@@ -23,8 +23,8 @@
       "guiProcessQueueName" : "GuiProcessQueue",
       "hmProcessQueueName" : "UIHMProcessQueue",
 
-      "messageQueueNumber" : 100,
-      "messageSize": 8000
+      "messageQueueNumber" : 200,
+      "messageSize": 500
     },
 
     "SharedMemory" :
