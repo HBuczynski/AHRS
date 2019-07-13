@@ -285,6 +285,7 @@ void CommandHandlerVisitor::visit(HandshakeCommand& command)
     bool waitOnData = true;
     ResponseFactory responseFactory;
 
+    externalSharedMemory_->clear();
     ConfigurationReader::setFeederSystemValue(FEEDER_TYPE_FILE_PATH, command.getMode());
 
     auto feederCommand = FeederCodeDemandCommand(FeederStateCode::MAIN_ACQ);
@@ -298,7 +299,6 @@ void CommandHandlerVisitor::visit(HandshakeCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    externalSharedMemory_->clear();
     while (waitOnData)
     {
         try
