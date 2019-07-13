@@ -251,7 +251,7 @@ void ProcessManager::sendMessageToMainProcess(vector<uint8_t> &data)
 
     if (logger_.isInformationEnable())
     {
-        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Send msg to main process.";
+        const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(static_cast<int>(processNumber_)) + ". Send msg to main process.";
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
@@ -264,7 +264,7 @@ void ProcessManager::sendMessageToHMProcess(std::vector<uint8_t > &data)
 
         if (logger_.isInformationEnable())
         {
-            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(mode_) + ". Send msg to hm process.";
+            const std::string message = string("-ExtCOMM- ProcessManager:: Process - ") + to_string(static_cast<int>(processNumber_)) + ". Send msg to hm process.";
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }

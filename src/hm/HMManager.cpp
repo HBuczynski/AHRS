@@ -64,8 +64,6 @@ bool HMManager::initialize(const string &name)
 
     runHM_ = isSuccess;
 
-    cout << "Log1 " << endl;
-
     if (isSuccess)
          timerInterrupt_.startPeriodic(HM_THRESHOLD_MS, this);
 
