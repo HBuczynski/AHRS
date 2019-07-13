@@ -220,7 +220,9 @@ void ProcessManager::startCommunication()
         try
         {
             const auto packet = receivingMessageQueue_->receive();
-            handleMessageQueue(packet);
+
+            if (!packet.empty())
+                handleMessageQueue(packet);
         }
         catch(interprocess_exception &ex)
         {
@@ -231,7 +233,7 @@ void ProcessManager::startCommunication()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+        this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }
 

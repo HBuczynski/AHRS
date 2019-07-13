@@ -1,6 +1,7 @@
 #include <utility/BytesConverter.h>
 #include <checksum/Checksum.h>
 
+#include <iostream>
 #include "MessageQueueWrapper.h"
 
 using namespace std;
@@ -47,13 +48,20 @@ vector<uint8_t> MessageQueueWrapper::receive()
     message_queue::size_type receivedSize;
 
     vector<uint8_t> packet(messageQueueSize_);
-    messageQueue_->receive(packet.data(), packet.size(), receivedSize, priority);
+    auto retutnInfo = messageQueue_->try_receive(packet.data(), packet.size(), receivedSize, priority);
 
-    packet.resize(receivedSize);
-    packet.shrink_to_fit();
-    checksum(packet);
-
-    return packet;
+    if (retutnInfo)
+    {
+        packet.resize(receivedSize);
+        packet.shrink_to_fit();
+        checksum(packet);
+        return packet;
+    }
+    else
+    {
+        vector<uint8_t> temp;
+        return temp;
+    }
 }
 
 void MessageQueueWrapper::checksum(vector<uint8_t> &msg)

@@ -171,24 +171,28 @@ void ProcessManager::start()
         try
         {
             const auto packet = receivingMessageQueue_->receive();
-            const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
 
-            if(frameType == FrameType::COMMAND)
+            if (!packet.empty())
             {
-                const auto command = commandFactory_.createCommand(packet);
-                command->accept(interprocessVisitor_);
-            }
-            else if (frameType == FrameType::NOTIFICATION)
-            {
-                const auto notification = notificationFactory_.createNotification(packet);
-                notification->accept(interprocessVisitor_);
-            }
-            else
-            {
-                if(logger_.isErrorEnable())
+                const auto frameType = static_cast<FrameType>(packet[Frame::FRAME_TYPE]);
+
+                if(frameType == FrameType::COMMAND)
                 {
-                    const string message = string("-EXTCOM- ProcessManager :: Rceived wrong type of message");
-                    logger_.writeLog(LogType::ERROR_LOG, message);
+                    const auto command = commandFactory_.createCommand(packet);
+                    command->accept(interprocessVisitor_);
+                }
+                else if (frameType == FrameType::NOTIFICATION)
+                {
+                    const auto notification = notificationFactory_.createNotification(packet);
+                    notification->accept(interprocessVisitor_);
+                }
+                else
+                {
+                    if(logger_.isErrorEnable())
+                    {
+                        const string message = string("-EXTCOM- ProcessManager :: Rceived wrong type of message");
+                        logger_.writeLog(LogType::ERROR_LOG, message);
+                    }
                 }
             }
         }

@@ -383,7 +383,9 @@ void ApplicationManager::runProcessing()
         try
         {
             const auto packet = mainComMessageQueue->receive();
-            handleCommand(packet);
+
+            if (!packet.empty())
+                handleCommand(packet);
         }
         catch(interprocess_exception &ex)
         {

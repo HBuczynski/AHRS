@@ -64,6 +64,8 @@ bool HMManager::initialize(const string &name)
 
     runHM_ = isSuccess;
 
+    cout << "Log1 " << endl;
+
     if (isSuccess)
          timerInterrupt_.startPeriodic(HM_THRESHOLD_MS, this);
 
@@ -124,8 +126,12 @@ void HMManager::run()
         try
         {
             const auto packet = hmMessageQueue_->receive();
-            auto notification = notificationFactory.createNotification(packet);
-            notification->accept(*this);
+
+            if (!packet.empty())
+            {
+                auto notification = notificationFactory.createNotification(packet);
+                notification->accept(*this);
+            }
         }
         catch(interprocess_exception &ex)
         {
@@ -136,7 +142,7 @@ void HMManager::run()
             }
         }
 
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+        this_thread::sleep_for(std::chrono::milliseconds(20));
     }
 }
 

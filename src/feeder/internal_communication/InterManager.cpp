@@ -177,9 +177,12 @@ void InterManager::startCommunication()
         try
         {
             const auto packet = receivingMessageQueue_->receive();
-            const auto command = commandFactory.createCommand(packet);
 
-            command->accept(interCommunicationVisitor_);
+            if (!packet.empty())
+            {
+                const auto command = commandFactory.createCommand(packet);
+                command->accept(interCommunicationVisitor_);
+            }
         }
         catch(interprocess_exception &ex)
         {

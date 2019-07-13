@@ -167,7 +167,9 @@ void GUIApplicationManager::interprocessCommunication()
         try
         {
             const auto packet = communicationMessageQueue_->receive();
-            handleCommand(packet);
+
+            if (!packet.empty())
+                handleCommand(packet);
         }
         catch(interprocess_exception &ex)
         {
@@ -177,7 +179,7 @@ void GUIApplicationManager::interprocessCommunication()
                 logger_.writeLog(LogType::ERROR_LOG, message);
             }
         }
-        this_thread::sleep_for(std::chrono::milliseconds(10));
+        this_thread::sleep_for(std::chrono::milliseconds(30));
     }
 }
 

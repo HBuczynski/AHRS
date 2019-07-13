@@ -218,15 +218,12 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange()
     system(command.c_str());
     waitOnProcess(std::get<0>(*processIter));
 
-    for(auto iter: communicationPIDs_)
-        cout << "Process: " << to_string(static_cast<int>(std::get<2>(iter))) << "\t mode: " << to_string(static_cast<int>(std::get<1>(iter))) << endl;
+//    for(auto iter: communicationPIDs_)
+//        cout << "Process: " << to_string(static_cast<int>(std::get<2>(iter))) << "\t mode: " << to_string(static_cast<int>(std::get<1>(iter))) << endl;
 
 
-    cout << "Log 1" << endl;
     uint8_t processNumber = get<2>(*processIter);
     communicationPIDs_.erase(processIter);
-
-    cout << "Log 2" << endl;
 
     // Change REDUNDANT Process to master.
     const auto redundantIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
@@ -236,24 +233,21 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange()
 
     std::get<1>(*redundantIter) = UICommunicationMode::MASTER;
 
-    cout << "Log 3" << endl;
     UIChangeModeCommand changeCommand(UICommunicationMode::MASTER);
     auto packet = changeCommand.getFrameBytes();
     sendMessage(packet, UICommunicationMode::MASTER);
 
-    cout << "Log 4" << endl;
     ChangeFeederModeCommand modeCommand(FeederMode::MASTER);
     auto commandWrapper = SendingDataCommand(modeCommand.getFrameBytes());
     auto commandPacket = commandWrapper.getFrameBytes();
     sendMessage(commandPacket, UICommunicationMode::MASTER);
 
-    cout << "Log 5" << endl;
+
     StartAcquisitionCommand startAcqCommand;
     auto startWrapper = SendingDataCommand(startAcqCommand.getFrameBytes());
     auto startWrapperPacket = startWrapper.getFrameBytes();
     sendMessage(startWrapperPacket, UICommunicationMode::MASTER);
 
-    cout << "Log 6" << endl;
     // Relaunch new redundant process
     launchCommunicationProcess(UICommunicationMode::REDUNDANT, processNumber);
 }
@@ -265,13 +259,12 @@ void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, c
         return std::get<1>(iter) == mode;
     });
 
-    for(auto iter: communicationPIDs_)
-        cout << "Process: " << to_string(static_cast<int>(std::get<2>(iter))) << "\t mode: " << to_string(static_cast<int>(std::get<1>(iter))) << endl;
+//    for(auto iter: communicationPIDs_)
+//        cout << "Process: " << to_string(static_cast<int>(std::get<2>(iter))) << "\t mode: " << to_string(static_cast<int>(std::get<1>(iter))) << endl;
 
     if(std::get<2>(*processIter) == FIRST_PROCESS)
     {
         firstCommunicationMessageQueue->send(message);
-        cout << "In first branch " << endl;
     }
     else
     {
