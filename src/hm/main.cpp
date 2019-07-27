@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     InitLogStructure struc;
     struc.debugLog = false;
-    struc.errroLog = false;
+    struc.errroLog = true;
     struc.informationLog = false;
     struc.warningLog = false;
     struc.writeLogsInSeparetFiles = true;
