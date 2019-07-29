@@ -189,6 +189,26 @@ void PlaneSettingsPage::initialize()
     initializeButtons(buttonNames, callbackFunctions);
 }
 
+void PlaneSettingsPage::keyboardButtons()
+{
+    map<SwitchCode, string> buttonNames;
+    buttonNames[SwitchCode::FIRST_SWITCH] = "CANCEL";
+    buttonNames[SwitchCode::SECOND_SWITCH] = "< LEFT";
+    buttonNames[SwitchCode::THIRD_SWITCH] = "RIGHT >";
+    buttonNames[SwitchCode::FOURTH_SWITCH] = "SELECT";
+
+    map<SwitchCode, function<void()> > callbackFunctions;
+    callbackFunctions[SwitchCode::FIRST_SWITCH] = bind(&PlaneSettingsPage::cancelButton, this);
+    callbackFunctions[SwitchCode::SECOND_SWITCH] = bind(&PlaneSettingsPage::upButton, this);
+    callbackFunctions[SwitchCode::THIRD_SWITCH] = bind(&PlaneSettingsPage::downButton, this);
+    callbackFunctions[SwitchCode::FOURTH_SWITCH] = bind(&PlaneSettingsPage::selectButton, this);
+
+    QObject::connect(this, SIGNAL(signalMENUPage()), controller_, SLOT(setMenuPage()));
+    QObject::connect(this, SIGNAL(signalCallibrationPage()), controller_, SLOT(setCallibrationPage()));
+
+    initializeButtons(buttonNames, callbackFunctions);
+}
+
 void PlaneSettingsPage::initializeButtons(map<SwitchCode, string> name, map<SwitchCode, function<void()> > callbackFunctions)
 {
     buttons_ = unique_ptr<Buttons>(new Buttons(this));
@@ -225,6 +245,14 @@ void PlaneSettingsPage::cancelButton()
             handleSettingsCancel();
             break;
         }
+        case FieldType::TEXT_FIELD :
+        {
+            ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(50,205,50);border: none; ");
+            keyboard_->exit();
+            currentFieldType_ = GENERAL_SETTINGS;
+            selectIsPresssed = false;
+            initialize();
+        }
         default:
             break;
     }
@@ -243,8 +271,6 @@ void PlaneSettingsPage::handleSettingsCancel()
         }
         case FieldType::TEXT_FIELD :
         {
-            ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(50,205,50);border: none; ");
-            selectIsPresssed = false;
             break;
         }
         case FieldType::MENU_LABEL :
@@ -279,6 +305,11 @@ void PlaneSettingsPage::upButton()
         case FieldType::GENERAL_SETTINGS :
         {
             handleSettingsUP();
+            break;
+        }
+        case FieldType::TEXT_FIELD :
+        {
+            keyboard_->setLeftMove();
             break;
         }
         default:
@@ -327,6 +358,11 @@ void PlaneSettingsPage::downButton()
             handleSettingsDown();
             break;
         }
+        case FieldType::TEXT_FIELD :
+        {
+            keyboard_->setRightMove();
+            break;
+        }
         default:
             break;
     }
@@ -373,6 +409,11 @@ void PlaneSettingsPage::selectButton()
             handleSettingsSelect();
             break;
         }
+        case FieldType::TEXT_FIELD :
+        {
+            keyboard_->setChar();
+            break;
+        }
         default:
             break;
     }
@@ -401,7 +442,11 @@ void PlaneSettingsPage::handleSettingsSelect()
         case FieldType::TEXT_FIELD :
         {
             ui_->newPlaneLineEdit->setStyleSheet("background-color: rgb(144,238,144);border: none; ");
+            currentFieldType_ = TEXT_FIELD;
+            keyboard_->setInitButton();
             selectIsPresssed = true;
+            keyboardButtons();
+
             break;
         }
         case FieldType::MENU_LABEL :

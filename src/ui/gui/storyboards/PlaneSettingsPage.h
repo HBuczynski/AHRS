@@ -50,6 +50,8 @@ private:
     void highlightCurrentItem(uint8_t newOption);
     void initializeButtons(std::map<peripherals::SwitchCode, std::string> name, std::map<peripherals::SwitchCode, std::function<void()> > callbackFunctions);
 
+    void keyboardButtons();
+
     void cancelButton();
     void handleSettingsCancel();
     void handleComboBoxCancel();
