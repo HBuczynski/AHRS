@@ -134,7 +134,7 @@ void ExternalCommunicationVisitor::visit(const communication::StateNotification&
     if(logger_.isInformationEnable())
     {
         const string message = string("-MAIN- ExternalCommInterprocessVisitor :: Received - StateNotification - ")
-                + to_string(static_cast<int>(command.getStateCode()));
+                + to_string(static_cast<int>(command.getStateCode())) + ". Current State - " + appManager_->getCurrentStateName();
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
