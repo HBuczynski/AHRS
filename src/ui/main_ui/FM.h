@@ -20,7 +20,7 @@ namespace redundancy
         void initializeHMMessageQueue();
         void initializeMainMessageQueue();
 
-        void lostConnection(config::UICommunicationMode mode);
+        void lostConnection(config::UICommunicationMode mode, std::string systemMode);
 
         config::UIMessageQueues uiMessageQueuesParameters_;
         std::shared_ptr<communication::MessageQueueWrapper> hmMessageQueue_;

@@ -9,16 +9,20 @@ namespace communication
     class FMRestartChangeMasterCommand final : public FMCommand
     {
     public:
-        FMRestartChangeMasterCommand();
+        FMRestartChangeMasterCommand(std::string systemState);
         ~FMRestartChangeMasterCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
         virtual std::string getName() override;
         virtual void accept(FMCommandVisitor& visitor) override;
 
+        std::string getSystemState() const;
+        void setSystemState(const std::string &systemState);
+
     private:
         virtual void initializeDataSize() override;
 
+        std::string systemState_;
     };
 }
 

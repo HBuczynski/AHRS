@@ -34,5 +34,5 @@ void FMVisitor::visit(const FMResetCommunicationProcessCommand& command)
 
 void FMVisitor::visit(const FMRestartChangeMasterCommand& command)
 {
-    communicationProcessesHandler_->restartMasterProcessAndChange();
+    communicationProcessesHandler_->restartMasterProcessAndChange(command.getSystemState());
 }

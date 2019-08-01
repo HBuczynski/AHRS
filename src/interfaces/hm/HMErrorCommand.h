@@ -10,7 +10,7 @@ namespace communication
     class HMErrorCommand final : public HMCommand
     {
     public:
-        HMErrorCommand(HMNodes node, HMErrorType error, config::UICommunicationMode mode);
+        HMErrorCommand(HMNodes node, HMErrorType error, config::UICommunicationMode mode, const std::string& systemState);
         ~HMErrorCommand();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -26,12 +26,16 @@ namespace communication
         config::UICommunicationMode getMode() const;
         void setMode(const config::UICommunicationMode &mode);
 
+        std::string getSystemState() const;
+        void setSystemState(const std::string &systemState);
+
     private:
         virtual void initializeDataSize() override;
 
         HMNodes node_;
         HMErrorType error_;
         config::UICommunicationMode mode_;
+        std::string systemState_;
     };
 }
 

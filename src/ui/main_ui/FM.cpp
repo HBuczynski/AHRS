@@ -79,18 +79,18 @@ void FM::handeError(const communication::HMErrorCommand& command)
     switch (errorType)
     {
         case HMErrorType::LOST_CONNECTION_COKCPIT_2_FEEDER:
-            lostConnection(command.getMode());
+            lostConnection(command.getMode(), command.getSystemState());
             break;
         default:
             break;
     }
 }
 
-void FM::lostConnection(config::UICommunicationMode mode)
+void FM::lostConnection(config::UICommunicationMode mode, std::string systemMode)
 {
     if (mode == UICommunicationMode::MASTER)
     {
-        FMRestartChangeMasterCommand command;
+        FMRestartChangeMasterCommand command(systemMode);
         auto packet = command.getFrameBytes();
         mainMessageQueue_->send(packet);
     }

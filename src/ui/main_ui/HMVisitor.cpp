@@ -21,6 +21,7 @@ void HMVisitor::initialize()
 
 void HMVisitor::visit(const HMErrorCommand& command)
 {
+
     if(logger_.isInformationEnable())
     {
         const string message = string("-MAIN-HMVisitor:: Received - HMErrorCommand: ") + to_string(static_cast<int>(command.getHMError()))
@@ -28,5 +29,6 @@ void HMVisitor::visit(const HMErrorCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
-    faultManagement_.handeError(command);
+    HMErrorCommand newCom(command.getHMNode(), command.getHMError(), command.getMode(), uiApplicationManager_->getCurrentStateName());
+    faultManagement_.handeError(newCom);
 }

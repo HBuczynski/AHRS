@@ -207,7 +207,7 @@ void CommunicationProcessesHandler::resetProcess(UICommunicationMode mode)
     launchCommunicationProcess(mode, processNumber);
 }
 
-void CommunicationProcessesHandler::restartMasterProcessAndChange()
+void CommunicationProcessesHandler::restartMasterProcessAndChange(std::string systemState)
 {
     const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
     {
@@ -242,11 +242,13 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange()
     auto commandPacket = commandWrapper.getFrameBytes();
     sendMessage(commandPacket, UICommunicationMode::MASTER);
 
-
-    StartAcquisitionCommand startAcqCommand;
-    auto startWrapper = SendingDataCommand(startAcqCommand.getFrameBytes());
-    auto startWrapperPacket = startWrapper.getFrameBytes();
-    sendMessage(startWrapperPacket, UICommunicationMode::MASTER);
+    if(systemState == "AcquisitionState")
+    {
+        StartAcquisitionCommand startAcqCommand;
+        auto startWrapper = SendingDataCommand(startAcqCommand.getFrameBytes());
+        auto startWrapperPacket = startWrapper.getFrameBytes();
+        sendMessage(startWrapperPacket, UICommunicationMode::MASTER);
+    }
 
     // Relaunch new redundant process
     launchCommunicationProcess(UICommunicationMode::REDUNDANT, processNumber);

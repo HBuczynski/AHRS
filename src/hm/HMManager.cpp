@@ -156,7 +156,8 @@ void HMManager::interruptNotification(timer_t timerID)
 
             if (delay.count() > 1.1 * HM_THRESHOLD_MS)
             {
-                HMErrorCommand command(node.first, HMErrorType::OUT_HEARTBEAT, config::UICommunicationMode::MASTER);
+                string temp = "";
+                HMErrorCommand command(node.first, HMErrorType::OUT_HEARTBEAT, config::UICommunicationMode::MASTER, temp);
                 auto packet = command.getFrameBytes();
 
                 mainMessageQueue_->send(packet);
@@ -225,7 +226,8 @@ void HMManager::visit(const HMRegisterMainNotification& command)
 
 void HMManager::visit(const HMErrorNotification& command)
 {
-    HMErrorCommand hmCommand(command.getHMNode(), command.getHMError(), command.getMode());
+    string temp ="";
+    HMErrorCommand hmCommand(command.getHMNode(), command.getHMError(), command.getMode(), temp);
     auto packet = hmCommand.getFrameBytes();
     mainMessageQueue_->send(packet);
 

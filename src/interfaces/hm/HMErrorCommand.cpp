@@ -1,14 +1,17 @@
 #include "HMErrorCommand.h"
 #include "HMCommandVisitor.h"
 
+#include <utility/BytesConverter.h>
+
 using namespace std;
 using namespace communication;
 
-HMErrorCommand::HMErrorCommand(HMNodes node, HMErrorType error, config::UICommunicationMode mode)
+HMErrorCommand::HMErrorCommand(HMNodes node, HMErrorType error, config::UICommunicationMode mode, const string &systemState)
         : HMCommand(10, HMCommandType::COMMAND_ERROR),
           node_(node),
           error_(error),
-          mode_(mode)
+          mode_(mode),
+          systemState_(systemState)
 { }
 
 HMErrorCommand::~HMErrorCommand()
@@ -23,6 +26,8 @@ vector<uint8_t> HMErrorCommand::getFrameBytes()
     frame.push_back(static_cast<uint8_t>(node_));
     frame.push_back(static_cast<uint8_t>(error_));
     frame.push_back(static_cast<uint8_t>(mode_));
+
+    utility::BytesConverter::appendStringToVectorOfUINT8(systemState_, frame);
 
     return frame;
 }
@@ -63,8 +68,19 @@ void HMErrorCommand::initializeDataSize()
     dataSize += sizeof(error_);
     dataSize += sizeof(node_);
     dataSize += sizeof(mode_);
+    dataSize += systemState_.size() + sizeof(END_STRING_IN_FRAME);
 
     setDataSize(dataSize);
+}
+
+std::string HMErrorCommand::getSystemState() const
+{
+    return systemState_;
+}
+
+void HMErrorCommand::setSystemState(const std::string &systemState)
+{
+    systemState_ = systemState;
 }
 
 config::UICommunicationMode HMErrorCommand::getMode() const
