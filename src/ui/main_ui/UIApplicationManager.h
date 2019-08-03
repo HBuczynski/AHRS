@@ -49,6 +49,9 @@ namespace main_process
         void saveMeasurements2DB();
         void stopMeasurements2DB();
 
+        std::string getPlaneName() const;
+        void setPlaneName(const std::string &planeName);
+
     private:
         bool initializeMainProcessMessageQueue();
         bool initializeHMMessageQueue();
@@ -92,6 +95,7 @@ namespace main_process
         std::thread dbThread_;
 
         std::atomic<bool> runSystem_;
+        std::string planeName_;
 
         utility::TimerInterrupt timerInterrupt_;
         utility::Logger& logger_;

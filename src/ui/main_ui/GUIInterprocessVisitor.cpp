@@ -31,6 +31,8 @@ void GUIInterprocessVisitor::visit(GUIPlaneResponse &data)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
+    uiApplicationManager_->setPlaneName(data.getPlane());
+
     auto planeCommand = SetPlaneCommand(data.getPlane());
     auto commandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
     uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), data.getMode());

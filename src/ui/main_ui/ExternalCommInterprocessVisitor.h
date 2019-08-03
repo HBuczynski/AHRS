@@ -24,6 +24,9 @@ namespace main_process
 
     private:
         void handleFeederState(FeederStateCode feederCode);
+
+        void initConnection(config::UICommunicationMode mode);
+
         std::tuple<uint8_t , uint8_t , uint8_t, uint8_t> informationParameters_;
 
         bool correctInitialization_;

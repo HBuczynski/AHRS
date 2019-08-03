@@ -14,6 +14,8 @@
 #include <interfaces/wireless_commands/HandshakeCommand.h>
 #include <interfaces/wireless_commands/ChangeStateCommand.h>
 #include <interfaces/wireless_responses/FeederStateCodeResponse.h>
+#include <interfaces/wireless_commands/SetPlaneCommand.h>
+#include <interfaces/wireless_commands/StartAcquisitionCommand.h>
 
 #include <interfaces/wireless_responses/ResponseFactory.h>
 
@@ -93,23 +95,7 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
     {
         case UIExternalComCode::INIT_CONNECTION :
         {
-            auto hashCommand = SetHashCommand(uiApplicationManager_->getDbHash());
-            auto commandWrapper = SendingDataCommand(hashCommand.getFrameBytes());
-            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), mode);
-
-            if (mode == config::UICommunicationMode::MASTER)
-            {
-                auto masterHandshake = HandshakeCommand(config::FeederMode::MASTER);
-                auto masterHandshakeWrapper = SendingDataCommand(masterHandshake.getFrameBytes());
-                uiApplicationManager_->sendToExternalCommunicationProcess(masterHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
-            }
-            else
-            {
-                auto redHandshake = HandshakeCommand(config::FeederMode::REDUNDANT);
-                auto redHandshakeWrapper = SendingDataCommand(redHandshake.getFrameBytes());
-                uiApplicationManager_->sendToExternalCommunicationProcess(redHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
-            }
-
+            initConnection(mode);
             break;
         }
         case UIExternalComCode::MASTER :
@@ -127,6 +113,39 @@ void ExternalCommInterprocessVisitor::visit(CommunicationStatusNotification& com
         case UIExternalComCode::IDLE :
         default:
             break;
+    }
+}
+
+void ExternalCommInterprocessVisitor::initConnection(config::UICommunicationMode mode)
+{
+    auto hashCommand = SetHashCommand(uiApplicationManager_->getDbHash());
+    auto commandWrapper = SendingDataCommand(hashCommand.getFrameBytes());
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), mode);
+
+    if (mode == config::UICommunicationMode::MASTER)
+    {
+        auto masterHandshake = HandshakeCommand(config::FeederMode::MASTER);
+        auto masterHandshakeWrapper = SendingDataCommand(masterHandshake.getFrameBytes());
+        uiApplicationManager_->sendToExternalCommunicationProcess(masterHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+    }
+    else
+    {
+        auto redHandshake = HandshakeCommand(config::FeederMode::REDUNDANT);
+        auto redHandshakeWrapper = SendingDataCommand(redHandshake.getFrameBytes());
+        uiApplicationManager_->sendToExternalCommunicationProcess(redHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
+    }
+
+    if(uiApplicationManager_->getCurrentStateName() == "AcquisitionState")
+    {
+        auto planeCommand = SetPlaneCommand(uiApplicationManager_->getPlaneName());
+        auto planeCommandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
+        uiApplicationManager_->sendToExternalCommunicationProcess(planeCommandWrapper.getFrameBytes(), mode);
+
+        this_thread::sleep_for(std::chrono::milliseconds(50));
+
+        auto acqCommand = StartAcquisitionCommand();
+        auto acqCommandWrapper = SendingDataCommand(acqCommand.getFrameBytes());
+        uiApplicationManager_->sendToExternalCommunicationProcess(acqCommandWrapper.getFrameBytes(), mode);
     }
 }
 

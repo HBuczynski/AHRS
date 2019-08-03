@@ -361,6 +361,16 @@ void UIApplicationManager::saveGeneral2DB()
     }
 }
 
+std::string UIApplicationManager::getPlaneName() const
+{
+    return planeName_;
+}
+
+void UIApplicationManager::setPlaneName(const std::string &planeName)
+{
+    planeName_ = planeName;
+}
+
 void UIApplicationManager::saveMeasurements2DB()
 {
     runSavingMeasurements_ = true;
