@@ -48,7 +48,7 @@ void FeederScheduler::create()
              {connectionState,                      hsm::Event{"RUN_REGISTARTION"},             registerUserState},
              {registerUserState,                    hsm::Event{"GET_SETTINGS"},                 settingsState},
              {settingsState,                        hsm::Event{"RUN_CALLIBRATION"},             calibrationState},
-             {settingsState,                        hsm::Event{"START_MAIN_ACQ"},               mainAcqState},
+             {calibrationState,                     hsm::Event{"START_MAIN_ACQ"},               mainAcqState},
              {calibrationState,                     hsm::Event{"CHECK_BIT"},                    performBitState},
              {performBitState,                      hsm::Event{"START_MAIN_ACQ"},               mainAcqState},
              {mainAcqState,                         hsm::Event{"RELAUNCH_ACQ"},                 mainAcqState},
