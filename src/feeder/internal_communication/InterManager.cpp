@@ -206,6 +206,7 @@ void InterManager::stopCommunication()
 
 void InterManager::launchTimer()
 {
+    connectionEstablished_ = false;
     connectionEstablishingInterrupt_.startPeriodic(5000, this);
 }
 
