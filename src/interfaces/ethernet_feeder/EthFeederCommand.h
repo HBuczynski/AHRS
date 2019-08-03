@@ -12,6 +12,7 @@ namespace communication
         ETH_INIT_CONNECTION = 10,
         ETH_HANDSHAKE = 15,
         ETH_CHANGE_STATE = 20,
+        ETH_KEEP_ALIVE = 25,
     };
 
     class EthFeederCommand : public Frame

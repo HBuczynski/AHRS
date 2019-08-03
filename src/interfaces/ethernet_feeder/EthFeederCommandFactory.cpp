@@ -3,6 +3,7 @@
 #include "EthHandshakeBuilder.h"
 #include "EthChangeStateBuilder.h"
 #include "EthInitConnectionBuilder.h"
+#include "EthKeepAliveBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -29,6 +30,10 @@ unique_ptr<EthFeederCommand> EthFeederCommandFactory::createCommand(const vector
 
         case EthCommandType::ETH_INIT_CONNECTION :
             builder_ = make_unique<EthInitConnectionBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case EthCommandType::ETH_KEEP_ALIVE :
+            builder_ = make_unique<EthKeepAliveBuilder>();
             return move(builder_->create(commandInBytes));
 
         default:

@@ -22,6 +22,7 @@ namespace communication
         void visit(EthChangeStateCommand& command) override;
         void visit(EthHandshakeCommand& command) override;
         void visit(EthInitConnectionCommand& command) override;
+        void visit(EthKeepAliveCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeCurrentClient(ClientThreadTCP *client);

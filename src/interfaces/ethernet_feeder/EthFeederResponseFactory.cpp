@@ -21,6 +21,7 @@ unique_ptr<EthFeederResponse> EthFeederResponseFactory::createCommand(const vect
             builder_ = make_unique<EthAckFeederBuilder>();
             return move(builder_->create(commandInBytes));
 
+
         default:
             throw invalid_argument("Received eth response does not register in factory.");
     }

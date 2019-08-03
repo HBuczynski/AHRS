@@ -10,6 +10,7 @@
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
 
+#include <time_manager/TimerInterrupt.h>
 #include <interfaces/ethernet_feeder/EthFeederCommand.h>
 #include <interfaces/ethernet_feeder/EthFeederResponseFactory.h>
 
@@ -17,7 +18,7 @@
 
 namespace communication
 {
-    class InterClientTCP
+    class InterClientTCP : public utility::TimerInterruptNotification
     {
     public:
         InterClientTCP(uint16_t portIn, std::string addressIn);
@@ -38,6 +39,8 @@ namespace communication
         void executeCommands();
         void catchExceptions(std::string exception, bool isEndConnectionSent, uint8_t commandSendingCounter);
 
+        void interruptNotification(timer_t timerID);
+
         uint16_t port_;
         std::string address_;
 
@@ -53,6 +56,9 @@ namespace communication
         InterResponseVisitor responseHandler_;
 
         std::function<void()> launchConnectionCallback_;
+
+        utility::TimerInterrupt keepAliveTimer_;
+        const uint16_t KEEP_ALIVE_INTERVAL_MS = 1000;
 
         const uint8_t COMMAND_SENDING_REPETITION = 5;
 

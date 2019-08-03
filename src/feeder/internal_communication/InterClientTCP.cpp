@@ -3,6 +3,7 @@
 #include <iostream>
 #include <interfaces/ethernet_feeder/EthFeederResponse.h>
 #include <interfaces/ethernet_feeder/EthAckFeederResponse.h>
+#include <interfaces/ethernet_feeder/EthKeepAliveCommand.h>
 
 using namespace std;
 using namespace utility;
@@ -12,11 +13,20 @@ InterClientTCP::InterClientTCP(uint16_t portIn, string addressIn)
     : port_(portIn),
       address_(addressIn),
       executeCommandsFlag_(false),
+      keepAliveTimer_("KeepAliveTimer"),
       logger_(Logger::getInstance())
 {}
 
 InterClientTCP::~InterClientTCP()
 {
+    if(logger_.isErrorEnable())
+    {
+        const string message =
+                string("-InterClientTCP- ClientTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
+                string("-. Stopped Client Thread.");
+        logger_.writeLog(LogType::ERROR_LOG, message);
+    }
+
     stopCommandSending();
 }
 
@@ -62,11 +72,16 @@ void InterClientTCP::startCommandSending()
         executeCommandThread_.join();
     }
 
+    keepAliveTimer_.stop();
+    keepAliveTimer_.startPeriodic(KEEP_ALIVE_INTERVAL_MS, this);
+
     executeCommandThread_ = thread(&InterClientTCP::executeCommands, this);
 }
 
 void InterClientTCP::stopCommandSending()
 {
+    keepAliveTimer_.stop();
+
     if(executeCommandsFlag_)
     {
         executeCommandsFlag_ = false;
@@ -202,6 +217,11 @@ void InterClientTCP::catchExceptions(string exception, bool isEndConnectionSent,
     }
 }
 
+void InterClientTCP::interruptNotification(timer_t timerID)
+{
+    auto keepAliveCommand= make_unique<EthKeepAliveCommand>();
+    sendCommand(move(keepAliveCommand));
+}
 
 
 

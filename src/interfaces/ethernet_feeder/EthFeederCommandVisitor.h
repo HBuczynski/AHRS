@@ -4,6 +4,7 @@
 #include "EthChangeStateCommand.h"
 #include "EthHandshakeCommand.h"
 #include "EthInitConnectionCommand.h"
+#include "EthKeepAliveCommand.h"
 
 namespace communication
 {
@@ -16,6 +17,7 @@ namespace communication
         virtual void visit(EthChangeStateCommand& command) = 0;
         virtual void visit(EthHandshakeCommand& command) = 0;
         virtual void visit(EthInitConnectionCommand& command) = 0;
+        virtual void visit(EthKeepAliveCommand& command) = 0;
     };
 }
 

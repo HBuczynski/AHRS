@@ -102,7 +102,9 @@ void EthCommandHandlerVisitor::visit(EthChangeStateCommand& command)
 }
 
 void EthCommandHandlerVisitor::visit(EthHandshakeCommand& command)
-{}
+{
+
+}
 
 void EthCommandHandlerVisitor::visit(EthInitConnectionCommand& command)
 {
@@ -114,6 +116,17 @@ void EthCommandHandlerVisitor::visit(EthInitConnectionCommand& command)
                 std::to_string(currentClient_->getID())
                          + std::string("-. Command data: port-") + std::to_string(command.getServerListenUDPPort()) + std::string("; address-") +
                          command.getServerAddress();
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    response_ = std::make_unique<EthAckFeederResponse>();
+}
+
+void EthCommandHandlerVisitor::visit(EthKeepAliveCommand& command)
+{
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-INTCOM- EthCommandHandlerVisitor :: Received EthKeepAliveCommand - state: ");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 
