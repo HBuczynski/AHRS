@@ -43,7 +43,7 @@ bool Database::executeCommand(const std::string& command)
     {
         if(logger_.isWarningEnable())
         {
-            const string message = string("Database :: Cannot execute command. Warning: ") + string(messageError);
+            const string message = string("Database :: Cannot execute command. Warning: ") + string(messageError) + string(" Command: ") + command;
             logger_.writeLog(LogType::WARNING_LOG, message);
         }
 
