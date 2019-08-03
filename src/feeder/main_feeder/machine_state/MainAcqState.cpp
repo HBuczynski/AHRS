@@ -74,7 +74,7 @@ void MainAcqState::runInitEvent()
 
         if (logger_.isInformationEnable())
         {
-            const string message = string("-MAIN- MainAcqState:: Started acq thread.");
+            const string message = string("-MAIN- MainAcqState:: Started acq thread. Mode: ") + to_string(static_cast<int>(ConfigurationReader::getFeederType(FEEDER_TYPE_FILE_PATH).mode));
             logger_.writeLog(LogType::INFORMATION_LOG, message);
         }
     }

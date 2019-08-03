@@ -141,11 +141,11 @@ void ExternalCommInterprocessVisitor::initConnection(config::UICommunicationMode
         auto planeCommandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
         uiApplicationManager_->sendToExternalCommunicationProcess(planeCommandWrapper.getFrameBytes(), mode);
 
-        this_thread::sleep_for(std::chrono::milliseconds(50));
+//        this_thread::sleep_for(std::chrono::milliseconds(50));
 
-        auto acqCommand = StartAcquisitionCommand();
-        auto acqCommandWrapper = SendingDataCommand(acqCommand.getFrameBytes());
-        uiApplicationManager_->sendToExternalCommunicationProcess(acqCommandWrapper.getFrameBytes(), mode);
+//        auto acqCommand = StartAcquisitionCommand();
+//        auto acqCommandWrapper = SendingDataCommand(acqCommand.getFrameBytes());
+//        uiApplicationManager_->sendToExternalCommunicationProcess(acqCommandWrapper.getFrameBytes(), mode);
     }
 }
 

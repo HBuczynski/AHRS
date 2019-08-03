@@ -156,9 +156,9 @@ void EthCommandHandlerVisitor::startDataSending()
 
 void EthCommandHandlerVisitor::stopDataSending()
 {
-    StateNotification notification(FeederStateCode::STOP_ACQ);
-    auto packet = notification.getFrameBytes();
-    clientUDPManager_->sendToMainProcess(packet);
+//    StateNotification notification(FeederStateCode::STOP_ACQ);
+//    auto packet = notification.getFrameBytes();
+//    clientUDPManager_->sendToMainProcess(packet);
 
     runAcq_ = false;
     if (acqThread_.joinable())
