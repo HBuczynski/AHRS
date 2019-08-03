@@ -96,8 +96,6 @@ void InterClientTCP::stopCommandSending()
             executeCommandThread_.join();
         }
     }
-
-    launchConnectionCallback_();
 }
 
 void InterClientTCP::sendCommand(unique_ptr<EthFeederCommand> command)
@@ -176,12 +174,18 @@ void InterClientTCP::catchExceptions(string exception, bool isEndConnectionSent,
     // 4. End connection command was sent.
     // Log error to file.
 
-    if(logger_.isErrorEnable() && !isEndConnectionSent)
+    if(!isEndConnectionSent)
     {
         const string message =
                 string("-INTCOM- InterClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
                 string("-. Received exception: ") + exception;
         logger_.writeLog(LogType::ERROR_LOG, message);
+
+        executeCommandsFlag_ = false;
+        keepAliveTimer_.stop();
+        socket_.reset();
+
+        launchConnectionCallback_();
     }
 
     // Command was not sent by 5 times, end connection

@@ -200,7 +200,7 @@ void ClientTCP::catchExceptions(string exception, bool isEndConnectionSent, uint
     // 4. End connection command was sent.
     // Log error to file.
 
-    if(logger_.isErrorEnable() && !isEndConnectionSent)
+    if(!isEndConnectionSent)
     {
         const string message =
                 string("-ExtCOMM- ClienTCP :: Client data: ") + address_ + string(" and port: ") + to_string(port_) +
