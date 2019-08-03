@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 
+#include <functional>
 #include <logger/Logger.h>
 #include <packet/SendStreamTCP.h>
 
@@ -28,6 +29,7 @@ namespace communication
         void startCommandSending();
 
         void sendCommand(std::unique_ptr<EthFeederCommand> command);
+        void setConnectionCallback(std::function<void()> launchConnectionCallback);
 
     private:
         bool isCommandQueueEmpty();
@@ -49,6 +51,8 @@ namespace communication
 
         EthFeederResponseFactory responseFactory_;
         InterResponseVisitor responseHandler_;
+
+        std::function<void()> launchConnectionCallback_;
 
         const uint8_t COMMAND_SENDING_REPETITION = 5;
 

@@ -25,7 +25,10 @@ InterManager::InterManager()
       hmTimerInterrupt_("FeederInternalHM"),
       logger_(Logger::getInstance())
 {
+
+    function<void()> callback = bind(&InterManager::launchTimer, this);
     client_ = make_unique<InterClientTCP>(internalCommunicationParameters_.destinationPort, internalCommunicationParameters_.destinationAddress);
+    client_->setConnectionCallback(callback);
 
     server_ = make_unique<EthServerUDP>(internalCommunicationParameters_.sourcePort);
     server_->initializeSharedMemory();

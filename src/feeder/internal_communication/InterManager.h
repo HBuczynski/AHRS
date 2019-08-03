@@ -41,6 +41,7 @@ namespace communication
         void sendHeartbeat();
         void initConnection();
 
+
         config::FeederMessageQueues feederQueuesParameters_;
         config::FeederInternalWireless internalCommunicationParameters_;
         utility::TimerInterrupt connectionEstablishingInterrupt_;

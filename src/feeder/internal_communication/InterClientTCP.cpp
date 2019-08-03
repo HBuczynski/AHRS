@@ -43,6 +43,11 @@ bool InterClientTCP::connectToServer()
     }
 }
 
+void InterClientTCP::setConnectionCallback(std::function<void()> launchConnectionCallback)
+{
+    launchConnectionCallback_ = launchConnectionCallback;
+}
+
 void InterClientTCP::startCommandSending()
 {
     executeCommandsFlag_ = true;
@@ -76,6 +81,8 @@ void InterClientTCP::stopCommandSending()
             executeCommandThread_.join();
         }
     }
+
+    launchConnectionCallback_();
 }
 
 void InterClientTCP::sendCommand(unique_ptr<EthFeederCommand> command)
