@@ -452,7 +452,6 @@ void CommandHandlerVisitor::runAcq()
 
             if(!clientUDPManager_->broadcast(dataCommand->getFrameBytes()))
             {
-
                 if(logger_.isInformationEnable() )
                 {
                     const string message = string("-EXTCOM- FlightDataManager:: Broadcast is stopped, users are unavailable.");

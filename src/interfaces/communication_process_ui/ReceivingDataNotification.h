@@ -8,7 +8,7 @@ namespace communication
     class ReceivingDataNotification : public UINotification
     {
     public:
-        ReceivingDataNotification(const std::vector<uint8_t> &data);
+        ReceivingDataNotification(uint8_t communicationMode, const std::vector<uint8_t> &data);
         ~ReceivingDataNotification();
 
         virtual std::vector<uint8_t > getFrameBytes() override;
@@ -18,9 +18,13 @@ namespace communication
         const std::vector<uint8_t>& getData() const;
         void setData(const std::vector<uint8_t> &data);
 
+        uint8_t getCommunicationMode() const;
+        void setCommunicationMode(const uint8_t &communicationMode);
+
     private:
         virtual void initializeDataSize() override;
 
+        uint8_t communicationMode_;
         std::vector<uint8_t> data_;
     };
 }

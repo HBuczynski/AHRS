@@ -19,7 +19,11 @@ GPSAdafruitInterface::GPSAdafruitInterface(const std::string &deviceName)
         runAcq_(false),
         rs232Interface_(deviceName),
         gpsStatus_(GPSStatus::INITIALISED_TIME_EXCEED)
-{}
+{
+    gpsData_.latitudeDirection = 'x';
+    gpsData_.longitudeDirection = 'x';
+    gpsData_.receiverWarning = 'x';
+}
 
 GPSAdafruitInterface::~GPSAdafruitInterface()
 {

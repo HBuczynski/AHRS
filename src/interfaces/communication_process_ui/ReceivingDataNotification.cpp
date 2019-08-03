@@ -4,8 +4,9 @@
 using namespace std;
 using namespace communication;
 
-ReceivingDataNotification::ReceivingDataNotification(const vector<uint8_t> &data)
+ReceivingDataNotification::ReceivingDataNotification(uint8_t communicationMode, const vector<uint8_t> &data)
     : UINotification(10, UINotificationType::RECEIVING_DATA),
+      communicationMode_(communicationMode),
       data_(data)
 { }
 
@@ -19,6 +20,7 @@ vector<uint8_t> ReceivingDataNotification::getFrameBytes()
     vector<uint8_t > frame = getHeader();
     frame.push_back(static_cast<uint8_t>(uiNotificationType));
 
+    frame.push_back(communicationMode_);
     frame.insert(frame.end(), data_.begin(), data_.end());
 
     return frame;
@@ -48,6 +50,17 @@ void ReceivingDataNotification::initializeDataSize()
 {
     uint16_t dataSize = sizeof(uiNotificationType);
     dataSize += data_.size();
+    dataSize += sizeof(communicationMode_);
 
     setDataSize(dataSize);
+}
+
+uint8_t ReceivingDataNotification::getCommunicationMode() const
+{
+    return communicationMode_;
+}
+
+void ReceivingDataNotification::setCommunicationMode(const uint8_t &communicationMode)
+{
+    communicationMode_ = communicationMode;
 }

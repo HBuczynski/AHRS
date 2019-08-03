@@ -120,6 +120,7 @@ bool MainAcqState::initializeInternalSharedMemory()
     try
     {
         internalSharedMemory_ = std::make_unique<SharedMemoryWrapper>(sharedMemoryParameters_.internalMemoryName);
+        internalSharedMemory_->clear();
     }
     catch(interprocess_exception &ex)
     {
