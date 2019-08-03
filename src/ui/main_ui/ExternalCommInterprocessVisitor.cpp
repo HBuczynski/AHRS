@@ -78,7 +78,7 @@ void ExternalCommInterprocessVisitor::visit(ReceivingDataNotification& command)
             const auto stateResponse = static_pointer_cast<FeederStateCodeResponse, Response>(responseFactory.createCommand(command.getData()));
             const auto feederState = stateResponse->getStateCode();
 
-            handleFeederState(feederState);
+            handleFeederState(feederState, static_cast<config::UICommunicationMode>(command.getCommunicationMode()));
             break;
         }
         default :
@@ -134,19 +134,6 @@ void ExternalCommInterprocessVisitor::initConnection(config::UICommunicationMode
         auto redHandshakeWrapper = SendingDataCommand(redHandshake.getFrameBytes());
         uiApplicationManager_->sendToExternalCommunicationProcess(redHandshakeWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
     }
-
-    if(uiApplicationManager_->getCurrentStateName() == "AcquisitionState")
-    {
-        auto planeCommand = SetPlaneCommand(uiApplicationManager_->getPlaneName());
-        auto planeCommandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
-        uiApplicationManager_->sendToExternalCommunicationProcess(planeCommandWrapper.getFrameBytes(), mode);
-
-//        this_thread::sleep_for(std::chrono::milliseconds(50));
-
-//        auto acqCommand = StartAcquisitionCommand();
-//        auto acqCommandWrapper = SendingDataCommand(acqCommand.getFrameBytes());
-//        uiApplicationManager_->sendToExternalCommunicationProcess(acqCommandWrapper.getFrameBytes(), mode);
-    }
 }
 
 void ExternalCommInterprocessVisitor::visit(DatabaseNameNotification& command)
@@ -161,15 +148,29 @@ void ExternalCommInterprocessVisitor::visit(DatabaseNameNotification& command)
     uiApplicationManager_->sendToExternalCommunicationProcess(hashCommand.getFrameBytes(), command.getMode());
 }
 
-void ExternalCommInterprocessVisitor::handleFeederState(FeederStateCode feederCode)
+void ExternalCommInterprocessVisitor::handleFeederState(FeederStateCode feederCode, config::UICommunicationMode mode)
 {
     if(uiApplicationManager_->getCurrentStateName() == "AcquisitionState")
     {
-        if (feederCode != FeederStateCode::MAIN_ACQ)
+
+        auto planeCommand = SetPlaneCommand(uiApplicationManager_->getPlaneName());
+        auto planeCommandWrapper = SendingDataCommand(planeCommand.getFrameBytes());
+        uiApplicationManager_->sendToExternalCommunicationProcess(planeCommandWrapper.getFrameBytes(), mode);
+
+        this_thread::sleep_for(std::chrono::milliseconds(50));
+
+        if (mode == config::UICommunicationMode::MASTER)
+        {
+            auto acqCommand = StartAcquisitionCommand();
+            auto acqCommandWrapper = SendingDataCommand(acqCommand.getFrameBytes());
+            uiApplicationManager_->sendToExternalCommunicationProcess(acqCommandWrapper.getFrameBytes(), mode);
+
+        }
+        else
         {
             auto changeState = ChangeStateCommand(FeederStateCode::MAIN_ACQ);
             auto commandWrapper = SendingDataCommand(changeState.getFrameBytes());
-            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+            uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), mode);
         }
     }
     else

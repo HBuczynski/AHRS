@@ -23,7 +23,7 @@ namespace main_process
         virtual void visit(communication::DatabaseNameNotification& command);
 
     private:
-        void handleFeederState(FeederStateCode feederCode);
+        void handleFeederState(FeederStateCode feederCode, config::UICommunicationMode mode);
 
         void initConnection(config::UICommunicationMode mode);
 

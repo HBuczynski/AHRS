@@ -21,6 +21,9 @@ namespace communication
         virtual void visit(BITsResponse& data) override;
         virtual void visit(CalibrateAccelerometerResponse& data) override;
 
+        config::UICommunicationMode mode() const;
+        void setMode(const config::UICommunicationMode &mode);
+
     private:
         void initializeMessageQueue();
 
@@ -28,6 +31,8 @@ namespace communication
 
         config::UIMessageQueues uiMessageQueuesParameters_;
         std::unique_ptr<communication::MessageQueueWrapper> sendingMessageQueue_;
+
+        config::UICommunicationMode mode_;
 
         utility::Logger& logger_;
     };

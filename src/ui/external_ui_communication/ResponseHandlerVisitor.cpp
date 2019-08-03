@@ -45,7 +45,7 @@ void ResponseHandlerVisitor::visit(DataResponse &data)
 
 void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
 {
-    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    ReceivingDataNotification dataNotification(static_cast<uint8_t>(mode_), data.getFrameBytes());
     sendMessageToMain(dataNotification.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -57,7 +57,7 @@ void ResponseHandlerVisitor::visit(CalibratingStatusResponse &data)
 
 void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
 {
-    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    ReceivingDataNotification dataNotification(static_cast<uint8_t>(mode_), data.getFrameBytes());
     sendMessageToMain(dataNotification.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -69,7 +69,7 @@ void ResponseHandlerVisitor::visit(PlanesDatasetResponse &data)
 
 void ResponseHandlerVisitor::visit(FeederStateCodeResponse &data)
 {
-    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    ReceivingDataNotification dataNotification(static_cast<uint8_t>(mode_), data.getFrameBytes());
     sendMessageToMain(dataNotification.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -81,7 +81,7 @@ void ResponseHandlerVisitor::visit(FeederStateCodeResponse &data)
 
 void ResponseHandlerVisitor::visit(BITsResponse& data)
 {
-    ReceivingDataNotification dataNotification(data.getFrameBytes());
+    ReceivingDataNotification dataNotification(static_cast<uint8_t>(mode_), data.getFrameBytes());
     sendMessageToMain(dataNotification.getFrameBytes());
 
     if(logger_.isInformationEnable())
@@ -131,4 +131,14 @@ void ResponseHandlerVisitor::sendMessageToMain(std::vector<uint8_t> msg)
         const std::string message = string("-ExtCOMM-ResponseHandlerVisitor:: Send msg to main process.");
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+config::UICommunicationMode ResponseHandlerVisitor::mode() const
+{
+    return mode_;
+}
+
+void ResponseHandlerVisitor::setMode(const config::UICommunicationMode &mode)
+{
+    mode_ = mode;
 }

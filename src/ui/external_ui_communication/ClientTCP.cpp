@@ -16,7 +16,9 @@ ClientTCP::ClientTCP(uint16_t portIn, string addressIn, config::UICommunicationM
       mode_(mode),
       keepAliveTimer_("KeepAliveTimer"),
       logger_(Logger::getInstance())
-{}
+{
+    responseHandler_.setMode(mode);
+}
 
 ClientTCP::~ClientTCP()
 {
