@@ -22,6 +22,7 @@ MainAcqState::MainAcqState(const std::string &name, std::shared_ptr<State> paren
     : State(name, parent),
       previousTime_(0),
       previousAltitude_(0),
+      previousVerticalVelocity_(0),
       gpsAdafruit_(FEEDER_GPS_DEVICE_FILE),
       runAcq_(false),
       sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH))
@@ -227,12 +228,15 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
     generalData.flightMeasurements.machNo = calculateMachNo(generalData.gpsData.groundSpeed, generalData.gpsData.altitude);
     generalData.flightMeasurements.pressure = 0;
     generalData.flightMeasurements.slipSkid = 0;
-    generalData.flightMeasurements.turnCoordinator = generalData.imuData.roll;
+    generalData.flightMeasurements.turnCoordinator = generalData.imuData.roll / 25.0;
 
     /* units: m/s */
-    generalData.flightMeasurements.verticalSpeed = (generalData.gpsData.altitude - previousAltitude_) / (generalData.flightMeasurements.timestamp - previousTime_);
-    previousTime_ = generalData.flightMeasurements.timestamp;
-    previousAltitude_ = generalData.flightMeasurements.altitude;
+    if(generalData.flightMeasurements.timestamp - previousTime_ >= 2)
+    {
+        generalData.flightMeasurements.verticalSpeed = (generalData.gpsData.altitude - previousAltitude_) / (generalData.flightMeasurements.timestamp - previousTime_);
+        previousTime_ = generalData.flightMeasurements.timestamp;
+        previousAltitude_ = generalData.flightMeasurements.altitude;
+    }
 }
 
 double MainAcqState::calculateMachNo(double velocity, double altitude)

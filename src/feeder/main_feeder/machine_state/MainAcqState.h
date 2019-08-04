@@ -40,6 +40,7 @@ private:
 
     uint64_t previousTime_;
     double previousAltitude_;
+    double previousVerticalVelocity_;
 
     std::function<FeederDataContainer&()> getFeederData_;
     telemetry::PlaneOrientationHandler planeOrientation_;
