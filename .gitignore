@@ -1,5 +1,6 @@
 #Ignore target files:
 target/*
+tshark_out/*
 
 # Compiled Object files
 *.slo
