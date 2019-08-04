@@ -33,9 +33,13 @@ private:
     void runAcquisition();
 
     void calculateFlightParameters(FeederGeneralData& generalData);
+    double calculateMachNo(double velocity, double altitude);
     void save2Database();
 
     std::shared_ptr<database::FeederDb> feederDb_;
+
+    uint64_t previousTime_;
+    double previousAltitude_;
 
     std::function<FeederDataContainer&()> getFeederData_;
     telemetry::PlaneOrientationHandler planeOrientation_;

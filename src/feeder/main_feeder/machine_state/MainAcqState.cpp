@@ -20,6 +20,8 @@ bool MainAcqState::initialization_ = false;
 
 MainAcqState::MainAcqState(const std::string &name, std::shared_ptr<State> parent)
     : State(name, parent),
+      previousTime_(0),
+      previousAltitude_(0),
       gpsAdafruit_(FEEDER_GPS_DEVICE_FILE),
       runAcq_(false),
       sharedMemoryParameters_(ConfigurationReader::getFeederSharedMemory(FEEDER_PARAMETERS_FILE_PATH))
@@ -214,18 +216,35 @@ void MainAcqState::calculateFlightParameters(FeederGeneralData& generalData)
     generalData.flightMeasurements.heading = generalData.imuData.yaw;
 
     generalData.flightMeasurements.altitude = generalData.gpsData.altitude;
+
     generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
     generalData.flightMeasurements.latitude = generalData.gpsData.latitude;
     generalData.flightMeasurements.latitudeDirection = generalData.gpsData.latitudeDirection;
     generalData.flightMeasurements.longitude = generalData.gpsData.longitude;
     generalData.flightMeasurements.longitudeDirection = generalData.gpsData.longitudeDirection;
-    generalData.flightMeasurements.groundSpeed = generalData.gpsData.groundSpeed;
 
-    generalData.flightMeasurements.machNo = generalData.gpsData.groundSpeed  / 360.0f;
-    generalData.flightMeasurements.pressure = 3;
+    // TO DO:
+    generalData.flightMeasurements.machNo = calculateMachNo(generalData.gpsData.groundSpeed, generalData.gpsData.altitude);
+    generalData.flightMeasurements.pressure = 0;
     generalData.flightMeasurements.slipSkid = 0;
-    generalData.flightMeasurements.turnCoordinator = sin(generalData.imuData.pitch / 23.0f)*4;
-    generalData.flightMeasurements.verticalSpeed = 5.0f + sin(33.0f * generalData.imuData.pitch / 238.098f)*15.0f;
+    generalData.flightMeasurements.turnCoordinator = generalData.imuData.roll;
+
+    /* units: m/s */
+    generalData.flightMeasurements.verticalSpeed = (generalData.gpsData.altitude - previousAltitude_) / (generalData.flightMeasurements.timestamp - previousTime_);
+    previousTime_ = generalData.flightMeasurements.timestamp;
+    previousAltitude_ = generalData.flightMeasurements.altitude;
+}
+
+double MainAcqState::calculateMachNo(double velocity, double altitude)
+{
+    double a_0 = 340.3; // m/s
+    double t_0 = 288.15; // Kelwins
+
+    double t = t_0 - 6.5*altitude / 1000.0;
+
+    double a = a_0*sqrt(t/288.0);
+
+    return velocity / a;
 }
 
 void MainAcqState::save2Database()
