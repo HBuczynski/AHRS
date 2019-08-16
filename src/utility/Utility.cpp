@@ -110,7 +110,7 @@ double Utility::getInterfaceChannel(const std::string& channel)
     FILE *pipe;
 
 #if defined(VIRTUAL_BOARD)
-     string cmd = "iwlist wlp1s0 channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
+     string cmd = "iwlist wlp1s10 channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #else
      string cmd = "iwlist " + channel + " channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #endif
@@ -123,7 +123,12 @@ double Utility::getInterfaceChannel(const std::string& channel)
     fgets(line, LINE_BUFSIZE, pipe);
     pclose(pipe); /* Close the pipe */
 
-    return std::stod(line);
+    try {
+        return std::stod(line);
+    }
+    catch(std::exception &e) {
+        return 0.0;
+    }
 }
 
 double Utility::getTemp()
@@ -144,7 +149,12 @@ double Utility::getTemp()
      pclose(pipe); /* Close the pipe */
 
 
-     return std::stod(line);
+     try {
+         return std::stod(line);
+     }
+     catch(std::exception &e) {
+         return 0.0;
+     }
 #endif
 }
 
@@ -166,5 +176,10 @@ double Utility::getConnectionLevel(const std::string& channel)
      fgets(line, LINE_BUFSIZE, pipe);
      pclose(pipe); /* Close the pipe */
 
-     return std::stod(line);
+     try {
+         return std::stod(line);
+     }
+     catch(std::exception &e) {
+         return 0.0;
+     }
 }
