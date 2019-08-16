@@ -112,10 +112,9 @@ double Utility::getInterfaceChannel(const std::string& channel)
 #if defined(VIRTUAL_BOARD)
      string cmd = "iwlist wlp1s10 channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #else
-     string cmd = "iwlist " + channel + " | grep Current | grep -o '[0-9][.][[:digit:]]*'";
+     string cmd = "iwlist " + channel + " channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #endif
 
-          cout << cmd << endl;
     pipe = popen(cmd.c_str(), "r");
 
     if (pipe == NULL)
