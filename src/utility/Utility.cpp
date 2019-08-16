@@ -112,7 +112,7 @@ double Utility::getInterfaceChannel(const std::string& channel)
 #if defined(VIRTUAL_BOARD)
      string cmd = "iwlist wlp1s10 channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #else
-     string cmd = "iwlist " + channel + " channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
+     string cmd = "iwlist " + channel + " | grep Current | grep -o '[0-9][.][[:digit:]]*'";
 #endif
 
     pipe = popen(cmd.c_str(), "r");
@@ -167,7 +167,7 @@ double Utility::getConnectionLevel(const std::string& channel)
 #if defined(VIRTUAL_BOARD)
      string cmd = "iwconfig wlp1s0 | grep level | cut -c 44- | cut -c1-3";
 #else
-     string cmd = "iwconfig " + channel + " wlan0 | grep level | cut -c 44- | cut -c1-3";
+     string cmd = "iwconfig " + channel + " | grep level | cut -c 44- | cut -c1-3";
 #endif
      pipe = popen(cmd.c_str(), "r");
      if (pipe == NULL)
