@@ -141,6 +141,8 @@ double Utility::getTemp()
      FILE *pipe;
 
      string cmd = "vcgencmd measure_temp | grep -o '[[:digit:]]*[.][[:digit:]]*'";
+
+     cout << cmd << endl;
      pipe = popen(cmd.c_str(), "r");
      if (pipe == NULL)
          return 0.0;
