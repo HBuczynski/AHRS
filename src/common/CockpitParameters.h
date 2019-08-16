@@ -14,6 +14,12 @@ struct CockpitProperties
     double core2;
     double core3;
     double core4;
+
+    double first_bandwith;
+    double second_bandwith;
+
+    double first_power;
+    double second_power;
 };
 
 struct CockpitNetwork

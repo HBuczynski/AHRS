@@ -56,7 +56,10 @@ void CockpitDb::insertCockpitProperties(const CockpitProperties &properties)
     stringstream stream;
     stream << COCKPIT_PROPERTIES_INSERT << "("                << properties.timestamp << SEMICOLON
                                                               << properties.temperature << SEMICOLON
-                                                              << properties.power << SEMICOLON
+                                                              << properties.first_power << SEMICOLON
+                                                              << properties.second_power << SEMICOLON
+                                                              << properties.first_bandwith << SEMICOLON
+                                                              << properties.second_bandwith << SEMICOLON
                                                               << properties.core1 << SEMICOLON
                                                               << properties.core2 << SEMICOLON
                                                               << properties.core3 << SEMICOLON

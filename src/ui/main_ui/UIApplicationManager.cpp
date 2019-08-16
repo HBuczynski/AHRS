@@ -334,30 +334,31 @@ void UIApplicationManager::sendToExternalCommunicationProcess(vector<uint8_t> da
 void UIApplicationManager::saveGeneral2DB()
 {
     CockpitProperties properties = {0};
-    CockpitNetwork network = {0};
     RPIParams params;
 
     while(runDbThread_)
     {
-        auto cores = utility::Utility::getCPU(500);
+        auto cores = utility::Utility::getCPU(1000);
 
         properties.core1 = cores[0] * 100.f;
         properties.core2 = cores[1] * 100.f;
         properties.core3 = cores[2] * 100.f;
         properties.core4 = cores[3] * 100.f;
 
-        properties.temperature = params.getTemp();
+        properties.temperature = utility::Utility::getTemp();
 
-        network.bandwith = 2.4;
-        network.networkMode = 1;
-        network.networkNumber = 1;
+        properties.first_bandwith = utility::Utility::getInterfaceChannel("wlan1");
+        properties.second_bandwith = utility::Utility::getInterfaceChannel("wlan2");
 
-        network.timestamp = properties.timestamp = TimeManager::getImeSinceEpoch();
+        properties.first_power = utility::Utility::getConnectionLevel("wlan1");
+        properties.second_power = utility::Utility::getConnectionLevel("wlan2");
 
-//        cockpitDb_->insertCockpitNetwork(network);
+
+        properties.timestamp = TimeManager::getImeSinceEpoch();
+
         cockpitDb_->insertCockpitProperties(properties);
 
-        this_thread::sleep_for(std::chrono::milliseconds(500));
+        this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
 
