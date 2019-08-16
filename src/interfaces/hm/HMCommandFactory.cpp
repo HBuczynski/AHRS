@@ -1,6 +1,7 @@
 #include "HMCommandFactory.h"
 
 #include "HMErrorCommandBuilder.h"
+#include "HMInvalidConnectionCommandBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -21,8 +22,11 @@ unique_ptr<HMCommand> HMCommandFactory::createCommand(const std::vector<uint8_t>
             builder_ = make_unique<HMErrorCommandBuilder>();
             return move(builder_->create(notificationInBytes));
 
+        case HMCommandType::INVALID_CONNECTION_COMM:
+            builder_ = make_unique<HMInvalidConnectionCommandBuilder>();
+            return move(builder_->create(notificationInBytes));
+
         default:
             throw invalid_argument("Received command does not register in factory.");
-
     }
 }

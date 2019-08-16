@@ -31,6 +31,7 @@ namespace hm
         virtual void visit(const communication::HMRegisterMainNotification& command) override;
         virtual void visit(const communication::HMErrorNotification& command) override;
         virtual void visit(const communication::HMRemoveNodeNotification& command) override;
+        virtual void visit(const communication::HMInvalidConnectionNotification &command) override;
 
     private:
         void interruptNotification(timer_t timerID) override;

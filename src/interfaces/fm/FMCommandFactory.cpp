@@ -2,6 +2,7 @@
 
 #include "FMResetCommunicationProcessBuilder.h"
 #include "FMRestartChangeMasterBuilder.h"
+#include "FMChangeChannelBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -24,6 +25,10 @@ unique_ptr<FMCommand> FMCommandFactory::createCommand(const std::vector<uint8_t>
 
         case FMCommandType::RESTART_MASTER_WITH_CHANGE :
             builder_ = make_unique<FMRestartChangeMasterBuilder>();
+            return move(builder_->create(notificationInBytes));
+
+        case FMCommandType::CHANGE_CHANNEL :
+            builder_ = make_unique<FMChangeChannelBuilder>();
             return move(builder_->create(notificationInBytes));
 
         default:

@@ -2,6 +2,7 @@
 #define HMCOMMANDVISITOR_H
 
 #include "HMErrorCommand.h"
+#include "HMInvalidConnectionCommand.h"
 
 namespace communication
 {
@@ -12,6 +13,7 @@ namespace communication
         virtual ~HMCommandVisitor(){};
 
         virtual void visit(const HMErrorCommand& command) = 0;
+        virtual void visit(const HMInvalidConnectionCommand& command) = 0;
     };
 }
 

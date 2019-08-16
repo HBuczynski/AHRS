@@ -3,6 +3,7 @@
 
 #include "FMResetCommunicationProcessCommand.h"
 #include "FMRestartChangeMasterCommand.h"
+#include "FMChangeChannelCommand.h"
 
 namespace communication
 {
@@ -14,6 +15,7 @@ namespace communication
 
         virtual void visit(const FMResetCommunicationProcessCommand& command) = 0;
         virtual void visit(const FMRestartChangeMasterCommand& command) = 0;
+        virtual void visit(const FMChangeChannelCommand& command) = 0;
     };
 }
 

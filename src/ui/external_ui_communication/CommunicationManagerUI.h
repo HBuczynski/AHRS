@@ -35,6 +35,7 @@ namespace communication
         void launchTimer();
         void interruptNotification(timer_t timerID);
 
+        uint8_t connectionCounter_;
         config::UICommunicationMode mode_;
         uint8_t processNumber_;
         config::UIWirelessCommunication wirelessCommunicationParameters_;
@@ -47,6 +48,8 @@ namespace communication
 
         std::atomic<bool> connectionEstablished_;
         utility::Logger& logger_;
+
+        const uint8_t MAX_CONNECTION_NUMBER = 6;
     };
 }
 #endif

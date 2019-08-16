@@ -19,6 +19,7 @@ namespace main_process
 
         virtual void visit(const communication::FMResetCommunicationProcessCommand& command) override;
         virtual void visit(const communication::FMRestartChangeMasterCommand& command) override;
+        virtual void visit(const communication::FMChangeChannelCommand& command) override;
 
     private:
         CommunicationProcessesHandler *communicationProcessesHandler_;

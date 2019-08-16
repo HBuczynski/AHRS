@@ -102,3 +102,69 @@ std::vector<float> Utility::getCPU(unsigned intervalMS) {
     }
     return cpu_loads;
 }
+
+double Utility::getInterfaceChannel(const std::string& channel)
+{
+    const uint8_t LINE_BUFSIZE = 128;
+    char line[LINE_BUFSIZE];
+    FILE *pipe;
+
+#if defined(VIRTUAL_BOARD)
+     string cmd = "iwlist wlp1s0 channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
+#else
+     string cmd = "iwlist " + channel + " channel | grep Current | grep -o '[0-9][.][[:digit:]]*'";
+#endif
+
+    pipe = popen(cmd.c_str(), "r");
+
+    if (pipe == NULL)
+        return 0.0;
+
+    fgets(line, LINE_BUFSIZE, pipe);
+    pclose(pipe); /* Close the pipe */
+
+    return std::stod(line);
+}
+
+double Utility::getTemp()
+{
+#if defined(VIRTUAL_BOARD)
+    return 0.0;
+#else
+    const uint8_t LINE_BUFSIZE = 128;
+     char line[LINE_BUFSIZE];
+     FILE *pipe;
+
+     string cmd = "vcgencmd measure_temp | grep -o '[[:digit:]]*[.][[:digit:]]*'";
+     pipe = popen(cmd.c_str(), "r");
+     if (pipe == NULL)
+         return 0.0;
+
+     fgets(line, LINE_BUFSIZE, pipe);
+     pclose(pipe); /* Close the pipe */
+
+
+     return std::stod(line);
+#endif
+}
+
+double Utility::getConnectionLevel(const std::string& channel)
+{
+     const uint8_t LINE_BUFSIZE = 128;
+     char line[LINE_BUFSIZE];
+     FILE *pipe;
+
+#if defined(VIRTUAL_BOARD)
+     string cmd = "iwconfig wlp1s0 | grep level | cut -c 44- | cut -c1-3";
+#else
+     string cmd = "iwconfig " + channel + " wlan0 | grep level | cut -c 44- | cut -c1-3";
+#endif
+     pipe = popen(cmd.c_str(), "r");
+     if (pipe == NULL)
+         return 0.0;
+
+     fgets(line, LINE_BUFSIZE, pipe);
+     pclose(pipe); /* Close the pipe */
+
+     return std::stod(line);
+}

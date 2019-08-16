@@ -146,7 +146,7 @@ void ClientTCP::executeCommands()
             bool isSuccess = false;
             uint8_t commandSendingCounter;
 
-            //for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
+            for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
             {
                 try
                 {
@@ -170,7 +170,7 @@ void ClientTCP::executeCommands()
                 }
                 catch (exception &e)
                 {
-                    cout << "In exception" << endl;
+                    cout << "In exception : " << e.what() << endl;
                     catchExceptions(e.what(), isEndConnectionSent, commandSendingCounter);
                     this_thread::sleep_for(std::chrono::milliseconds(200));
                 }

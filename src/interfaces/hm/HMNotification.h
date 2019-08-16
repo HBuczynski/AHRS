@@ -14,6 +14,7 @@ namespace communication
         MAIN_REGISTER = 0x15,
         ERROR = 0x20,
         REMOVE_NODE = 0x25,
+        INVALID_CONNECTION = 0x30,
     };
 
     class HMNotification : public Frame

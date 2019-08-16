@@ -500,11 +500,11 @@ void ApplicationManager::saveGeneralData2DB()
 
     while (runDbThread_)
     {
-        const auto cores = Utility::getCPU(400);
+        const auto cores = Utility::getCPU(700);
 
-        data.bandwith = 2.4;
-        data.mode = 24;
-        data.power = 100;
+        data.bandwith = utility::Utility::getInterfaceChannel("wlan1");
+        data.mode = static_cast<uint8_t>(config::ConfigurationReader::getFeederType(config::FEEDER_TYPE_FILE_PATH).mode);
+        data.power = utility::Utility::getConnectionLevel("wlan1");
         data.timestamp = TimeManager::getImeSinceEpoch();
         data.core1 = cores[0] * 100.0f;
         data.core2 = cores[1] * 100.0f;
@@ -513,6 +513,6 @@ void ApplicationManager::saveGeneralData2DB()
 
         feederDb_->insertFeederProperties(data);
 
-        this_thread::sleep_for(std::chrono::milliseconds(2));
+        this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }

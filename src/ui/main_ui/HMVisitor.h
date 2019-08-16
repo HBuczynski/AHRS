@@ -17,6 +17,7 @@ namespace main_process
 
         void initialize();
         void visit(const communication::HMErrorCommand& command);
+        void visit(const communication::HMInvalidConnectionCommand& command);
 
     private:
         redundancy::FM faultManagement_;

@@ -6,6 +6,7 @@
 
 #include <interfaces/hm/HMErrorCommand.h>
 #include <interfaces/hm/HMNotificationFactory.h>
+#include <interfaces/hm/HMInvalidConnectionCommand.h>
 #include <config_reader/ConfigurationReader.h>
 
 using namespace hm;
@@ -253,4 +254,17 @@ void HMManager::visit(const communication::HMRemoveNodeNotification& command)
         const string message = string("-HM- HMManager:: Received - HMRemoveNodeNotification, node: ") + to_string( static_cast<int>(node));
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
+}
+
+void HMManager::visit(const communication::HMInvalidConnectionNotification& command)
+{    
+    if(logger_.isInformationEnable())
+    {
+        const string message = string("-HM- HMManager:: Received - HMInvalidConnectionNotification");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    HMInvalidConnectionCommand invalidConnection(command.getProcessNumber());
+    auto packet = invalidConnection.getFrameBytes();
+    mainMessageQueue_->send(packet);
 }

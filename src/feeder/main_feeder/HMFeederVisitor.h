@@ -15,6 +15,7 @@ namespace main_process
         ~HMFeederVisitor();
 
         void visit(const communication::HMErrorCommand& command);
+        void visit(const communication::HMInvalidConnectionCommand& command);
 
     private:
         ApplicationManager* applicationManager_;

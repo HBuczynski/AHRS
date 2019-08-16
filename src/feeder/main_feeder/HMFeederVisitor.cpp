@@ -23,3 +23,8 @@ void HMFeederVisitor::visit(const HMErrorCommand& command)
         logger_.writeLog(LogType::INFORMATION_LOG, message);
     }
 }
+
+ void HMFeederVisitor::visit(const communication::HMInvalidConnectionCommand& command)
+ {
+
+ }

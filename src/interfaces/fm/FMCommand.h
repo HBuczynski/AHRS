@@ -11,6 +11,7 @@ namespace communication
     {
         RESET_COMMUNICATION_PROCESS = 0x03,
         RESTART_MASTER_WITH_CHANGE = 0x06,
+        CHANGE_CHANNEL = 0x08,
     };
 
     class FMCommand : public Frame

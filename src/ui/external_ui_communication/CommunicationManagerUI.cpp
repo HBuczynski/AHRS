@@ -3,6 +3,8 @@
 #include <interfaces/communication_process_ui/CommunicationStatusNotification.h>
 #include <interfaces/wireless_commands/InitConnectionCommand.h>
 
+#include <interfaces/hm/HMInvalidConnectionNotification.h>
+
 #include <config_reader/ConfigurationReader.h>
 
 #include <iostream>
@@ -17,6 +19,7 @@ using namespace communication;
 
 CommunicationManagerUI::CommunicationManagerUI(UICommunicationMode mode, uint8_t processNumber, const string &name, const hsm::TransitionTable &transitionTable, std::shared_ptr<hsm::State> rootState)
     : HSM(name, transitionTable, rootState),
+      connectionCounter_(0),
       mode_(mode),
       processNumber_(processNumber),
       wirelessCommunicationParameters_(config::ConfigurationReader::getUIWirelessCommunication(UI_PARAMETERS_FILE_PATH)),
@@ -107,6 +110,15 @@ void CommunicationManagerUI::interruptNotification(timer_t timerID)
     else
     {
         connectionEstablishingInterrupt_.stop();
+    }
+
+    if (++connectionCounter_ > MAX_CONNECTION_NUMBER)
+    {
+        HMInvalidConnectionNotification command(processNumber_);
+        auto packet = command.getFrameBytes();
+        hmCallback_(packet);
+
+        connectionCounter_ = 0;
     }
 }
 

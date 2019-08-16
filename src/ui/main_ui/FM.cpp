@@ -16,14 +16,17 @@ using namespace boost::interprocess;
 
 FM::FM()
     :   uiMessageQueuesParameters_(config::ConfigurationReader::getUIMessageQueues(UI_PARAMETERS_FILE_PATH.c_str())),
-        logger_(Logger::getInstance())
-{
+        logger_(Logger::getInstance()),
+        firstNetCounter_(0),
+        secondNetCounter_(0)
+{}
 
-}
 void FM::initialize()
 {
     initializeHMMessageQueue();
     initializeMainMessageQueue();
+
+    initializeChannels();
 }
 
 void FM::initializeHMMessageQueue()
@@ -62,7 +65,6 @@ void FM::initializeMainMessageQueue()
             const string message = string("-MAIN- FM:: Communication message queue has not initialized correctly - ") + ex.what();
             logger_.writeLog(LogType::ERROR_LOG, message);
         }
-
     }
 
     if (logger_.isDebugEnable())
@@ -70,6 +72,12 @@ void FM::initializeMainMessageQueue()
         const std::string message = std::string("-MAIN- FM::Communication message queue has initialized correctly.");
         logger_.writeLog(LogType::DEBUG_LOG, message);
     }
+}
+
+void FM::initializeChannels()
+{
+    firstNetChannels_ = {3, 6, 8, 9, 11};
+    secondNetChannels_ = {36, 40, 44, 149, 157, 165};
 }
 
 void FM::handeError(const communication::HMErrorCommand& command)
@@ -99,6 +107,25 @@ void FM::lostConnection(config::UICommunicationMode mode, std::string systemMode
         FMResetCommunicationProcessCommand processReset(UICommunicationMode::REDUNDANT);
         auto packet = processReset.getFrameBytes();
         mainMessageQueue_->send(packet);
+    }
+}
+
+void FM::handleInvalidConnection(uint8_t processNumber)
+{
+    // TO DO
+    if (logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-MAIN- FM:: handleInvalidConnection.");
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    if (processNumber == config::FIRST_PROCESS)
+    {
+
+    }
+    else if (processNumber == config::SECOND_PROCESS)
+    {
+
     }
 }
 

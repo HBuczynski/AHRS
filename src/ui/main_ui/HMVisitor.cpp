@@ -32,3 +32,8 @@ void HMVisitor::visit(const HMErrorCommand& command)
     HMErrorCommand newCom(command.getHMNode(), command.getHMError(), command.getMode(), uiApplicationManager_->getCurrentStateName());
     faultManagement_.handeError(newCom);
 }
+
+void HMVisitor::visit(const communication::HMInvalidConnectionCommand& command)
+{
+    faultManagement_.handleInvalidConnection(command.getProcessNumber());
+}

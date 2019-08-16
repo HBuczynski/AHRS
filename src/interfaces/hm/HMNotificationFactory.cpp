@@ -5,6 +5,7 @@
 #include "HMRegisterMainBuilder.h"
 #include "HMErrorBuilder.h"
 #include "HMRemoveNodeBuilder.h"
+#include "HMInvalidConnectionBuilder.h"
 
 #include <iostream>
 
@@ -43,8 +44,11 @@ unique_ptr<HMNotification> HMNotificationFactory::createNotification(const std::
             builder_ = make_unique<HMRemoveNodeBuilder>();
             return move(builder_->create(notificationInBytes));
 
+        case HMNotificationType::INVALID_CONNECTION:
+            builder_ = make_unique<HMInvalidConnectionBuilder>();
+            return move(builder_->create(notificationInBytes));
+
         default:
             throw invalid_argument("Received HM notification does not register in factory.");
-
     }
 }
