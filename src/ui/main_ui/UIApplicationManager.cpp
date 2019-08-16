@@ -174,8 +174,8 @@ bool UIApplicationManager::initializeDb()
     uint32_t hashed = hasher(dbName);
     cockpitDb_->insertHASH(hashed);
 
-    runDbThread_ = true;
-    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
+//    runDbThread_ = true;
+//    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
 
     return isSuccess;
 }
@@ -233,6 +233,8 @@ void UIApplicationManager::startUISystem()
         }
 
         this_thread::sleep_for(std::chrono::milliseconds(10));
+
+        saveGeneral2DB();
     }
 }
 
@@ -337,7 +339,7 @@ void UIApplicationManager::saveGeneral2DB()
     CockpitNetwork network = {0};
     RPIParams params;
 
-    while(runDbThread_)
+    //while(runDbThread_)
     {
         auto cores = utility::Utility::getCPU(800);
 
@@ -357,7 +359,7 @@ void UIApplicationManager::saveGeneral2DB()
         cockpitDb_->insertCockpitNetwork(network);
         cockpitDb_->insertCockpitProperties(properties);
 
-        this_thread::sleep_for(std::chrono::milliseconds(200));
+        //this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
