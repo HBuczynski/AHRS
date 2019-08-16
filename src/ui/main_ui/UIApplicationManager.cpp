@@ -174,8 +174,8 @@ bool UIApplicationManager::initializeDb()
     uint32_t hashed = hasher(dbName);
     cockpitDb_->insertHASH(hashed);
 
-//    runDbThread_ = true;
-//    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
+    runDbThread_ = true;
+    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
 
     return isSuccess;
 }
@@ -339,7 +339,7 @@ void UIApplicationManager::saveGeneral2DB()
 
     while(runDbThread_)
     {
-        auto cores = utility::Utility::getCPU(400);
+        auto cores = utility::Utility::getCPU(800);
 
         properties.core1 = cores[0] * 100.f;
         properties.core2 = cores[1] * 100.f;
@@ -357,7 +357,7 @@ void UIApplicationManager::saveGeneral2DB()
         cockpitDb_->insertCockpitNetwork(network);
         cockpitDb_->insertCockpitProperties(properties);
 
-        this_thread::sleep_for(std::chrono::milliseconds(1));
+        this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 }
 
