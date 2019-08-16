@@ -135,7 +135,7 @@ void InterClientTCP::executeCommands()
 
             try
             {
-                for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
+                //for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
                 {
                     socket_->sendData(command->getFrameBytes());
 

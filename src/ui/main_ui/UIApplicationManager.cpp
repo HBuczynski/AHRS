@@ -174,8 +174,8 @@ bool UIApplicationManager::initializeDb()
     uint32_t hashed = hasher(dbName);
     cockpitDb_->insertHASH(hashed);
 
-//    runDbThread_ = true;
-//    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
+    runDbThread_ = true;
+    dbThread_ = thread(&UIApplicationManager::saveGeneral2DB, this);
 
     return isSuccess;
 }

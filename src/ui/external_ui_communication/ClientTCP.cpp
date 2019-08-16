@@ -146,7 +146,7 @@ void ClientTCP::executeCommands()
             bool isSuccess = false;
             uint8_t commandSendingCounter;
 
-            for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
+            //for(commandSendingCounter=0; commandSendingCounter < COMMAND_SENDING_REPETITION && !isSuccess; ++commandSendingCounter)
             {
                 try
                 {
