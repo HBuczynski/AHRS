@@ -76,7 +76,7 @@ void FM::initializeMainMessageQueue()
 
 void FM::initializeChannels()
 {
-    firstNetChannels_ = {3, 6, 8, 9, 11};
+    firstNetChannels_ = {3, 6, 8, 9,10, 11};
     secondNetChannels_ = {36, 40, 44, 149, 157, 165};
 }
 
@@ -112,7 +112,6 @@ void FM::lostConnection(config::UICommunicationMode mode, std::string systemMode
 
 void FM::handleInvalidConnection(uint8_t processNumber)
 {
-    // TO DO
     if (logger_.isInformationEnable())
     {
         const std::string message = std::string("-MAIN- FM:: handleInvalidConnection.");
@@ -121,11 +120,21 @@ void FM::handleInvalidConnection(uint8_t processNumber)
 
     if (processNumber == config::FIRST_PROCESS)
     {
+        firstNetCounter_ = firstNetCounter_ % firstNetChannels_.size();
 
+        system(INIT_FIRST_NET.c_str());
+        auto cmd = CHANGE_NET + " " + CHANGE_WLAN_1 + " " + to_string(firstNetChannels_[firstNetCounter_++]);
+        system(cmd.c_str());
+        system(INIT_FIRST_NET.c_str());cd
     }
     else if (processNumber == config::SECOND_PROCESS)
     {
+        secondNetCounter_ = secondNetCounter_ % secondNetChannels_.size();
 
+        system(INIT_SECOND_NET.c_str());
+        auto cmd = CHANGE_NET + " " + CHANGE_WLAN_2 + " " + to_string(secondNetChannels_[secondNetCounter_++]);
+        system(cmd.c_str());
+        system(INIT_SECOND_NET.c_str());
     }
 }
 
