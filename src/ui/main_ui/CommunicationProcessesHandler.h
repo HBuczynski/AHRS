@@ -29,6 +29,8 @@ namespace main_process
         void resetProcess(config::UICommunicationMode mode);
         void restartMasterProcessAndChange(std::string systemState);
 
+        uint8_t getMasterProcessID();
+
     private:
         bool initializeFirstProcessMessageQueue();
         bool initializeSecondProcessMessageQueue();
@@ -45,6 +47,7 @@ namespace main_process
         std::shared_ptr<communication::MessageQueueWrapper> secondCommunicationMessageQueue;
 
         utility::Logger& logger_;
+        std::mutex pidsMutex_;
         std::vector<ProcessID> communicationPIDs_;
     };
 }

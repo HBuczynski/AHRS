@@ -20,6 +20,8 @@ struct CockpitProperties
 
     double first_power;
     double second_power;
+
+    double current_net;
 };
 
 struct CockpitNetwork

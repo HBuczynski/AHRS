@@ -52,13 +52,14 @@ namespace database
                                                           "POWER2              DOUBLE, "
                                                           "BANDWITH1              DOUBLE, "
                                                           "BANDWITH2              DOUBLE, "
+                                                          "NET              DOUBLE, "
                                                           "COREA              DOUBLE, "
                                                           "COREB              DOUBLE, "
                                                           "COREC              DOUBLE, "
                                                           "CORED              DOUBLE "
                                                       ");";
 
-        const std::string COCKPIT_PROPERTIES_INSERT = "INSERT INTO COCKPIT_PROPERTIES (TIMESTAMP,RPI_TEMPERATURE,POWER1,POWER2,BANDWITH1,BANDWITH2,COREA,COREB,COREC,CORED) VALUES";
+        const std::string COCKPIT_PROPERTIES_INSERT = "INSERT INTO COCKPIT_PROPERTIES (TIMESTAMP,RPI_TEMPERATURE,POWER1,POWER2,BANDWITH1,BANDWITH2,NET,COREA,COREB,COREC,CORED) VALUES";
 
 
         const std::string COCKPIT_NETWORK_TABLE = "CREATE TABLE NETWORK ("

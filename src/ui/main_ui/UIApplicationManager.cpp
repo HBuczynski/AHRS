@@ -355,6 +355,7 @@ void UIApplicationManager::saveGeneral2DB()
 
 
         properties.timestamp = TimeManager::getImeSinceEpoch();
+        properties.current_net = communicationProcessesHandler_.getMasterProcessID();
 
         cockpitDb_->insertCockpitProperties(properties);
 

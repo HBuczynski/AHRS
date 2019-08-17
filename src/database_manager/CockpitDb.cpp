@@ -60,6 +60,7 @@ void CockpitDb::insertCockpitProperties(const CockpitProperties &properties)
                                                               << properties.second_power << SEMICOLON
                                                               << properties.first_bandwith << SEMICOLON
                                                               << properties.second_bandwith << SEMICOLON
+                                                              << properties.current_net << SEMICOLON
                                                               << properties.core1 << SEMICOLON
                                                               << properties.core2 << SEMICOLON
                                                               << properties.core3 << SEMICOLON
