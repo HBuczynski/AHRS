@@ -257,10 +257,10 @@ void RTFusionKalman4::newIMUData(RTIMU_DATA& data, const RTIMUSettings *settings
     data.fusionPose = m_fusionPose;
     data.fusionQPose = m_fusionQPose;
 
-    if(logger_.isInformationEnable())
+    if(logger_.isDebugEnable())
     {
         const string message = "Kalman: " + string(RTMath::displayDegrees(" ", m_fusionPose));
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
 }

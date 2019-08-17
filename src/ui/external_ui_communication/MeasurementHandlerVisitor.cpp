@@ -91,13 +91,13 @@ void MeasurementHandlerVisitor::visit(GpsData &data)
 
 void MeasurementHandlerVisitor::visit(FeederData &data)
 {
-    if(logger_.isInformationEnable())
+    if(logger_.isDebugEnable())
     {
         const string message = string("-ExtCOMM-MeasurementHandlerVisitor :: Received ") + data.getName() +
                 string(". Pitch: ") + to_string(data.getMeasurements().imuData.pitch) +
                 string(". Latitude: ") + to_string(data.getMeasurements().gpsData.latitude) +
                 string(". Altirude: ") + to_string(data.getMeasurements().gpsData.altitude);
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     auto frame = data.getFrameBytes();

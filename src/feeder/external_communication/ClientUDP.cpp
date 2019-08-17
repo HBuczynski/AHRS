@@ -18,12 +18,12 @@ ClientUDP::~ClientUDP()
 
 void ClientUDP::sendData(std::vector<uint8_t> &frame)
 {
-    if(logger_.isInformationEnable())
+    if(logger_.isDebugEnable())
     {
         const string message = string("-EXTCOM- ClientUDP :: Client send data to address: ") + address_ + string(" and port: ") +
                          to_string(port_) + string(".");
 
-        logger_.writeLog(LogType::INFORMATION_LOG, message);
+        logger_.writeLog(LogType::DEBUG_LOG, message);
     }
 
     try
