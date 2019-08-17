@@ -125,7 +125,7 @@ void FM::handleInvalidConnection(uint8_t processNumber)
         system(INIT_FIRST_NET.c_str());
         auto cmd = CHANGE_NET + " " + CHANGE_WLAN_1 + " " + to_string(firstNetChannels_[firstNetCounter_++]);
         system(cmd.c_str());
-        system(INIT_FIRST_NET.c_str());cd
+        system(INIT_FIRST_NET.c_str());
     }
     else if (processNumber == config::SECOND_PROCESS)
     {
