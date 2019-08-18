@@ -76,8 +76,8 @@ void FM::initializeMainMessageQueue()
 
 void FM::initializeChannels()
 {
-    firstNetChannels_ = {3, 6, 8, 9,10, 11};
-    secondNetChannels_ = {36, 40, 44, 149, 157, 165};
+    firstNetChannels_ = {2, 4, 9, 11};
+    secondNetChannels_ = {36, 40, 44, 48};
 }
 
 void FM::handeError(const communication::HMErrorCommand& command)
