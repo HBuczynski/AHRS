@@ -12,7 +12,7 @@ int main()
     Logger &logger = Logger::getInstance("FD_main");
 
     InitLogStructure struc;
-    struc.debugLog = false;
+    struc.debugLog = true;
     struc.errroLog = true;
     struc.informationLog = true;
     struc.warningLog = true;
