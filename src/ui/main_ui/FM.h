@@ -35,8 +35,8 @@ namespace redundancy
         uint8_t secondNetCounter_;
         std::vector<uint8_t> secondNetChannels_;
 
-        const std::string CHANGE_WLAN_1 = "wlan1 g";
-        const std::string CHANGE_WLAN_2 = "wlan2 a";
+        const std::string CHANGE_WLAN_1 = "wlan2 a";
+        const std::string CHANGE_WLAN_2 = "wlan1 g";
 
         const std::string INIT_FIRST_NET = "../../scripts/init_MASTER_NET.sh";
         const std::string INIT_SECOND_NET = "../../scripts/init_REDUNDANT_NET.sh";
