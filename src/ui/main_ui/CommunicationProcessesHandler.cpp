@@ -144,9 +144,9 @@ bool CommunicationProcessesHandler::launchCommunicationProcess(UICommunicationMo
 
     processID = make_tuple(pid, mode, processNumber);
 
-    //pidsMutex_.lock();
+    pidsMutex_.lock();
     communicationPIDs_.push_back(processID);
-    //pidsMutex_.unlock();
+    pidsMutex_.unlock();
 
     return true;
 }
@@ -189,7 +189,7 @@ void CommunicationProcessesHandler::waitOnProcess(pid_t &pid)
 void CommunicationProcessesHandler::resetProcess(UICommunicationMode mode)
 {
     // Kill process
-    //pidsMutex_.lock();
+    pidsMutex_.lock();
     const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [&mode](decltype(*communicationPIDs_.begin()) &iter)
     {
         return std::get<1>(iter) == mode;
@@ -208,14 +208,14 @@ void CommunicationProcessesHandler::resetProcess(UICommunicationMode mode)
     uint8_t processNumber = get<2>(*processIter);
 
     communicationPIDs_.erase(processIter);
-    //pidsMutex_.unlock();
+    pidsMutex_.unlock();
 
     launchCommunicationProcess(mode, processNumber);
 }
 
 void CommunicationProcessesHandler::restartMasterProcessAndChange(std::string systemState)
 {
-    //pidsMutex_.lock();
+    pidsMutex_.lock();
     const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
     {
         return std::get<1>(iter) == UICommunicationMode::MASTER;
@@ -236,7 +236,7 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange(std::string sy
     });
 
     std::get<1>(*redundantIter) = UICommunicationMode::MASTER;
-    //pidsMutex_.unlock();
+    pidsMutex_.unlock();
 
     UIChangeModeCommand changeCommand(UICommunicationMode::MASTER);
     auto packet = changeCommand.getFrameBytes();
@@ -261,7 +261,7 @@ void CommunicationProcessesHandler::restartMasterProcessAndChange(std::string sy
 
 void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, config::UICommunicationMode mode)
 {
-    //pidsMutex_.lock();
+    pidsMutex_.lock();
     const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [&mode](decltype(*communicationPIDs_.begin()) &iter)
     {
         return std::get<1>(iter) == mode;
@@ -270,12 +270,12 @@ void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, c
 
     if(std::get<2>(*processIter) == FIRST_PROCESS)
     {
-        //pidsMutex_.unlock();
+        pidsMutex_.unlock();
         firstCommunicationMessageQueue->send(message);
     }
     else
     {
-        //pidsMutex_.unlock();
+        pidsMutex_.unlock();
         secondCommunicationMessageQueue->send(message);
     }
 
@@ -283,11 +283,11 @@ void CommunicationProcessesHandler::sendMessage(std::vector<uint8_t> &message, c
 
 uint8_t CommunicationProcessesHandler::getMasterProcessID()
 {
-    //lock_guard<mutex> guard(pidsMutex_);
-//    const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
-//    {
-//        return std::get<1>(iter) == config::UICommunicationMode::MASTER;
-//    });
+    lock_guard<mutex> guard(pidsMutex_);
+    const auto processIter = std::find_if(communicationPIDs_.begin(), communicationPIDs_.end(), [](decltype(*communicationPIDs_.begin()) &iter)
+    {
+        return std::get<1>(iter) == config::UICommunicationMode::MASTER;
+    });
 
-    return 23;//std::get<2>(*processIter);
+    return std::get<2>(*processIter);
 }
