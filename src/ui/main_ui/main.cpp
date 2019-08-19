@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     Logger &logger = Logger::getInstance("UI_MAIN");
 
     InitLogStructure struc;
-    struc.debugLog = false;
+    struc.debugLog = true;
     struc.errroLog = true;
     struc.informationLog = true;
     struc.warningLog = true;
