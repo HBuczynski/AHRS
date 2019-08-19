@@ -76,7 +76,7 @@ void FM::initializeMainMessageQueue()
 
 void FM::initializeChannels()
 {
-    firstNetChannels_ = {2, 4, 9, 11};
+    firstNetChannels_ = {1, 6, 9, 11};
     secondNetChannels_ = {36, 40, 44, 48};
 }
 
