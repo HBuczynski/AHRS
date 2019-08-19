@@ -500,11 +500,12 @@ void ApplicationManager::saveGeneralData2DB()
 
     while (runDbThread_)
     {
-        const auto cores = Utility::getCPU(700);
+        const auto cores = Utility::getCPU(800);
 
         data.bandwith = utility::Utility::getInterfaceChannel("wlan1");
         data.mode = static_cast<uint8_t>(config::ConfigurationReader::getFeederType(config::FEEDER_TYPE_FILE_PATH).mode);
         data.power = utility::Utility::getConnectionLevel("wlan1");
+        data.temperature = utility::Utility::getTemp();
         data.timestamp = TimeManager::getImeSinceEpoch();
         data.core1 = cores[0] * 100.0f;
         data.core2 = cores[1] * 100.0f;
