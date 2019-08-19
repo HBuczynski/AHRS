@@ -126,11 +126,11 @@ bool CommunicationManagerUI::connectToFeeder()
 {
     unique_ptr<InitConnectionCommand> command;
 
-    if(mode_ == UICommunicationMode::MASTER)
+    if(processNumber_ == config::FIRST_PROCESS)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.firstSourcePort, wirelessCommunicationParameters_.firstSourceAddress);
     }
-    else if(mode_ == UICommunicationMode::REDUNDANT)
+    else if(processNumber_ == config::SECOND_PROCESS)
     {
         command = make_unique<InitConnectionCommand>(wirelessCommunicationParameters_.secondSourcePort, wirelessCommunicationParameters_.secondSourceAddress);
     }
