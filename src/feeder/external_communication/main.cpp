@@ -13,7 +13,7 @@ int main(int argc , char *argv[])
     Logger &logger = Logger::getInstance("FD_External_comm");
 
     InitLogStructure struc;
-    struc.debugLog = true;
+    struc.debugLog = false;
     struc.errroLog = true;
     struc.informationLog = true;
     struc.warningLog = true;
