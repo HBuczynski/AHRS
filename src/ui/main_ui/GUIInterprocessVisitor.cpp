@@ -101,9 +101,11 @@ void GUIInterprocessVisitor::visit(communication::GUIRestartResponse& data)
     auto commandWrapper = SendingDataCommand(command.getFrameBytes());
     uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
 
+    this_thread::sleep_for(std::chrono::milliseconds(100));
+
     uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
 
-    this_thread::sleep_for(std::chrono::milliseconds(100));
+    this_thread::sleep_for(std::chrono::milliseconds(800));
 
     system("sudo reboot");
 }
@@ -114,9 +116,11 @@ void GUIInterprocessVisitor::visit(communication::GUIShutdownResponse& data)
     auto commandWrapper = SendingDataCommand(command.getFrameBytes());
     uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
 
+    this_thread::sleep_for(std::chrono::milliseconds(100));
+
     uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
 
-    this_thread::sleep_for(std::chrono::milliseconds(100));
+    this_thread::sleep_for(std::chrono::milliseconds(800));
 
     system("sudo shutdown now");
 }
