@@ -1,6 +1,9 @@
 #include "ExitPage.h"
 #include "ui_ExitPage.h"
 
+#include <interfaces/gui/GUIRestartResponse.h>
+#include <interfaces/gui/GUIShutdownResponse.h>
+
 using namespace std;
 using namespace utility;
 using namespace peripherals;
@@ -119,7 +122,13 @@ void ExitPage::submit()
     }
     else if(currentOption_ == 1)
     {
-        emit signalRestartPage();
+        communication::GUIRestartResponse restart;
+        controller_->sendToMainProcess(restart.getFrameBytes());
+    }
+    else if(currentOption_ == 2)
+    {
+        communication::GUIShutdownResponse shutdown;
+        controller_->sendToMainProcess(shutdown.getFrameBytes());
     }
 }
 
