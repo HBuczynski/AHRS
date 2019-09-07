@@ -5,6 +5,8 @@
 #include "GUIWirelessComWrapperBuilder.h"
 #include "GUIStartAcqBuilder.h"
 #include "GUIStopAcqBuilder.h"
+#include "GUIRestartResponseBuilder.h"
+#include "GUIShutdownResponseBuilder.h"
 
 using namespace std;
 using namespace communication;
@@ -39,6 +41,14 @@ unique_ptr<GUIResponse> GUIResponseFactory::createCommand(const vector<uint8_t> 
 
         case GUIResponseType::GUI_STOP_ACQ :
             builder_ = make_unique<GUIStopAcqBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case GUIResponseType::GUI_RESTART :
+            builder_ = make_unique<GUIRestartResponseBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case GUIResponseType::GUI_SHUTDOWN :
+            builder_ = make_unique<GUIShutdownResponseBuilder>();
             return move(builder_->create(commandInBytes));
 
         default:

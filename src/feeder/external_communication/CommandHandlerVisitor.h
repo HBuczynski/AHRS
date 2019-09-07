@@ -41,6 +41,8 @@ namespace communication
         virtual void visit(ChangeStateCommand& command) override;
         virtual void visit(KeepAliveCommand& command) override;
         virtual void visit(ChangeFeederModeCommand& command) override;
+        virtual void visit(RestartCommand& command) override;
+        virtual void visit(ShutdownCommand& command) override;
 
         void initializeClientUDPManager(std::shared_ptr<ClientUDPManager> clientUDPManager);
         void initializeExternalSharedMemory();

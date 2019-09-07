@@ -6,6 +6,8 @@
 #include <interfaces/wireless_responses/PlanesDatasetResponse.h>
 #include <interfaces/wireless_commands/SetPlaneCommand.h>
 #include <interfaces/wireless_commands/CalibrateDataCommand.h>
+#include <interfaces/wireless_commands/ShutdownCommand.h>
+#include <interfaces/wireless_commands/RestartCommand.h>
 
 #include "UIApplicationManager.h"
 
@@ -91,4 +93,30 @@ void GUIInterprocessVisitor::visit(GUIStartAcqResponse& data)
 void GUIInterprocessVisitor::visit(GUIStopAcqResponse& data)
 {
     uiApplicationManager_->stopMeasurements2DB();
+}
+
+void GUIInterprocessVisitor::visit(communication::GUIRestartResponse& data)
+{
+    auto command = RestartCommand();
+    auto commandWrapper = SendingDataCommand(command.getFrameBytes());
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
+
+    this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    system("sudo reboot");
+}
+
+void GUIInterprocessVisitor::visit(communication::GUIShutdownResponse& data)
+{
+    auto command = ShutdownCommand();
+    auto commandWrapper = SendingDataCommand(command.getFrameBytes());
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::MASTER);
+
+    uiApplicationManager_->sendToExternalCommunicationProcess(commandWrapper.getFrameBytes(), config::UICommunicationMode::REDUNDANT);
+
+    this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    system("sudo shutdown now");
 }

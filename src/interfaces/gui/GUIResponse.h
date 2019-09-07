@@ -13,7 +13,9 @@ namespace communication
         WINDOWS_TYPE = 0x02,
         WRAPPER = 0x03,
         GUI_START_ACQ = 0x04,
-        GUI_STOP_ACQ = 0x05
+        GUI_STOP_ACQ = 0x05,
+        GUI_SHUTDOWN = 0x07,
+        GUI_RESTART = 0x08
     };
 
     class GUIResponse : public Frame

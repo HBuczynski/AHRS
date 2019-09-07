@@ -19,6 +19,8 @@
 #include "KeepAliveBuilder.h"
 #include "ChangeFeederModeBuilder.h"
 #include "ChangeStateBuilder.h"
+#include "RestartCommandBuilder.h"
+#include "ShutdownCommandBuilder.h"
 
 #include <stdexcept>
 #include <iostream>
@@ -118,6 +120,13 @@ unique_ptr<Command> CommandFactory::createCommand(const vector<uint8_t> &command
             builder_ = make_unique<ChangeStateBuilder>();
             return move(builder_->create(commandInBytes));
 
+        case CommandType::RESTART_CMD :
+            builder_ = make_unique<RestartCommandBuilder>();
+            return move(builder_->create(commandInBytes));
+
+        case CommandType::SHUTDOWN_CMD :
+            builder_ = make_unique<ShutdownCommandBuilder>();
+            return move(builder_->create(commandInBytes));
         default:
             throw invalid_argument("Received command does not register in factory.");
     }

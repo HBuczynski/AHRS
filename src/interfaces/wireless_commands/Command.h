@@ -29,6 +29,8 @@ namespace communication
         SET_HASH = 120,
         UDP_BITS = 130,
         KEEP_ALIVE = 140,
+        RESTART_CMD = 142,
+        SHUTDOWN_CMD = 143
     };
 
     class Command : public Frame

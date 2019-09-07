@@ -357,6 +357,34 @@ void CommandHandlerVisitor::visit(ChangeFeederModeCommand& command)
     }
 }
 
+void CommandHandlerVisitor::visit(RestartCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    system("sudo reboot");
+}
+
+void CommandHandlerVisitor::visit(ShutdownCommand& command)
+{
+    response_ = std::make_unique<AckResponse>(AckType::OK);
+
+    if(logger_.isInformationEnable())
+    {
+        const std::string message = std::string("-EXTCOM- CommandHandler :: Received") + command.getName() + std::string(" from ClientID -") +
+                                    std::to_string(currentClient_->getID());
+        logger_.writeLog(LogType::INFORMATION_LOG, message);
+    }
+
+    system("sudo shutdown now");
+}
+
 void CommandHandlerVisitor::visit(CalibrationStatusCommand &command)
 {
 }

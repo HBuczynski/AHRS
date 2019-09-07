@@ -21,6 +21,8 @@
 #include "ChangeStateCommand.h"
 #include "KeepAliveCommand.h"
 #include "ChangeFeederModeCommand.h"
+#include "RestartCommand.h"
+#include "ShutdownCommand.h"
 
 namespace communication
 {
@@ -50,6 +52,8 @@ namespace communication
         virtual void visit(ChangeStateCommand& command) = 0;
         virtual void visit(KeepAliveCommand& command) = 0;
         virtual void visit(ChangeFeederModeCommand& command) = 0;
+        virtual void visit(RestartCommand& command) = 0;
+        virtual void visit(ShutdownCommand& command) = 0;
     };
 }
 #endif
