@@ -44,9 +44,9 @@ void FeederDb::insertGPS(const GPSData& data)
     stringstream stream;
 
     stream << INSERT_GPS << "("               << data.timestamp << SEMICOLON
-                                              << data.latitude << SEMICOLON
+                                              << to_string(data.latitude) << SEMICOLON
                                 << APOSTROPHE << data.latitudeDirection << APOSTROPHE << SEMICOLON
-                                              << data.longitude << SEMICOLON
+                                              << to_string(data.longitude) << SEMICOLON
                                 << APOSTROPHE << data.longitudeDirection << APOSTROPHE << SEMICOLON
                                               << data.altitude << SEMICOLON
                                               << static_cast<int>(data.fixQuality) << SEMICOLON

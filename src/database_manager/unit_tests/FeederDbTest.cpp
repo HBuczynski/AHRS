@@ -32,8 +32,8 @@ BOOST_AUTO_TEST_CASE( test_int )
                 gpsData.receiverWarning = 'A';
                 gpsData.numberOfSatellites = 9;
                 gpsData.fixQuality = 0;
-                gpsData.longitude = 1223.456;
-                gpsData.latitude = 12232.7464;
+                gpsData.longitude = 13.405665443;
+                gpsData.latitude = 122.7067867;
                 gpsData.altitude =345.89;
                 gpsData.longitudeDirection = 'N';
                 gpsData.latitudeDirection = 'E';
@@ -52,6 +52,7 @@ BOOST_AUTO_TEST_CASE( test_int )
                 properties.core4 = 289.90;
 
                 feederDb.insertFeederProperties(properties);
+                feederDb.insertGPS(gpsData);
 
                 feederDb.insertHASH(127864356);
         }

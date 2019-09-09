@@ -7,20 +7,20 @@ struct FlightMeasurements
 {
     uint64_t timestamp;
 
-    float roll;
-    float pitch;
-    float altitude;
-    float pressure;
-    float machNo;
-    float groundSpeed;
-    float heading;
-    float verticalSpeed;
-    float latitude;
+    double roll;
+    double pitch;
+    double altitude;
+    double pressure;
+    double machNo;
+    double groundSpeed;
+    double heading;
+    double verticalSpeed;
+    double latitude;
     char latitudeDirection;
-    float longitude;
+    double longitude;
     char longitudeDirection;
-    float turnCoordinator;
-    float slipSkid;
+    double turnCoordinator;
+    double slipSkid;
 };
 
 struct GPSData
