@@ -98,14 +98,14 @@ void NMEAParser::getTime(const string &time, GPSData &gpsData)
 
 void NMEAParser::getLatitude(const string &latitude, string direction, GPSData &gpsData)
 {
-    gpsData.latitude = stod(latitude) * 10000;
-    gpsData.latitude /= 1000000;
+    gpsData.latitude = stod(latitude.substr(0,2));
+    gpsData.latitude += stod(latitude.substr(2,5))/60;
     gpsData.latitudeDirection = direction[0];
 }
 
 void NMEAParser::getLongitude(const string &longitude, string direction, GPSData &gpsData)
 {
-    gpsData.longitude = stod(longitude) * 10000;
-    gpsData.longitude /= 1000000;
+    gpsData.longitude = stod(longitude.substr(0,3));
+    gpsData.longitude += stod(longitude.substr(3,5))/60;
     gpsData.longitudeDirection = direction[0];
 }
